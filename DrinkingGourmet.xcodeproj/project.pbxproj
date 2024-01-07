@@ -1,0 +1,632 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C72B497AD200C87B4A /* AppDelegate.swift */; };
+		2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C92B497AD200C87B4A /* SceneDelegate.swift */; };
+		2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E6C26D02B497AD400C87B4A /* Assets.xcassets */; };
+		2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E6C26D22B497AD400C87B4A /* LaunchScreen.storyboard */; };
+		2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */; };
+		2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26EA2B49820100C87B4A /* RecommendViewController.swift */; };
+		2E6C26F12B49825800C87B4A /* TodayRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F02B49825800C87B4A /* TodayRecipeViewController.swift */; };
+		2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F22B49836600C87B4A /* UIColor+CustomColor.swift */; };
+		2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F42B4983D600C87B4A /* UIView+addSubViews.swift */; };
+		2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F62B4983FC00C87B4A /* UITextField+AddPadding.swift */; };
+		2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F82B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift */; };
+		2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26FA2B4984B700C87B4A /* UIButton+Configuration.swift */; };
+		2E6C26FE2B4985C500C87B4A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C26FD2B4985C500C87B4A /* Kingfisher */; };
+		2E6C27012B4985D700C87B4A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27002B4985D700C87B4A /* Alamofire */; };
+		2E6C27042B4985E400C87B4A /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27032B4985E400C87B4A /* Then */; };
+		2E6C27072B4985F500C87B4A /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27062B4985F500C87B4A /* SnapKit */; };
+		2E6C27092B4985F500C87B4A /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */; };
+		2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */; };
+		2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkingGourmet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E6C26C72B497AD200C87B4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2E6C26C92B497AD200C87B4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		2E6C26D02B497AD400C87B4A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2E6C26D32B497AD400C87B4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2E6C26D52B497AD400C87B4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestViewController.swift; sourceTree = "<group>"; };
+		2E6C26EA2B49820100C87B4A /* RecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendViewController.swift; sourceTree = "<group>"; };
+		2E6C26F02B49825800C87B4A /* TodayRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayRecipeViewController.swift; sourceTree = "<group>"; };
+		2E6C26F22B49836600C87B4A /* UIColor+CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColor.swift"; sourceTree = "<group>"; };
+		2E6C26F42B4983D600C87B4A /* UIView+addSubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+addSubViews.swift"; sourceTree = "<group>"; };
+		2E6C26F62B4983FC00C87B4A /* UITextField+AddPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+AddPadding.swift"; sourceTree = "<group>"; };
+		2E6C26F82B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+AddArrangedSubviews.swift"; sourceTree = "<group>"; };
+		2E6C26FA2B4984B700C87B4A /* UIButton+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Configuration.swift"; sourceTree = "<group>"; };
+		2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Gradient.swift"; sourceTree = "<group>"; };
+		2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2E6C26C12B497AD200C87B4A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E6C27092B4985F500C87B4A /* SnapKit-Dynamic in Frameworks */,
+				2E6C26FE2B4985C500C87B4A /* Kingfisher in Frameworks */,
+				2E6C27072B4985F500C87B4A /* SnapKit in Frameworks */,
+				2E6C27042B4985E400C87B4A /* Then in Frameworks */,
+				2E6C27012B4985D700C87B4A /* Alamofire in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2E6C26BB2B497AD200C87B4A = {
+			isa = PBXGroup;
+			children = (
+				2E6C26C62B497AD200C87B4A /* DrinkingGourmet */,
+				2E6C26C52B497AD200C87B4A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2E6C26C52B497AD200C87B4A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2E6C26C62B497AD200C87B4A /* DrinkingGourmet */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26E22B497E9E00C87B4A /* App */,
+				2E6C26E12B497E7B00C87B4A /* Resource */,
+				2E6C26E32B497EB900C87B4A /* Source */,
+				2E6C26E42B497EFB00C87B4A /* Util */,
+				2E6C26D52B497AD400C87B4A /* Info.plist */,
+			);
+			path = DrinkingGourmet;
+			sourceTree = "<group>";
+		};
+		2E6C26DD2B497E0E00C87B4A /* WeeklyBest */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26DE2B497E1500C87B4A /* Model */,
+				2E6C26DF2B497E1C00C87B4A /* View */,
+				2E6C26E02B497E2500C87B4A /* ViewController */,
+			);
+			path = WeeklyBest;
+			sourceTree = "<group>";
+		};
+		2E6C26DE2B497E1500C87B4A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2E6C26DF2B497E1C00C87B4A /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2E6C26E02B497E2500C87B4A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		2E6C26E12B497E7B00C87B4A /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26D02B497AD400C87B4A /* Assets.xcassets */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		2E6C26E22B497E9E00C87B4A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26C72B497AD200C87B4A /* AppDelegate.swift */,
+				2E6C26C92B497AD200C87B4A /* SceneDelegate.swift */,
+				2E6C26D22B497AD400C87B4A /* LaunchScreen.storyboard */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		2E6C26E32B497EB900C87B4A /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C270C2B498D6D00C87B4A /* TabBar */,
+				2E6C26E62B49812100C87B4A /* Recommend */,
+				2E6C26EC2B49823100C87B4A /* TodayRecipe */,
+				2E6C26DD2B497E0E00C87B4A /* WeeklyBest */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		2E6C26E42B497EFB00C87B4A /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26E52B497F0300C87B4A /* Extension */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		2E6C26E52B497F0300C87B4A /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26F22B49836600C87B4A /* UIColor+CustomColor.swift */,
+				2E6C26F42B4983D600C87B4A /* UIView+addSubViews.swift */,
+				2E6C26F62B4983FC00C87B4A /* UITextField+AddPadding.swift */,
+				2E6C26F82B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift */,
+				2E6C26FA2B4984B700C87B4A /* UIButton+Configuration.swift */,
+				2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		2E6C26E62B49812100C87B4A /* Recommend */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26E92B4981EA00C87B4A /* Model */,
+				2E6C26E82B4981E600C87B4A /* View */,
+				2E6C26E72B4981DD00C87B4A /* ViewController */,
+			);
+			path = Recommend;
+			sourceTree = "<group>";
+		};
+		2E6C26E72B4981DD00C87B4A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26EA2B49820100C87B4A /* RecommendViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		2E6C26E82B4981E600C87B4A /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2E6C26E92B4981EA00C87B4A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2E6C26EC2B49823100C87B4A /* TodayRecipe */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26EF2B49824A00C87B4A /* Model */,
+				2E6C26EE2B49824600C87B4A /* View */,
+				2E6C26ED2B49823D00C87B4A /* ViewController */,
+			);
+			path = TodayRecipe;
+			sourceTree = "<group>";
+		};
+		2E6C26ED2B49823D00C87B4A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C26F02B49825800C87B4A /* TodayRecipeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		2E6C26EE2B49824600C87B4A /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2E6C26EF2B49824A00C87B4A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2E6C270C2B498D6D00C87B4A /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C270D2B498D7500C87B4A /* Viewcontroller */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		2E6C270D2B498D7500C87B4A /* Viewcontroller */ = {
+			isa = PBXGroup;
+			children = (
+				2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */,
+			);
+			path = Viewcontroller;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2E6C26C32B497AD200C87B4A /* DrinkingGourmet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2E6C26D82B497AD400C87B4A /* Build configuration list for PBXNativeTarget "DrinkingGourmet" */;
+			buildPhases = (
+				2E6C26C02B497AD200C87B4A /* Sources */,
+				2E6C26C12B497AD200C87B4A /* Frameworks */,
+				2E6C26C22B497AD200C87B4A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DrinkingGourmet;
+			packageProductDependencies = (
+				2E6C26FD2B4985C500C87B4A /* Kingfisher */,
+				2E6C27002B4985D700C87B4A /* Alamofire */,
+				2E6C27032B4985E400C87B4A /* Then */,
+				2E6C27062B4985F500C87B4A /* SnapKit */,
+				2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */,
+			);
+			productName = DrinkingGourmet;
+			productReference = 2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2E6C26BC2B497AD200C87B4A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1510;
+				LastUpgradeCheck = 1510;
+				TargetAttributes = {
+					2E6C26C32B497AD200C87B4A = {
+						CreatedOnToolsVersion = 15.1;
+					};
+				};
+			};
+			buildConfigurationList = 2E6C26BF2B497AD200C87B4A /* Build configuration list for PBXProject "DrinkingGourmet" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2E6C26BB2B497AD200C87B4A;
+			packageReferences = (
+				2E6C26FC2B4985C500C87B4A /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				2E6C26FF2B4985D700C87B4A /* XCRemoteSwiftPackageReference "Alamofire" */,
+				2E6C27022B4985E400C87B4A /* XCRemoteSwiftPackageReference "Then" */,
+				2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
+			productRefGroup = 2E6C26C52B497AD200C87B4A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2E6C26C32B497AD200C87B4A /* DrinkingGourmet */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2E6C26C22B497AD200C87B4A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
+				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2E6C26C02B497AD200C87B4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
+				2E6C26F12B49825800C87B4A /* TodayRecipeViewController.swift in Sources */,
+				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
+				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
+				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
+				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
+				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
+				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
+				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
+				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
+				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
+				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2E6C26D22B497AD400C87B4A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2E6C26D32B497AD400C87B4A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2E6C26D62B497AD400C87B4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2E6C26D72B497AD400C87B4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2E6C26D92B497AD400C87B4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q37X3LG46V;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = hwijin.DrinkingGourmet;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2E6C26DA2B497AD400C87B4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q37X3LG46V;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = hwijin.DrinkingGourmet;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2E6C26BF2B497AD200C87B4A /* Build configuration list for PBXProject "DrinkingGourmet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E6C26D62B497AD400C87B4A /* Debug */,
+				2E6C26D72B497AD400C87B4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2E6C26D82B497AD400C87B4A /* Build configuration list for PBXNativeTarget "DrinkingGourmet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E6C26D92B497AD400C87B4A /* Debug */,
+				2E6C26DA2B497AD400C87B4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2E6C26FC2B4985C500C87B4A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.10.1;
+			};
+		};
+		2E6C26FF2B4985D700C87B4A /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.1;
+			};
+		};
+		2E6C27022B4985E400C87B4A /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2E6C26FD2B4985C500C87B4A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E6C26FC2B4985C500C87B4A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		2E6C27002B4985D700C87B4A /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E6C26FF2B4985D700C87B4A /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		2E6C27032B4985E400C87B4A /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E6C27022B4985E400C87B4A /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		2E6C27062B4985F500C87B4A /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = "SnapKit-Dynamic";
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 2E6C26BC2B497AD200C87B4A /* Project object */;
+}
