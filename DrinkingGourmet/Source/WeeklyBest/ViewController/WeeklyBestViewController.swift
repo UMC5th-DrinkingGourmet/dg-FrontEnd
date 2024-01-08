@@ -12,7 +12,7 @@ class WeeklyBestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        print("test입니다2")
+        print("test입니다!!!")
     }
     
 
