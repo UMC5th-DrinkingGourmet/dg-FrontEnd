@@ -13,6 +13,9 @@ class TodayCombinationCell: UITableViewCell {
     
     let mainImage = UIImageView().then {
         $0.image = UIImage(named: "img_community_today_thumbnail")
+        $0.layer.cornerRadius = 8
+        $0.layer.masksToBounds = true
+        $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
     let titleLabel = UILabel().then {
@@ -22,7 +25,7 @@ class TodayCombinationCell: UITableViewCell {
     }
     
     let hashtagLabel = UILabel().then {
-        $0.text = "#테스트 #테스트 #테스트 #테스트 #테스트"
+        $0.text = "#해시태그 #테스트 #입니다"
         $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
     }
