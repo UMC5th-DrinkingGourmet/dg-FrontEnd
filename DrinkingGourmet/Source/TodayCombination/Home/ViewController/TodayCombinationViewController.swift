@@ -38,16 +38,19 @@ class TodayCombinationViewController: UIViewController {
         magnifierView.tintColor = UIColor(red: 0.0863, green: 0.0863, blue: 0.0863, alpha: 1)
         
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground() // 불투명으로
+        appearance.configureWithOpaqueBackground() // 불투명
         appearance.backgroundColor = .white
         
         navigationController?.navigationBar.tintColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
-        // 네비게이션바 밑줄 없애기
+        // 네비게이션바 밑줄 삭제
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        // 백버튼 아이템 타이틀 없애기
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
+        
+        // 백버튼 커스텀
+        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
+        navigationController?.navigationBar.backIndicatorImage = customBackImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     func setupTableView() {
@@ -91,5 +94,9 @@ extension TodayCombinationViewController: UITableViewDataSource {
 }
 
 extension TodayCombinationViewController: UITableViewDelegate {
-    
+    // 셀 선택시 Detail 화면으로
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let todayCombinationDetailVC = TodayCombinationDetailViewController()
+        navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
+    }
 }
