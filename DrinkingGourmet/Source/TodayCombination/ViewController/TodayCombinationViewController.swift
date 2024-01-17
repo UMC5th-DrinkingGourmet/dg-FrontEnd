@@ -57,8 +57,7 @@ class TodayCombinationViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false // 스크롤바 숨기기
         tableView.keyboardDismissMode = .onDrag // 스크롤 할 때 키보드 내리기
         tableView.separatorStyle = .none // 테이블뷰 구분선 없애기
-        tableView.rowHeight = 247 //232
-        
+        tableView.rowHeight = 232 // 셀 높이 고정
         tableView.register(TodayCombinationCell.self, forCellReuseIdentifier: "TodayCombinationCell")
     }
     
