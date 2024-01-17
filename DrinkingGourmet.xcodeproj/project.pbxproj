@@ -27,6 +27,8 @@
 		2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */; };
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
+		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
+		5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +49,8 @@
 		2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
+		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
+		5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,9 +230,8 @@
 		5658DDF22B57491D00F72F42 /* TodayCombination */ = {
 			isa = PBXGroup;
 			children = (
-				5658DDF52B57497700F72F42 /* Model */,
-				5658DDF42B57496F00F72F42 /* View */,
-				5658DDF32B57495F00F72F42 /* ViewController */,
+				5658DDFB2B58297600F72F42 /* Home */,
+				5658DDFA2B58296B00F72F42 /* Detail */,
 			);
 			path = TodayCombination;
 			sourceTree = "<group>";
@@ -250,6 +253,49 @@
 			sourceTree = "<group>";
 		};
 		5658DDF52B57497700F72F42 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5658DDFA2B58296B00F72F42 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDFE2B582A4D00F72F42 /* Model */,
+				5658DDFD2B582A4200F72F42 /* View */,
+				5658DDFC2B582A3900F72F42 /* ViewController */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		5658DDFB2B58297600F72F42 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDF52B57497700F72F42 /* Model */,
+				5658DDF42B57496F00F72F42 /* View */,
+				5658DDF32B57495F00F72F42 /* ViewController */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5658DDFC2B582A3900F72F42 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		5658DDFD2B582A4200F72F42 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5658DDFE2B582A4D00F72F42 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -352,6 +398,8 @@
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
+				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,
+				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
