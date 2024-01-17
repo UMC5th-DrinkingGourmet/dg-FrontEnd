@@ -26,6 +26,7 @@
 		2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */; };
 		2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */; };
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
+		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Gradient.swift"; sourceTree = "<group>"; };
 		2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
+		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +244,7 @@
 		5658DDF42B57496F00F72F42 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
 				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
+				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
