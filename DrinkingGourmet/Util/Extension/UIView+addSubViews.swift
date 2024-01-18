@@ -13,4 +13,10 @@ extension UIView {
             addSubview($0)
         }
     }
+    
+    func addSubviewsToContentView(contentView: UIView, _ views: [UIView]) {
+        views.forEach {
+            contentView.addSubview($0)
+        }
+    }
 }

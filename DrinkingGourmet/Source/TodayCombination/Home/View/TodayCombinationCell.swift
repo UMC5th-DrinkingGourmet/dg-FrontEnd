@@ -65,7 +65,7 @@ class TodayCombinationCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupContentView()
         addViews()
-        setConstraints()
+        configureConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -80,12 +80,10 @@ class TodayCombinationCell: UITableViewCell {
     }
     
     func addViews() {
-        let views: [UIView] = [mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon]
-        
-        views.forEach { contentView.addSubview($0) }
+        addSubviewsToContentView(contentView: contentView, [mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
     }
     
-    func setConstraints() {
+    func configureConstraints() {
         
         mainImage.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.top)
