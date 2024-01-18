@@ -27,15 +27,17 @@ class TodayCombinationViewController: UIViewController {
     func setupNaviBar() {
         title = "오늘의 조합"
         
-        navigationItem.searchController = UISearchController()
-        navigationItem.searchController?.searchBar.placeholder = "~~를 입력하세요"
-        navigationItem.searchController?.searchBar.setValue("취소", forKey: "cancelButtonText")
+        let searchController = UISearchController()
+        searchController.searchBar.placeholder = "~~를 입력하세요"
+        searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
+        navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
-        // 돋보기 색상 변경
-        let textField = navigationItem.searchController?.searchBar.value(forKey: "searchField") as! UITextField
-        let magnifierView = textField.leftView as! UIImageView
-        magnifierView.tintColor = UIColor(red: 0.0863, green: 0.0863, blue: 0.0863, alpha: 1)
+        if let searchTextField = navigationItem.searchController?.searchBar.value(forKey: "searchField") as? UITextField {
+            searchTextField.font = UIFont.systemFont(ofSize: 16)
+            let leftVIew = searchTextField.leftView as! UIImageView
+            leftVIew.tintColor = UIColor(red: 0.0863, green: 0.0863, blue: 0.0863, alpha: 1) // 돋보기 색상
+        }
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground() // 불투명
