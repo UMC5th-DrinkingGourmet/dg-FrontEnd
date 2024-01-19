@@ -250,7 +250,6 @@
 			isa = PBXGroup;
 			children = (
 				5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */,
-				56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -294,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */,
+				56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
