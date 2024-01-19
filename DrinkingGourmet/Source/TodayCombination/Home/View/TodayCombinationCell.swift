@@ -80,7 +80,7 @@ class TodayCombinationCell: UITableViewCell {
     }
     
     func addViews() {
-        addSubviewsToContentView(contentView: contentView, [mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
+        addSubviews(toContainer: contentView, [mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
     }
     
     func configureConstraints() {

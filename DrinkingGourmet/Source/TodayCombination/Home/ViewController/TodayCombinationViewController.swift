@@ -35,8 +35,11 @@ class TodayCombinationViewController: UIViewController {
         
         if let searchTextField = navigationItem.searchController?.searchBar.value(forKey: "searchField") as? UITextField {
             searchTextField.font = UIFont.systemFont(ofSize: 16)
-            let leftVIew = searchTextField.leftView as! UIImageView
-            leftVIew.tintColor = UIColor(red: 0.0863, green: 0.0863, blue: 0.0863, alpha: 1) // 돋보기 색상
+            searchTextField.tintColor = UIColor.customOrange // 커서 색상
+            
+            if let leftVIew = searchTextField.leftView as? UIImageView {
+                leftVIew.tintColor = UIColor(red: 0.0863, green: 0.0863, blue: 0.0863, alpha: 1) // 돋보기 색상
+            }
         }
         
         let appearance = UINavigationBarAppearance()
@@ -67,7 +70,7 @@ class TodayCombinationViewController: UIViewController {
     }
     
     func addViews() {
-        self.view.addSubview(tableView)
+        view.addSubviews([tableView])
     }
     
     func configureConstraints() {
