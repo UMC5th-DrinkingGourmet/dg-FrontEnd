@@ -10,6 +10,8 @@ import UIKit
 class TodayCombinationDetailViewController: UIViewController {
     
     private let todayCombinationDetailView = TodayCombinationDetailView()
+    
+    private var isLiked = false
 
     // MARK: - View 설정
     override func loadView() {
@@ -22,6 +24,7 @@ class TodayCombinationDetailViewController: UIViewController {
         
         setupImageCollectionView()
         setupPageControl()
+        configureLikeButton()
     }
     
     // MARK: - 이미지 컬렉션뷰 설정
@@ -36,6 +39,20 @@ class TodayCombinationDetailViewController: UIViewController {
     func setupPageControl() {
         let pc = todayCombinationDetailView.pageControl
         pc.numberOfPages = 5
+    }
+    
+    // MARK: - 좋아요 버튼 설정
+    func configureLikeButton() {
+        todayCombinationDetailView.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        let imageName = isLiked ? "ic_like_selected" : "ic_like"
+        todayCombinationDetailView.likeButton.setImage(UIImage(named: imageName), for: .normal)
+    }
+    
+    @objc func likeButtonTapped() {
+        isLiked.toggle()
+        
+        let imageName = isLiked ? "ic_like_selected" : "ic_like"
+        todayCombinationDetailView.likeButton.setImage(UIImage(named: imageName), for: .normal)
     }
     
 }

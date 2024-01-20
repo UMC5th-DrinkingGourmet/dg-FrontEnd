@@ -53,6 +53,7 @@ class TodayCombinationCell: UITableViewCell {
     let likeSelectedIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_like_selected")
         $0.contentMode = .scaleAspectFit
+//        $0.isHidden = true
     }
     
     // MARK: - 셀 간 간격 조정
@@ -80,7 +81,7 @@ class TodayCombinationCell: UITableViewCell {
     }
     
     func addViews() {
-        addSubviews(toContainer: contentView, [mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
+        contentView.addSubviews([mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
     }
     
     func configureConstraints() {
