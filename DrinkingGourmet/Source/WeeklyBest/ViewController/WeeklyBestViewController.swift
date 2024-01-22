@@ -14,7 +14,4 @@ class WeeklyBestViewController: UIViewController {
         view.backgroundColor = .white
         print("test 에요 ~")
     }
-    
-
-
 }

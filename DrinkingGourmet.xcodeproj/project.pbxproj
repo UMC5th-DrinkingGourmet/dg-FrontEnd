@@ -25,6 +25,8 @@
 		2E6C27092B4985F500C87B4A /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */; };
 		2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */; };
 		2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */; };
+		2E7139592B5E7B05003D0190 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2E7139582B5E7B05003D0190 /* .gitignore */; };
+		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
 		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
@@ -48,6 +50,8 @@
 		2E6C26FA2B4984B700C87B4A /* UIButton+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Configuration.swift"; sourceTree = "<group>"; };
 		2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Gradient.swift"; sourceTree = "<group>"; };
 		2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		2E7139582B5E7B05003D0190 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
 		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +99,7 @@
 				2E6C26E32B497EB900C87B4A /* Source */,
 				2E6C26E42B497EFB00C87B4A /* Util */,
 				2E6C26D52B497AD400C87B4A /* Info.plist */,
+				2E7139582B5E7B05003D0190 /* .gitignore */,
 			);
 			path = DrinkingGourmet;
 			sourceTree = "<group>";
@@ -152,6 +157,7 @@
 		2E6C26E32B497EB900C87B4A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				2EB001902B5E40A400B74580 /* Authentication */,
 				5658DDF22B57491D00F72F42 /* TodayCombination */,
 				2E6C270C2B498D6D00C87B4A /* TabBar */,
 				2E6C26E62B49812100C87B4A /* Recommend */,
@@ -225,6 +231,22 @@
 			isa = PBXGroup;
 			children = (
 				2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */,
+			);
+			path = Viewcontroller;
+			sourceTree = "<group>";
+		};
+		2EB001902B5E40A400B74580 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2EB001912B5E40AE00B74580 /* Viewcontroller */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2EB001912B5E40AE00B74580 /* Viewcontroller */ = {
+			isa = PBXGroup;
+			children = (
+				2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */,
 			);
 			path = Viewcontroller;
 			sourceTree = "<group>";
@@ -377,6 +399,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
+				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
 				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,6 +426,7 @@
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
 				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,
+				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,6 +592,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -600,6 +625,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
