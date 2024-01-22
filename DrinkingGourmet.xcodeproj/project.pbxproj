@@ -13,7 +13,6 @@
 		2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E6C26D22B497AD400C87B4A /* LaunchScreen.storyboard */; };
 		2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */; };
 		2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26EA2B49820100C87B4A /* RecommendViewController.swift */; };
-		2E6C26F12B49825800C87B4A /* TodayRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F02B49825800C87B4A /* TodayRecipeViewController.swift */; };
 		2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F22B49836600C87B4A /* UIColor+CustomColor.swift */; };
 		2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F42B4983D600C87B4A /* UIView+addSubViews.swift */; };
 		2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F62B4983FC00C87B4A /* UITextField+AddPadding.swift */; };
@@ -26,6 +25,11 @@
 		2E6C27092B4985F500C87B4A /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */; };
 		2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */; };
 		2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */; };
+		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
+		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
+		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
+		5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */; };
+		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +41,6 @@
 		2E6C26D52B497AD400C87B4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestViewController.swift; sourceTree = "<group>"; };
 		2E6C26EA2B49820100C87B4A /* RecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendViewController.swift; sourceTree = "<group>"; };
-		2E6C26F02B49825800C87B4A /* TodayRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayRecipeViewController.swift; sourceTree = "<group>"; };
 		2E6C26F22B49836600C87B4A /* UIColor+CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColor.swift"; sourceTree = "<group>"; };
 		2E6C26F42B4983D600C87B4A /* UIView+addSubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+addSubViews.swift"; sourceTree = "<group>"; };
 		2E6C26F62B4983FC00C87B4A /* UITextField+AddPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+AddPadding.swift"; sourceTree = "<group>"; };
@@ -45,6 +48,11 @@
 		2E6C26FA2B4984B700C87B4A /* UIButton+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Configuration.swift"; sourceTree = "<group>"; };
 		2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Gradient.swift"; sourceTree = "<group>"; };
 		2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
+		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
+		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
+		5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailView.swift; sourceTree = "<group>"; };
+		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,9 +152,9 @@
 		2E6C26E32B497EB900C87B4A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5658DDF22B57491D00F72F42 /* TodayCombination */,
 				2E6C270C2B498D6D00C87B4A /* TabBar */,
 				2E6C26E62B49812100C87B4A /* Recommend */,
-				2E6C26EC2B49823100C87B4A /* TodayRecipe */,
 				2E6C26DD2B497E0E00C87B4A /* WeeklyBest */,
 			);
 			path = Source;
@@ -205,38 +213,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		2E6C26EC2B49823100C87B4A /* TodayRecipe */ = {
-			isa = PBXGroup;
-			children = (
-				2E6C26EF2B49824A00C87B4A /* Model */,
-				2E6C26EE2B49824600C87B4A /* View */,
-				2E6C26ED2B49823D00C87B4A /* ViewController */,
-			);
-			path = TodayRecipe;
-			sourceTree = "<group>";
-		};
-		2E6C26ED2B49823D00C87B4A /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				2E6C26F02B49825800C87B4A /* TodayRecipeViewController.swift */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		2E6C26EE2B49824600C87B4A /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2E6C26EF2B49824A00C87B4A /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		2E6C270C2B498D6D00C87B4A /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +227,82 @@
 				2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */,
 			);
 			path = Viewcontroller;
+			sourceTree = "<group>";
+		};
+		5658DDF22B57491D00F72F42 /* TodayCombination */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDFB2B58297600F72F42 /* Home */,
+				5658DDFA2B58296B00F72F42 /* Detail */,
+			);
+			path = TodayCombination;
+			sourceTree = "<group>";
+		};
+		5658DDF32B57495F00F72F42 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		5658DDF42B57496F00F72F42 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5658DDF52B57497700F72F42 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5658DDFA2B58296B00F72F42 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDFE2B582A4D00F72F42 /* Model */,
+				5658DDFD2B582A4200F72F42 /* View */,
+				5658DDFC2B582A3900F72F42 /* ViewController */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		5658DDFB2B58297600F72F42 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDF52B57497700F72F42 /* Model */,
+				5658DDF42B57496F00F72F42 /* View */,
+				5658DDF32B57495F00F72F42 /* ViewController */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5658DDFC2B582A3900F72F42 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		5658DDFD2B582A4200F72F42 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */,
+				56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5658DDFE2B582A4D00F72F42 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,17 +389,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
-				2E6C26F12B49825800C87B4A /* TodayRecipeViewController.swift in Sources */,
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
+				56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
+				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
+				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
+				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,
+				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
