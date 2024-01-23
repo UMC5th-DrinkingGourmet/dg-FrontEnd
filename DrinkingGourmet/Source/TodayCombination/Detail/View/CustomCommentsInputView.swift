@@ -9,12 +9,14 @@ import UIKit
 import SnapKit
 import Then
 
-// 댓글 입력창 커스텀
 class CustomCommentsInputView: UIView {
     
-    let mainView = UIView().then {
+    let backgroudView = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
+    let textFieldView = UIView().then {
         $0.layer.backgroundColor = UIColor(red: 0.961, green: 0.961, blue: 0.961, alpha: 1).cgColor
-//        $0.backgroundColor = .gray
         $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
         $0.layer.borderWidth = 1
@@ -38,13 +40,12 @@ class CustomCommentsInputView: UIView {
     }
     
     let button = UIButton().then {
-        
         $0.backgroundColor = .customOrange
         $0.layer.cornerRadius = 15
     }
     
     let arrow = UIImageView().then {
-        $0.image = UIImage(systemName: "arrow.up")
+        $0.image = UIImage(named: "ic_arrow_up")
         $0.tintColor = .white
     }
     
@@ -58,7 +59,7 @@ class CustomCommentsInputView: UIView {
     }
     
     func addViews() {
-        self.addSubviews([mainView, textField, button, arrow])
+        self.addSubviews([backgroudView ,textFieldView, textField, button, arrow])
     }
     
     override func updateConstraints() {
@@ -68,24 +69,32 @@ class CustomCommentsInputView: UIView {
     
     
     func configureConstraints() {
-        mainView.snp.makeConstraints { make in
+        
+        backgroudView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.height.equalTo(96)
+        }
+        
+        textFieldView.snp.makeConstraints { make in
+            make.top.equalTo(backgroudView).inset(8)
+            make.leading.trailing.equalTo(backgroudView).inset(21)
+            make.bottom.equalTo(backgroudView).inset(46)
             make.height.equalTo(42)
         }
         
         textField.snp.makeConstraints { make in
-            make.top.equalTo(mainView).inset(11)
-            make.leading.equalTo(mainView).inset(26)
+            make.top.equalTo(textFieldView).inset(11)
+            make.leading.equalTo(textFieldView).inset(26)
             make.trailing.equalTo(button.snp.leading).offset(-10)
-            make.bottom.equalTo(mainView).inset(10)
+            make.bottom.equalTo(textFieldView).inset(10)
         }
         
         button.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(30)
-            make.top.equalTo(mainView).inset(6)
-            make.trailing.equalTo(mainView).inset(8)
-            make.bottom.equalTo(mainView).inset(6)
+            make.top.equalTo(textFieldView).inset(6)
+            make.trailing.equalTo(textFieldView).inset(8)
+            make.bottom.equalTo(textFieldView).inset(6)
         }
         
         arrow.snp.makeConstraints { make in

@@ -14,6 +14,7 @@ class TodayCombinationDetailView: UIView {
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never // 네비게이션바 뒤까지
         $0.showsVerticalScrollIndicator = false
+        $0.keyboardDismissMode = .onDrag // 스크롤 시 키보드 숨김
     }
     
     private let contentView = UIView()
@@ -87,7 +88,7 @@ class TodayCombinationDetailView: UIView {
         $0.attributedText = NSMutableAttributedString(string: "오늘은 특별한 맛의 소주 안주를 소개합니다! 골뱅이무침과 새로(소주)의 환상적인 조합으로 맛의 신세계를 경험해보세요.\n\n골뱅이무침의 신선하고 쫄깃한 식감이 새로의 부드럽고 깔끔한 맛과 어우러져, 입안에서 환상적인 맛의 축제가 펼쳐집니다️✨\n\n한 입에는 골뱅이무침의 매콤한 맛, 다음 순간에는 새로의 깔끔한 목넘김이 어우러져 색다른 향연을 즐길 수 있어요.\n\n이 두 가지의 맛이 만나면 소주 한 잔이 더욱 특별해지는 것을 느낄 수 있답니다. 혼자 마시거나 친구들과 함께 골뱅이무침과 새로로 특별한 순간을 만들어보세요!", attributes: [NSAttributedString.Key.kern: -0.42, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    let customCommentsInputView = CustomCommentsInputView()
+    let commentsInputView = CustomCommentsInputView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -102,7 +103,7 @@ class TodayCombinationDetailView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel, commentButton, likeButton, grayLine, hashtagLabel, ellipsisButton, titleLabel, descriptionLabel, customCommentsInputView])
+        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel, commentButton, likeButton, grayLine, hashtagLabel, ellipsisButton, titleLabel, descriptionLabel, commentsInputView])
     }
     
     override func layoutSubviews() {
@@ -113,7 +114,7 @@ class TodayCombinationDetailView: UIView {
     override func updateConstraints() {
         super.updateConstraints()
         configureConstraints()
-        profileImage.layoutIfNeeded() // 필요한 경우 레이아웃 업데이트를 진행합니다.
+        profileImage.layoutIfNeeded()
     }
     
     func configureConstraints() {
@@ -189,11 +190,11 @@ class TodayCombinationDetailView: UIView {
             make.bottom.equalTo(contentView).offset(-100)
         }
         
-        customCommentsInputView.snp.makeConstraints { make in
-            make.leading.equalTo(scrollView.frameLayoutGuide).offset(21)
-            make.trailing.equalTo(scrollView.frameLayoutGuide).offset(-21)
-            make.bottom.equalTo(scrollView.frameLayoutGuide).offset(-46)
-            make.height.equalTo(42)
+        commentsInputView.snp.makeConstraints { make in
+            make.leading.equalTo(scrollView.frameLayoutGuide)
+            make.trailing.equalTo(scrollView.frameLayoutGuide)
+            make.bottom.equalTo(scrollView.frameLayoutGuide)
+            make.height.equalTo(96)
         }
         
     }
