@@ -26,6 +26,7 @@ class TodayCombinationDetailViewController: UIViewController {
         setupPageControl()
         configureCommetButton()
         configureLikeButton()
+        configureMoreButton()
         setupCommentsInputView()
     }
     
@@ -75,6 +76,25 @@ class TodayCombinationDetailViewController: UIViewController {
         isLiked.toggle()
         let imageName = isLiked ? "ic_like_selected" : "ic_like"
         todayCombinationDetailView.likeButton.setImage(UIImage(named: imageName), for: .normal)
+    }
+    
+    // MARK: - 게시글 삭제/수정 버튼 설정
+    func configureMoreButton() {
+        let bt = todayCombinationDetailView.moreButton
+        bt.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func moreButtonTapped() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive, handler: nil)
+        let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(removeAction)
+        alert.addAction(modifyAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - 댓글입력창 설정

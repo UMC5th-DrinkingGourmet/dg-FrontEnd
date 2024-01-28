@@ -66,7 +66,7 @@ class TodayCombinationDetailView: UIView {
         $0.attributedText = NSMutableAttributedString(string: "#골뱅이무침 #새로 #맛의조합 #시너지", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    let ellipsisButton = UIButton().then {
+    let moreButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         $0.tintColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
     }
@@ -111,7 +111,7 @@ class TodayCombinationDetailView: UIView {
         self.addSubview(commentsInputView)
         
         scrollView.addSubview(contentView)
-        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel, commentButton, likeButton, grayLine, hashtagLabel, ellipsisButton, titleLabel, descriptionLabel, dividerView, commentAreaView])
+        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel, commentButton, likeButton, grayLine, hashtagLabel, moreButton, titleLabel, descriptionLabel, dividerView, commentAreaView])
     }
     
     override func layoutSubviews() {
@@ -182,7 +182,7 @@ class TodayCombinationDetailView: UIView {
             make.trailing.equalTo(contentView).offset(-21)
         }
         
-        ellipsisButton.snp.makeConstraints { make in
+        moreButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.centerX.equalTo(likeButton)
             make.top.equalTo(likeButton.snp.bottom).offset(40)
