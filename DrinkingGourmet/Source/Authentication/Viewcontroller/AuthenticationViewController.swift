@@ -117,18 +117,18 @@ class AuthenticationViewController: UIViewController {
 
 extension AuthenticationViewController {
     fileprivate func setBindings() {
-        //방법 1
-        self.kakaoAuthVM.$isLoggedIn.sink { [weak self] isLoggedIn in
-            guard let self = self else { return }
-//            self.loginLabel.text = isLoggedIn ? "it is login" : "it is no login"
-        }
-        .store(in: &subscriptions)
+//        //방법 1
+//        self.kakaoAuthVM.$isLoggedIn.sink { [weak self] isLoggedIn in
+//            guard let self = self else { return }
+////            self.loginLabel.text = isLoggedIn ? "it is login" : "it is no login"
+//        }
+//        .store(in: &subscriptions)
         
     
 //        // 방법 2
-//        self.kakaoAuthVM.loginStatusInfo
-//            .receive(on: DispatchQueue.main)
-//            .assign(to: \.text, on: self.loginLabel)
-//            .store(in: &subscriptions)
+        self.kakaoAuthVM.loginStatusInfo
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.text, on: self.loginLabel)
+            .store(in: &subscriptions)
     }
 }
