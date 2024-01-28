@@ -1,5 +1,5 @@
 //
-//  CustomCommentsInputView.swift
+//  CommentInputView.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 1/23/24.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class CustomCommentsInputView: UIView {
+class CommentInputView: UIView {
     
     let backgroudView = UIView().then {
         $0.backgroundColor = .white

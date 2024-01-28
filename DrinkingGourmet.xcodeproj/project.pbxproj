@@ -32,7 +32,7 @@
 		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
 		5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */; };
 		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
-		56A405672B5F776200BF85A8 /* CustomCommentsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CustomCommentsInputView.swift */; };
+		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,7 +58,7 @@
 		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
 		5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailView.swift; sourceTree = "<group>"; };
 		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
-		56A405662B5F776200BF85A8 /* CustomCommentsInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCommentsInputView.swift; sourceTree = "<group>"; };
+		56A405662B5F776200BF85A8 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +253,14 @@
 			path = Viewcontroller;
 			sourceTree = "<group>";
 		};
+		560548662B663A66006026E0 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				56A405662B5F776200BF85A8 /* CommentInputView.swift */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
 		5658DDF22B57491D00F72F42 /* TodayCombination */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,9 +324,9 @@
 		5658DDFD2B582A4200F72F42 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				560548662B663A66006026E0 /* Comments */,
 				5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */,
 				56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */,
-				56A405662B5F776200BF85A8 /* CustomCommentsInputView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -418,7 +426,7 @@
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
-				56A405672B5F776200BF85A8 /* CustomCommentsInputView.swift in Sources */,
+				56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */,
 				56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,

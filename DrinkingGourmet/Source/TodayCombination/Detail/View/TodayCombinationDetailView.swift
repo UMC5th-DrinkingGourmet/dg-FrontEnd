@@ -88,7 +88,7 @@ class TodayCombinationDetailView: UIView {
         $0.attributedText = NSMutableAttributedString(string: "오늘은 특별한 맛의 소주 안주를 소개합니다! 골뱅이무침과 새로(소주)의 환상적인 조합으로 맛의 신세계를 경험해보세요.\n\n골뱅이무침의 신선하고 쫄깃한 식감이 새로의 부드럽고 깔끔한 맛과 어우러져, 입안에서 환상적인 맛의 축제가 펼쳐집니다️✨\n\n한 입에는 골뱅이무침의 매콤한 맛, 다음 순간에는 새로의 깔끔한 목넘김이 어우러져 색다른 향연을 즐길 수 있어요.\n\n이 두 가지의 맛이 만나면 소주 한 잔이 더욱 특별해지는 것을 느낄 수 있답니다. 혼자 마시거나 친구들과 함께 골뱅이무침과 새로로 특별한 순간을 만들어보세요!", attributes: [NSAttributedString.Key.kern: -0.42, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    let commentsInputView = CustomCommentsInputView()
+    let commentsInputView = CommentInputView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
