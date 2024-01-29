@@ -6,15 +6,30 @@
 //
 
 import UIKit
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let appKey = Bundle.main.infoDictionary?["KAKAO_APP_KEY"] ?? ""
+        
+        KakaoSDK.initSDK(appKey: appKey as! String)
+
+        
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        // 웹 브라우저에서 URL이 열리게 되면, 카카오 로그인 scheme이랑 일치하는지 체크
+        if (AuthApi.isKakaoTalkLoginUrl(url)) { // 일차할 경우 웹뷰(AuthController)를 연다
+            return AuthController.handleOpenUrl(url: url)
+        }
+
+        return false
     }
 
     // MARK: UISceneSession Lifecycle

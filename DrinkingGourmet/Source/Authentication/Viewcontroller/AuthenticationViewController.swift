@@ -8,8 +8,13 @@
 import UIKit
 import SnapKit
 import Then
+import Combine
 
 class AuthenticationViewController: UIViewController {
+    
+    var subscriptions = Set<AnyCancellable>()
+    
+    private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
     
     private let backgroundImageview = UIImageView(
         image: UIImage(named: "img_splash_background")
@@ -46,6 +51,7 @@ class AuthenticationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         config()
+        setBindings()
     }
     
     private func config() {
@@ -55,8 +61,14 @@ class AuthenticationViewController: UIViewController {
     
     func configBtn() {
         kakaoBtn.layer.cornerRadius = kakaoBtn.frame.width / 2
+        kakaoBtn.addTarget(self, action: #selector(kakaoBtnClicked), for: .touchUpInside)
+        
         naverBtn.layer.cornerRadius = naverBtn.frame.width / 2
         appleBtn.layer.cornerRadius = appleBtn.frame.width / 2
+    }
+    
+    @objc func kakaoBtnClicked() {
+        kakaoAuthVM.kakaoLogin()
     }
     
     private func layout() {
@@ -100,5 +112,23 @@ class AuthenticationViewController: UIViewController {
             $0.bottom.equalTo(naverBtn.snp.top).offset(-12)
             $0.centerX.equalToSuperview()
         }
+    }
+}
+
+extension AuthenticationViewController {
+    fileprivate func setBindings() {
+//        //방법 1
+//        self.kakaoAuthVM.$isLoggedIn.sink { [weak self] isLoggedIn in
+//            guard let self = self else { return }
+////            self.loginLabel.text = isLoggedIn ? "it is login" : "it is no login"
+//        }
+//        .store(in: &subscriptions)
+        
+    
+//        // 방법 2
+        self.kakaoAuthVM.loginStatusInfo
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.text, on: self.loginLabel)
+            .store(in: &subscriptions)
     }
 }

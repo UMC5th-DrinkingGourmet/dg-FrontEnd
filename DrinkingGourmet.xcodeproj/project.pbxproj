@@ -21,17 +21,25 @@
 		2E6C26FE2B4985C500C87B4A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C26FD2B4985C500C87B4A /* Kingfisher */; };
 		2E6C27012B4985D700C87B4A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27002B4985D700C87B4A /* Alamofire */; };
 		2E6C27042B4985E400C87B4A /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27032B4985E400C87B4A /* Then */; };
-		2E6C27072B4985F500C87B4A /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27062B4985F500C87B4A /* SnapKit */; };
-		2E6C27092B4985F500C87B4A /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */; };
 		2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */; };
 		2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */; };
 		2E7139592B5E7B05003D0190 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2E7139582B5E7B05003D0190 /* .gitignore */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
+		2EE2E8802B654665006F81E9 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */; };
+		2EE2E8832B654833006F81E9 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8822B654833006F81E9 /* KakaoSDK */; };
+		2EE2E8852B654833006F81E9 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8842B654833006F81E9 /* KakaoSDKAuth */; };
+		2EE2E8872B654833006F81E9 /* KakaoSDKCert in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8862B654833006F81E9 /* KakaoSDKCert */; };
+		2EE2E8892B654833006F81E9 /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8882B654833006F81E9 /* KakaoSDKCertCore */; };
+		2EE2E88B2B654833006F81E9 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E88A2B654833006F81E9 /* KakaoSDKCommon */; };
+		2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */; };
+		2EE2E8902B657F1A006F81E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E88F2B657F1A006F81E9 /* SnapKit */; };
+		2EE2E8922B657F1A006F81E9 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8912B657F1A006F81E9 /* SnapKit-Dynamic */; };
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
 		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
 		5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */; };
 		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
+		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,11 +60,14 @@
 		2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		2E7139582B5E7B05003D0190 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
+		2EE2E87F2B654665006F81E9 /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
+		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
 		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
 		5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailView.swift; sourceTree = "<group>"; };
 		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
+		56A405662B5F776200BF85A8 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,11 +75,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E6C27092B4985F500C87B4A /* SnapKit-Dynamic in Frameworks */,
+				2EE2E8852B654833006F81E9 /* KakaoSDKAuth in Frameworks */,
 				2E6C26FE2B4985C500C87B4A /* Kingfisher in Frameworks */,
-				2E6C27072B4985F500C87B4A /* SnapKit in Frameworks */,
+				2EE2E8872B654833006F81E9 /* KakaoSDKCert in Frameworks */,
 				2E6C27042B4985E400C87B4A /* Then in Frameworks */,
 				2E6C27012B4985D700C87B4A /* Alamofire in Frameworks */,
+				2EE2E8922B657F1A006F81E9 /* SnapKit-Dynamic in Frameworks */,
+				2EE2E8832B654833006F81E9 /* KakaoSDK in Frameworks */,
+				2EE2E8902B657F1A006F81E9 /* SnapKit in Frameworks */,
+				2EE2E88B2B654833006F81E9 /* KakaoSDKCommon in Frameworks */,
+				2EE2E8892B654833006F81E9 /* KakaoSDKCertCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +94,7 @@
 		2E6C26BB2B497AD200C87B4A = {
 			isa = PBXGroup;
 			children = (
+				2EE2E87F2B654665006F81E9 /* Secret.xcconfig */,
 				2E6C26C62B497AD200C87B4A /* DrinkingGourmet */,
 				2E6C26C52B497AD200C87B4A /* Products */,
 			);
@@ -238,6 +255,7 @@
 		2EB001902B5E40A400B74580 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */,
 				2EB001912B5E40AE00B74580 /* Viewcontroller */,
 			);
 			path = Authentication;
@@ -249,6 +267,17 @@
 				2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */,
 			);
 			path = Viewcontroller;
+			sourceTree = "<group>";
+		};
+		560548662B663A66006026E0 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				5605486B2B66451F006026E0 /* CommentAreaView.swift */,
+				560548692B6644D7006026E0 /* CommentsView.swift */,
+				560548672B663D78006026E0 /* CommentView.swift */,
+				56A405662B5F776200BF85A8 /* CommentInputView.swift */,
+			);
+			path = Comments;
 			sourceTree = "<group>";
 		};
 		5658DDF22B57491D00F72F42 /* TodayCombination */ = {
@@ -314,6 +343,7 @@
 		5658DDFD2B582A4200F72F42 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				560548662B663A66006026E0 /* Comments */,
 				5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */,
 				56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */,
 			);
@@ -347,8 +377,13 @@
 				2E6C26FD2B4985C500C87B4A /* Kingfisher */,
 				2E6C27002B4985D700C87B4A /* Alamofire */,
 				2E6C27032B4985E400C87B4A /* Then */,
-				2E6C27062B4985F500C87B4A /* SnapKit */,
-				2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */,
+				2EE2E8822B654833006F81E9 /* KakaoSDK */,
+				2EE2E8842B654833006F81E9 /* KakaoSDKAuth */,
+				2EE2E8862B654833006F81E9 /* KakaoSDKCert */,
+				2EE2E8882B654833006F81E9 /* KakaoSDKCertCore */,
+				2EE2E88A2B654833006F81E9 /* KakaoSDKCommon */,
+				2EE2E88F2B657F1A006F81E9 /* SnapKit */,
+				2EE2E8912B657F1A006F81E9 /* SnapKit-Dynamic */,
 			);
 			productName = DrinkingGourmet;
 			productReference = 2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */;
@@ -382,7 +417,8 @@
 				2E6C26FC2B4985C500C87B4A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2E6C26FF2B4985D700C87B4A /* XCRemoteSwiftPackageReference "Alamofire" */,
 				2E6C27022B4985E400C87B4A /* XCRemoteSwiftPackageReference "Then" */,
-				2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */,
+				2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 2E6C26C52B497AD200C87B4A /* Products */;
 			projectDirPath = "";
@@ -398,6 +434,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EE2E8802B654665006F81E9 /* Secret.xcconfig in Resources */,
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
 				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
 				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
@@ -412,16 +449,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
+				560548682B663D78006026E0 /* CommentView.swift in Sources */,
+				5605486A2B6644D7006026E0 /* CommentsView.swift in Sources */,
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
+				56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */,
 				56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
 				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
+				2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
+				5605486C2B66451F006026E0 /* CommentAreaView.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
@@ -447,6 +489,7 @@
 /* Begin XCBuildConfiguration section */
 		2E6C26D62B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -498,7 +541,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -511,6 +554,7 @@
 		};
 		2E6C26D72B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -556,7 +600,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -568,6 +612,7 @@
 		};
 		2E6C26D92B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -576,6 +621,7 @@
 				DEVELOPMENT_TEAM = Q37X3LG46V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -601,6 +647,7 @@
 		};
 		2E6C26DA2B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -609,6 +656,7 @@
 				DEVELOPMENT_TEAM = Q37X3LG46V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -680,7 +728,15 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.20.0;
+			};
+		};
+		2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -706,14 +762,39 @@
 			package = 2E6C27022B4985E400C87B4A /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
-		2E6C27062B4985F500C87B4A /* SnapKit */ = {
+		2EE2E8822B654833006F81E9 /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		2EE2E8842B654833006F81E9 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		2EE2E8862B654833006F81E9 /* KakaoSDKCert */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCert;
+		};
+		2EE2E8882B654833006F81E9 /* KakaoSDKCertCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCertCore;
+		};
+		2EE2E88A2B654833006F81E9 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		2EE2E88F2B657F1A006F81E9 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		2E6C27082B4985F500C87B4A /* SnapKit-Dynamic */ = {
+		2EE2E8912B657F1A006F81E9 /* SnapKit-Dynamic */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2E6C27052B4985F500C87B4A /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = "SnapKit-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
