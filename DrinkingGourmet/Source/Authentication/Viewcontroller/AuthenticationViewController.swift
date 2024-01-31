@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import Combine
+import Kingfisher
 
 class AuthenticationViewController: UIViewController {
     
@@ -129,6 +130,29 @@ extension AuthenticationViewController {
         self.kakaoAuthVM.loginStatusInfo
             .receive(on: DispatchQueue.main)
             .assign(to: \.text, on: self.loginLabel)
+            .store(in: &subscriptions)
+        
+        kakaoAuthVM.$userInfo
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                self?.titleLabel.text = user?.kakaoAccount?.profile?.nickname ?? "로그인 필요"
+                
+                if let url = user?.kakaoAccount?.profile?.profileImageUrl {
+                    self?.backgroundImageview.kf.setImage(with: url)
+                }
+            }
+            .store(in: &subscriptions)
+        
+        // 로그인 성공시
+        kakaoAuthVM.$isLoggedIn
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoggedIn in
+                if isLoggedIn {
+                    let termsViewController = TermsViewController()
+                    termsViewController.modalPresentationStyle = .fullScreen
+                    self?.present(termsViewController, animated: true, completion: nil)
+                }
+            }
             .store(in: &subscriptions)
     }
 }
