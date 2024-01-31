@@ -44,16 +44,11 @@ class TodayCombinationDetailView: UIView {
         $0.text = "이름 님의 레시피"
     }
     
-    let commentButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_reply"), for: .normal)
-        $0.contentMode = .scaleAspectFit
-    }
-    
-    let likeButton = UIButton().then {
+    let likeIconButton = UIButton().then {
         $0.setImage(UIImage(named: "ic_like"), for: .normal)
     }
     
-    private let grayLine = UIView().then {
+    let grayLine = UIView().then {
         $0.backgroundColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1)
     }
     
@@ -68,7 +63,7 @@ class TodayCombinationDetailView: UIView {
     
     let moreButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-        $0.tintColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
+        $0.tintColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
     }
     
     let titleLabel = UILabel().then {
@@ -111,7 +106,7 @@ class TodayCombinationDetailView: UIView {
         self.addSubview(commentsInputView)
         
         scrollView.addSubview(contentView)
-        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel, commentButton, likeButton, grayLine, hashtagLabel, moreButton, titleLabel, descriptionLabel, dividerView, commentAreaView])
+        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel,  likeIconButton, grayLine, hashtagLabel, moreButton, titleLabel, descriptionLabel, dividerView, commentAreaView])
     }
     
     override func layoutSubviews() {
@@ -158,15 +153,9 @@ class TodayCombinationDetailView: UIView {
             make.bottom.equalTo(profileImage.snp.bottom).inset(12)
         }
         
-        commentButton.snp.makeConstraints { make in
+        likeIconButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.trailing.equalTo(contentView.snp.trailing).offset(-56)
-            make.centerY.equalTo(userNameLabel)
-        }
-        
-        likeButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalTo(commentButton.snp.trailing).offset(12)
+            make.trailing.equalTo(contentView).offset(-20)
             make.centerY.equalTo(userNameLabel)
         }
         
@@ -184,8 +173,8 @@ class TodayCombinationDetailView: UIView {
         
         moreButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.centerX.equalTo(likeButton)
-            make.top.equalTo(likeButton.snp.bottom).offset(40)
+            make.centerX.equalTo(likeIconButton)
+            make.top.equalTo(likeIconButton.snp.bottom).offset(40)
         }
         
         titleLabel.snp.makeConstraints { make in
