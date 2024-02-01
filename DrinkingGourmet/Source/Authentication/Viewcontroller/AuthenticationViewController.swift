@@ -48,7 +48,6 @@ class AuthenticationViewController: UIViewController {
         $0.font = .systemFont(ofSize: 12)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         config()

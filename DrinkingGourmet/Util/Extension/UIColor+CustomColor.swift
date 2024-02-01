@@ -11,7 +11,7 @@ extension UIColor {
     static let customColor = CustomColors()
     
     struct CustomColors {
-        let customOrange = UIColor(named: "CustomOrange") ?? .white
-        
+        let customOrange = UIColor(named: "CustomOrange") ?? .orange
+        let checkMarkGray = UIColor(named: "CheckmarkGray") ?? .gray
     }
 }

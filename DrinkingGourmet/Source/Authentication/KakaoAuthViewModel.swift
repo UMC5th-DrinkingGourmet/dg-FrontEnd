@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import KakaoSDKAuth
 import KakaoSDKUser
+import KakaoSDKCommon
 
 class KakaoAuthViewModel: ObservableObject {
     var subscriptions = Set<AnyCancellable>()
@@ -42,6 +43,7 @@ class KakaoAuthViewModel: ObservableObject {
                         await self.setUserInfo()
                     }
                     
+                    self.isLoggedIn = true // 로그인 상태 업데이트
                     continuation.resume(returning: true)
                 }
             }
@@ -66,25 +68,74 @@ class KakaoAuthViewModel: ObservableObject {
                         await self.setUserInfo()
                     }
                     
+                    self.isLoggedIn = true // 로그인 상태 업데이트
                     continuation.resume(returning: true)
                 }
             }
         }
     }
     
-    @MainActor  // isLoggedIn 때문에 메인 스레드에서 실행하게끔
-    func kakaoLogin() {
-        print("kakaoauthVM - handleKaKaoLogin")
+    
+    @MainActor
+        func checkTokenValidity() async -> Bool {    // 토큰 유효성 체크
+           await withCheckedContinuation { continuation in
+               if (AuthApi.hasToken()) {
+                   UserApi.shared.accessTokenInfo { (_, error) in
+                       if let error = error {
+                           if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true {
+                               continuation.resume(returning: false)
+                           } else {
+                               continuation.resume(returning: false)
+                           }
+                       } else {
+                           continuation.resume(returning: true)
+                       }
+                   }
+               } else {
+                   continuation.resume(returning: false)
+               }
+           }
+        }
         
-        Task {
-            // 카카오톡 앱 실행 가능 여부 확인.
-            if (UserApi.isKakaoTalkLoginAvailable()) {
-                isLoggedIn = await kakaoLoginWithApp()
-            } else { // 앱 실행 불가능일 경우, 카카오 계정으로 로그인
-                isLoggedIn = await kakaoLoginWithAccount()
+        @MainActor
+        func kakaoLogin() {
+            Task {
+                if await checkTokenValidity() {
+                    await setUserInfo()
+                    self.isLoggedIn = true
+                } else {
+                    if (UserApi.isKakaoTalkLoginAvailable()) {
+                        isLoggedIn = await kakaoLoginWithApp()
+                    } else { // 앱 실행 불가능일 경우, 카카오 계정으로 로그인
+                        isLoggedIn = await kakaoLoginWithAccount()
+                    }
+                }
             }
         }
-    }
+    
+    @MainActor
+        func kakaoLoginWithAccountPrompt() async -> Bool {  // 간편 로그인
+            await withCheckedContinuation { continuation in
+                UserApi.shared.loginWithKakaoAccount(prompts:[.SelectAccount]) {(oauthToken, error) in
+                    if let error = error {
+                        print(error)
+                        continuation.resume(returning: false)
+                    }
+                    else {
+                        print("loginWithKakaoAccount() success.")
+                        
+                        //do something
+                        _ = oauthToken
+                        
+                        Task {
+                            await self.setUserInfo()
+                        }
+                        
+                        continuation.resume(returning: true)
+                    }
+                }
+            }
+        }
     
     @MainActor
     func kakaoLogut() {

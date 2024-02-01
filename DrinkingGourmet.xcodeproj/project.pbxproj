@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E3E5A782B6C03700000E651 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2E3E5A772B6C03700000E651 /* SnapKit */; };
 		2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C72B497AD200C87B4A /* AppDelegate.swift */; };
 		2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C92B497AD200C87B4A /* SceneDelegate.swift */; };
 		2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E6C26D02B497AD400C87B4A /* Assets.xcassets */; };
@@ -33,8 +34,6 @@
 		2EE2E8892B654833006F81E9 /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8882B654833006F81E9 /* KakaoSDKCertCore */; };
 		2EE2E88B2B654833006F81E9 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E88A2B654833006F81E9 /* KakaoSDKCommon */; };
 		2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */; };
-		2EE2E8902B657F1A006F81E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E88F2B657F1A006F81E9 /* SnapKit */; };
-		2EE2E8922B657F1A006F81E9 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8912B657F1A006F81E9 /* SnapKit-Dynamic */; };
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
 		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
@@ -88,9 +87,8 @@
 				2EE2E8872B654833006F81E9 /* KakaoSDKCert in Frameworks */,
 				2E6C27042B4985E400C87B4A /* Then in Frameworks */,
 				2E6C27012B4985D700C87B4A /* Alamofire in Frameworks */,
-				2EE2E8922B657F1A006F81E9 /* SnapKit-Dynamic in Frameworks */,
 				2EE2E8832B654833006F81E9 /* KakaoSDK in Frameworks */,
-				2EE2E8902B657F1A006F81E9 /* SnapKit in Frameworks */,
+				2E3E5A782B6C03700000E651 /* SnapKit in Frameworks */,
 				2EE2E88B2B654833006F81E9 /* KakaoSDKCommon in Frameworks */,
 				2EE2E8892B654833006F81E9 /* KakaoSDKCertCore in Frameworks */,
 			);
@@ -391,8 +389,7 @@
 				2EE2E8862B654833006F81E9 /* KakaoSDKCert */,
 				2EE2E8882B654833006F81E9 /* KakaoSDKCertCore */,
 				2EE2E88A2B654833006F81E9 /* KakaoSDKCommon */,
-				2EE2E88F2B657F1A006F81E9 /* SnapKit */,
-				2EE2E8912B657F1A006F81E9 /* SnapKit-Dynamic */,
+				2E3E5A772B6C03700000E651 /* SnapKit */,
 			);
 			productName = DrinkingGourmet;
 			productReference = 2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */;
@@ -427,7 +424,7 @@
 				2E6C26FF2B4985D700C87B4A /* XCRemoteSwiftPackageReference "Alamofire" */,
 				2E6C27022B4985E400C87B4A /* XCRemoteSwiftPackageReference "Then" */,
 				2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-				2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				2E3E5A762B6C03700000E651 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 2E6C26C52B497AD200C87B4A /* Products */;
 			projectDirPath = "";
@@ -710,6 +707,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2E3E5A762B6C03700000E651 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
 		2E6C26FC2B4985C500C87B4A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -742,17 +747,14 @@
 				minimumVersion = 2.20.0;
 			};
 		};
-		2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2E3E5A772B6C03700000E651 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E3E5A762B6C03700000E651 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
 		2E6C26FD2B4985C500C87B4A /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2E6C26FC2B4985C500C87B4A /* XCRemoteSwiftPackageReference "Kingfisher" */;
@@ -792,16 +794,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2EE2E8812B654832006F81E9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKCommon;
-		};
-		2EE2E88F2B657F1A006F81E9 /* SnapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
-		};
-		2EE2E8912B657F1A006F81E9 /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2EE2E88E2B657F1A006F81E9 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
