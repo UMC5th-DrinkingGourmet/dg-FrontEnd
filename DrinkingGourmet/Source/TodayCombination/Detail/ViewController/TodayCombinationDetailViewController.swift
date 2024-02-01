@@ -24,9 +24,9 @@ class TodayCombinationDetailViewController: UIViewController {
         setup()
         setupImageCollectionView()
         setupPageControl()
-        configureCommetButton()
-        configureLikeButton()
+        configureLikeIconButton()
         configureMoreButton()
+        configureCommentMoreButton()
         setupCommentsInputView()
     }
     
@@ -56,26 +56,16 @@ class TodayCombinationDetailViewController: UIViewController {
         pc.numberOfPages = 5
     }
     
-    // MARK: - 댓글 버튼 설정
-    func configureCommetButton() {
-        let bt = todayCombinationDetailView.commentButton
-        bt.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
+    // MARK: - 좋아요 아이콘 버튼 설정
+    func configureLikeIconButton() {
+        let bt = todayCombinationDetailView.likeIconButton
+        bt.addTarget(self, action: #selector(likeIconButtonTapped), for: .touchUpInside)
     }
     
-    @objc func commentButtonTapped() {
-        print("댓글창으로 이동")
-    }
-    
-    // MARK: - 좋아요 버튼 설정
-    func configureLikeButton() {
-        let bt = todayCombinationDetailView.likeButton
-        bt.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc func likeButtonTapped() {
+    @objc func likeIconButtonTapped() {
         isLiked.toggle()
         let imageName = isLiked ? "ic_like_selected" : "ic_like"
-        todayCombinationDetailView.likeButton.setImage(UIImage(named: imageName), for: .normal)
+        todayCombinationDetailView.likeIconButton.setImage(UIImage(named: imageName), for: .normal)
     }
     
     // MARK: - 게시글 삭제/수정 버튼 설정
@@ -95,6 +85,13 @@ class TodayCombinationDetailViewController: UIViewController {
         alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - 댓글 삭제/수정 버튼 설정
+    func configureCommentMoreButton() {
+        for commentView in todayCombinationDetailView.commentAreaView.commentsView.arrangedSubviews.compactMap({ $0 as? CommentView }) {
+                commentView.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+            }
     }
     
     // MARK: - 댓글입력창 설정
@@ -149,7 +146,7 @@ extension TodayCombinationDetailViewController: UIScrollViewDelegate {
     }
     
     // 페이지컨트롤 업데이트
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let index = Int(scrollView.contentOffset.x / todayCombinationDetailView.imageCollectionView.bounds.width)
         todayCombinationDetailView.pageControl.currentPage = index
     }
@@ -163,4 +160,38 @@ extension TodayCombinationDetailViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+}
+
+// MARK: - 댓글입력창 눌렀을 때 텍스트필드 가려짐 해결
+extension TodayCombinationDetailViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardUp(notification: NSNotification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            let keyboardHeight = keyboardFrame.height
+            let safeAreaBottomInset = view.safeAreaInsets.bottom
+            let distanceToMove = keyboardHeight - safeAreaBottomInset // 키보드가 뷰를 가리는 거리
+
+            UIView.animate(withDuration: 0.3) {
+                // Safe Area를 고려하여 뷰의 위치를 조정
+                self.view.transform = CGAffineTransform(translationX: 0, y: -distanceToMove)
+            }
+        }
+    }
+
+    @objc func keyboardDown() {
+        UIView.animate(withDuration: 0.3) {
+            // 키보드가 사라질 때는 다시 원래 위치로 복원
+            self.view.transform = .identity
+        }
+    }
+
 }
