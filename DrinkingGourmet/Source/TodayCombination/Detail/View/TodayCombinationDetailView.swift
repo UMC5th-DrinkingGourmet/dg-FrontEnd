@@ -87,7 +87,7 @@ class TodayCombinationDetailView: UIView {
         $0.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
     }
     
-    let commentAreaView = CommentInputView()
+    let commentAreaView = CommentAreaView()
     
     let commentsInputView = CommentInputView()
     
