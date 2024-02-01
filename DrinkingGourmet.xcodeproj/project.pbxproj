@@ -27,7 +27,6 @@
 		2E88779E2B6798BA005AB8D7 /* MemberInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E88779D2B6798BA005AB8D7 /* MemberInfoViewController.swift */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
-		2EE2E8802B654665006F81E9 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */; };
 		2EE2E8832B654833006F81E9 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8822B654833006F81E9 /* KakaoSDK */; };
 		2EE2E8852B654833006F81E9 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8842B654833006F81E9 /* KakaoSDKAuth */; };
 		2EE2E8872B654833006F81E9 /* KakaoSDKCert in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8862B654833006F81E9 /* KakaoSDKCert */; };
@@ -42,6 +41,9 @@
 		5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */; };
 		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
 		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
+		56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */; };
+		56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */; };
+		56A9A9402B6B530400EF7CA6 /* CommentAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,7 +66,6 @@
 		2E88779D2B6798BA005AB8D7 /* MemberInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfoViewController.swift; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
-		2EE2E87F2B654665006F81E9 /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
 		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
@@ -72,6 +73,9 @@
 		5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailView.swift; sourceTree = "<group>"; };
 		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
 		56A405662B5F776200BF85A8 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
+		56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
+		56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
+		56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAreaView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +102,6 @@
 		2E6C26BB2B497AD200C87B4A = {
 			isa = PBXGroup;
 			children = (
-				2EE2E87F2B654665006F81E9 /* Secret.xcconfig */,
 				2E6C26C62B497AD200C87B4A /* DrinkingGourmet */,
 				2E6C26C52B497AD200C87B4A /* Products */,
 			);
@@ -278,6 +281,9 @@
 		560548662B663A66006026E0 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
+				56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */,
+				56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */,
+				56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */,
 				56A405662B5F776200BF85A8 /* CommentInputView.swift */,
 			);
 			path = Comments;
@@ -437,7 +443,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2EE2E8802B654665006F81E9 /* Secret.xcconfig in Resources */,
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
 				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
 				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
@@ -463,6 +468,7 @@
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
 				2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */,
+				56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */,
@@ -471,7 +477,9 @@
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
 				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
+				56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */,
 				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
+				56A9A9402B6B530400EF7CA6 /* CommentAreaView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +499,6 @@
 /* Begin XCBuildConfiguration section */
 		2E6C26D62B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -556,7 +563,6 @@
 		};
 		2E6C26D72B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -614,7 +620,6 @@
 		};
 		2E6C26D92B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -649,7 +654,6 @@
 		};
 		2E6C26DA2B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EE2E87F2B654665006F81E9 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
