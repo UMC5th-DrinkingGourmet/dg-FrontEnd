@@ -45,6 +45,7 @@
 		56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */; };
 		56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */; };
 		56A9A9402B6B530400EF7CA6 /* CommentAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */; };
+		56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EAD5892B6C6C1A005C3A80 /* TodayCombinationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAreaView.swift; sourceTree = "<group>"; };
+		56EAD5892B6C6C1A005C3A80 /* TodayCombinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,6 +340,7 @@
 			isa = PBXGroup;
 			children = (
 				5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */,
+				56EAD5892B6C6C1A005C3A80 /* TodayCombinationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */,
+				56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */,
 				2E88779E2B6798BA005AB8D7 /* MemberInfoViewController.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
