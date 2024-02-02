@@ -27,7 +27,7 @@
 		2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */; };
 		2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */; };
 		2E7139592B5E7B05003D0190 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2E7139582B5E7B05003D0190 /* .gitignore */; };
-		2E88779E2B6798BA005AB8D7 /* MemberInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E88779D2B6798BA005AB8D7 /* MemberInfoViewController.swift */; };
+		2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
 		2EE2E8832B654833006F81E9 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE2E8822B654833006F81E9 /* KakaoSDK */; };
@@ -67,7 +67,7 @@
 		2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Gradient.swift"; sourceTree = "<group>"; };
 		2E6C270E2B498D8400C87B4A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		2E7139582B5E7B05003D0190 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		2E88779D2B6798BA005AB8D7 /* MemberInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfoViewController.swift; sourceTree = "<group>"; };
+		2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCreationViewController.swift; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				2E3E5A792B6C04250000E651 /* Upload */,
-				2EB001902B5E40A400B74580 /* Authentication */,
+				2EB001902B5E40A400B74580 /* UserAuthentication */,
 				5658DDF22B57491D00F72F42 /* TodayCombination */,
 				2E6C270C2B498D6D00C87B4A /* TabBar */,
 				2E6C26E62B49812100C87B4A /* Recommend */,
@@ -289,13 +289,13 @@
 			path = Viewcontroller;
 			sourceTree = "<group>";
 		};
-		2EB001902B5E40A400B74580 /* Authentication */ = {
+		2EB001902B5E40A400B74580 /* UserAuthentication */ = {
 			isa = PBXGroup;
 			children = (
 				2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */,
 				2EB001912B5E40AE00B74580 /* Viewcontroller */,
 			);
-			path = Authentication;
+			path = UserAuthentication;
 			sourceTree = "<group>";
 		};
 		2EB001912B5E40AE00B74580 /* Viewcontroller */ = {
@@ -303,7 +303,7 @@
 			children = (
 				2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */,
 				2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */,
-				2E88779D2B6798BA005AB8D7 /* MemberInfoViewController.swift */,
+				2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */,
 			);
 			path = Viewcontroller;
 			sourceTree = "<group>";
@@ -501,10 +501,10 @@
 				2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */,
 				56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
+				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */,
 				56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */,
-				2E88779E2B6798BA005AB8D7 /* MemberInfoViewController.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
 				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,

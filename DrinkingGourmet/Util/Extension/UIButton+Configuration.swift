@@ -31,6 +31,7 @@ extension UIButton {
         titleAttr.font = font
         config.attributedTitle = titleAttr
         config.baseForegroundColor = foregroundColor
+        config.baseBackgroundColor = .clear
         
         self.configuration = config
     }
