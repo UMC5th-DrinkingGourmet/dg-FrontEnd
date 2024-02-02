@@ -71,7 +71,7 @@ class UploadViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        print("이미지 리스트 개수: \(imageList.count)/")
+        
         var configuration = uploadBtn.configuration
         var titleAttr = AttributedString("\(imageList.count)/10")
         titleAttr.foregroundColor = .lightGray
@@ -302,6 +302,17 @@ extension UploadViewController: UICollectionViewDelegate, UICollectionViewDataSo
         
         imageList.remove(at: index)
         collectionView.reloadData()
+        
+        updateUploadButtonConfiguration()
+    }
+    
+    private func updateUploadButtonConfiguration() {
+        var configuration = uploadBtn.configuration
+        var titleAttr = AttributedString("\(imageList.count)/10")
+        titleAttr.foregroundColor = .lightGray
+        titleAttr.font = UIFont.systemFont(ofSize: 12)
+        configuration?.attributedTitle = titleAttr
+        uploadBtn.configuration = configuration
     }
     
 }
