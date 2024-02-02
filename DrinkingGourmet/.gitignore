@@ -105,4 +105,6 @@ iOSInjectionProject/
 
 *.xcconfig
 
+Secret.Swift
+
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift

@@ -30,15 +30,15 @@ class AuthenticationViewController: UIViewController {
         $0.font = .systemFont(ofSize: 40, weight: .heavy)
     }
 
-    private let kakaoBtn =  UIButton().then {
+    private let kakaoBtn = UIButton().then {
         $0.setImage(UIImage(named: "ic_login_kakao"), for: .normal)
     }
     
-    private let naverBtn =  UIButton().then {
+    private let naverBtn = UIButton().then {
         $0.setImage(UIImage(named: "ic_login_naver"), for: .normal)
     }
     
-    private let appleBtn =  UIButton().then {
+    private let appleBtn = UIButton().then {
         $0.setImage(UIImage(named: "ic_login_apple"), for: .normal)
     }
     
@@ -47,7 +47,6 @@ class AuthenticationViewController: UIViewController {
         $0.textColor = .white
         $0.font = .systemFont(ofSize: 12)
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
