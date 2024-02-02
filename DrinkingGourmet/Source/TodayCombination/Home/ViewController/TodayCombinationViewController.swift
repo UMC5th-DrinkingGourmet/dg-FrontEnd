@@ -11,16 +11,26 @@ import Then
 
 class TodayCombinationViewController: UIViewController {
     
-    private let tableView = UITableView()
-
+    private let todayCombinationView = TodayCombinationView()
+    
+    private lazy var buttons: [UIButton] = [todayCombinationView.writeButton, todayCombinationView.modifyButton]
+    private lazy var labels: [UILabel] = [todayCombinationView.writeLabel, todayCombinationView.modifyLabel]
+    
+    private var isShowFloating: Bool = false
+    private var isShowLabel: Bool = false
+    
+    // MARK: - View 설정
+    override func loadView() {
+        view = todayCombinationView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         setupNaviBar()
         setupTableView()
-        addViews()
-        configureConstraints()
+        setupFloatingButton()
     }
     
     // MARK: - 네비게이션바 설정
@@ -58,37 +68,89 @@ class TodayCombinationViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
+    // MARK: - 테이블뷰 설정
     func setupTableView() {
-        tableView.dataSource = self
-        tableView.delegate = self
+        let tb = todayCombinationView.tableView
         
-        tableView.showsVerticalScrollIndicator = false // 스크롤바 숨기기
-        tableView.keyboardDismissMode = .onDrag // 스크롤 할 때 키보드 내리기
-        tableView.separatorStyle = .none // 테이블뷰 구분선 없애기
-        tableView.rowHeight = 232 // 셀 높이 고정
-        tableView.register(TodayCombinationCell.self, forCellReuseIdentifier: "TodayCombinationCell")
+        tb.dataSource = self
+        tb.delegate = self
+        
+        tb.rowHeight = 232 // 셀 높이 고정
+        tb.register(TodayCombinationCell.self, forCellReuseIdentifier: "TodayCombinationCell")
     }
     
-    func addViews() {
-        view.addSubviews([tableView])
+    // MARK: - 플로팅버튼 설정
+    func setupFloatingButton() {
+        todayCombinationView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
+        
+        todayCombinationView.writeButton.addTarget(self, action: #selector(writeButtonTapped), for: .touchUpInside)
+        
+        todayCombinationView.modifyButton.addTarget(self, action: #selector(modifyButtonTapped), for: .touchUpInside)
     }
     
-    func configureConstraints() {
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(15)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview()
+    @objc func floatingButtonTapped(_ sender: UIButton) {
+        
+        let shadowView = todayCombinationView.shadowView
+        
+        if isShowFloating { // 플로팅버튼 열려있을 때
+            buttons.reversed().forEach { button in
+                UIView.animate(withDuration: 0.3) {
+                    button.isHidden = true
+                    self.view.layoutIfNeeded()
+                }
+            }
+            labels.forEach { $0.isHidden = true }
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                shadowView.alpha = 0
+            }) { (_) in
+                shadowView.isHidden = true
+            }
+        } else { // 플로팅버튼 닫혀있을 때
+
+            shadowView.isHidden = false
+            
+            UIView.animate(withDuration: 0.5) { shadowView.alpha = 1 }
+            
+            buttons.forEach { [weak self] button in
+                button.isHidden = false
+                button.alpha = 0
+                
+                UIView.animate(withDuration: 0.3) {
+                    button.alpha = 1
+                    self?.view.layoutIfNeeded()
+                }
+            }
+            labels.forEach { $0.isHidden = false }
         }
+        
+        isShowFloating = !isShowFloating
+        
+        let backgroundColor: UIColor = isShowFloating ? .black : .customOrange
+
+        let roatation = isShowFloating ? CGAffineTransform(rotationAngle: .pi - (.pi / 4)) : CGAffineTransform.identity
+        
+        UIView.animate(withDuration: 0.3) {
+            sender.backgroundColor = backgroundColor
+            sender.transform = roatation
+        }
+    }
+    
+    @objc func writeButtonTapped() {
+        print("작성하기 버튼 눌림")
+    }
+    
+    @objc func modifyButtonTapped() {
+        print("수정하기 버튼 눌림")
     }
 }
 
 extension TodayCombinationViewController: UITableViewDataSource {
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodayCombinationCell", for: indexPath) as! TodayCombinationCell
         
