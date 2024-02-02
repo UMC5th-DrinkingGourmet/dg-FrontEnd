@@ -106,7 +106,6 @@
 			children = (
 				2E3E5A7B2B6C04490000E651 /* View */,
 				2E3E5A7A2B6C04400000E651 /* ViewController */,
-				2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -114,6 +113,7 @@
 		2E3E5A7A2B6C04400000E651 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */,
 				2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */,
 			);
 			path = ViewController;

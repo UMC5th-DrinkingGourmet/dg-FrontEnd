@@ -9,12 +9,11 @@ import UIKit
 import SnapKit
 import Then
 import Photos
+import PhotosUI
 
 class UploadViewController: UIViewController {
     
-    var imageList: [UIImage] = []
-    
-    let imagePickerController = UIImagePickerController()
+    var imageList: [NSItemProvider] = []
     
     private let cameraBtn = UIButton().then {
         let resizedImg = UIImage(systemName: "camera.fill")?.resizedImage(to: CGSize(width: 30, height: 20))
@@ -35,8 +34,6 @@ class UploadViewController: UIViewController {
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.lightGray.cgColor
-        
-        $0.addTarget(self, action: #selector(uploadBtnClicked), for: .touchUpInside)
     }
     
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout()).then {
@@ -49,34 +46,20 @@ class UploadViewController: UIViewController {
     func configureCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 100)
-        layout.minimumLineSpacing = 16
+        layout.itemSize = CGSize(width: 115, height: 115)
+        layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return layout
     }
     
-    @objc func uploadBtnClicked() {
-        imagePickerController.sourceType = .photoLibrary
-            self.present(self.imagePickerController, animated: true, completion: nil)
-//        imageList.append("")
-//        collectionView.reloadData()
-    }
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        PHPhotoLibrary.requestAuthorization { (state) in
-            print(state)
-        }
-        
         configHierarchy()
         configLayout()
-        
-        accessPhoto()
-        imagePickerController.delegate = self
+        configView()
     }
     
     func configHierarchy() {
@@ -93,16 +76,82 @@ class UploadViewController: UIViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(cameraBtn.snp.top)
+            $0.top.equalTo(cameraBtn.snp.top).offset(-15)
             $0.leading.equalTo(cameraBtn.snp.trailing).offset(16)
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(100)
+            $0.height.equalTo(115)
         }
         
     }
-
+    
+    func configView() {
+        cameraBtn.addTarget(self, action: #selector(uploadBtnClicked), for: .touchUpInside)
+    }
 }
 
+extension UploadViewController {
+    @objc func uploadBtnClicked() {
+        print(imageList)
+        if imageList.count < 10 {
+            var config = PHPickerConfiguration()
+            config.filter = .images // 라이브러리에서 보여줄 Assets을 필터를 한다. (기본값: 이미지, 비디오, 라이브포토)
+            config.selectionLimit = 5   // 한 번에 최대 5장 까지만 설정
+                    
+            let imagePicker = PHPickerViewController(configuration: config)
+            imagePicker.delegate = self
+                
+            self.present(imagePicker, animated: true)
+        } else {
+            let alert = UIAlertController(title: "이미지는 최대 10장까지만 업로드 가능합니다.", message: "이미 10장의 이미지를 업로드 하셨습니다.", preferredStyle: .alert)
+            
+            let btn1 = UIAlertAction(title: "취소", style: .cancel)
+            let btn2 = UIAlertAction(title: "확인", style: .default)
+            
+            alert.addAction(btn1)
+            alert.addAction(btn2)
+            
+            present(alert, animated: true)
+        }
+    }
+    
+    private func displayImages() {
+        guard !imageList.isEmpty else { return }
+
+        let group = DispatchGroup()
+
+        // 각 itemProvider에서 UIImage를 로드하고 처리
+        for itemProvider in imageList {
+            group.enter()
+
+            // 로드 핸들러를 통해 UIImage를 처리
+            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard let self = self, let image = image as? UIImage else {
+                    group.leave()
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.imageList.append(NSItemProvider(object: image))
+                    group.leave()
+                }
+            }
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            self.collectionView.reloadData()
+        }
+    }
+}
+
+extension UploadViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        imageList.append(contentsOf: results.map(\.itemProvider))
+
+        collectionView.reloadData()
+        
+        picker.dismiss(animated: true)
+    }
+}
 
 extension UploadViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -112,94 +161,31 @@ extension UploadViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
         
-        cell.uploadedImageView.image = imageList[indexPath.item]
-        cell.uploadedImageView.layer.cornerRadius = 8
-        cell.uploadedImageView.layer.masksToBounds = true
+        let itemProvider = imageList[indexPath.item]
+            
+        if itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                guard let image = image as? UIImage else { return }
+                
+                DispatchQueue.main.async {
+                    cell.uploadedImageView.image = image
+                    cell.uploadedImageView.layer.cornerRadius = 8
+                    cell.uploadedImageView.layer.masksToBounds = true
+                }
+            }
+        }
+        
+        cell.deleteBtn.tag = indexPath.row
+        cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
         
         return cell
     }
-}
-
-
-extension UploadViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageList.append(image)
-        }
+    
+    @objc func deleteImg(sender: UIButton) {
+        let index = sender.tag
         
+        imageList.remove(at: index)
         collectionView.reloadData()
-        
-        print(imageList)
-        print(#function)
-        
-        dismiss(animated: true, completion: nil)
     }
     
-}
-
-extension UploadViewController {
-    func accessPhoto() {
-        if #available(iOS 14, *) {
-                    switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
-                    case .limited:
-                        fetchPhotos()
-                    case .authorized:
-                        fetchPhotos()
-                    case .notDetermined:
-                        PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
-                            if status == .limited {
-                                self?.fetchPhotos()
-                            }
-                            else if status == .authorized {
-                                self?.fetchPhotos()
-                            }
-                            else {
-                                self?.showPermissionAlert()
-                            }
-                        }
-                    case .restricted, .denied:
-                        showPermissionAlert()
-                    default:
-                        break
-                    }
-                }
-                else {
-                    switch PHPhotoLibrary.authorizationStatus() {
-                    case .authorized:
-                        fetchPhotos()
-                    case .notDetermined:
-                        PHPhotoLibrary.requestAuthorization({ [weak self] status in
-                            if status == .authorized {
-                                self?.fetchPhotos()
-                            }
-                            else {
-                                self?.showPermissionAlert()
-                            }
-                        })
-                    case .restricted, .denied:
-                        showPermissionAlert()
-                    default:
-                        break
-                    }
-                }
-    }
-    
-    private func showPermissionAlert() {
-            // PHPhotoLibrary.requestAuthorization() 결과 콜백이 main thread로부터 호출되지 않기 때문에
-            // UI처리를 위해 main thread내에서 팝업을 띄우도록 함.
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: nil, message: "사진 접근 권한이 없습니다. 설정으로 이동하여 권한 설정을 해주세요.", preferredStyle: .alert)
-
-                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
-                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                }))
-                alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-
-                self.present(alert, animated: true)
-            }
-        }
-
-        private func fetchPhotos() {
-            // 사진 목록 조회
-        }
 }
