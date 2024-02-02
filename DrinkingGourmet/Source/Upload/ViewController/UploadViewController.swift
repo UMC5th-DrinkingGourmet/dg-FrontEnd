@@ -5,7 +5,6 @@
 //  Created by hwijinjeong on 2/2/24.
 //
 
-import UIKit
 import SnapKit
 import Then
 import Photos
@@ -15,12 +14,18 @@ class UploadViewController: UIViewController {
     
     var imageList: [NSItemProvider] = []
     
-    private let cameraBtn = UIButton().then {
+    private let imageLabel = UILabel().then {
+        $0.text = "사진"
+        $0.textColor = .black
+        $0.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+    }
+    
+    private let uploadBtn = UIButton().then {
         let resizedImg = UIImage(systemName: "camera.fill")?.resizedImage(to: CGSize(width: 30, height: 20))
         var configuration = UIButton.Configuration.plain()
         configuration.baseBackgroundColor = .clear
 
-        var titleAttr = AttributedString.init("사진갯수")
+        var titleAttr = AttributedString.init("0/10")
         titleAttr.foregroundColor = .lightGray
         titleAttr.font = UIFont.systemFont(ofSize: 12)
         configuration.attributedTitle = titleAttr
@@ -60,24 +65,45 @@ class UploadViewController: UIViewController {
         configHierarchy()
         configLayout()
         configView()
+        
+        checkPermission()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        print("이미지 리스트 개수: \(imageList.count)/")
+        var configuration = uploadBtn.configuration
+        var titleAttr = AttributedString("\(imageList.count)/10")
+        titleAttr.foregroundColor = .lightGray
+        titleAttr.font = UIFont.systemFont(ofSize: 12)
+        configuration?.attributedTitle = titleAttr
+        uploadBtn.configuration = configuration
     }
     
     func configHierarchy() {
         view.addSubviews([
-            cameraBtn,
+            imageLabel,
+            uploadBtn,
             collectionView
         ])
     }
     
     func configLayout() {
-        cameraBtn.snp.makeConstraints {
-            $0.top.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+        imageLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(150)
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.height.equalTo(24)
+        }
+        
+        uploadBtn.snp.makeConstraints {
+            $0.top.equalTo(imageLabel.snp.bottom).offset(8)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             $0.width.height.equalTo(100)
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(cameraBtn.snp.top).offset(-15)
-            $0.leading.equalTo(cameraBtn.snp.trailing).offset(16)
+            $0.top.equalTo(uploadBtn.snp.top).offset(-15)
+            $0.leading.equalTo(uploadBtn.snp.trailing).offset(16)
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(115)
         }
@@ -85,20 +111,20 @@ class UploadViewController: UIViewController {
     }
     
     func configView() {
-        cameraBtn.addTarget(self, action: #selector(uploadBtnClicked), for: .touchUpInside)
+        uploadBtn.addTarget(self, action: #selector(uploadBtnClicked), for: .touchUpInside)
     }
 }
 
 extension UploadViewController {
     @objc func uploadBtnClicked() {
-        print(imageList)
         if imageList.count < 10 {
             var config = PHPickerConfiguration()
             config.filter = .images // 라이브러리에서 보여줄 Assets을 필터를 한다. (기본값: 이미지, 비디오, 라이브포토)
-            config.selectionLimit = 5   // 한 번에 최대 5장 까지만 설정
+            config.selectionLimit = 10   // 한 번에 최대 10장 까지만 설정
                     
             let imagePicker = PHPickerViewController(configuration: config)
             imagePicker.delegate = self
+            imagePicker.modalPresentationStyle = .fullScreen
                 
             self.present(imagePicker, animated: true)
         } else {
@@ -112,6 +138,96 @@ extension UploadViewController {
             
             present(alert, animated: true)
         }
+    }
+    
+    func checkPermission() {
+        if #available(iOS 14, *) {
+            switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+            case .notDetermined:
+                print("not determined")
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                    switch status {
+                    case .authorized, .limited:
+                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                    case .denied:
+                        DispatchQueue.main.async {
+                            self.moveToSetting()
+                        }
+                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                    default:
+                        print("그 밖의 권한이 부여 되었습니다.")
+                    }
+                }
+            case .restricted:
+                print("restricted")
+            case .denied:
+                DispatchQueue.main.async {
+                    self.moveToSetting()
+                }
+                print("denined")
+            case .authorized:
+                print("autorized")
+            case .limited:
+                print("limited")
+            @unknown default:
+                print("unKnown")
+            }
+        } else {
+            switch PHPhotoLibrary.authorizationStatus() {
+            case .notDetermined:
+                print("not determined")
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                    switch status {
+                    case .authorized, .limited:
+                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                    case .denied:
+                        DispatchQueue.main.async {
+                            self.moveToSetting()
+                        }
+                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                    default:
+                        print("그 밖의 권한이 부여 되었습니다.")
+                    }
+                }
+            case .restricted:
+                print("restricted")
+            case .denied:
+                DispatchQueue.main.async {
+                    self.moveToSetting()
+                }
+                print("denined")
+            case .authorized:
+                print("autorized")
+            case .limited:
+                print("limited")
+            @unknown default:
+                print("unKnown")
+            }
+            
+        }
+    }
+    
+    func moveToSetting() {
+        let alertController = UIAlertController(title: "권한 거부됨", message: "앨범 접근이 거부 되었습니다. 앱의 일부 기능을 사용할 수 없어요", preferredStyle: UIAlertController.Style.alert)
+            
+        let okAction = UIAlertAction(title: "권한 설정으로 이동하기", style: .default) { (action) in
+            
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Settings opened: \(success)")
+                })
+            }
+        }
+        let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+            
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+            
+        self.present(alertController, animated: false, completion: nil)
     }
     
     private func displayImages() {
