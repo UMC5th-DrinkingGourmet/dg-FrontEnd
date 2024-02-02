@@ -11,6 +11,14 @@ import Then
 
 class TermsViewController: UIViewController {
     
+    lazy var buttonDictionary: [UIButton: String] = [
+        useTermsBtn: "음주미식회 이용약관 동의 (필수)",
+        financialTermsBtn: "전자 금융거래 이용약관 동의 (필수)",
+        privacyTermsBtn: "개인정보 수집이용 동의 (필수)",
+        providePrivacyTermsBtn: "개인정보 제3자 제공 동의 (선택)",
+        marketingTermsBtn: "마케팅, 정보메일, SMS 수신 동의 (선택)"
+    ]
+        
     private let termsabel = UILabel().then {
         $0.text = "음주미식회\n서비스 이용약관에\n동의해주세요."
         $0.numberOfLines = 3
@@ -66,17 +74,14 @@ class TermsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        config()
-        totalTermsBtn.addTarget(self, action: #selector(totalTermsBtnClicked), for: .touchUpInside)
+        configHierarchy()
+        layout()
+        configView()
     }
 }
 
 extension TermsViewController {
-    func config() {
-        layout()
-    }
-    
-    func layout() {
+    func configHierarchy() {
         view.addSubviews([
             termsabel,
             totalTermsBtn,
@@ -91,7 +96,9 @@ extension TermsViewController {
             providePrivacyTermsBtn,
             marketingTermsBtn,
         ])
-        
+    }
+    
+    func layout() {
         termsabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
             $0.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
@@ -136,59 +143,111 @@ extension TermsViewController {
         }
     }
     
-    @objc func totalTermsBtnClicked() {
-        if totalTermsBtn.isSelected == false {
-            totalTermsBtn.isSelected = true
-            totalTermsBtn.buttonConfiguration(title: "전체 약관에 동의합니다.", font: .boldSystemFont(ofSize: 16), foregroundColor: .black, padding: 15, image: UIImage(systemName: "checkmark.square.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), imageSize: CGSize(width: 23, height: 20))
+    func configView() {
+        totalTermsBtn.addTarget(self, action: #selector(totalTermsBtnClicked), for: .touchUpInside)
+        useTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
+        financialTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
+        privacyTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
+        providePrivacyTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
+        marketingTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
+        
+        confirmBtn.addTarget(self, action: #selector(pushViewController), for: .touchUpInside)
+    }
+    
+    @objc func btnClicked(sender: UIButton) {
+        if sender.isSelected == true {
+            print("이미 선택되어있던 걸 클릭")
+                
+            sender.buttonConfiguration(
+            title: buttonDictionary[sender] ?? "",
+            font: .systemFont(ofSize: 14),
+            foregroundColor: .darkGray,
+            padding: 14,
+            image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray),
+            imageSize: CGSize(width: 16, height: 16)
+            )
             
-            useTermsBtn.isSelected = true
-            useTermsBtn.buttonConfiguration(
-                title: "음주미식회 이용약관 동의 (필수)",
+            sender.isSelected = false
+        } else {
+            print("그 외를 클릭")
+            print(buttonDictionary[sender] ?? "")
+            sender.buttonConfiguration(
+            title: buttonDictionary[sender] ?? "",
+            font: .systemFont(ofSize: 14),
+            foregroundColor: .darkGray,
+            padding: 14,
+            image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
+            imageSize: CGSize(width: 16, height: 16)
+            )
+            
+            sender.isSelected = true
+        }
+        updateConfirmButtonState()
+    }
+    
+    
+    @objc func pushViewController() {
+        self.navigationController?.pushViewController(ProfileCreationViewController(), animated: true)
+    }
+    
+    @objc func totalTermsBtnClicked() {
+        totalTermsBtn.isSelected.toggle()
+            
+        let allTermsAgreed = totalTermsBtn.isSelected
+        
+        totalTermsBtn.buttonConfiguration(
+            title: "전체 약관에 동의합니다.",
+            font: .boldSystemFont(ofSize: 16),
+            foregroundColor: .black,
+            padding: 15,
+            image: UIImage(systemName: allTermsAgreed ? "checkmark.square.fill" : "square")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
+            imageSize: CGSize(width: 23, height: 20)
+        )
+            
+        for (button, _) in buttonDictionary {
+            button.isSelected = allTermsAgreed
+            button.buttonConfiguration(
+                title: buttonDictionary[button] ?? "",
                 font: .systemFont(ofSize: 14),
                 foregroundColor: .darkGray,
                 padding: 14,
-                image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
+                image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(allTermsAgreed ? .black : .customColor.checkMarkGray),
                 imageSize: CGSize(width: 16, height: 16)
             )
-            financialTermsBtn.isSelected = true
-            financialTermsBtn.buttonConfiguration(
-                title: "전자 금융거래 이용약관 동의 (필수)",
-                font: .systemFont(ofSize: 14),
-                foregroundColor: .darkGray,
-                padding: 14,
-                image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-                imageSize: CGSize(width: 16, height: 16)
-            )
-            privacyTermsBtn.isSelected = true
-            privacyTermsBtn.buttonConfiguration(
-                title: "개인정보 수집이용 동의 (필수)",
-                font: .systemFont(ofSize: 14),
-                foregroundColor: .darkGray,
-                padding: 14,
-                image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-                imageSize: CGSize(width: 16, height: 16)
-            )
-            providePrivacyTermsBtn.isSelected = true
-            providePrivacyTermsBtn.buttonConfiguration(
-                title: "개인정보 제3자 제공 동의 (선택)",
-                font: .systemFont(ofSize: 14),
-                foregroundColor: .darkGray,
-                padding: 14,
-                image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-                imageSize: CGSize(width: 16, height: 16)
-            )
-            marketingTermsBtn.isSelected = true
-            marketingTermsBtn.buttonConfiguration(
-                title: "마케팅, 정보메일, SMS 수신 동의 (선택)",
-                font: .systemFont(ofSize: 14),
-                foregroundColor: .darkGray,
-                padding: 14,
-                image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-                imageSize: CGSize(width: 16, height: 16)
+        }
+        updateConfirmButtonState()
+    }
+    
+    func updateConfirmButtonState() {
+        // 필수 약관 동의 여부 확인
+        let allButtons = [useTermsBtn, financialTermsBtn, privacyTermsBtn, providePrivacyTermsBtn, marketingTermsBtn]
+        let requiredButtons = [useTermsBtn, financialTermsBtn, privacyTermsBtn]
+        let allRequiredSelected = requiredButtons.allSatisfy { $0.isSelected }
+        
+        let allTermsAgreed = totalTermsBtn.isSelected
+        
+        confirmBtn.isEnabled = allRequiredSelected || allTermsAgreed
+        
+        // 필수 약관 중 하나라도 동의가 되어있지 않으면 totalTermsBtn의 이미지 변경
+        if allButtons.contains(where: { !$0.isSelected }) {
+            totalTermsBtn.buttonConfiguration(
+                title: "전체 약관에 동의합니다.",
+                font: .boldSystemFont(ofSize: 16),
+                foregroundColor: .black,
+                padding: 15,
+                image: UIImage(systemName: "square")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
+                imageSize: CGSize(width: 23, height: 20)
             )
         } else {
-            totalTermsBtn.isSelected = false
-            totalTermsBtn.buttonConfiguration(title: "전체 약관에 동의합니다.", font: .boldSystemFont(ofSize: 16), foregroundColor: .black, padding: 15, image: UIImage(systemName: "square")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), imageSize: CGSize(width: 23, height: 20))
+            totalTermsBtn.buttonConfiguration(
+                title: "전체 약관에 동의합니다.",
+                font: .boldSystemFont(ofSize: 16),
+                foregroundColor: .black,
+                padding: 15,
+                image: UIImage(systemName: "checkmark.square.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
+                imageSize: CGSize(width: 23, height: 20)
+            )
         }
     }
+    
 }
