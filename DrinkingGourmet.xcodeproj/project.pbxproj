@@ -14,7 +14,7 @@
 		2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C92B497AD200C87B4A /* SceneDelegate.swift */; };
 		2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E6C26D02B497AD400C87B4A /* Assets.xcassets */; };
 		2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E6C26D22B497AD400C87B4A /* LaunchScreen.storyboard */; };
-		2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */; };
+		2E6C26DC2B497DE700C87B4A /* WeeklyBestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26DB2B497DE700C87B4A /* WeeklyBestVC.swift */; };
 		2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26EA2B49820100C87B4A /* RecommendViewController.swift */; };
 		2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F22B49836600C87B4A /* UIColor+CustomColor.swift */; };
 		2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26F42B4983D600C87B4A /* UIView+addSubViews.swift */; };
@@ -50,6 +50,8 @@
 		5668A2FD2B6EDCD70009FCD6 /* CommunityHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2FC2B6EDCD70009FCD6 /* CommunityHomeView.swift */; };
 		5668A2FF2B6EDCE00009FCD6 /* CommunityHomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2FE2B6EDCE00009FCD6 /* CommunityHomeCell.swift */; };
 		5668A3012B6EDCFC0009FCD6 /* CommunityHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3002B6EDCFC0009FCD6 /* CommunityHomeVC.swift */; };
+		5668A3032B6EE3BD0009FCD6 /* WeeklyBestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3022B6EE3BD0009FCD6 /* WeeklyBestCell.swift */; };
+		5668A3052B6EE3C70009FCD6 /* WeeklyBestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3042B6EE3C70009FCD6 /* WeeklyBestView.swift */; };
 		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
 		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
 		56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */; };
@@ -67,7 +69,7 @@
 		2E6C26D02B497AD400C87B4A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2E6C26D32B497AD400C87B4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2E6C26D52B497AD400C87B4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestViewController.swift; sourceTree = "<group>"; };
+		2E6C26DB2B497DE700C87B4A /* WeeklyBestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestVC.swift; sourceTree = "<group>"; };
 		2E6C26EA2B49820100C87B4A /* RecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendViewController.swift; sourceTree = "<group>"; };
 		2E6C26F22B49836600C87B4A /* UIColor+CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColor.swift"; sourceTree = "<group>"; };
 		2E6C26F42B4983D600C87B4A /* UIView+addSubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+addSubViews.swift"; sourceTree = "<group>"; };
@@ -95,6 +97,8 @@
 		5668A2FC2B6EDCD70009FCD6 /* CommunityHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeView.swift; sourceTree = "<group>"; };
 		5668A2FE2B6EDCE00009FCD6 /* CommunityHomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeCell.swift; sourceTree = "<group>"; };
 		5668A3002B6EDCFC0009FCD6 /* CommunityHomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeVC.swift; sourceTree = "<group>"; };
+		5668A3022B6EE3BD0009FCD6 /* WeeklyBestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeeklyBestCell.swift; path = DrinkingGourmet/Source/Community/Home/ViewController/WeeklyBestCell.swift; sourceTree = SOURCE_ROOT; };
+		5668A3042B6EE3C70009FCD6 /* WeeklyBestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeeklyBestView.swift; path = DrinkingGourmet/Source/Community/Home/ViewController/WeeklyBestView.swift; sourceTree = SOURCE_ROOT; };
 		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
 		56A405662B5F776200BF85A8 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
 		56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -197,6 +201,8 @@
 		2E6C26DF2B497E1C00C87B4A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5668A3022B6EE3BD0009FCD6 /* WeeklyBestCell.swift */,
+				5668A3042B6EE3C70009FCD6 /* WeeklyBestView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -204,7 +210,7 @@
 		2E6C26E02B497E2500C87B4A /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				2E6C26DB2B497DE700C87B4A /* WeeklyBestViewController.swift */,
+				2E6C26DB2B497DE700C87B4A /* WeeklyBestVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -608,8 +614,10 @@
 				5668A2FF2B6EDCE00009FCD6 /* CommunityHomeCell.swift in Sources */,
 				56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
-				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
+				2E6C26DC2B497DE700C87B4A /* WeeklyBestVC.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
+				5668A3032B6EE3BD0009FCD6 /* WeeklyBestCell.swift in Sources */,
+				5668A3052B6EE3C70009FCD6 /* WeeklyBestView.swift in Sources */,
 				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */,
