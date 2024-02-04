@@ -28,9 +28,14 @@ class TodayCombinationViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        prepare()
         setupNaviBar()
         setupTableView()
         setupFloatingButton()
+    }
+    
+    func prepare() {
+        todayCombinationView.customSearchBar.textField.delegate = self
     }
     
     // MARK: - 네비게이션바 설정
@@ -126,6 +131,15 @@ class TodayCombinationViewController: UIViewController {
     
     @objc func modifyButtonTapped() {
         print("수정하기 버튼 눌림")
+    }
+}
+
+extension TodayCombinationViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let searchResultsVC = SearchResultVC()
+        searchResultsVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
+        navigationController?.pushViewController(searchResultsVC, animated: true)
     }
 }
 
