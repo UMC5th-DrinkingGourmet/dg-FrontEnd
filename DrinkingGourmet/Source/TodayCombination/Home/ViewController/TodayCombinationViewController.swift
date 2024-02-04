@@ -28,35 +28,24 @@ class TodayCombinationViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        prepare()
         setupNaviBar()
         setupTableView()
         setupFloatingButton()
+    }
+    
+    func prepare() {
+        todayCombinationView.customSearchBar.textField.delegate = self
     }
     
     // MARK: - 네비게이션바 설정
     func setupNaviBar() {
         title = "오늘의 조합"
         
-        let searchController = UISearchController()
-        searchController.searchBar.placeholder = "~~를 입력하세요"
-        searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        
-        if let searchTextField = navigationItem.searchController?.searchBar.value(forKey: "searchField") as? UITextField {
-            searchTextField.font = UIFont.systemFont(ofSize: 16)
-            searchTextField.tintColor = UIColor.customOrange // 커서 색상
-            
-            if let leftVIew = searchTextField.leftView as? UIImageView {
-                leftVIew.tintColor = UIColor(red: 0.0863, green: 0.0863, blue: 0.0863, alpha: 1) // 돋보기 색상
-            }
-        }
-        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground() // 불투명
         appearance.backgroundColor = .white
         
-        navigationController?.navigationBar.tintColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
         // 네비게이션바 밑줄 삭제
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -142,6 +131,15 @@ class TodayCombinationViewController: UIViewController {
     
     @objc func modifyButtonTapped() {
         print("수정하기 버튼 눌림")
+    }
+}
+
+extension TodayCombinationViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let searchResultsVC = SearchResultVC()
+        searchResultsVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
+        navigationController?.pushViewController(searchResultsVC, animated: true)
     }
 }
 

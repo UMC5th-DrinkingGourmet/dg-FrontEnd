@@ -89,7 +89,7 @@ extension CommunityHomeVC: UITableViewDelegate {
         case 0:
             detailVC = TodayCombinationViewController()
         case 1:
-            detailVC = WeeklyBestViewController()
+            detailVC = WeeklyBestVC()
 //        case 2:
 //            detailVC = RecipeBookViewController()
         default:
