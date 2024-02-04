@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import Combine
 import Kingfisher
+import KakaoSDKUser
 
 class AuthenticationViewController: UIViewController {
     
@@ -143,10 +144,29 @@ extension AuthenticationViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
-                    let termsViewController = TermsViewController()
-                    termsViewController.modalPresentationStyle = .fullScreen
-                    self?.present(termsViewController, animated: true, completion: nil)
+                    self?.navigationController?.pushViewController(TermsViewController(), animated: true)
                 }
+            }
+            .store(in: &subscriptions)
+        
+        kakaoAuthVM.$userInfo
+            .receive(on: DispatchQueue.main)
+            .sink { user in
+                UserDefaultManager.shared.userName = user?.kakaoAccount?.profile?.nickname ?? "이름 옵셔널 값"
+                
+                UserDefaultManager.shared.userBirth = (user?.kakaoAccount?.birthyear ?? "연도") + (user?.kakaoAccount?.birthday ?? "날짜")
+                
+                UserDefaultManager.shared.userPhoneNumber = user?.kakaoAccount?.phoneNumber ?? "저나버노"
+                
+                if let url = user?.kakaoAccount?.profile?.profileImageUrl {
+                    let urlString = url.absoluteString
+                    
+                    UserDefaultManager.shared.userProfileImg = urlString
+                }
+                print(UserDefaultManager.shared.userProfileImg)
+                
+                UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? "unknown"
+                print(UserDefaultManager.shared.userGender)
             }
             .store(in: &subscriptions)
     }

@@ -77,6 +77,7 @@ class TermsViewController: UIViewController {
         configHierarchy()
         layout()
         configView()
+        configNav()
     }
 }
 
@@ -247,7 +248,6 @@ extension TermsViewController {
                 imageSize: CGSize(width: 23, height: 20)
             )
             totalTermsBtn.isSelected = true
-            print("totaltermsbtn이 true")
         }
         
         if requiredButtons.contains(where: { !$0.isSelected }) {
@@ -257,4 +257,8 @@ extension TermsViewController {
         }
     }
     
+    func configNav() {
+        navigationItem.title = "이용 약관 동의"
+        navigationItem.hidesBackButton = true
+    }
 }

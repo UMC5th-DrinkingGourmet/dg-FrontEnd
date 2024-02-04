@@ -36,7 +36,6 @@ class KakaoAuthViewModel: ObservableObject {
                 else {
                     print("loginWithKakaoTalk() success.")
 
-                    //do something
                     _ = oauthToken
                     
                     Task {
@@ -61,7 +60,6 @@ class KakaoAuthViewModel: ObservableObject {
                 else {
                     print("loginWithKakaoAccount() success.")
                     
-                    //do something
                     _ = oauthToken
                     
                     Task {
@@ -124,7 +122,6 @@ class KakaoAuthViewModel: ObservableObject {
                     else {
                         print("loginWithKakaoAccount() success.")
                         
-                        //do something
                         _ = oauthToken
                         
                         Task {
@@ -171,7 +168,6 @@ class KakaoAuthViewModel: ObservableObject {
                 }
                 else {
                     print("me() success.")
-                    //do something
                     self.userInfo = user
                     continuation.resume(returning: ())
                 }

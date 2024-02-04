@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E0274E02B6FCF5200F92177 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274DF2B6FCF5200F92177 /* MainMenuViewController.swift */; };
 		2E0274E42B6FE7B100F92177 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2E0274E32B6FE7B100F92177 /* Secret.xcconfig */; };
+		2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */; };
 		2E3E5A782B6C03700000E651 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2E3E5A772B6C03700000E651 /* SnapKit */; };
 		2E3E5A7D2B6C04590000E651 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */; };
 		2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */; };
@@ -66,6 +67,7 @@
 /* Begin PBXFileReference section */
 		2E0274DF2B6FCF5200F92177 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		2E0274E32B6FE7B100F92177 /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
+		2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedImgCollectionViewCell.swift; sourceTree = "<group>"; };
 		2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkingGourmet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -361,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */,
+				2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */,
 				2EB001912B5E40AE00B74580 /* Viewcontroller */,
 			);
 			path = UserAuthentication;
@@ -634,6 +637,7 @@
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
 				56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */,
 				56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */,
+				2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
 				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
@@ -809,6 +813,7 @@
 		};
 		2E6C26D92B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E0274E32B6FE7B100F92177 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -818,6 +823,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 접근을 위해 권한이 필요합니다. 허용하시겠습니까?";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 접근을 위해 권한이 필요합니다. 허용하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -843,6 +850,7 @@
 		};
 		2E6C26DA2B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E0274E32B6FE7B100F92177 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -852,6 +860,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "음주미식회";
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 접근을 위해 권한이 필요합니다. 허용하시겠습니까?";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 접근을 위해 권한이 필요합니다. 허용하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";

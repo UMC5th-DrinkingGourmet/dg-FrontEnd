@@ -8,12 +8,10 @@
 import UIKit
 import SnapKit
 import Then
-import Combine
 
 class ProfileCreationViewController: UIViewController {
-    var subscriptions = Set<AnyCancellable>()
     
-    private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
+    var nickNameisgood = false  // 닉네임 제대로 입력 했는지
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -40,13 +38,13 @@ class ProfileCreationViewController: UIViewController {
         $0.numberOfLines = 2
     }
     
-    private let inputNameView = InputTextFieldView(frame: .zero)
+    lazy var inputNameView = InputTextFieldView(frame: .zero)
     
-    private let inputBirthView = InputTextFieldView(frame: .zero)
+    lazy var inputBirthView = InputTextFieldView(frame: .zero)
     
-    private let inputPhoneNumberView = InputTextFieldView(frame: .zero)
+    lazy var inputPhoneNumberView = InputTextFieldView(frame: .zero)
     
-    private let inputNicknameView = InputTextFieldView(frame: .zero)
+    lazy var inputNicknameView = InputTextFieldView(frame: .zero)
     
     private let stateLabel = UILabel().then {
         $0.text = ""
@@ -95,7 +93,6 @@ class ProfileCreationViewController: UIViewController {
         layout()
         configView()
         configNav()
-        setBinding()
     }
     
 }
@@ -208,11 +205,27 @@ extension ProfileCreationViewController {
         inputPhoneNumberView.title = "전화번호"
         inputNicknameView.title = "닉네임"
         
+        inputNameView.textfieldText = UserDefaultManager.shared.userName
+        inputBirthView.textfieldText = UserDefaultManager.shared.userBirth
+        inputPhoneNumberView.textfieldText = UserDefaultManager.shared.userPhoneNumber
         inputNicknameView.textfieldText = ""
         
+        inputNicknameView.placeholder = "닉네임을 입력해주세요."
+        
         for (button, title) in buttonDictionary {
-            updateButtonColor(button, title)
             button.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
+        }
+        
+        var gender = UserDefaultManager.shared.userGender
+        
+        if gender == "male" {
+            maleBtn.isSelected = true
+            updateButtonColor(maleBtn, "  남성  ")
+        } else if gender == "female" {
+            femaleBtn.isSelected = true
+            updateButtonColor(femaleBtn, "  여성  ")
+        } else {
+            
         }
         
         self.confirmBtn.addTarget(self, action: #selector(confirmBtnClicked), for: .touchUpInside)
@@ -227,18 +240,23 @@ extension ProfileCreationViewController {
         if text.count < 2 || text.count > 9 || text.isEmpty {
             stateLabel.text = "2글자 이상 10글자 미만으로 설정해주세요"
             confirmBtn.isEnabled = false
+            nickNameisgood = false
         } else if specialChar.contains(where: text.contains) {
             stateLabel.text = "닉네임에 @, #, $, %는 포함할 수 없어요"
             confirmBtn.isEnabled = false
+            nickNameisgood = false
         } else if text.contains(where: { $0.isNumber }) {
             stateLabel.text = "닉네임에 숫자는 포함할 수 없어요"
             confirmBtn.isEnabled = false
+            nickNameisgood = false
         } else if text == "" {
             stateLabel.text = "닉네임을 반드시 입력해야 합니다"
             confirmBtn.isEnabled = false
+            nickNameisgood = false
         } else {
             stateLabel.text = "사용할 수 있는 닉네임이에요"
             confirmBtn.isEnabled = true
+            nickNameisgood = true
         }
     }
     
@@ -262,7 +280,7 @@ extension ProfileCreationViewController {
     }
     
     @objc func confirmBtnClicked() {
-        if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true {
+        if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood {
             self.navigationController?.pushViewController(MainMenuViewController(), animated: true)
         } else {
             let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "프로필을 제대로 입력하지 않으셨습니다.", preferredStyle: .alert)
@@ -279,30 +297,12 @@ extension ProfileCreationViewController {
     
     func configNav() {
         navigationItem.title = "회원 정보 입력"
-        let item = UIBarButtonItem(image: UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal).withTintColor(.white), style: .plain, target: self, action: #selector(backToPrevious))
+        let item = UIBarButtonItem(image: UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), style: .plain, target: self, action: #selector(backToPrevious))
         navigationItem.leftBarButtonItem = item
     }
     
     @objc func backToPrevious() {
         navigationController?.popViewController(animated: true)
-    }
-    
-    private func setBinding() {
-        kakaoAuthVM.$userInfo
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] user in
-                self?.inputNameView.textfieldText = user?.kakaoAccount?.profile?.nickname ?? "이름 옵셔널 값"
-//                self?.titleLabel.text = user?.kakaoAccount?.profile?.nickname ?? "로그인 필요"
-                
-//                if let url = user?.kakaoAccount?.profile?.profileImageUrl {
-//                    self?.backgroundImageview.kf.setImage(with: url)
-//                }
-                
-                self?.inputBirthView.textfieldText = (user?.kakaoAccount?.birthday ?? "23") + (user?.kakaoAccount?.birthyear ?? "23")
-                
-                self?.inputPhoneNumberView.textfieldText = user?.kakaoAccount?.phoneNumber ?? "w"
-            }
-            .store(in: &subscriptions)
     }
 
 }
