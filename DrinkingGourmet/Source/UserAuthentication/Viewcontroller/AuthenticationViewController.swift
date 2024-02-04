@@ -24,10 +24,17 @@ class AuthenticationViewController: UIViewController {
     }
     
     private let titleLabel = UILabel().then {
-        $0.text = "술과 음식의\n미식 여행\n음주미식회"
-        $0.numberOfLines = 3
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 12 // 줄 사이 간격 설정
+
+        let attrString = NSMutableAttributedString(string: "술과 음식의\n미식 여행\n음주미식회")
+        attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+
+        $0.attributedText = attrString
         $0.textColor = .white
-        $0.font = .systemFont(ofSize: 40, weight: .heavy)
+        $0.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
+        $0.textAlignment = .left
+        $0.numberOfLines = 3
     }
 
     private let kakaoBtn = UIButton().then {
