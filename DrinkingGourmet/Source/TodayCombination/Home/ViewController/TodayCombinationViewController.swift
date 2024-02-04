@@ -37,26 +37,10 @@ class TodayCombinationViewController: UIViewController {
     func setupNaviBar() {
         title = "오늘의 조합"
         
-        let searchController = UISearchController()
-        searchController.searchBar.placeholder = "~~를 입력하세요"
-        searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        
-        if let searchTextField = navigationItem.searchController?.searchBar.value(forKey: "searchField") as? UITextField {
-            searchTextField.font = UIFont.systemFont(ofSize: 16)
-            searchTextField.tintColor = UIColor.customOrange // 커서 색상
-            
-            if let leftVIew = searchTextField.leftView as? UIImageView {
-                leftVIew.tintColor = UIColor(red: 0.0863, green: 0.0863, blue: 0.0863, alpha: 1) // 돋보기 색상
-            }
-        }
-        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground() // 불투명
         appearance.backgroundColor = .white
         
-        navigationController?.navigationBar.tintColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
         // 네비게이션바 밑줄 삭제
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
