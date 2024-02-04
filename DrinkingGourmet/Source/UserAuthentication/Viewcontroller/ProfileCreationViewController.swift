@@ -8,14 +8,18 @@
 import UIKit
 import SnapKit
 import Then
+import Combine
 
 class ProfileCreationViewController: UIViewController {
+    var subscriptions = Set<AnyCancellable>()
+    
+    private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
         $0.showsVerticalScrollIndicator = false
         $0.keyboardDismissMode = .onDrag
-        $0.contentInsetAdjustmentBehavior = .never 
+        $0.contentInsetAdjustmentBehavior = .never
     }
     
     let contentView = UIView().then {
@@ -25,10 +29,10 @@ class ProfileCreationViewController: UIViewController {
     private let titleLabel = UILabel().then {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 12 // 줄 사이 간격 설정
-
+        
         let attrString = NSMutableAttributedString(string: "음주미식회 이용을 위해\n정보를 입력해주세요.")
         attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
-
+        
         $0.attributedText = attrString
         $0.textColor = .black
         $0.font = UIFont.systemFont(ofSize: 24, weight: .heavy)
@@ -44,6 +48,13 @@ class ProfileCreationViewController: UIViewController {
     
     private let inputNicknameView = InputTextFieldView(frame: .zero)
     
+    private let stateLabel = UILabel().then {
+        $0.text = ""
+        $0.textColor = .red
+        $0.font = .systemFont(ofSize: 13)
+        $0.textAlignment = .left
+    }
+    
     private let genderLabel = UILabel().then {
         $0.text = "성별"
         $0.textColor = .black
@@ -51,36 +62,45 @@ class ProfileCreationViewController: UIViewController {
         $0.textAlignment = .left
     }
     
+    lazy var buttonDictionary: [UIButton: String] = [
+        maleBtn: "  남성  ",
+        femaleBtn: "  여성  ",
+        noneBtn: "  선택 안함  "
+    ]
+    
     private let maleBtn = UIButton().then {
-        $0.genderBtnConfig(title: "남성", font: .systemFont(ofSize: 16), foregroundColor: .darkGray)
+        $0.genderBtnConfig(title: "  남성  ", font: .systemFont(ofSize: 16), foregroundColor: .darkGray, borderColor: .checkmarkGray)
     }
     
     private let femaleBtn = UIButton().then {
-        $0.genderBtnConfig(title: "여성", font: .systemFont(ofSize: 16), foregroundColor: .darkGray)
+        $0.genderBtnConfig(title: "  여성  ", font: .systemFont(ofSize: 16), foregroundColor: .darkGray, borderColor: .checkmarkGray)
     }
     
     private let noneBtn = UIButton().then {
-        $0.genderBtnConfig(title: "선택 안함", font: .systemFont(ofSize: 16), foregroundColor: .darkGray)
+        $0.genderBtnConfig(title: "  선택 안함  ", font: .systemFont(ofSize: 16), foregroundColor: .darkGray, borderColor: .checkmarkGray)
     }
     
-    private let confirmBtn = UIButton().then {
+    lazy var confirmBtn = UIButton().then {
         $0.backgroundColor = .black
         $0.setTitle("확인", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.isEnabled = false
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         
         configHierarchy()
         layout()
         configView()
         configNav()
+        setBinding()
     }
     
+}
+
+extension ProfileCreationViewController {
     func configHierarchy() {
         view.addSubviews([
             scrollView,
@@ -100,7 +120,8 @@ class ProfileCreationViewController: UIViewController {
             maleBtn,
             femaleBtn,
             noneBtn,
-            inputNicknameView
+            inputNicknameView,
+            stateLabel
         ])
     }
     
@@ -146,19 +167,19 @@ class ProfileCreationViewController: UIViewController {
         
         maleBtn.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
-            $0.top.equalTo(genderLabel.snp.bottom).offset(12)
+            $0.top.equalTo(genderLabel.snp.bottom).offset(20)
             $0.height.equalTo(40)
         }
         
         femaleBtn.snp.makeConstraints {
             $0.leading.equalTo(maleBtn.snp.trailing).offset(8)
-            $0.top.equalTo(genderLabel.snp.bottom).offset(12)
+            $0.top.equalTo(genderLabel.snp.bottom).offset(20)
             $0.height.equalTo(40)
         }
         
         noneBtn.snp.makeConstraints {
             $0.leading.equalTo(femaleBtn.snp.trailing).offset(8)
-            $0.top.equalTo(genderLabel.snp.bottom).offset(12)
+            $0.top.equalTo(genderLabel.snp.bottom).offset(20)
             $0.height.equalTo(40)
         }
         
@@ -166,6 +187,12 @@ class ProfileCreationViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(72)
             $0.top.equalTo(noneBtn.snp.bottom).offset(56)
+        }
+        
+        stateLabel.snp.makeConstraints {
+            $0.top.equalTo(inputNicknameView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(20)
         }
         
         confirmBtn.snp.makeConstraints {
@@ -180,6 +207,74 @@ class ProfileCreationViewController: UIViewController {
         inputBirthView.title = "생년월일"
         inputPhoneNumberView.title = "전화번호"
         inputNicknameView.title = "닉네임"
+        
+        inputNicknameView.textfieldText = ""
+        
+        for (button, title) in buttonDictionary {
+            updateButtonColor(button, title)
+            button.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
+        }
+        
+        self.confirmBtn.addTarget(self, action: #selector(confirmBtnClicked), for: .touchUpInside)
+        
+        inputNicknameView.onTextChanged = { [weak self] text in
+            self?.handleNicknameTextChanged(text)
+        }
+    }
+    
+    func handleNicknameTextChanged(_ text: String) {
+        let specialChar = ["@", "#", "$", "%"]
+        if text.count < 2 || text.count > 9 || text.isEmpty {
+            stateLabel.text = "2글자 이상 10글자 미만으로 설정해주세요"
+            confirmBtn.isEnabled = false
+        } else if specialChar.contains(where: text.contains) {
+            stateLabel.text = "닉네임에 @, #, $, %는 포함할 수 없어요"
+            confirmBtn.isEnabled = false
+        } else if text.contains(where: { $0.isNumber }) {
+            stateLabel.text = "닉네임에 숫자는 포함할 수 없어요"
+            confirmBtn.isEnabled = false
+        } else if text == "" {
+            stateLabel.text = "닉네임을 반드시 입력해야 합니다"
+            confirmBtn.isEnabled = false
+        } else {
+            stateLabel.text = "사용할 수 있는 닉네임이에요"
+            confirmBtn.isEnabled = true
+        }
+    }
+    
+    func updateButtonColor(_ button: UIButton, _ title: String) {
+        if button.isSelected {
+            button.genderBtnConfig(title: title, font: .systemFont(ofSize: 16), foregroundColor: .customOrange, borderColor: .customOrange)
+        } else {
+            button.genderBtnConfig(title: title, font: .systemFont(ofSize: 16), foregroundColor: .darkGray, borderColor: .checkmarkGray)
+        }
+    }
+
+    @objc func buttonClicked(_ sender: UIButton) {
+        for (button, title) in buttonDictionary {
+            button.isSelected = false
+            updateButtonColor(button, title)
+        }
+        sender.isSelected.toggle()
+        if let title = sender.titleLabel?.text {
+            updateButtonColor(sender, title)
+        }
+    }
+    
+    @objc func confirmBtnClicked() {
+        if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true {
+            self.navigationController?.pushViewController(MainMenuViewController(), animated: true)
+        } else {
+            let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "프로필을 제대로 입력하지 않으셨습니다.", preferredStyle: .alert)
+            
+            let btn1 = UIAlertAction(title: "취소", style: .cancel)
+            let btn2 = UIAlertAction(title: "확인", style: .default)
+            
+            alert.addAction(btn1)
+            alert.addAction(btn2)
+            
+            present(alert, animated: true)
+        }
     }
     
     func configNav() {
@@ -191,15 +286,30 @@ class ProfileCreationViewController: UIViewController {
     @objc func backToPrevious() {
         navigationController?.popViewController(animated: true)
     }
-
-}
-
-extension ProfileCreationViewController {
     
+    private func setBinding() {
+        kakaoAuthVM.$userInfo
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                self?.inputNameView.textfieldText = user?.kakaoAccount?.profile?.nickname ?? "이름 옵셔널 값"
+//                self?.titleLabel.text = user?.kakaoAccount?.profile?.nickname ?? "로그인 필요"
+                
+//                if let url = user?.kakaoAccount?.profile?.profileImageUrl {
+//                    self?.backgroundImageview.kf.setImage(with: url)
+//                }
+                
+                self?.inputBirthView.textfieldText = (user?.kakaoAccount?.birthday ?? "23") + (user?.kakaoAccount?.birthyear ?? "23")
+                
+                self?.inputPhoneNumberView.textfieldText = user?.kakaoAccount?.phoneNumber ?? "w"
+            }
+            .store(in: &subscriptions)
+    }
+
 }
 
 extension ProfileCreationViewController: UITextFieldDelegate {
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        print("입력값 변경이 감지되었습니다.")
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

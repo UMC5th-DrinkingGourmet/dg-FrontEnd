@@ -36,7 +36,7 @@ extension UIButton {
         self.configuration = config
     }
     
-    func genderBtnConfig(title: String, font: UIFont, foregroundColor: UIColor) {
+    func genderBtnConfig(title: String, font: UIFont, foregroundColor: UIColor, borderColor: UIColor) {
         var config = UIButton.Configuration.plain()
         
         var titleAttr = AttributedString.init(title)
@@ -50,7 +50,7 @@ extension UIButton {
         self.configuration = config
         self.layer.cornerRadius = 20
         self.layer.masksToBounds = true
-        self.layer.borderColor = UIColor.customColor.checkMarkGray.cgColor
+        self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = 1
     }
 }

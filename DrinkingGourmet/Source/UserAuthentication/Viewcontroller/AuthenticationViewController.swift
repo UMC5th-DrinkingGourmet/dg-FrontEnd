@@ -138,17 +138,6 @@ extension AuthenticationViewController {
             .assign(to: \.text, on: self.loginLabel)
             .store(in: &subscriptions)
         
-        kakaoAuthVM.$userInfo
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] user in
-                self?.titleLabel.text = user?.kakaoAccount?.profile?.nickname ?? "로그인 필요"
-                
-                if let url = user?.kakaoAccount?.profile?.profileImageUrl {
-                    self?.backgroundImageview.kf.setImage(with: url)
-                }
-            }
-            .store(in: &subscriptions)
-        
         // 로그인 성공시
         kakaoAuthVM.$isLoggedIn
             .receive(on: DispatchQueue.main)

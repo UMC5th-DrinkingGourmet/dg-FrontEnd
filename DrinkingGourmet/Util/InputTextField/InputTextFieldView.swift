@@ -8,6 +8,7 @@
 import UIKit
 
 class InputTextFieldView: UIView {
+    var onTextChanged: ((String) -> Void)?
     
     var title: String? {
         didSet {
@@ -41,7 +42,16 @@ class InputTextFieldView: UIView {
             string: "입력 부탁드려요~",
             attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]
         )
+        $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // 수정된 부분
     }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+            guard let text = textField.text else { return }
+            print("\(text)입니다")
+
+            // 콜백 클로저 호출
+            onTextChanged?(text)
+        }
     
     lazy var xBtn = UIButton().then {
         $0.setImage(UIImage(named: "ic_delete"), for: .normal)
