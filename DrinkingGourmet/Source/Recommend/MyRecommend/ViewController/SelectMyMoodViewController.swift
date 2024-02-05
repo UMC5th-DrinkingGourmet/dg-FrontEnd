@@ -59,12 +59,7 @@ class SelectMyMoodViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         print(buttonImageArray)
-        
-        for i in 0..<buttonArray.count {
-            let button = buttonArray[i]
-            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        }
-        
+
         // navigation bar
         title = "주류추천"
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
@@ -158,6 +153,7 @@ class SelectMyMoodViewController: UIViewController {
                 }
                 buttonFrameWidth -= widthMargin
             }
+            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         }
         
         skipButton.snp.makeConstraints { make in
