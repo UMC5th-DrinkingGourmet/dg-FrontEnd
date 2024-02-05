@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import Combine
 import Kingfisher
+import KakaoSDKUser
 
 class AuthenticationViewController: UIViewController {
     
@@ -24,10 +25,17 @@ class AuthenticationViewController: UIViewController {
     }
     
     private let titleLabel = UILabel().then {
-        $0.text = "술과 음식의\n미식 여행\n음주미식회"
-        $0.numberOfLines = 3
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 12 // 줄 사이 간격 설정
+
+        let attrString = NSMutableAttributedString(string: "술과 음식의\n미식 여행\n음주미식회")
+        attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+
+        $0.attributedText = attrString
         $0.textColor = .white
-        $0.font = .systemFont(ofSize: 40, weight: .heavy)
+        $0.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
+        $0.textAlignment = .left
+        $0.numberOfLines = 3
     }
 
     private let kakaoBtn = UIButton().then {
@@ -131,26 +139,34 @@ extension AuthenticationViewController {
             .assign(to: \.text, on: self.loginLabel)
             .store(in: &subscriptions)
         
-        kakaoAuthVM.$userInfo
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] user in
-                self?.titleLabel.text = user?.kakaoAccount?.profile?.nickname ?? "로그인 필요"
-                
-                if let url = user?.kakaoAccount?.profile?.profileImageUrl {
-                    self?.backgroundImageview.kf.setImage(with: url)
-                }
-            }
-            .store(in: &subscriptions)
-        
         // 로그인 성공시
         kakaoAuthVM.$isLoggedIn
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
-                    let termsViewController = TermsViewController()
-                    termsViewController.modalPresentationStyle = .fullScreen
-                    self?.present(termsViewController, animated: true, completion: nil)
+                    self?.navigationController?.pushViewController(TermsViewController(), animated: true)
                 }
+            }
+            .store(in: &subscriptions)
+        
+        kakaoAuthVM.$userInfo
+            .receive(on: DispatchQueue.main)
+            .sink { user in
+                UserDefaultManager.shared.userName = user?.kakaoAccount?.profile?.nickname ?? "이름 옵셔널 값"
+                
+                UserDefaultManager.shared.userBirth = (user?.kakaoAccount?.birthyear ?? "연도") + (user?.kakaoAccount?.birthday ?? "날짜")
+                
+                UserDefaultManager.shared.userPhoneNumber = user?.kakaoAccount?.phoneNumber ?? "저나버노"
+                
+                if let url = user?.kakaoAccount?.profile?.profileImageUrl {
+                    let urlString = url.absoluteString
+                    
+                    UserDefaultManager.shared.userProfileImg = urlString
+                }
+                print(UserDefaultManager.shared.userProfileImg)
+                
+                UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? "unknown"
+                print(UserDefaultManager.shared.userGender)
             }
             .store(in: &subscriptions)
     }

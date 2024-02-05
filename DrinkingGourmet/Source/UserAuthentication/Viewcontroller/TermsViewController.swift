@@ -77,6 +77,7 @@ class TermsViewController: UIViewController {
         configHierarchy()
         layout()
         configView()
+        configNav()
     }
 }
 
@@ -166,7 +167,6 @@ extension TermsViewController {
             image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray),
             imageSize: CGSize(width: 16, height: 16)
             )
-            
             sender.isSelected = false
         } else {
             print("그 외를 클릭")
@@ -179,7 +179,6 @@ extension TermsViewController {
             image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
             imageSize: CGSize(width: 16, height: 16)
             )
-            
             sender.isSelected = true
         }
         updateConfirmButtonState()
@@ -222,13 +221,12 @@ extension TermsViewController {
         // 필수 약관 동의 여부 확인
         let allButtons = [useTermsBtn, financialTermsBtn, privacyTermsBtn, providePrivacyTermsBtn, marketingTermsBtn]
         let requiredButtons = [useTermsBtn, financialTermsBtn, privacyTermsBtn]
-        let allRequiredSelected = requiredButtons.allSatisfy { $0.isSelected }
         
+        let allRequiredSelected = requiredButtons.allSatisfy { $0.isSelected }
         let allTermsAgreed = totalTermsBtn.isSelected
         
         confirmBtn.isEnabled = allRequiredSelected || allTermsAgreed
         
-        // 필수 약관 중 하나라도 동의가 되어있지 않으면 totalTermsBtn의 이미지 변경
         if allButtons.contains(where: { !$0.isSelected }) {
             totalTermsBtn.buttonConfiguration(
                 title: "전체 약관에 동의합니다.",
@@ -238,6 +236,8 @@ extension TermsViewController {
                 image: UIImage(systemName: "square")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
                 imageSize: CGSize(width: 23, height: 20)
             )
+            totalTermsBtn.isSelected = false
+            print("totaltermsbtn이 false")
         } else {
             totalTermsBtn.buttonConfiguration(
                 title: "전체 약관에 동의합니다.",
@@ -247,7 +247,18 @@ extension TermsViewController {
                 image: UIImage(systemName: "checkmark.square.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
                 imageSize: CGSize(width: 23, height: 20)
             )
+            totalTermsBtn.isSelected = true
+        }
+        
+        if requiredButtons.contains(where: { !$0.isSelected }) {
+            confirmBtn.isEnabled = false
+        } else {
+            confirmBtn.isEnabled = true
         }
     }
     
+    func configNav() {
+        navigationItem.title = "이용 약관 동의"
+        navigationItem.hidesBackButton = true
+    }
 }
