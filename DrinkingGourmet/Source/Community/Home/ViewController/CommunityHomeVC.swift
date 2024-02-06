@@ -28,7 +28,6 @@ class CommunityHomeVC: UIViewController {
         setupNaviBar()
         setupDatas()
         setupTableView()
-        setupCustomSearchBar()
     }
     
     // MARK: - 네비게이션바 설정
@@ -56,11 +55,6 @@ class CommunityHomeVC: UIViewController {
         
         tb.rowHeight = 156
         tb.register(CommunityHomeCell.self, forCellReuseIdentifier: "CommunityHomeCell")
-    }
-    
-    // MARK: - 검색창 설정
-    func setupCustomSearchBar() {
-        communityView.customSearchBar.textField.delegate = self
     }
     
 }
