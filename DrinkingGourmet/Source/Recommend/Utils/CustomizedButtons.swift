@@ -8,6 +8,23 @@
 import UIKit
 import SnapKit
 
+class CustomRecommendButtons: UIButton {
+    init(buttonTitle: String) {
+        super.init(frame: .zero)
+        
+        self.setTitle(buttonTitle, for: .normal)
+        self.setTitleColor(UIColor.baseColor.base03, for: .normal)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        self.layer.cornerRadius = 8
+        self.layer.borderColor = UIColor.baseColor.base08.cgColor
+        self.layer.borderWidth = 1
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 func makeNextButton(buttonTitle: String) -> UIButton {
     let btn = UIButton()
     
@@ -46,3 +63,4 @@ func makeButtonArray(buttonImageArray: [UIImage]) -> [UIButton] {
     }
     return buttons
 }
+

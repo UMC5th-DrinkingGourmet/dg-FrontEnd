@@ -20,23 +20,15 @@ class MyDrinkStyleViewController: UIViewController {
         return text
     }()
     
-    lazy var recommendButton: UIButton = {
-        let btn = UIButton()
-        btn.setImage(UIImage(named: "BTN_Recommend"), for: .normal)
-        btn.imageView?.contentMode = .scaleAspectFit
-
-        btn.addTarget(self, action: #selector( nextButtonTapped(_:)), for: .touchUpInside)
-        return btn
+    private lazy var recommendButton: CustomRecommendButtons = {
+        let button = CustomRecommendButtons(buttonTitle: "주류추천")
+        return button
+    }()
+    private lazy var myRecommendButton: CustomRecommendButtons = {
+        let button = CustomRecommendButtons(buttonTitle: "내가 받은 추천")
+        return button
     }()
     
-    lazy var myRecommendButton: UIButton = {
-        let btn = UIButton()
-        btn.setImage(UIImage(named: "BTN_MyRecommend"), for: .normal)
-        btn.imageView?.contentMode = .scaleAspectFit
-        
-        btn.addTarget(self, action: #selector( nextButtonTapped(_:)), for: .touchUpInside)
-        return btn
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +51,12 @@ class MyDrinkStyleViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
-        let nextViewController = InputMyMoodViewController()
+        let nextViewController = RecommendViewController()
+        navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    // - mypage 완성 시 수정 - //
+    @objc func myRecommendButtonTapped(_ sender: UIButton) {
+        let nextViewController = RecommendViewController() // myPage로 연결
         navigationController?.pushViewController(nextViewController, animated: true)
     }
 
@@ -77,19 +74,21 @@ class MyDrinkStyleViewController: UIViewController {
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(108)
         }
-        //button custom 필요성 있음
+        
         recommendButton.snp.makeConstraints { make in
-            make.bottom.equalTo(myRecommendButton.snp.top).offset(16)
+            make.bottom.equalTo(myRecommendButton.snp.top).offset(-16)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.width.equalTo(view.frame.width-40)
+            make.height.equalTo(50)
+            recommendButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
         
         myRecommendButton.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-48)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.width.equalTo(view.frame.width - 40)
+            make.height.equalTo(50)
+            //myRecommendButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
     }
 }

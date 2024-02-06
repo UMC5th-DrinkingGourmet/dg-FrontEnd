@@ -58,7 +58,6 @@ class SelectMyMoodViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        print(buttonImageArray)
 
         // navigation bar
         title = "주류추천"
@@ -94,7 +93,6 @@ class SelectMyMoodViewController: UIViewController {
     
     
     // MARK: - Constraints
-    
     func setAddSubViews() {
         view.addSubview(progressBar)
         view.addSubview(guideText)
