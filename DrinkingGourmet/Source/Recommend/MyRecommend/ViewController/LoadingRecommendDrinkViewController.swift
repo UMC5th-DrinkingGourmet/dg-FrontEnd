@@ -20,9 +20,13 @@ class LoadingRecommendDrinkViewController: UIViewController {
         return text
     }()
     
-    lazy var animation = LottieAnimation.named("Animation - 1707200937141")
-    lazy var animationView = LottieAnimationView(animation: animation)
-    
+    lazy var loadingAnimationView: LottieAnimationView = {
+        let animation = LottieAnimation.named("Animation - 1707200937141")
+        let animationView = LottieAnimationView(animation: animation)
+        animationView.loopMode = .loop // 애니메이션을 반복 재생하도록 설정
+        
+        return animationView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +40,7 @@ class LoadingRecommendDrinkViewController: UIViewController {
         // 임시 타이머
         Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: false)
         
-        animationView.play()
+        loadingAnimationView.play()
         setAddSubViews()
         makeConstraints()
     }
@@ -54,7 +58,7 @@ class LoadingRecommendDrinkViewController: UIViewController {
     // MARK: - Constraints
     func setAddSubViews() {
         view.addSubview(guideText)
-        view.addSubview(animationView)
+        view.addSubview(loadingAnimationView)
     }
     
     func makeConstraints() {
@@ -63,8 +67,8 @@ class LoadingRecommendDrinkViewController: UIViewController {
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(72)
         }
-        animationView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(200)
+        loadingAnimationView.snp.makeConstraints { make in
+            make.top.equalTo(guideText.snp.bottom).offset(150)
             make.centerX.equalToSuperview()
             make.width.equalTo(90)
             make.height.equalTo(90)
