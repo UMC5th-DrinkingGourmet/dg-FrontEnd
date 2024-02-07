@@ -58,13 +58,7 @@ class SelectMyMoodViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        print(buttonImageArray)
-        
-        for i in 0..<buttonArray.count {
-            let button = buttonArray[i]
-            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        }
-        
+
         // navigation bar
         title = "주류추천"
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
@@ -99,7 +93,6 @@ class SelectMyMoodViewController: UIViewController {
     
     
     // MARK: - Constraints
-    
     func setAddSubViews() {
         view.addSubview(progressBar)
         view.addSubview(guideText)
@@ -158,6 +151,7 @@ class SelectMyMoodViewController: UIViewController {
                 }
                 buttonFrameWidth -= widthMargin
             }
+            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         }
         
         skipButton.snp.makeConstraints { make in

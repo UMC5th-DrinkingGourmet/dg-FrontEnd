@@ -79,7 +79,6 @@ class SelectWeatherViewController: UIViewController {
     
     // MARK: - Navigaiton
     @objc func backButtonPressed() {
-        // Handle the back button press (e.g., pop view controller)
         navigationController?.popViewController(animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {

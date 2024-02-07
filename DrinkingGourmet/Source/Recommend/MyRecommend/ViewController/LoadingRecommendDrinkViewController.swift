@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 class LoadingRecommendDrinkViewController: UIViewController {
     
@@ -19,6 +20,10 @@ class LoadingRecommendDrinkViewController: UIViewController {
         return text
     }()
     
+    lazy var animation = LottieAnimation.named("Animation - 1707200937141")
+    lazy var animationView = LottieAnimationView(animation: animation)
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -31,24 +36,25 @@ class LoadingRecommendDrinkViewController: UIViewController {
         // 임시 타이머
         Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: false)
         
+        animationView.play()
         setAddSubViews()
         makeConstraints()
     }
     
     // MARK: - Actions
     @objc func backButtonPressed() {
-        // Handle the back button press (e.g., pop view controller)
         navigationController?.popViewController(animated: true)
     }
     @objc func timerAction() {
-        // Perform the action you want after 3 seconds
-        let nextViewController = RecommendViewController() // Replace with your next view controller
+        // - 3초 지연 일시 적용 - //
+        let nextViewController = RecommendViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
     
     // MARK: - Constraints
     func setAddSubViews() {
         view.addSubview(guideText)
+        view.addSubview(animationView)
     }
     
     func makeConstraints() {
@@ -56,6 +62,12 @@ class LoadingRecommendDrinkViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(72)
+        }
+        animationView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(200)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(90)
+            make.height.equalTo(90)
         }
     }
 }

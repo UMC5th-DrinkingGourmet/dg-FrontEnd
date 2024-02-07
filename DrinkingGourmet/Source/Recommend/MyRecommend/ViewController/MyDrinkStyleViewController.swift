@@ -20,81 +20,75 @@ class MyDrinkStyleViewController: UIViewController {
         return text
     }()
     
-    lazy var recommendButton: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("주류추천", for: .normal)
-        btn.setTitleColor(.darkGray, for: .normal)
-        
-        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        return btn
+    private lazy var recommendButton: CustomRecommendButtons = {
+        let button = CustomRecommendButtons(buttonTitle: "주류추천")
+        return button
     }()
-    lazy var myRecommendButton: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("내가 받은 추천", for: .normal)
-        btn.setTitleColor(.darkGray, for: .normal)
-        
-        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        return btn
+    private lazy var myRecommendButton: CustomRecommendButtons = {
+        let button = CustomRecommendButtons(buttonTitle: "내가 받은 추천")
+        return button
     }()
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default // 또는 .lightContent 등
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        
-        // 네비게이션 바 타이틀 설정
+        // navigation
         title = "주류추천"
-        
-        navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-        navigationController?.navigationBar.tintColor = UIColor.blue
-        //navigationController?.navigationBar.barStyle = .default
-        
-        // 네비게이션 바의 투명도 설정 (원하는 값으로 변경)
-        navigationController?.navigationBar.isTranslucent = false
-    
+        navigationController?.navigationBar.tintColor = UIColor.black
+        navigationController?.navigationBar.isTranslucent = true
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
+        navigationItem.leftBarButtonItem = backButton
         
         setAddSubViews()
         makeConstraints()
     }
     
-    @objc func buttonTapped(_ sender: UIButton) {
-        // 버튼이 탭되었을 때 실행되는 코드
-        let nextViewController = UserDrinkingTasteViewController()
+    // MARK: - Navigation
+    @objc func backButtonPressed() {
+        navigationController?.popViewController(animated: true)
+    }
+    @objc func nextButtonTapped(_ sender: UIButton) {
+        let nextViewController = RecommendViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
+    // - mypage 완성 시 수정 - //
+    @objc func myRecommendButtonTapped(_ sender: UIButton) {
+        let nextViewController = RecommendViewController() // myPage로 연결
+        navigationController?.pushViewController(nextViewController, animated: true)
+    }
+
     
-    
+    // MARK: - Constraints
     func setAddSubViews() {
-        //view.addSubview(progressBar)
         view.addSubview(guideText)
-        view.addSubview(recommendButton)
         view.addSubview(myRecommendButton)
-        //view.addSubview(myFoodTextField)
+        view.addSubview(recommendButton)
     }
     
     func makeConstraints() {
         guideText.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(43)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(43)
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(108)
         }
+        
         recommendButton.snp.makeConstraints { make in
-            make.top.equalTo(guideText.snp.bottom).offset(317)
+            make.bottom.equalTo(myRecommendButton.snp.top).offset(-16)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(50)
+            recommendButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
         
         myRecommendButton.snp.makeConstraints { make in
-            make.top.equalTo(recommendButton.snp.bottom).offset(16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-48)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(50)
+            //myRecommendButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
     }
 }

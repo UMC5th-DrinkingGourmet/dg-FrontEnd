@@ -63,7 +63,7 @@ class InputMyMoodViewController: UIViewController {
     
     lazy var textViewCharCount: UILabel = {
         let label = UILabel()
-        label.text = ""
+        label.text = " "
         label.backgroundColor = .systemBackground
         label.textColor = UIColor.baseColor.base06
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -194,7 +194,7 @@ extension InputMyMoodViewController {
     func textViewDidChange(_ textView: UITextView) {
         
         let charCount = textView.text.count
-        let maxCount = 500
+        let maxCount = 130
         
         // UI Controll
         if textView.text.count >= maxCount {
@@ -205,7 +205,7 @@ extension InputMyMoodViewController {
         } else {
             textViewBottomLine.backgroundColor = UIColor.baseColor.base01
         }
-        textViewCharCount.text = "\(charCount)/500"
+        textViewCharCount.text = "\(charCount)/130"
     }
 }
 
