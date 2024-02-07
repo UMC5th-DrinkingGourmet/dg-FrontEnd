@@ -31,7 +31,25 @@ extension UIButton {
         titleAttr.font = font
         config.attributedTitle = titleAttr
         config.baseForegroundColor = foregroundColor
-        config.baseBackgroundColor = .clear
+        self.backgroundColor = .clear
+        
+        self.configuration = config
+    }
+    
+    func trailingBtnConfiguration(title: String, font: UIFont, foregroundColor: UIColor, padding: Int, image: UIImage?, imageSize: CGSize) {
+        let resizedImg = image?.resizedImage(to: imageSize)
+        
+        var config = UIButton.Configuration.plain()
+        config.image = resizedImg
+        config.imagePadding = CGFloat(padding)
+        config.imagePlacement = .trailing
+
+        var titleAttr = AttributedString.init(title)
+        titleAttr.foregroundColor = foregroundColor
+        titleAttr.font = font
+        config.attributedTitle = titleAttr
+        config.baseForegroundColor = foregroundColor
+        self.backgroundColor = .clear
         
         self.configuration = config
     }
@@ -45,12 +63,27 @@ extension UIButton {
         
         config.attributedTitle = titleAttr
         config.baseForegroundColor = foregroundColor
-        config.baseBackgroundColor = .clear
         
+        self.backgroundColor = .clear
         self.configuration = config
         self.layer.cornerRadius = 20
         self.layer.masksToBounds = true
         self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = 1
+    }
+    
+    func goBtnConfig(title: String, font: UIFont, backgroundColor: UIColor) {
+        var config = UIButton.Configuration.plain()
+        
+        var titleAttr = AttributedString.init(title)
+        titleAttr.foregroundColor = .white
+        titleAttr.font = font
+        
+        config.attributedTitle = titleAttr
+        config.baseForegroundColor = .white
+        
+        self.backgroundColor = backgroundColor
+        self.configuration = config
+        self.layer.cornerRadius = 8
     }
 }

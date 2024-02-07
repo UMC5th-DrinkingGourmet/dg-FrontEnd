@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class UploadedImgCollectionViewCell: UICollectionViewCell {
     let baseView = UIView().then {
