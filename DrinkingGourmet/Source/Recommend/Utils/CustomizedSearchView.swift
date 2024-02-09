@@ -24,7 +24,7 @@ final class FoodSearchBarView: UIView {
     private var clearButton: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
-        btn.addTarget(self, action: #selector(clearTextField), for: .touchUpInside)
+        btn.addTarget(FoodSearchBarView.self, action: #selector(clearTextField), for: .touchUpInside)
         btn.tintColor = UIColor.baseColor.base07
         
         return btn

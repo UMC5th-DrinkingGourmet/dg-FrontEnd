@@ -59,7 +59,7 @@ class KakaoAuthViewModel: ObservableObject {
                 }
                 else {
                     print("loginWithKakaoAccount() success.")
-                    
+//                    print(oauthToken)
                     _ = oauthToken
                     
                     Task {
@@ -73,7 +73,6 @@ class KakaoAuthViewModel: ObservableObject {
         }
     }
     
-    
     @MainActor
         func checkTokenValidity() async -> Bool {    // 토큰 유효성 체크
            await withCheckedContinuation { continuation in
@@ -86,6 +85,7 @@ class KakaoAuthViewModel: ObservableObject {
                                continuation.resume(returning: false)
                            }
                        } else {
+                           print("Token is valid.")
                            continuation.resume(returning: true)
                        }
                    }
@@ -94,6 +94,35 @@ class KakaoAuthViewModel: ObservableObject {
                }
            }
         }
+    
+//    func checkTokenValidity() -> Bool {
+//        let group = DispatchGroup()
+//        var result = false
+//
+//        group.enter()
+//        if (AuthApi.hasToken()) {
+//            UserApi.shared.accessTokenInfo { (_, error) in
+//                if let error = error {
+//                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true {
+//                        result = false
+//                    } else {
+//                        result = false
+//                    }
+//                } else {
+//                    print("Token is valid.")
+//                    result = true
+//                }
+//                group.leave()
+//            }
+//        } else {
+//            result = false
+//            group.leave()
+//        }
+//
+//        group.wait()
+//        return result
+//    }
+
         
         @MainActor
         func kakaoLogin() {
@@ -111,28 +140,28 @@ class KakaoAuthViewModel: ObservableObject {
             }
         }
     
-    @MainActor
-        func kakaoLoginWithAccountPrompt() async -> Bool {  // 간편 로그인
-            await withCheckedContinuation { continuation in
-                UserApi.shared.loginWithKakaoAccount(prompts:[.SelectAccount]) {(oauthToken, error) in
-                    if let error = error {
-                        print(error)
-                        continuation.resume(returning: false)
-                    }
-                    else {
-                        print("loginWithKakaoAccount() success.")
-                        
-                        _ = oauthToken
-                        
-                        Task {
-                            await self.setUserInfo()
-                        }
-                        
-                        continuation.resume(returning: true)
-                    }
-                }
-            }
-        }
+//    @MainActor
+//        func kakaoLoginWithAccountPrompt() async -> Bool {  // 간편 로그인
+//            await withCheckedContinuation { continuation in
+//                UserApi.shared.loginWithKakaoAccount(prompts:[.SelectAccount]) {(oauthToken, error) in
+//                    if let error = error {
+//                        print(error)
+//                        continuation.resume(returning: false)
+//                    }
+//                    else {
+//                        print("loginWithKakaoAccount() success.")
+//                        
+//                        _ = oauthToken
+//                        
+//                        Task {
+//                            await self.setUserInfo()
+//                        }
+//                        
+//                        continuation.resume(returning: true)
+//                    }
+//                }
+//            }
+//        }
     
     @MainActor
     func kakaoLogut() {

@@ -208,15 +208,15 @@ extension ProfileCreationViewController {
         inputNameView.textfieldText = UserDefaultManager.shared.userName
         inputBirthView.textfieldText = UserDefaultManager.shared.userBirth
         inputPhoneNumberView.textfieldText = UserDefaultManager.shared.userPhoneNumber
-        inputNicknameView.textfieldText = ""
+        inputNicknameView.textfieldText = UserDefaultManager.shared.userNickname
         
         inputNicknameView.placeholder = "닉네임을 입력해주세요."
         
-        for (button, title) in buttonDictionary {
+        for (button, _) in buttonDictionary {
             button.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
         }
         
-        var gender = UserDefaultManager.shared.userGender
+        let gender = UserDefaultManager.shared.userGender
         
         if gender == "male" {
             maleBtn.isSelected = true
@@ -279,8 +279,29 @@ extension ProfileCreationViewController {
         }
     }
     
+    func postUserInfo() {
+        let userInfo = UserInfoModel(
+            name: UserDefaultManager.shared.userName,
+            profileImage: UserDefaultManager.shared.userProfileImg,
+            email: UserDefaultManager.shared.email,
+            nickName: UserDefaultManager.shared.userNickname,
+            birthDate: UserDefaultManager.shared.userBirth,
+            phoneNumber: UserDefaultManager.shared.userPhoneNumber,
+            gender: UserDefaultManager.shared.userGender,
+            provider: UserDefaultManager.shared.provider,
+            providerId: UserDefaultManager.shared.providerId
+        )
+                
+        UserInfoDataManager.shared.sendUserInfo(userInfo)
+    }
+    
     @objc func confirmBtnClicked() {
         if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood {
+            UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Nil이에요"
+            
+            postUserInfo()
+            
+            UserDefaultManager.shared.isLoggedIn = true
             self.navigationController?.pushViewController(MainMenuViewController(), animated: true)
         } else {
             let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "프로필을 제대로 입력하지 않으셨습니다.", preferredStyle: .alert)

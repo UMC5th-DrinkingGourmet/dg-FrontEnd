@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         // 웹 브라우저에서 URL이 열리게 되면, 카카오 로그인 scheme이랑 일치하는지 체크
         if (AuthApi.isKakaoTalkLoginUrl(url)) { // 일차할 경우 웹뷰(AuthController)를 연다
+            print("scheme과 일치하지 않습니다")
             return AuthController.handleOpenUrl(url: url)
         }
 
