@@ -77,6 +77,7 @@ class AuthenticationViewController: UIViewController {
     
     @objc func kakaoBtnClicked() {
         kakaoAuthVM.kakaoLogin()
+        UserDefaultManager.shared.provider = "kakao"
     }
     
     private func layout() {
@@ -144,7 +145,9 @@ extension AuthenticationViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
-                    self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+                    DispatchQueue.main.async {
+                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+                    }
                 }
             }
             .store(in: &subscriptions)
@@ -156,7 +159,14 @@ extension AuthenticationViewController {
                 
                 UserDefaultManager.shared.userBirth = (user?.kakaoAccount?.birthyear ?? "연도") + (user?.kakaoAccount?.birthday ?? "날짜")
                 
-                UserDefaultManager.shared.userPhoneNumber = user?.kakaoAccount?.phoneNumber ?? "저나버노"
+                // 전화번호 format
+                var phoneNumber = user?.kakaoAccount?.phoneNumber ?? "저나버노"
+                if phoneNumber.hasPrefix("+82 ") {
+                    let index = phoneNumber.index(phoneNumber.startIndex, offsetBy: 4)
+                    phoneNumber = "0" + phoneNumber[index...].replacingOccurrences(of: "-", with: "")
+                }
+                
+                UserDefaultManager.shared.userPhoneNumber = phoneNumber
                 
                 if let url = user?.kakaoAccount?.profile?.profileImageUrl {
                     let urlString = url.absoluteString
@@ -167,6 +177,11 @@ extension AuthenticationViewController {
                 
                 UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? "unknown"
                 print(UserDefaultManager.shared.userGender)
+                
+                UserDefaultManager.shared.email = user?.kakaoAccount?.email ?? "none email"
+                print(UserDefaultManager.shared.email)
+                
+                UserDefaultManager.shared.providerId = String(user?.id ?? -1)
             }
             .store(in: &subscriptions)
     }

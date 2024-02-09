@@ -32,7 +32,6 @@ extension UIButton {
         config.attributedTitle = titleAttr
         config.baseForegroundColor = foregroundColor
         self.backgroundColor = .clear
-        
         self.configuration = config
     }
     

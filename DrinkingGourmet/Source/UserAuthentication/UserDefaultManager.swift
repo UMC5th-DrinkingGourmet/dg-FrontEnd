@@ -21,15 +21,19 @@ class UserDefaultManager {
         case userProfileImg
         case userGender
         case userNickname
+        case email
+        case provider
+        case providerId
+        case isLoggedIn
     }
     
     let ud = UserDefaults.standard
     
     var userName: String {
-        get {   // 선택한 이미지를 불러온다
+        get {
             ud.string(forKey: UDKey.userName.rawValue) ?? "profile1"
         }
-        set {   // 선택한 이미지를 저장한다
+        set {
             ud.setValue(newValue, forKey: UDKey.userName.rawValue)
         }
     }
@@ -79,8 +83,43 @@ class UserDefaultManager {
         }
     }
     
+    var email: String {
+        get {
+            ud.string(forKey: UDKey.email.rawValue) ?? ""
+        }
+        set {
+            ud.setValue(newValue, forKey: UDKey.email.rawValue)
+        }
+    }
+    
+    var provider: String {
+        get {
+            ud.string(forKey: UDKey.provider.rawValue) ?? ""
+        }
+        set {
+            ud.setValue(newValue, forKey: UDKey.provider.rawValue)
+        }
+    }
+    
+    var providerId: String {
+        get {
+            ud.string(forKey: UDKey.providerId.rawValue) ?? ""
+        }
+        set {
+            ud.setValue(newValue, forKey: UDKey.providerId.rawValue)
+        }
+    }
+    
+    var isLoggedIn: Bool {
+        get {
+            ud.bool(forKey: UDKey.isLoggedIn.rawValue)
+        }
+        set {
+            ud.setValue(newValue, forKey: UDKey.isLoggedIn.rawValue)
+        }
+    }
 
     func removeAll() {
-
+        
     }
 }

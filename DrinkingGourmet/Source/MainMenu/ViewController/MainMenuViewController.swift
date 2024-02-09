@@ -111,10 +111,27 @@ class MainMenuViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        UserDefaultManager.shared.isLoggedIn = false
         configHierarchy()
         layout()
         configView()
+        configButton()
     }
+    
+    
+    func configButton() {
+            recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
+
+            todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
+        }
+
+        @objc func recipeBookBtnTapped() {
+            navigationController?.pushViewController(RecipeBookHomeVC(), animated: true)
+        }
+
+        @objc func todayCombiBtnTapped() {
+            navigationController?.pushViewController(TodayCombinationViewController(), animated: true)
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -149,7 +166,7 @@ class MainMenuViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView)
             $0.edges.equalTo(scrollView)
-            $0.height.equalTo(1500)
+            $0.height.equalTo(1000)
         }
         
         bannerCollectionView.snp.makeConstraints {
@@ -185,7 +202,8 @@ class MainMenuViewController: UIViewController {
         
         todayCombiCollectionView.snp.makeConstraints {
             $0.top.equalTo(todayCombiBtn.snp.bottom).offset(8)
-            $0.leading.trailing.equalTo(contentView).inset(20)
+            $0.leading.equalTo(contentView).inset(20)
+            $0.trailing.equalTo(contentView)
             $0.height.equalTo(160)
         }
         
