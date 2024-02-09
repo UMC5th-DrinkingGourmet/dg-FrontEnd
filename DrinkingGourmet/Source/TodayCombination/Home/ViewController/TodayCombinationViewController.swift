@@ -13,12 +13,6 @@ class TodayCombinationViewController: UIViewController {
     
     private let todayCombinationView = TodayCombinationView()
     
-    private lazy var buttons: [UIButton] = [todayCombinationView.writeButton, todayCombinationView.modifyButton]
-    private lazy var labels: [UILabel] = [todayCombinationView.writeLabel, todayCombinationView.modifyLabel]
-    
-    private var isShowFloating: Bool = false
-    private var isShowLabel: Bool = false
-    
     // MARK: - View 설정
     override func loadView() {
         view = todayCombinationView
@@ -71,66 +65,11 @@ class TodayCombinationViewController: UIViewController {
     // MARK: - 플로팅버튼 설정
     func setupFloatingButton() {
         todayCombinationView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
-        
-        todayCombinationView.writeButton.addTarget(self, action: #selector(writeButtonTapped), for: .touchUpInside)
-        
-        todayCombinationView.modifyButton.addTarget(self, action: #selector(modifyButtonTapped), for: .touchUpInside)
     }
     
-    @objc func floatingButtonTapped(_ sender: UIButton) {
-        
-        let shadowView = todayCombinationView.shadowView
-        
-        if isShowFloating { // 플로팅버튼 열려있을 때
-            buttons.reversed().forEach { button in
-                UIView.animate(withDuration: 0.3) {
-                    button.isHidden = true
-                    self.view.layoutIfNeeded()
-                }
-            }
-            labels.forEach { $0.isHidden = true }
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                shadowView.alpha = 0
-            }) { (_) in
-                shadowView.isHidden = true
-            }
-        } else { // 플로팅버튼 닫혀있을 때
-
-            shadowView.isHidden = false
-            
-            UIView.animate(withDuration: 0.5) { shadowView.alpha = 1 }
-            
-            buttons.forEach { [weak self] button in
-                button.isHidden = false
-                button.alpha = 0
-                
-                UIView.animate(withDuration: 0.3) {
-                    button.alpha = 1
-                    self?.view.layoutIfNeeded()
-                }
-            }
-            labels.forEach { $0.isHidden = false }
-        }
-        
-        isShowFloating = !isShowFloating
-        
-        let backgroundColor: UIColor = isShowFloating ? .black : .customOrange
-
-        let roatation = isShowFloating ? CGAffineTransform(rotationAngle: .pi - (.pi / 4)) : CGAffineTransform.identity
-        
-        UIView.animate(withDuration: 0.3) {
-            sender.backgroundColor = backgroundColor
-            sender.transform = roatation
-        }
-    }
-    
-    @objc func writeButtonTapped() {
-        print("작성하기 버튼 눌림")
-    }
-    
-    @objc func modifyButtonTapped() {
-        print("수정하기 버튼 눌림")
+    @objc func floatingButtonTapped() {
+        let vc = UploadViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
