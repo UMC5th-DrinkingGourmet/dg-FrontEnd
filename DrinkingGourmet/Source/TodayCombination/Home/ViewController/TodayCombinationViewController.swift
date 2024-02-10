@@ -11,6 +11,8 @@ import Then
 
 class TodayCombinationViewController: UIViewController {
     
+    var arrayCombinationHome: [CombinationHomeList] = []
+    
     private let todayCombinationView = TodayCombinationView()
     
     // MARK: - View 설정
@@ -18,6 +20,7 @@ class TodayCombinationViewController: UIViewController {
         view = todayCombinationView
     }
     
+    // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -30,6 +33,16 @@ class TodayCombinationViewController: UIViewController {
     
     func prepare() {
         todayCombinationView.customSearchBar.textField.delegate = self
+        
+        let input = CombinationHomeInput(page: 0)
+        CombinationHomeDataManager().combinationHomeDataManager(input, self) { [weak self] model in
+            if let model = model {
+                self?.arrayCombinationHome = model.result.combinationList
+                DispatchQueue.main.async {
+                    self?.todayCombinationView.tableView.reloadData()
+                }
+            }
+        }
     }
     
     // MARK: - 네비게이션바 설정
@@ -85,11 +98,27 @@ extension TodayCombinationViewController: UITextFieldDelegate {
 extension TodayCombinationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return arrayCombinationHome.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodayCombinationCell", for: indexPath) as! TodayCombinationCell
+        
+        let combination = arrayCombinationHome[indexPath.row]
+        
+        if let url = URL(string: combination.combinationImageURL) {
+            cell.mainImage.kf.setImage(with: url)
+        }
+        
+        cell.titleLabel.text = combination.title
+        
+        let hashtags = combination.hashTageList.map { "#\($0)" }.joined(separator: " ")
+        cell.hashtagLabel.text = hashtags
+        
+        cell.commentNumLabel.text = "\(combination.commentCount)"
+        
+        cell.likeNumLabel.text = "\(combination.likeCount)"
         
         cell.selectionStyle = .none // cell 선택 시 시각효과 제거
         
