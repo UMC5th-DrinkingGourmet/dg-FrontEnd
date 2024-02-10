@@ -12,6 +12,9 @@ import Then
 class TodayCombinationViewController: UIViewController {
     
     var arrayCombinationHome: [CombinationHomeList] = []
+    var fetchingMore: Bool = false
+    var totalPageNum: Int = 0
+    var nowPageNum: Int = 0
     
     private let todayCombinationView = TodayCombinationView()
     
@@ -37,6 +40,7 @@ class TodayCombinationViewController: UIViewController {
         let input = CombinationHomeInput(page: 0)
         CombinationHomeDataManager().combinationHomeDataManager(input, self) { [weak self] model in
             if let model = model {
+                self?.totalPageNum = model.result.totalPage
                 self?.arrayCombinationHome = model.result.combinationList
                 DispatchQueue.main.async {
                     self?.todayCombinationView.tableView.reloadData()
@@ -124,6 +128,27 @@ extension TodayCombinationViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func fetchNextPage() {
+//        print(#function)
+//        print("nowPageNum - \(nowPageNum)") // 현재 페이지
+        nowPageNum = nowPageNum + 1
+        let nextPage = nowPageNum
+//        print("nextPage : \(nextPage)") // 다음 요청할 페이지
+        let input = CombinationHomeInput(page: nextPage)
+        
+        CombinationHomeDataManager().combinationHomeDataManager(input, self) { [weak self] model in
+//            print(input)
+//            print("테스트")
+            if let model = model {
+                self?.arrayCombinationHome += model.result.combinationList
+                self?.fetchingMore = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self?.todayCombinationView.tableView.reloadData()
+                }
+            }
+        }
+    }
 }
 
 extension TodayCombinationViewController: UITableViewDelegate {
@@ -131,5 +156,23 @@ extension TodayCombinationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let todayCombinationDetailVC = TodayCombinationDetailViewController()
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
+    }
+    
+    //페이징
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.bounds.size.height
+        
+        if offsetY > contentHeight - height {
+//            print("맨 아래에 도달")
+//            print("totalPageNum - \(totalPageNum)")
+//            print("nowPageNum - \(nowPageNum)")
+            if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
+                fetchingMore = true
+//                print("fetchingMore - \(fetchingMore)")
+                fetchNextPage()
+            }
+        }
     }
 }

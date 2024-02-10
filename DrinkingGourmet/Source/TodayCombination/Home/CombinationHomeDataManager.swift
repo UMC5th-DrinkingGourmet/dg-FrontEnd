@@ -12,10 +12,10 @@ class CombinationHomeDataManager {
         AF.request("https://drink-gourmet.kro.kr/combinations", method: .get, parameters: parameters).validate().responseDecodable(of: CombinationHomeModel.self) { response in
             switch response.result {
             case .success(let result):
-                print("TodayCombinationHomeDataManager - 네트워킹 성공")
+                print("오늘의조합 홈 화면 - 네트워킹 성공")
                 completion(result)
             case .failure(let error):
-                print("TodayCombinationHomeDataManager - \(error)")
+                print("오늘의조합 홈 화면 - \(error)")
                 completion(nil)
             }
         }
