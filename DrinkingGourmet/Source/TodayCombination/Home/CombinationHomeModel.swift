@@ -12,25 +12,23 @@ struct CombinationHomeModel: Codable {
     let isSuccess: Bool
     let code, message: String
     let result: CombinationHomeModelResult
-}
+    
+    struct CombinationHomeModelResult: Codable {
+        let combinationList: [CombinationHomeList]
+        let listSize, totalPage, totalElements: Int
+        let isFirst, isLast: Bool
+    }
 
-// MARK: - CombinationHomeModelResult
-struct CombinationHomeModelResult: Codable {
-    let combinationList: [CombinationHomeList]
-    let listSize, totalPage, totalElements: Int
-    let isFirst, isLast: Bool
-}
-
-// MARK: - CombinationHomeList
-struct CombinationHomeList: Codable {
-    let title: String
-    let combinationImageURL: String
-    let likeCount, commentCount: Int
-    let hashTageList: [String]
-
-    enum CodingKeys: String, CodingKey {
-        case title
-        case combinationImageURL = "combinationImageUrl"
-        case likeCount, commentCount, hashTageList
+    struct CombinationHomeList: Codable {
+        let title: String
+        let combinationImageURL: String
+        let likeCount, commentCount: Int
+        let hashTageList: [String]
+        
+        enum CodingKeys: String, CodingKey {
+            case title
+            case combinationImageURL = "combinationImageUrl"
+            case likeCount, commentCount, hashTageList
+        }
     }
 }

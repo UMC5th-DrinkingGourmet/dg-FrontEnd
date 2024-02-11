@@ -7,6 +7,11 @@
 
 import Foundation
 
-struct CombinationHomeInput : Codable {
+struct CombinationHomeInput: Codable {
     var page: Int?
+}
+
+struct CombinationSearchInput: Codable {
+    var page: Int?
+    var keyword: String?
 }
