@@ -16,8 +16,6 @@ class CommunityHomeView: UIView {
         $0.separatorStyle = .none // 테이블뷰 구분선 없애기
     }
     
-    let customSearchBar = CustomSearchBar()
-    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,19 +29,12 @@ class CommunityHomeView: UIView {
     
     // MARK: - UI
     func addViews() {
-        self.addSubviews([customSearchBar, tableView])
+        self.addSubviews([tableView])
     }
     
     func configureConstraints() {
-        
-        customSearchBar.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(15)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-        }
-        
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(customSearchBar.snp.bottom).offset(10)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(15)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
