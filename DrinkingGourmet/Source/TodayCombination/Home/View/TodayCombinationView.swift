@@ -28,54 +28,6 @@ class TodayCombinationView: UIView {
         $0.clipsToBounds = true
     }
     
-    let writeLabel = UILabel().then {
-        $0.text = "작성하기"
-        $0.textColor = .white
-        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-        $0.isHidden = true
-    }
-    
-    let writeButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_write"), for: .normal)
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 25
-        $0.clipsToBounds = true
-        $0.isHidden = true
-    }
-    
-    let modifyLabel = UILabel().then {
-        $0.text = "수정하기"
-        $0.textColor = .white
-        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-        $0.isHidden = true
-    }
-    
-    let modifyButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_modify"), for: .normal)
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 25
-        $0.clipsToBounds = true
-        $0.isHidden = true
-    }
-    
-    let floatingStackView = UIStackView().then {
-        $0.axis = .vertical // 수직으로 정렬
-        $0.spacing = 8
-        $0.alignment = .fill // 버튼의 가로 크기를 일정하게 유지
-        $0.distribution = .fillEqually // 버튼의 세로 크기를 균등하게 배분
-    }
-    
-    lazy var shadowView: UIView = {
-        let view = UIView(frame: self.frame)
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        view.alpha = 0
-        view.isHidden = true
-        
-        self.insertSubview(view, belowSubview: floatingStackView)
-        
-        return view
-    }()
-    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,9 +41,7 @@ class TodayCombinationView: UIView {
     
     // MARK: - UI
     func addViews() {
-        floatingStackView.addArrangedSubviews([modifyButton, /*modifyLabel,*/ writeButton, /*writeLabel,*/ floatingButton])
-        
-        self.addSubviews([tableView, customSearchBar,floatingStackView, writeLabel, modifyLabel])
+        self.addSubviews([tableView, customSearchBar, floatingButton])
     }
     
     func configureConstraints() {
@@ -108,31 +58,10 @@ class TodayCombinationView: UIView {
             make.bottom.equalToSuperview()
         }
         
-        floatingStackView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-18)
-            make.bottom.equalToSuperview().offset(-58)
-        }
-        
         floatingButton.snp.makeConstraints { make in
             make.size.equalTo(50)
-        }
-        
-        writeLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-80)
-            make.bottom.equalToSuperview().offset(-130)
-        }
-        
-        writeButton.snp.makeConstraints { make in
-            make.size.equalTo(50)
-        }
-        
-        modifyLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(writeLabel)
-            make.bottom.equalToSuperview().offset(-188)
-        }
-        
-        modifyButton.snp.makeConstraints { make in
-            make.size.equalTo(50)
+            make.trailing.equalToSuperview().offset(-18)
+            make.bottom.equalToSuperview().offset(-58)
         }
     }
 }

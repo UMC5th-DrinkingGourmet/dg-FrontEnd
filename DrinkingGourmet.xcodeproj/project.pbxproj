@@ -71,6 +71,9 @@
 		5668A34B2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A34A2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift */; };
 		5668A34D2B6FBAF00009FCD6 /* RecipeBookDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A34C2B6FBAF00009FCD6 /* RecipeBookDetailVC.swift */; };
 		5668A34F2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A34E2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift */; };
+		5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */; };
+		5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */; };
+		5668A3BB2B76B2120009FCD6 /* CombinationHomeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */; };
 		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
 		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
 		56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */; };
@@ -162,6 +165,9 @@
 		5668A34A2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailCell.swift; sourceTree = "<group>"; };
 		5668A34C2B6FBAF00009FCD6 /* RecipeBookDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailVC.swift; sourceTree = "<group>"; };
 		5668A34E2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailInfoView.swift; sourceTree = "<group>"; };
+		5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeInput.swift; path = DrinkingGourmet/Source/TodayCombination/Home/CombinationHomeInput.swift; sourceTree = SOURCE_ROOT; };
+		5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeModel.swift; path = DrinkingGourmet/Source/TodayCombination/Home/CombinationHomeModel.swift; sourceTree = SOURCE_ROOT; };
+		5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeDataManager.swift; path = DrinkingGourmet/Source/TodayCombination/Home/CombinationHomeDataManager.swift; sourceTree = SOURCE_ROOT; };
 		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
 		56A405662B5F776200BF85A8 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
 		56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -543,6 +549,9 @@
 		5658DDF52B57497700F72F42 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */,
+				5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */,
+				5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -922,6 +931,7 @@
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				5668A2F92B6EDCC00009FCD6 /* CommunityHome.swift in Sources */,
+				5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
 				5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */,
 				5668A3452B6F68780009FCD6 /* RecipeBookHomeCell.swift in Sources */,
@@ -969,7 +979,9 @@
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				5668A3472B6FBAB20009FCD6 /* RecipeBookDetailView.swift in Sources */,
 				56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */,
+				5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */,
 				97EB4ACC2B70F63B009A62EB /* SelectWeatherResource.swift in Sources */,
+				5668A3BB2B76B2120009FCD6 /* CombinationHomeDataManager.swift in Sources */,
 				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
 				97EB4AC72B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift in Sources */,
 				97EB4AE52B70F704009A62EB /* CustomizedSlider.swift in Sources */,

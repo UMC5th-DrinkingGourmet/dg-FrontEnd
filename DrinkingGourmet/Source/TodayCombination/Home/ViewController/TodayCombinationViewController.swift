@@ -11,19 +11,19 @@ import Then
 
 class TodayCombinationViewController: UIViewController {
     
+    var arrayCombinationHome: [CombinationHomeList] = []
+    var fetchingMore: Bool = false
+    var totalPageNum: Int = 0
+    var nowPageNum: Int = 0
+    
     private let todayCombinationView = TodayCombinationView()
-    
-    private lazy var buttons: [UIButton] = [todayCombinationView.writeButton, todayCombinationView.modifyButton]
-    private lazy var labels: [UILabel] = [todayCombinationView.writeLabel, todayCombinationView.modifyLabel]
-    
-    private var isShowFloating: Bool = false
-    private var isShowLabel: Bool = false
     
     // MARK: - View 설정
     override func loadView() {
         view = todayCombinationView
     }
     
+    // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -36,6 +36,17 @@ class TodayCombinationViewController: UIViewController {
     
     func prepare() {
         todayCombinationView.customSearchBar.textField.delegate = self
+        
+        let input = CombinationHomeInput(page: 0)
+        CombinationHomeDataManager().combinationHomeDataManager(input, self) { [weak self] model in
+            if let model = model {
+                self?.totalPageNum = model.result.totalPage
+                self?.arrayCombinationHome = model.result.combinationList
+                DispatchQueue.main.async {
+                    self?.todayCombinationView.tableView.reloadData()
+                }
+            }
+        }
     }
     
     // MARK: - 네비게이션바 설정
@@ -71,66 +82,11 @@ class TodayCombinationViewController: UIViewController {
     // MARK: - 플로팅버튼 설정
     func setupFloatingButton() {
         todayCombinationView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
-        
-        todayCombinationView.writeButton.addTarget(self, action: #selector(writeButtonTapped), for: .touchUpInside)
-        
-        todayCombinationView.modifyButton.addTarget(self, action: #selector(modifyButtonTapped), for: .touchUpInside)
     }
     
-    @objc func floatingButtonTapped(_ sender: UIButton) {
-        
-        let shadowView = todayCombinationView.shadowView
-        
-        if isShowFloating { // 플로팅버튼 열려있을 때
-            buttons.reversed().forEach { button in
-                UIView.animate(withDuration: 0.3) {
-                    button.isHidden = true
-                    self.view.layoutIfNeeded()
-                }
-            }
-            labels.forEach { $0.isHidden = true }
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                shadowView.alpha = 0
-            }) { (_) in
-                shadowView.isHidden = true
-            }
-        } else { // 플로팅버튼 닫혀있을 때
-
-            shadowView.isHidden = false
-            
-            UIView.animate(withDuration: 0.5) { shadowView.alpha = 1 }
-            
-            buttons.forEach { [weak self] button in
-                button.isHidden = false
-                button.alpha = 0
-                
-                UIView.animate(withDuration: 0.3) {
-                    button.alpha = 1
-                    self?.view.layoutIfNeeded()
-                }
-            }
-            labels.forEach { $0.isHidden = false }
-        }
-        
-        isShowFloating = !isShowFloating
-        
-        let backgroundColor: UIColor = isShowFloating ? .black : .customOrange
-
-        let roatation = isShowFloating ? CGAffineTransform(rotationAngle: .pi - (.pi / 4)) : CGAffineTransform.identity
-        
-        UIView.animate(withDuration: 0.3) {
-            sender.backgroundColor = backgroundColor
-            sender.transform = roatation
-        }
-    }
-    
-    @objc func writeButtonTapped() {
-        print("작성하기 버튼 눌림")
-    }
-    
-    @objc func modifyButtonTapped() {
-        print("수정하기 버튼 눌림")
+    @objc func floatingButtonTapped() {
+        let vc = UploadViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -146,15 +102,52 @@ extension TodayCombinationViewController: UITextFieldDelegate {
 extension TodayCombinationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return arrayCombinationHome.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodayCombinationCell", for: indexPath) as! TodayCombinationCell
+        
+        let combination = arrayCombinationHome[indexPath.row]
+        
+        if let url = URL(string: combination.combinationImageURL) {
+            cell.mainImage.kf.setImage(with: url)
+        }
+        
+        cell.titleLabel.text = combination.title
+        
+        let hashtags = combination.hashTageList.map { "#\($0)" }.joined(separator: " ")
+        cell.hashtagLabel.text = hashtags
+        
+        cell.commentNumLabel.text = "\(combination.commentCount)"
+        
+        cell.likeNumLabel.text = "\(combination.likeCount)"
         
         cell.selectionStyle = .none // cell 선택 시 시각효과 제거
         
         return cell
+    }
+    
+    func fetchNextPage() {
+//        print(#function)
+//        print("nowPageNum - \(nowPageNum)") // 현재 페이지
+        nowPageNum = nowPageNum + 1
+        let nextPage = nowPageNum
+//        print("nextPage : \(nextPage)") // 다음 요청할 페이지
+        let input = CombinationHomeInput(page: nextPage)
+        
+        CombinationHomeDataManager().combinationHomeDataManager(input, self) { [weak self] model in
+//            print(input)
+//            print("테스트")
+            if let model = model {
+                self?.arrayCombinationHome += model.result.combinationList
+                self?.fetchingMore = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self?.todayCombinationView.tableView.reloadData()
+                }
+            }
+        }
     }
 }
 
@@ -163,5 +156,23 @@ extension TodayCombinationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let todayCombinationDetailVC = TodayCombinationDetailViewController()
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
+    }
+    
+    //페이징
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.bounds.size.height
+        
+        if offsetY > contentHeight - height {
+//            print("맨 아래에 도달")
+//            print("totalPageNum - \(totalPageNum)")
+//            print("nowPageNum - \(nowPageNum)")
+            if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
+                fetchingMore = true
+//                print("fetchingMore - \(fetchingMore)")
+                fetchNextPage()
+            }
+        }
     }
 }
