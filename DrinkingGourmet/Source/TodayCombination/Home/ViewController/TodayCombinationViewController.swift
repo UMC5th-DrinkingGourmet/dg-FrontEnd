@@ -11,12 +11,12 @@ import Then
 
 class TodayCombinationViewController: UIViewController {
     
-    var arrayCombinationHome: [CombinationHomeList] = []
+    var arrayCombinationHome: [CombinationHomeModel.CombinationHomeList] = []
     var fetchingMore: Bool = false
     var totalPageNum: Int = 0
     var nowPageNum: Int = 0
     
-    private let todayCombinationView = TodayCombinationView()
+    let todayCombinationView = TodayCombinationView()
     
     // MARK: - View 설정
     override func loadView() {
@@ -37,8 +37,16 @@ class TodayCombinationViewController: UIViewController {
     func prepare() {
         todayCombinationView.customSearchBar.textField.delegate = self
         
+        todayCombinationView.customSearchBar.textField.attributedPlaceholder = NSAttributedString(
+            string: "오늘의 조합 검색",
+            attributes: [
+                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
+                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
+            ]
+        )
+        
         let input = CombinationHomeInput(page: 0)
-        CombinationHomeDataManager().combinationHomeDataManager(input, self) { [weak self] model in
+        CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
             if let model = model {
                 self?.totalPageNum = model.result.totalPage
                 self?.arrayCombinationHome = model.result.combinationList
@@ -88,17 +96,40 @@ class TodayCombinationViewController: UIViewController {
         let vc = UploadViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
-}
-
-extension TodayCombinationViewController: UITextFieldDelegate {
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        let searchResultsVC = SearchResultVC()
-        searchResultsVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
-        navigationController?.pushViewController(searchResultsVC, animated: true)
+    // MARK: - 페이징
+    func fetchNextPage() {
+//        print(#function)
+//        print("nowPageNum - \(nowPageNum)") // 현재 페이지
+        nowPageNum = nowPageNum + 1
+        let nextPage = nowPageNum
+//        print("nextPage : \(nextPage)") // 다음 요청할 페이지
+        let input = CombinationHomeInput(page: nextPage)
+        
+        CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
+//            print(input)
+//            print("테스트")
+            if let model = model {
+                self?.arrayCombinationHome += model.result.combinationList
+                self?.fetchingMore = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self?.todayCombinationView.tableView.reloadData()
+                }
+            }
+        }
     }
 }
 
+// MARK: - UITextFieldDelegate
+extension TodayCombinationViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let combinationSearchVC = CombinationSearchVC()
+        combinationSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
+        navigationController?.pushViewController(combinationSearchVC, animated: true)
+    }
+}
+
+// MARK: - UITableViewDataSource
 extension TodayCombinationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -128,37 +159,16 @@ extension TodayCombinationViewController: UITableViewDataSource {
         
         return cell
     }
-    
-    func fetchNextPage() {
-//        print(#function)
-//        print("nowPageNum - \(nowPageNum)") // 현재 페이지
-        nowPageNum = nowPageNum + 1
-        let nextPage = nowPageNum
-//        print("nextPage : \(nextPage)") // 다음 요청할 페이지
-        let input = CombinationHomeInput(page: nextPage)
-        
-        CombinationHomeDataManager().combinationHomeDataManager(input, self) { [weak self] model in
-//            print(input)
-//            print("테스트")
-            if let model = model {
-                self?.arrayCombinationHome += model.result.combinationList
-                self?.fetchingMore = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    self?.todayCombinationView.tableView.reloadData()
-                }
-            }
-        }
-    }
 }
 
+// MARK: - UITableViewDelegate
 extension TodayCombinationViewController: UITableViewDelegate {
-    // 셀 선택시 Detail 화면으로
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let todayCombinationDetailVC = TodayCombinationDetailViewController()
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
-    
-    //페이징
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height

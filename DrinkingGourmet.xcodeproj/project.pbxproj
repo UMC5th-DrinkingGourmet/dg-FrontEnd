@@ -71,6 +71,7 @@
 		5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */; };
 		5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */; };
 		5668A3BB2B76B2120009FCD6 /* CombinationHomeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */; };
+		5668A3D12B78F69C0009FCD6 /* CombinationSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3D02B78F69C0009FCD6 /* CombinationSearchVC.swift */; };
 		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
 		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
 		56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */; };
@@ -162,6 +163,7 @@
 		5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeInput.swift; path = DrinkingGourmet/Source/TodayCombination/Home/CombinationHomeInput.swift; sourceTree = SOURCE_ROOT; };
 		5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeModel.swift; path = DrinkingGourmet/Source/TodayCombination/Home/CombinationHomeModel.swift; sourceTree = SOURCE_ROOT; };
 		5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeDataManager.swift; path = DrinkingGourmet/Source/TodayCombination/Home/CombinationHomeDataManager.swift; sourceTree = SOURCE_ROOT; };
+		5668A3D02B78F69C0009FCD6 /* CombinationSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSearchVC.swift; sourceTree = "<group>"; };
 		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
 		56A405662B5F776200BF85A8 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
 		56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -516,6 +518,7 @@
 			isa = PBXGroup;
 			children = (
 				5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */,
+				5668A3D02B78F69C0009FCD6 /* CombinationSearchVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -932,6 +935,7 @@
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
 				2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
+				5668A3D12B78F69C0009FCD6 /* CombinationSearchVC.swift in Sources */,
 				97EB4AFC2B720D42009A62EB /* LoadingRecommendDrinkViewController.swift in Sources */,
 				5668A3432B6F68610009FCD6 /* RecipeBookHomeView.swift in Sources */,
 				97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */,
