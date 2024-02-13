@@ -10,6 +10,13 @@ import UIKit
 final class RecipeBookDetailVC: UIViewController {
     
     // MARK: - Properties
+    var recipeBookId: Int?
+    var fetchingMore: Bool = false
+    var totalPageNum: Int = 0
+    var nowPageNum: Int = 0
+    
+    var recipeBookDetailData: RecipeBookDetailModel?
+    
     private let recipeBookDetailView = RecipeBookDetailView()
     
     private var isLiked = false
@@ -35,10 +42,51 @@ final class RecipeBookDetailVC: UIViewController {
     func prepare() {
         view.backgroundColor = .white
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
+        
+        recipeBookDetailView.scrollView.delegate = self
+        
+        if let recipeBookId = self.recipeBookId {
+            RecipeBookDetailDataManager().fetchRecipeBookDetailData(recipeBookId, self) { [weak self] detailModel in
+                guard let self = self else { return }
+                
+                self.recipeBookDetailData = detailModel
+                DispatchQueue.main.async {
+                    self.updateUIWithData()
+                }
+            }
+        }
     }
     
     @objc func endEditing(){
         view.endEditing(true)
+    }
+    
+    // MARK: - 네트워킹 후 UI 업데이트
+    func updateUIWithData() {
+        self.recipeBookDetailView.imageCollectionView.reloadData()
+        
+//        self.todayCombinationDetailView.pageControl.numberOfPages =  combinationDetailData?.result.combinationResult.combinationImageList.count ?? 0
+        
+        self.recipeBookDetailView.userNameLabel.text = "\(recipeBookDetailData?.result.memberName ?? "이름") 님의 레시피"
+        
+//        if combinationDetailData?.result.combinationResult.isCombinationLike == true {
+//            self.isLiked = true
+//            self.todayCombinationDetailView.likeIconButton.setImage(UIImage(named: "ic_like_selected"), for: .normal)
+//        }
+        
+//        self.todayCombinationDetailView.hashtagLabel.text = combinationDetailData?.result.combinationResult.hashTagList.map { "#\($0)" }.joined(separator: " ")
+        
+        self.recipeBookDetailView.titleLabel.text = recipeBookDetailData?.result.name
+        
+        self.recipeBookDetailView.recipeBookDetailInfoView.timeNumLabel.text = recipeBookDetailData?.result.cookingTime
+        
+        self.recipeBookDetailView.recipeBookDetailInfoView.kcalNumLabel.text = recipeBookDetailData?.result.calorie
+        
+        self.recipeBookDetailView.recipeBookDetailInfoView.likeNumLabel.text = "\(recipeBookDetailData?.result.likeCount ?? 99)"
+        
+        self.recipeBookDetailView.ingredientListLabel.text = recipeBookDetailData?.result.ingredient
+        
+        self.recipeBookDetailView.descriptionLabel.text = recipeBookDetailData?.result.recipeInstruction
     }
     
     // MARK: - 이미지 컬렉션뷰 설정

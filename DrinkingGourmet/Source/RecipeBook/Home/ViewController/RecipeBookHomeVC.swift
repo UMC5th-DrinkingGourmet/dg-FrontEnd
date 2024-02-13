@@ -139,7 +139,10 @@ extension RecipeBookHomeVC: UITableViewDataSource {
 extension RecipeBookHomeVC: UITableViewDelegate {
     // 셀 선택시 Detail 화면으로
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedItem = arrayRecipeBookHome[indexPath.row].id
+        
         let recipeBookDetailVC = RecipeBookDetailVC()
+        recipeBookDetailVC.recipeBookId = selectedItem
         navigationController?.pushViewController(recipeBookDetailVC, animated: true)
     }
 }
