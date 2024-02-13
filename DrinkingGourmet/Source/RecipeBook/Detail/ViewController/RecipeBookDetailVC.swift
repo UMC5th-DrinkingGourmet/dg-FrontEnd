@@ -16,6 +16,7 @@ final class RecipeBookDetailVC: UIViewController {
     var nowPageNum: Int = 0
     
     var recipeBookDetailData: RecipeBookDetailModel?
+    var arrayrecipeBookDetailImage: [String] = []
     
     private let recipeBookDetailView = RecipeBookDetailView()
     
@@ -32,7 +33,6 @@ final class RecipeBookDetailVC: UIViewController {
         
         prepare()
         setupImageCollectionView()
-        setupPageControl()
         configureLikeIconButton()
         configureMoreButton()
         configureCommentMoreButton()
@@ -48,10 +48,16 @@ final class RecipeBookDetailVC: UIViewController {
         if let recipeBookId = self.recipeBookId {
             RecipeBookDetailDataManager().fetchRecipeBookDetailData(recipeBookId, self) { [weak self] detailModel in
                 guard let self = self else { return }
-                
                 self.recipeBookDetailData = detailModel
-                DispatchQueue.main.async {
-                    self.updateUIWithData()
+                
+                let input = RecipeBookDetailImageInput(recipeId: recipeBookId)
+                RecipeBookDetailDataManager().fetchRecipeBookDetailImageData(input, self) { imgModel in
+                    if let imgModel = imgModel {
+                        self.arrayrecipeBookDetailImage = imgModel.result
+                        DispatchQueue.main.async {
+                            self.updateUIWithData()
+                        }
+                    }
                 }
             }
         }
@@ -65,7 +71,7 @@ final class RecipeBookDetailVC: UIViewController {
     func updateUIWithData() {
         self.recipeBookDetailView.imageCollectionView.reloadData()
         
-//        self.todayCombinationDetailView.pageControl.numberOfPages =  combinationDetailData?.result.combinationResult.combinationImageList.count ?? 0
+        self.recipeBookDetailView.pageControl.numberOfPages = arrayrecipeBookDetailImage.count
         
         self.recipeBookDetailView.userNameLabel.text = "\(recipeBookDetailData?.result.memberName ?? "이름") 님의 레시피"
         
@@ -98,12 +104,6 @@ final class RecipeBookDetailVC: UIViewController {
         
         // 이미지 컬렌션뷰 터치 시 키보드 내림
         imageCV.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
-    }
-    
-    // MARK: - 페이지컨트롤 설정
-    func setupPageControl() {
-        let pc = recipeBookDetailView.pageControl
-        pc.numberOfPages = 3
     }
     
     // MARK: - 좋아요 아이콘 버튼 설정
@@ -157,18 +157,25 @@ final class RecipeBookDetailVC: UIViewController {
     
 }
 
+// MARK: - UICollectionViewDataSource
 extension RecipeBookDetailVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return arrayrecipeBookDetailImage.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeBookDetailCell", for: indexPath) as! RecipeBookDetailCell
 
+        let imageUrlString = arrayrecipeBookDetailImage[indexPath.item]
+        if let imageUrl = URL(string: imageUrlString) {
+            cell.mainImage.kf.setImage(with: imageUrl)
+        }
+        
         return cell
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension RecipeBookDetailVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -184,10 +191,12 @@ extension RecipeBookDetailVC: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension RecipeBookDetailVC: UICollectionViewDelegate {
     
 }
 
+// MARK: - UIScrollViewDelegate
 extension RecipeBookDetailVC: UIScrollViewDelegate {
     
     // 이미지 컬렉션뷰 스크롤 시 키보드 내림

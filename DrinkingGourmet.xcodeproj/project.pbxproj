@@ -59,6 +59,8 @@
 		5601EBC82B7C169A0043CCD4 /* RecipeBookSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBC72B7C169A0043CCD4 /* RecipeBookSearchVC.swift */; };
 		5601EBCB2B7C1E470043CCD4 /* RecipeBookDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBCA2B7C1E470043CCD4 /* RecipeBookDetailModel.swift */; };
 		5601EBCD2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBCC2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift */; };
+		5601EBCF2B7C289B0043CCD4 /* RecipeBookDetailImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBCE2B7C289B0043CCD4 /* RecipeBookDetailImageModel.swift */; };
+		5601EBD12B7C29480043CCD4 /* RecipeBookDetailImageInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBD02B7C29480043CCD4 /* RecipeBookDetailImageInput.swift */; };
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
 		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
@@ -165,6 +167,8 @@
 		5601EBC72B7C169A0043CCD4 /* RecipeBookSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookSearchVC.swift; sourceTree = "<group>"; };
 		5601EBCA2B7C1E470043CCD4 /* RecipeBookDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailModel.swift; sourceTree = "<group>"; };
 		5601EBCC2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailDataManager.swift; sourceTree = "<group>"; };
+		5601EBCE2B7C289B0043CCD4 /* RecipeBookDetailImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailImageModel.swift; sourceTree = "<group>"; };
+		5601EBD02B7C29480043CCD4 /* RecipeBookDetailImageInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailImageInput.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
 		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
@@ -569,6 +573,8 @@
 			isa = PBXGroup;
 			children = (
 				5601EBCA2B7C1E470043CCD4 /* RecipeBookDetailModel.swift */,
+				5601EBD02B7C29480043CCD4 /* RecipeBookDetailImageInput.swift */,
+				5601EBCE2B7C289B0043CCD4 /* RecipeBookDetailImageModel.swift */,
 				5601EBCC2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift */,
 			);
 			path = Model;
@@ -967,6 +973,7 @@
 				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
+				5601EBD12B7C29480043CCD4 /* RecipeBookDetailImageInput.swift in Sources */,
 				5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */,
 				5668A2F92B6EDCC00009FCD6 /* CommunityHome.swift in Sources */,
 				5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */,
@@ -1016,6 +1023,7 @@
 				2EFA32FA2B71629100059188 /* GradientView.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
 				5668A3412B6F68280009FCD6 /* RecipeBookHomeVC.swift in Sources */,
+				5601EBCF2B7C289B0043CCD4 /* RecipeBookDetailImageModel.swift in Sources */,
 				2EFA32F22B714CC000059188 /* RecommendView.swift in Sources */,
 				97EB4AC42B70F5E6009A62EB /* SelectMyMoodViewController.swift in Sources */,
 				5668A3032B6EE3BD0009FCD6 /* WeeklyBestCell.swift in Sources */,
