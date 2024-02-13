@@ -15,7 +15,7 @@ final class RecipeBookHomeVC: UIViewController {
     var totalPageNum: Int = 0
     var nowPageNum: Int = 0
     
-    private let recipeBookHomeView = RecipeBookHomeView()
+    let recipeBookHomeView = RecipeBookHomeView()
     
     // MARK: - View 설정
     override func loadView() {
@@ -102,9 +102,9 @@ final class RecipeBookHomeVC: UIViewController {
 extension RecipeBookHomeVC: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        let searchResultsVC = SearchResultVC()
-        searchResultsVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
-        navigationController?.pushViewController(searchResultsVC, animated: true)
+        let recipeBookSearchVC = RecipeBookSearchVC()
+        recipeBookSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
+        navigationController?.pushViewController(recipeBookSearchVC, animated: true)
     }
 }
 

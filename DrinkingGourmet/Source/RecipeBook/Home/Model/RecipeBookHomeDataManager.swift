@@ -36,4 +36,26 @@ class RecipeBookHomeDataManager {
             }
         }
     }
+    
+    // MARK: - 레시피북 검색 후 목록 가져오기
+    func fetchRecipeBookDataForSearch(_ parameters: RecipeBookSearchInput,
+                                       _ viewController: RecipeBookSearchVC,
+                                       completion: @escaping (RecipeBookHomeModel?) -> Void) {
+        
+        AF.request("\(baseURL)/recipes/search",
+                   method: .get,
+                   parameters: parameters,
+                   headers: testAccessToken)
+        .validate()
+        .responseDecodable(of: RecipeBookHomeModel.self) { response in
+            switch response.result {
+            case .success(let result):
+                print("레시피북 검색 - 네트워킹 성공")
+                completion(result)
+            case .failure(let error):
+                print("레시피북 검색 - \(error)")
+                completion(nil)
+            }
+        }
+    }
 }

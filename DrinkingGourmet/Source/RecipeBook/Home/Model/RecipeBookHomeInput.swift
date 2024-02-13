@@ -9,3 +9,9 @@
 struct RecipeBookHomeInput: Codable {
     var page: Int?
 }
+
+// MARK: - 레시피북 검색 후 목록 가져오기 Query Prams
+struct RecipeBookSearchInput: Codable {
+    var page: Int?
+    var keyword: String?
+}
