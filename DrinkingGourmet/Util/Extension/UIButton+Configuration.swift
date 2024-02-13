@@ -85,4 +85,18 @@ extension UIButton {
         self.configuration = config
         self.layer.cornerRadius = 8
     }
+    
+    func logoutBtnConfig(title: String, font: UIFont, backgroundColor: UIColor) {
+        var config = UIButton.Configuration.plain()
+        
+        var titleAttr = AttributedString.init(title)
+        titleAttr.foregroundColor = .darkGray
+        titleAttr.font = font
+        
+        config.attributedTitle = titleAttr
+        config.baseForegroundColor = .white
+        
+        self.backgroundColor = backgroundColor
+        self.configuration = config
+    }
 }

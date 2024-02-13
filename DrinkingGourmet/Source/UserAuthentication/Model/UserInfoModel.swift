@@ -5,6 +5,8 @@
 //  Created by hwijinjeong on 2/7/24.
 //
 
+import Foundation
+
 struct UserInfoModel: Encodable {
     var name: String
     var profileImage: String
