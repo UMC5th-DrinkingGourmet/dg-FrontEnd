@@ -93,8 +93,8 @@ class ProfileCreationViewController: UIViewController {
         layout()
         configView()
         configNav()
+        setupKeyboardNotifications()
     }
-    
 }
 
 extension ProfileCreationViewController {
@@ -225,7 +225,8 @@ extension ProfileCreationViewController {
             femaleBtn.isSelected = true
             updateButtonColor(femaleBtn, "  여성  ")
         } else {
-            
+            noneBtn.isSelected = true
+            updateButtonColor(noneBtn, "  선택 안함  ")
         }
         
         self.confirmBtn.addTarget(self, action: #selector(confirmBtnClicked), for: .touchUpInside)
@@ -292,7 +293,10 @@ extension ProfileCreationViewController {
             providerId: UserDefaultManager.shared.providerId
         )
                 
-        UserInfoDataManager.shared.sendUserInfo(userInfo)
+        UserInfoDataManager.shared.sendUserInfo(userInfo) {
+            let mainMenuVC = MainMenuViewController()
+            self.navigationController?.pushViewController(mainMenuVC, animated: true)
+        }
     }
     
     @objc func confirmBtnClicked() {
@@ -300,9 +304,6 @@ extension ProfileCreationViewController {
             UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Nil이에요"
             
             postUserInfo()
-            
-            UserDefaultManager.shared.isLoggedIn = true
-            self.navigationController?.pushViewController(MainMenuViewController(), animated: true)
         } else {
             let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "프로필을 제대로 입력하지 않으셨습니다.", preferredStyle: .alert)
             
@@ -314,6 +315,35 @@ extension ProfileCreationViewController {
             
             present(alert, animated: true)
         }
+    }
+    
+    func setupKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(noti:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(noti:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(noti: Notification) {
+        guard let userInfo = noti.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardHeight = keyboardFrame.cgRectValue.height
+        var contentInset = scrollView.contentInset
+        contentInset.bottom = keyboardHeight
+        scrollView.contentInset = contentInset
+    }
+
+    @objc func keyboardWillHide(noti: Notification) {
+        var contentInset = scrollView.contentInset
+        contentInset.bottom = 0
+        scrollView.contentInset = contentInset
     }
     
     func configNav() {

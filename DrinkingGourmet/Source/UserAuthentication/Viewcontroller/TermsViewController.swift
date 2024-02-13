@@ -157,8 +157,6 @@ extension TermsViewController {
     
     @objc func btnClicked(sender: UIButton) {
         if sender.isSelected == true {
-            print("이미 선택되어있던 걸 클릭")
-                
             sender.buttonConfiguration(
             title: buttonDictionary[sender] ?? "",
             font: .systemFont(ofSize: 14),
@@ -169,8 +167,6 @@ extension TermsViewController {
             )
             sender.isSelected = false
         } else {
-            print("그 외를 클릭")
-            print(buttonDictionary[sender] ?? "")
             sender.buttonConfiguration(
             title: buttonDictionary[sender] ?? "",
             font: .systemFont(ofSize: 14),
@@ -237,7 +233,6 @@ extension TermsViewController {
                 imageSize: CGSize(width: 23, height: 20)
             )
             totalTermsBtn.isSelected = false
-            print("totaltermsbtn이 false")
         } else {
             totalTermsBtn.buttonConfiguration(
                 title: "전체 약관에 동의합니다.",

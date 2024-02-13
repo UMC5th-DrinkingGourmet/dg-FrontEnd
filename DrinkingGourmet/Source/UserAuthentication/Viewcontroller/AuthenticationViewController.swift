@@ -76,9 +76,39 @@ class AuthenticationViewController: UIViewController {
     }
     
     @objc func kakaoBtnClicked() {
-        kakaoAuthVM.kakaoLogin()
-        UserDefaultManager.shared.provider = "kakao"
+        do {
+             // 리프레시 토큰의 유효성 검사
+            let _ = try Keychain.shared.getToken(kind: .refreshToken)
+            let mainMenuVC = MainMenuViewController()
+            // MainMenuViewController로 이동
+            self.navigationController?.pushViewController(mainMenuVC, animated: true)
+            return
+//            UserInfoDataManager.shared.loginWithProviderInfo { [weak self] in
+//                        DispatchQueue.main.async {
+//                            let mainMenuVC = MainMenuViewController()
+//                            // MainMenuViewController로 이동
+//                            self?.navigationController?.pushViewController(mainMenuVC, animated: true)
+//                        }
+//                    }
+        } catch KeyChainError.noData {
+            // 리프레시 토큰이 없는 경우
+            let alert = UIAlertController(title: "카카오톡 로그인", message: "카카오톡으로 로그인하시겠습니까?", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+                self?.kakaoAuthVM.kakaoLogin()
+                UserDefaultManager.shared.provider = "kakao"
+            }
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        } catch {
+            print("unexpected error")
+        }
     }
+
     
     private func layout() {
         view.addSubviews([
@@ -126,41 +156,34 @@ class AuthenticationViewController: UIViewController {
 
 extension AuthenticationViewController {
     fileprivate func setBindings() {
-//        //방법 1
-//        self.kakaoAuthVM.$isLoggedIn.sink { [weak self] isLoggedIn in
-//            guard let self = self else { return }
-////            self.loginLabel.text = isLoggedIn ? "it is login" : "it is no login"
-//        }
-//        .store(in: &subscriptions)
-        
-    
-//        // 방법 2
-        self.kakaoAuthVM.loginStatusInfo
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.text, on: self.loginLabel)
-            .store(in: &subscriptions)
-        
         // 로그인 성공시
         kakaoAuthVM.$isLoggedIn
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
                     DispatchQueue.main.async {
+                        // 이미 TermsViewController가 푸시되었는지 확인
+                        if self?.navigationController?.topViewController is TermsViewController {
+                            return
+                        }
+
                         self?.navigationController?.pushViewController(TermsViewController(), animated: true)
                     }
                 }
             }
             .store(in: &subscriptions)
+
         
         kakaoAuthVM.$userInfo
             .receive(on: DispatchQueue.main)
             .sink { user in
-                UserDefaultManager.shared.userName = user?.kakaoAccount?.profile?.nickname ?? "이름 옵셔널 값"
+                guard let validUser = user, validUser.id != -1 else { return }
+                UserDefaultManager.shared.userName = validUser.kakaoAccount?.profile?.nickname ?? "-1"
                 
-                UserDefaultManager.shared.userBirth = (user?.kakaoAccount?.birthyear ?? "연도") + (user?.kakaoAccount?.birthday ?? "날짜")
+                UserDefaultManager.shared.userBirth = (user?.kakaoAccount?.birthyear ?? "-1") + (user?.kakaoAccount?.birthday ?? "-1")
                 
                 // 전화번호 format
-                var phoneNumber = user?.kakaoAccount?.phoneNumber ?? "저나버노"
+                var phoneNumber = user?.kakaoAccount?.phoneNumber ?? "-1"
                 if phoneNumber.hasPrefix("+82 ") {
                     let index = phoneNumber.index(phoneNumber.startIndex, offsetBy: 4)
                     phoneNumber = "0" + phoneNumber[index...].replacingOccurrences(of: "-", with: "")
@@ -173,15 +196,12 @@ extension AuthenticationViewController {
                     
                     UserDefaultManager.shared.userProfileImg = urlString
                 }
-                print(UserDefaultManager.shared.userProfileImg)
                 
-                UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? "unknown"
-                print(UserDefaultManager.shared.userGender)
+                UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? "-1"
                 
-                UserDefaultManager.shared.email = user?.kakaoAccount?.email ?? "none email"
-                print(UserDefaultManager.shared.email)
+                UserDefaultManager.shared.email = user?.kakaoAccount?.email ?? "-l"
                 
-                UserDefaultManager.shared.providerId = String(user?.id ?? -1)
+                UserDefaultManager.shared.providerId = String(validUser.id ?? -1)
             }
             .store(in: &subscriptions)
     }

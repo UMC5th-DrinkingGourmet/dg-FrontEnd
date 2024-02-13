@@ -10,6 +10,7 @@ import SnapKit
 import Then
 
 class MainMenuViewController: UIViewController {
+    private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
     
     // dummy
     var topCollectionViewImgList = ["img_home_banner", "HomeBanner01", "HomeBanner03", "HomeBanner04"]
@@ -46,6 +47,7 @@ class MainMenuViewController: UIViewController {
         $0.dataSource = self
         $0.register(MainMenuBannerCollectionViewCell.self, forCellWithReuseIdentifier: "MainMenuBannerCollectionViewCell")
         $0.tag = 0
+        $0.backgroundColor = .clear
     }
     
     let recommendView = RecommendView()
@@ -61,6 +63,7 @@ class MainMenuViewController: UIViewController {
         $0.dataSource = self
         $0.register(RecipeBookCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeBookCollectionViewCell")
         $0.tag = 1
+        $0.backgroundColor = .clear
     }
     
     let todayCombiBtn = UIButton().then {
@@ -74,6 +77,7 @@ class MainMenuViewController: UIViewController {
         $0.dataSource = self
         $0.register(TodayCombiCollectionViewCell.self, forCellWithReuseIdentifier: "TodayCombiCollectionViewCell")
         $0.tag = 2
+        $0.backgroundColor = .clear
     }
     
     
@@ -106,32 +110,80 @@ class MainMenuViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return layout
     }
+    
+    private let logoutBtn = UIButton().then {
+        $0.logoutBtnConfig(title: "로그아웃", font: .systemFont(ofSize: 12), backgroundColor: .clear)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        UserDefaultManager.shared.isLoggedIn = false
         configHierarchy()
         layout()
-        configView()
         configButton()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            print("액세스 토큰: \(accessToken)")
+            print("main menu providerid: \(UserDefaultManager.shared.providerId)")
+        } catch {
+            print("Failed to get access token")
+        }
+    }
     
     func configButton() {
-            recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
+        recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
 
-            todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
+        todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
+        
+        logoutBtn.addTarget(self, action: #selector(logoutBtnClicked), for: .touchUpInside)
+    }
+
+    @objc func recipeBookBtnTapped() {
+        navigationController?.pushViewController(RecipeBookHomeVC(), animated: true)
+    }
+
+    @objc func todayCombiBtnTapped() {
+        navigationController?.pushViewController(TodayCombinationViewController(), animated: true)
+    }
+    
+    @objc func logoutBtnClicked() {
+        let alert = UIAlertController(title: "로그아웃 하시겠습니까?", message: nil, preferredStyle: .alert)
+
+        let btn1 = UIAlertAction(title: "취소", style: .cancel)
+        let btn2 = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+//            do {
+//                try Keychain.shared.deleteToken(kind: .accessToken)
+//                print("Deleted Access Token")
+//            } catch {
+//                print("Failed to delete Access Token: \(error)")
+//            }
+//            
+//            do {
+//                try Keychain.shared.deleteToken(kind: .refreshToken)
+//                print("Deleted refreshToken")
+//            } catch {
+//                print("Failed to delete refreshToken: \(error)")
+//            }
+
+            self?.kakaoAuthVM.kakaoLogut()
+            
+            let authVC = AuthenticationViewController()
+            let navigationController = UINavigationController(rootViewController: authVC)
+            navigationController.modalPresentationStyle = .fullScreen
+            self?.present(navigationController, animated: true)
         }
 
-        @objc func recipeBookBtnTapped() {
-            navigationController?.pushViewController(RecipeBookHomeVC(), animated: true)
-        }
+        alert.addAction(btn1)
+        alert.addAction(btn2)
 
-        @objc func todayCombiBtnTapped() {
-            navigationController?.pushViewController(TodayCombinationViewController(), animated: true)
-        }
+        present(alert, animated: true)
+    }
+
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -154,7 +206,8 @@ class MainMenuViewController: UIViewController {
             recipeBookBtn,
             recipeBookCollectionView,
             todayCombiBtn,
-            todayCombiCollectionView
+            todayCombiCollectionView,
+            logoutBtn
         ])
     }
     
@@ -207,9 +260,11 @@ class MainMenuViewController: UIViewController {
             $0.height.equalTo(160)
         }
         
-    }
-    
-    func configView() {
+        logoutBtn.snp.makeConstraints {
+            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(12)
+            $0.trailing.equalToSuperview().offset(-12)
+            $0.height.equalTo(20)
+        }
         
     }
     

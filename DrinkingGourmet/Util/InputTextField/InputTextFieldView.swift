@@ -47,7 +47,6 @@ class InputTextFieldView: UIView {
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        print("\(text)입니다")
 
         // 콜백 클로저 호출
         onTextChanged?(text)

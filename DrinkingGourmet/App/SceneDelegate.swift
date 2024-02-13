@@ -12,42 +12,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-//
-//    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-//            guard let windowScene = (scene as? UIWindowScene) else { return }
-//            
-//            let window = UIWindow(windowScene: windowScene)
-//            
-//            let rootViewController = AuthenticationViewController()
-//            let navigationController = UINavigationController(rootViewController: rootViewController)
-//        
-//            window.rootViewController = navigationController
-//            window.makeKeyAndVisible()
-//            
-//            self.window = window
-//        }
-//    
-//    
-    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         let window = UIWindow(windowScene: windowScene)
         self.window = window
 
-        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
-
-        if isLoggedIn {
-            window.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
-        } else {
+        do {
+            let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
+            print("Refresh Token: \(refreshToken)")
+            UserInfoDataManager.shared.loginWithProviderInfo { [weak self] in
+                        DispatchQueue.main.async {
+                            self?.window?.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
+                            self?.window?.makeKeyAndVisible()
+                        }
+                    }
+//            window.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
+        } catch {
+            print("Refresh Token not found")
             window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
         }
 
         window.makeKeyAndVisible()
     }
 
-
-    
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         if let url = URLContexts.first?.url {
             if (AuthApi.isKakaoTalkLoginUrl(url)) {

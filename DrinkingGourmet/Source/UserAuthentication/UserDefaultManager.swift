@@ -24,7 +24,6 @@ class UserDefaultManager {
         case email
         case provider
         case providerId
-        case isLoggedIn
     }
     
     let ud = UserDefaults.standard
@@ -108,18 +107,5 @@ class UserDefaultManager {
         set {
             ud.setValue(newValue, forKey: UDKey.providerId.rawValue)
         }
-    }
-    
-    var isLoggedIn: Bool {
-        get {
-            ud.bool(forKey: UDKey.isLoggedIn.rawValue)
-        }
-        set {
-            ud.setValue(newValue, forKey: UDKey.isLoggedIn.rawValue)
-        }
-    }
-
-    func removeAll() {
-        
     }
 }
