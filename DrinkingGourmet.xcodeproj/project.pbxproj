@@ -49,10 +49,6 @@
 		2EFA32FA2B71629100059188 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32F92B71629100059188 /* GradientView.swift */; };
 		2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */; };
 		2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */; };
-		5601EBDD2B7C492F0043CCD4 /* WeeklyBestInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBDC2B7C492F0043CCD4 /* WeeklyBestInput.swift */; };
-		5601EBDF2B7C49450043CCD4 /* WeeklyBestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBDE2B7C49450043CCD4 /* WeeklyBestModel.swift */; };
-		5601EBE12B7C49580043CCD4 /* WeeklyBestDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBE02B7C49580043CCD4 /* WeeklyBestDataManager.swift */; };
-		5601EBE32B7C49900043CCD4 /* WeeklyBestSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBE22B7C49900043CCD4 /* WeeklyBestSearchVC.swift */; };
 		5601EBB52B7BEE570043CCD4 /* CombinationDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */; };
 		5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */; };
 		5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */; };
@@ -161,10 +157,6 @@
 		2EFA32F92B71629100059188 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombiCollectionViewCell.swift; sourceTree = "<group>"; };
 		2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoModel.swift; sourceTree = "<group>"; };
-		5601EBDC2B7C492F0043CCD4 /* WeeklyBestInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestInput.swift; sourceTree = "<group>"; };
-		5601EBDE2B7C49450043CCD4 /* WeeklyBestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestModel.swift; sourceTree = "<group>"; };
-		5601EBE02B7C49580043CCD4 /* WeeklyBestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestDataManager.swift; sourceTree = "<group>"; };
-		5601EBE22B7C49900043CCD4 /* WeeklyBestSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchVC.swift; sourceTree = "<group>"; };
 		5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailModel.swift; sourceTree = "<group>"; };
 		5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationCommentModel.swift; sourceTree = "<group>"; };
 		5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailDataManager.swift; sourceTree = "<group>"; };
@@ -352,11 +344,18 @@
 		2E6C26DD2B497E0E00C87B4A /* WeeklyBest */ = {
 			isa = PBXGroup;
 			children = (
-				5601EBDB2B7C49210043CCD4 /* Model */,
+				2E6C26DE2B497E1500C87B4A /* Model */,
 				2E6C26DF2B497E1C00C87B4A /* View */,
 				2E6C26E02B497E2500C87B4A /* ViewController */,
 			);
 			path = WeeklyBest;
+			sourceTree = "<group>";
+		};
+		2E6C26DE2B497E1500C87B4A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		2E6C26DF2B497E1C00C87B4A /* View */ = {
@@ -372,7 +371,6 @@
 			isa = PBXGroup;
 			children = (
 				2E6C26DB2B497DE700C87B4A /* WeeklyBestVC.swift */,
-				5601EBE22B7C49900043CCD4 /* WeeklyBestSearchVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -540,12 +538,6 @@
 			path = Gradient;
 			sourceTree = "<group>";
 		};
-		5601EBDB2B7C49210043CCD4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				5601EBDC2B7C492F0043CCD4 /* WeeklyBestInput.swift */,
-				5601EBDE2B7C49450043CCD4 /* WeeklyBestModel.swift */,
-				5601EBE02B7C49580043CCD4 /* WeeklyBestDataManager.swift */,
 		5601EBB22B7BEA960043CCD4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -958,7 +950,6 @@
 			files = (
 				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
-				5601EBDF2B7C49450043CCD4 /* WeeklyBestModel.swift in Sources */,
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
@@ -982,7 +973,6 @@
 				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
-				5601EBDD2B7C492F0043CCD4 /* WeeklyBestInput.swift in Sources */,
 				5601EBD12B7C29480043CCD4 /* RecipeBookDetailImageInput.swift in Sources */,
 				5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */,
 				5668A2F92B6EDCC00009FCD6 /* CommunityHome.swift in Sources */,
@@ -1009,7 +999,6 @@
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
 				5601EBCD2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift in Sources */,
 				2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */,
-				5601EBE32B7C49900043CCD4 /* WeeklyBestSearchVC.swift in Sources */,
 				2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				5668A3D12B78F69C0009FCD6 /* CombinationSearchVC.swift in Sources */,
@@ -1033,7 +1022,6 @@
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestVC.swift in Sources */,
 				2EFA32FA2B71629100059188 /* GradientView.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
-				5601EBE12B7C49580043CCD4 /* WeeklyBestDataManager.swift in Sources */,
 				5668A3412B6F68280009FCD6 /* RecipeBookHomeVC.swift in Sources */,
 				5601EBCF2B7C289B0043CCD4 /* RecipeBookDetailImageModel.swift in Sources */,
 				2EFA32F22B714CC000059188 /* RecommendView.swift in Sources */,
