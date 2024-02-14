@@ -22,6 +22,7 @@ final class RecipeBookDetailInfoView: UIView {
         $0.textColor = .black
         $0.text = "소요시간"
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
     }
     
     let timeNumLabel = UILabel().then {
@@ -38,6 +39,7 @@ final class RecipeBookDetailInfoView: UIView {
         $0.textColor = .black
         $0.text = "칼로리"
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
     }
     
     let kcalNumLabel = UILabel().then {
@@ -54,6 +56,7 @@ final class RecipeBookDetailInfoView: UIView {
         $0.textColor = .black
         $0.text = "좋아요"
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
     }
     
     let likeNumLabel = UILabel().then {

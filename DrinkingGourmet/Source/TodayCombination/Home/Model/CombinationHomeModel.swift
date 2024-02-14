@@ -20,15 +20,10 @@ struct CombinationHomeModel: Codable {
     }
 
     struct CombinationHomeList: Codable {
+        let combinationId: Int
         let title: String
-        let combinationImageURL: String
+        let combinationImageUrl: String
         let likeCount, commentCount: Int
         let hashTageList: [String]
-        
-        enum CodingKeys: String, CodingKey {
-            case title
-            case combinationImageURL = "combinationImageUrl"
-            case likeCount, commentCount, hashTageList
-        }
     }
 }

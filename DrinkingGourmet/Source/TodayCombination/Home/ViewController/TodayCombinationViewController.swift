@@ -142,7 +142,7 @@ extension TodayCombinationViewController: UITableViewDataSource {
         
         let combination = arrayCombinationHome[indexPath.row]
         
-        if let url = URL(string: combination.combinationImageURL) {
+        if let url = URL(string: combination.combinationImageUrl) {
             cell.mainImage.kf.setImage(with: url)
         }
         
@@ -165,7 +165,10 @@ extension TodayCombinationViewController: UITableViewDataSource {
 extension TodayCombinationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedItem = arrayCombinationHome[indexPath.row].combinationId
+        
         let todayCombinationDetailVC = TodayCombinationDetailViewController()
+        todayCombinationDetailVC.combinationId = selectedItem
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
 

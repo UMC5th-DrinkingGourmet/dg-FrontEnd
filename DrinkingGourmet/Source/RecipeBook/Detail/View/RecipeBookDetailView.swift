@@ -51,13 +51,13 @@ final class RecipeBookDetailView: UIView {
         $0.backgroundColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1)
     }
     
-    let subTitleLabel = UILabel().then {
+    let hashtagLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "소제목 테스트입니다.", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "#해시태그 #테스트 #입니다", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     let moreButton = UIButton().then {
@@ -83,7 +83,7 @@ final class RecipeBookDetailView: UIView {
     let ingredientListLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.text = "골뱅이1캔 양파 1/2개 당근 1개 오이 1개 깻잎 1묶음 대파 1/2대 청양고추 2개 양배추 1줌 소면"
-        $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
+        $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
     }
     
@@ -98,6 +98,7 @@ final class RecipeBookDetailView: UIView {
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
         $0.attributedText = NSMutableAttributedString(string: "1. 골뱅이는 깨끗이 씻어 끓는 물에 살짝 데친 후 껍질을 제거하고 손질합니다.\n2. 물을 끌이고 삶는다\n3. 소스랑 비빈다.\n4. 맛있게 먹는다 ", attributes: [NSAttributedString.Key.kern: -0.42, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
@@ -131,7 +132,7 @@ final class RecipeBookDetailView: UIView {
         self.addSubview(commentsInputView)
         
         scrollView.addSubview(contentView)
-        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel,  likeIconButton, grayLine, subTitleLabel, moreButton, titleLabel, recipeBookDetailInfoView, ingredientLabel, ingredientListLabel, cookLabel, descriptionLabel, dividerView, commentAreaView])
+        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel,  likeIconButton, grayLine, hashtagLabel, moreButton, titleLabel, recipeBookDetailInfoView, ingredientLabel, ingredientListLabel, cookLabel, descriptionLabel, dividerView, commentAreaView])
     }
     
     func configureConstraints() {
@@ -185,7 +186,7 @@ final class RecipeBookDetailView: UIView {
             make.leading.trailing.equalTo(contentView)
         }
         
-        subTitleLabel.snp.makeConstraints { make in
+        hashtagLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine.snp.bottom).offset(24)
             make.leading.equalTo(contentView).offset(21)
             make.trailing.equalTo(contentView).offset(-21)
@@ -198,8 +199,8 @@ final class RecipeBookDetailView: UIView {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(subTitleLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(subTitleLabel)
+            make.top.equalTo(hashtagLabel.snp.bottom).offset(4)
+            make.leading.trailing.equalTo(hashtagLabel)
         }
         
         recipeBookDetailInfoView.snp.makeConstraints { make in
@@ -220,7 +221,7 @@ final class RecipeBookDetailView: UIView {
         
         cookLabel.snp.makeConstraints { make in
             make.top.equalTo(ingredientListLabel.snp.bottom).offset(30)
-            make.leading.equalTo(subTitleLabel)
+            make.leading.equalTo(hashtagLabel)
         }
         
         descriptionLabel.snp.makeConstraints { make in
