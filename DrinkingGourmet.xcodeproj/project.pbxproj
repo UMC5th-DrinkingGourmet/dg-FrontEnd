@@ -13,7 +13,6 @@
 		2E3E5A782B6C03700000E651 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2E3E5A772B6C03700000E651 /* SnapKit */; };
 		2E3E5A7D2B6C04590000E651 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */; };
 		2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */; };
-		2E4CF2A12B7237D20075908C /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2E4CF2A02B7237D20075908C /* Secret.xcconfig */; };
 		2E56A0DB2B76499A007747ED /* UserInfoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56A0DA2B76499A007747ED /* UserInfoDataManager.swift */; };
 		2E56A0DD2B78861B007747ED /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56A0DC2B78861B007747ED /* KeyChain.swift */; };
 		2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C72B497AD200C87B4A /* AppDelegate.swift */; };
@@ -50,6 +49,10 @@
 		2EFA32FA2B71629100059188 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32F92B71629100059188 /* GradientView.swift */; };
 		2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */; };
 		2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */; };
+		5601EBDD2B7C492F0043CCD4 /* WeeklyBestInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBDC2B7C492F0043CCD4 /* WeeklyBestInput.swift */; };
+		5601EBDF2B7C49450043CCD4 /* WeeklyBestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBDE2B7C49450043CCD4 /* WeeklyBestModel.swift */; };
+		5601EBE12B7C49580043CCD4 /* WeeklyBestDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBE02B7C49580043CCD4 /* WeeklyBestDataManager.swift */; };
+		5601EBE32B7C49900043CCD4 /* WeeklyBestSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBE22B7C49900043CCD4 /* WeeklyBestSearchVC.swift */; };
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
 		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
@@ -115,7 +118,6 @@
 		2E1D4F072B72816A0065D9B2 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedImgCollectionViewCell.swift; sourceTree = "<group>"; };
-		2E4CF2A02B7237D20075908C /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
 		2E56A0DA2B76499A007747ED /* UserInfoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDataManager.swift; sourceTree = "<group>"; };
 		2E56A0DC2B78861B007747ED /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkingGourmet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,6 +149,10 @@
 		2EFA32F92B71629100059188 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombiCollectionViewCell.swift; sourceTree = "<group>"; };
 		2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoModel.swift; sourceTree = "<group>"; };
+		5601EBDC2B7C492F0043CCD4 /* WeeklyBestInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestInput.swift; sourceTree = "<group>"; };
+		5601EBDE2B7C49450043CCD4 /* WeeklyBestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestModel.swift; sourceTree = "<group>"; };
+		5601EBE02B7C49580043CCD4 /* WeeklyBestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestDataManager.swift; sourceTree = "<group>"; };
+		5601EBE22B7C49900043CCD4 /* WeeklyBestSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchVC.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
 		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
@@ -292,7 +298,6 @@
 		2E6C26BB2B497AD200C87B4A = {
 			isa = PBXGroup;
 			children = (
-				2E4CF2A02B7237D20075908C /* Secret.xcconfig */,
 				2E6C26C62B497AD200C87B4A /* DrinkingGourmet */,
 				2E6C26C52B497AD200C87B4A /* Products */,
 			);
@@ -323,18 +328,11 @@
 		2E6C26DD2B497E0E00C87B4A /* WeeklyBest */ = {
 			isa = PBXGroup;
 			children = (
-				2E6C26DE2B497E1500C87B4A /* Model */,
+				5601EBDB2B7C49210043CCD4 /* Model */,
 				2E6C26DF2B497E1C00C87B4A /* View */,
 				2E6C26E02B497E2500C87B4A /* ViewController */,
 			);
 			path = WeeklyBest;
-			sourceTree = "<group>";
-		};
-		2E6C26DE2B497E1500C87B4A /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		2E6C26DF2B497E1C00C87B4A /* View */ = {
@@ -350,6 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				2E6C26DB2B497DE700C87B4A /* WeeklyBestVC.swift */,
+				5601EBE22B7C49900043CCD4 /* WeeklyBestSearchVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -515,6 +514,16 @@
 				2EFA32F92B71629100059188 /* GradientView.swift */,
 			);
 			path = Gradient;
+			sourceTree = "<group>";
+		};
+		5601EBDB2B7C49210043CCD4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5601EBDC2B7C492F0043CCD4 /* WeeklyBestInput.swift */,
+				5601EBDE2B7C49450043CCD4 /* WeeklyBestModel.swift */,
+				5601EBE02B7C49580043CCD4 /* WeeklyBestDataManager.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		560548662B663A66006026E0 /* Comments */ = {
@@ -901,7 +910,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E4CF2A12B7237D20075908C /* Secret.xcconfig in Resources */,
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
 				97EB4AF82B720CDB009A62EB /* Animation - 1707200937141.json in Resources */,
 				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
@@ -918,6 +926,7 @@
 			files = (
 				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
+				5601EBDF2B7C49450043CCD4 /* WeeklyBestModel.swift in Sources */,
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
@@ -939,6 +948,7 @@
 				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
+				5601EBDD2B7C492F0043CCD4 /* WeeklyBestInput.swift in Sources */,
 				5668A2F92B6EDCC00009FCD6 /* CommunityHome.swift in Sources */,
 				5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
@@ -961,6 +971,7 @@
 				5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */,
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
 				2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */,
+				5601EBE32B7C49900043CCD4 /* WeeklyBestSearchVC.swift in Sources */,
 				2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				5668A3D12B78F69C0009FCD6 /* CombinationSearchVC.swift in Sources */,
@@ -980,6 +991,7 @@
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestVC.swift in Sources */,
 				2EFA32FA2B71629100059188 /* GradientView.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
+				5601EBE12B7C49580043CCD4 /* WeeklyBestDataManager.swift in Sources */,
 				5668A3412B6F68280009FCD6 /* RecipeBookHomeVC.swift in Sources */,
 				2EFA32F22B714CC000059188 /* RecommendView.swift in Sources */,
 				97EB4AC42B70F5E6009A62EB /* SelectMyMoodViewController.swift in Sources */,
@@ -1020,7 +1032,6 @@
 /* Begin XCBuildConfiguration section */
 		2E6C26D62B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E4CF2A02B7237D20075908C /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1085,7 +1096,6 @@
 		};
 		2E6C26D72B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E4CF2A02B7237D20075908C /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1143,7 +1153,6 @@
 		};
 		2E6C26D92B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E4CF2A02B7237D20075908C /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1182,7 +1191,6 @@
 		};
 		2E6C26DA2B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E4CF2A02B7237D20075908C /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
