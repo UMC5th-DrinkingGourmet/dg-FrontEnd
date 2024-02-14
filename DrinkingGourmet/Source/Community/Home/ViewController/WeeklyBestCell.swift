@@ -13,7 +13,6 @@ class WeeklyBestCell: UITableViewCell {
         $0.image = UIImage(named: "img_community_today_thumbnail")
         $0.layer.cornerRadius = 8
         $0.layer.masksToBounds = true
-        $0.contentMode = .scaleAspectFill
     }
     
     let titleLabel = UILabel().then {
