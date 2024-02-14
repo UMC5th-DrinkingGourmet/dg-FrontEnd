@@ -12,7 +12,7 @@ import Then
 class CommentAreaView: UIView {
     
     let titleLabel = UILabel().then {
-        $0.text = "댓글 6"
+        $0.text = "댓글 99"
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
     }
     

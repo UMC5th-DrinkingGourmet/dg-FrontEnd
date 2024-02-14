@@ -10,13 +10,12 @@ import UIKit
 final class RecipeBookHomeVC: UIViewController {
     
     // MARK: - Properties
-    private let recipeBookHomeView = RecipeBookHomeView()
+    var arrayRecipeBookHome: [RecipeBookHomeModel.Result] = []
+    var fetchingMore: Bool = false
+    var totalPageNum: Int = 0
+    var nowPageNum: Int = 0
     
-    private lazy var buttons: [UIButton] = [recipeBookHomeView.writeButton, recipeBookHomeView.modifyButton]
-    private lazy var labels: [UILabel] = [recipeBookHomeView.writeLabel, recipeBookHomeView.modifyLabel]
-    
-    private var isShowFloating: Bool = false
-    private var isShowLabel: Bool = false
+    let recipeBookHomeView = RecipeBookHomeView()
     
     // MARK: - View 설정
     override func loadView() {
@@ -36,6 +35,27 @@ final class RecipeBookHomeVC: UIViewController {
     
     func prepare() {
         recipeBookHomeView.customSearchBar.textField.delegate = self
+        
+        recipeBookHomeView.customSearchBar.textField.attributedPlaceholder = NSAttributedString(
+            string: "레시피북 검색",
+            attributes: [
+                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
+                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
+            ]
+        )
+        
+        let input = RecipeBookHomeInput(page: 0)
+        RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
+            guard let self = self else { return }
+            
+            if let model = model {
+//                self.totalPageNum = model.result.totalPage
+                self.arrayRecipeBookHome = model.result
+                DispatchQueue.main.async {
+                    self.recipeBookHomeView.tableView.reloadData()
+                }
+            }
+        }
     }
     
     // MARK: - 네비게이션바 설정
@@ -71,86 +91,44 @@ final class RecipeBookHomeVC: UIViewController {
     // MARK: - 플로팅버튼 설정
     func setupFloatingButton() {
         recipeBookHomeView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
-        
-        recipeBookHomeView.writeButton.addTarget(self, action: #selector(writeButtonTapped), for: .touchUpInside)
-        
-        recipeBookHomeView.modifyButton.addTarget(self, action: #selector(modifyButtonTapped), for: .touchUpInside)
     }
     
-    @objc func floatingButtonTapped(_ sender: UIButton) {
-        
-        let shadowView = recipeBookHomeView.shadowView
-        
-        if isShowFloating { // 플로팅버튼 열려있을 때
-            buttons.reversed().forEach { button in
-                UIView.animate(withDuration: 0.3) {
-                    button.isHidden = true
-                    self.view.layoutIfNeeded()
-                }
-            }
-            labels.forEach { $0.isHidden = true }
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                shadowView.alpha = 0
-            }) { (_) in
-                shadowView.isHidden = true
-            }
-        } else { // 플로팅버튼 닫혀있을 때
-
-            shadowView.isHidden = false
-            
-            UIView.animate(withDuration: 0.5) { shadowView.alpha = 1 }
-            
-            buttons.forEach { [weak self] button in
-                button.isHidden = false
-                button.alpha = 0
-                
-                UIView.animate(withDuration: 0.3) {
-                    button.alpha = 1
-                    self?.view.layoutIfNeeded()
-                }
-            }
-            labels.forEach { $0.isHidden = false }
-        }
-        
-        isShowFloating = !isShowFloating
-        
-        let backgroundColor: UIColor = isShowFloating ? .black : .customOrange
-
-        let roatation = isShowFloating ? CGAffineTransform(rotationAngle: .pi - (.pi / 4)) : CGAffineTransform.identity
-        
-        UIView.animate(withDuration: 0.3) {
-            sender.backgroundColor = backgroundColor
-            sender.transform = roatation
-        }
-    }
-    
-    @objc func writeButtonTapped() {
-        print("레시피북 작성하기 버튼 눌림")
-    }
-    
-    @objc func modifyButtonTapped() {
-        print("레시피북 수정하기 버튼 눌림")
+    @objc func floatingButtonTapped() {
+        let vc = UploadViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension RecipeBookHomeVC: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        let searchResultsVC = SearchResultVC()
-        searchResultsVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
-        navigationController?.pushViewController(searchResultsVC, animated: true)
+        let recipeBookSearchVC = RecipeBookSearchVC()
+        recipeBookSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
+        navigationController?.pushViewController(recipeBookSearchVC, animated: true)
     }
 }
 
 extension RecipeBookHomeVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return arrayRecipeBookHome.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeBookHomeCell", for: indexPath) as! RecipeBookHomeCell
+        
+        let recipeBook = arrayRecipeBookHome[indexPath.row]
+        
+        // 이미지 API 필요
+        
+        cell.titleLabel.text = recipeBook.name
+        
+//        let hashtags = combination.hashTageList.map { "#\($0)" }.joined(separator: " ")
+//        cell.hashtagLabel.text = hashtags
+        
+        cell.commentNumLabel.text = "\(recipeBook.commentCount)"
+        
+        cell.likeNumLabel.text = "\(recipeBook.likeCount)"
         
         cell.selectionStyle = .none // cell 선택 시 시각효과 제거
         
@@ -161,7 +139,10 @@ extension RecipeBookHomeVC: UITableViewDataSource {
 extension RecipeBookHomeVC: UITableViewDelegate {
     // 셀 선택시 Detail 화면으로
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedItem = arrayRecipeBookHome[indexPath.row].id
+        
         let recipeBookDetailVC = RecipeBookDetailVC()
+        recipeBookDetailVC.recipeBookId = selectedItem
         navigationController?.pushViewController(recipeBookDetailVC, animated: true)
     }
 }

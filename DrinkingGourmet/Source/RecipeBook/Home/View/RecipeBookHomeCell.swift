@@ -15,6 +15,7 @@ final class RecipeBookHomeCell: UITableViewCell {
         $0.layer.cornerRadius = 8
         $0.layer.masksToBounds = true
         $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        $0.contentMode = .scaleAspectFill
     }
     
     let titleLabel = UILabel().then {
@@ -23,8 +24,8 @@ final class RecipeBookHomeCell: UITableViewCell {
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
     }
     
-    let subTitleLabel = UILabel().then {
-        $0.text = "소제목 테스트입니다"
+    let hashtagLabel = UILabel().then {
+        $0.text = "#해시태그 #테스트 #입니다"
         $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
     }
@@ -80,7 +81,7 @@ final class RecipeBookHomeCell: UITableViewCell {
     }
     
     func addViews() {
-        contentView.addSubviews([mainImage, titleLabel, subTitleLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
+        contentView.addSubviews([mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
     }
     
     func configureConstraints() {
@@ -98,7 +99,7 @@ final class RecipeBookHomeCell: UITableViewCell {
             make.bottom.equalTo(contentView.snp.bottom).offset(-35)
         }
         
-        subTitleLabel.snp.makeConstraints { make in
+        hashtagLabel.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel)
             make.trailing.equalTo(commentIcon.snp.leading)
             make.bottom.equalTo(contentView.snp.bottom).offset(-12)
@@ -107,23 +108,23 @@ final class RecipeBookHomeCell: UITableViewCell {
         commentIcon.snp.makeConstraints { make in
             make.width.height.equalTo(16)
             make.trailing.equalTo(contentView.snp.trailing).offset(-73)
-            make.centerY.equalTo(subTitleLabel)
+            make.centerY.equalTo(hashtagLabel)
         }
         
         commentNumLabel.snp.makeConstraints { make in
             make.leading.equalTo(commentIcon.snp.trailing).offset(4)
-            make.centerY.equalTo(subTitleLabel)
+            make.centerY.equalTo(hashtagLabel)
         }
         
         likeIcon.snp.makeConstraints { make in
             make.width.height.equalTo(16)
             make.leading.equalTo(commentNumLabel.snp.trailing).offset(8)
-            make.centerY.equalTo(subTitleLabel)
+            make.centerY.equalTo(hashtagLabel)
         }
         
         likeNumLabel.snp.makeConstraints { make in
             make.leading.equalTo(likeIcon.snp.trailing).offset(4)
-            make.centerY.equalTo(subTitleLabel)
+            make.centerY.equalTo(hashtagLabel)
         }
         
         likeSelectedIcon.snp.makeConstraints { make in
