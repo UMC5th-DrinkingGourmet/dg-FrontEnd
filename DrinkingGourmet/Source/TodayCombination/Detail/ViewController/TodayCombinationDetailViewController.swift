@@ -68,6 +68,8 @@ class TodayCombinationDetailViewController: UIViewController {
     func updateUIWithData() {
         self.todayCombinationDetailView.imageCollectionView.reloadData()
         
+        print("DEBUG - \(String(describing: combinationDetailData?.result.combinationResult.combinationImageList))")
+        
         self.todayCombinationDetailView.pageControl.numberOfPages =  combinationDetailData?.result.combinationResult.combinationImageList.count ?? 0
         
         self.todayCombinationDetailView.userNameLabel.text = "\(combinationDetailData?.result.memberResult.name ?? "이름") 님의 레시피"
