@@ -27,6 +27,20 @@ class TodayCombinationDetailViewController: UIViewController {
         view = todayCombinationDetailView
     }
     
+    // MARK: - 오늘의 조합 홈 화면으로 돌아갈 때
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        // 키보드 관련 알림 해제
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+
+        // 뷰 컨트롤러가 화면에서 사라질 때 알림 발송
+        if isMovingFromParent {
+            NotificationCenter.default.post(name: NSNotification.Name("TodayCombinationDetailViewControllerDismissed"), object: nil)
+        }
+    }
+    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +64,7 @@ class TodayCombinationDetailViewController: UIViewController {
                 guard let self = self else { return }
                 self.combinationDetailData = detailModel
                 
-                let combinationCommentInput = CombinationCommentInput(page: 0)
+                let combinationCommentInput = CombinationCommentInput.fetchCombinatiCommentDataInput(page: 0)
                 CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, combinationCommentInput, self) { commentModel in
                     if let commentModel = commentModel {
                         self.totalPageNum = commentModel.result.totalPage
@@ -67,8 +81,6 @@ class TodayCombinationDetailViewController: UIViewController {
     // MARK: - 네트워킹 후 UI 업데이트
     func updateUIWithData() {
         self.todayCombinationDetailView.imageCollectionView.reloadData()
-        
-        print("DEBUG - \(String(describing: combinationDetailData?.result.combinationResult.combinationImageList))")
         
         self.todayCombinationDetailView.pageControl.numberOfPages =  combinationDetailData?.result.combinationResult.combinationImageList.count ?? 0
         
@@ -148,13 +160,32 @@ class TodayCombinationDetailViewController: UIViewController {
     
     // MARK: - 댓글입력창 설정
     func setupCommentsInputView() {
-        let commentsInputView = todayCombinationDetailView.commentsInputView
-        commentsInputView.textField.delegate = self
-        commentsInputView.button.addTarget(self, action: #selector(commentsInputButtonTapped), for: .touchUpInside)
+        let cv = todayCombinationDetailView.commentsInputView
+        cv.textField.delegate = self
+        cv.button.addTarget(self, action: #selector(commentsInputButtonTapped), for: .touchUpInside)
     }
     
+    // MARK: - 댓글 입력 버튼 클릭
     @objc func commentsInputButtonTapped() {
-        print("댓글입력창 버튼 눌림")
+        guard let text = todayCombinationDetailView.commentsInputView.textField.text, !text.isEmpty else { return }
+        
+        let input = CombinationCommentInput.postCommentInput(content: text, parentId: "0")
+        
+        if let combinationId = self.combinationId {
+            CombinationDetailDataManager().postComment(combinationId, input)
+            prepare()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.todayCombinationDetailView.scrollView.setContentOffset(CGPoint(x: 0, y: self.todayCombinationDetailView.scrollView.contentSize.height - self.todayCombinationDetailView.scrollView.bounds.height), animated: true)
+            }
+        }
+
+        todayCombinationDetailView.commentsInputView.textField.text = "" // 텍스트필드 초기화
+        todayCombinationDetailView.commentsInputView.textField.resignFirstResponder() // 키보드 숨기기
+    }
+    
+    // MARK: - 답글쓰기
+    func setupReplyButton() {
+        
     }
     
 }
@@ -233,7 +264,7 @@ extension TodayCombinationDetailViewController: UIScrollViewDelegate {
         nowPageNum = nowPageNum + 1
         let nextPage = nowPageNum
 //        print("nextPage - \(nextPage)")
-        let input = CombinationCommentInput(page: nextPage)
+        let input = CombinationCommentInput.fetchCombinatiCommentDataInput(page: nextPage)
         
         if let combinationID = self.combinationId {
             CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, input, self) { [weak self] commentModel in
@@ -264,11 +295,6 @@ extension TodayCombinationDetailViewController {
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func keyboardUp(notification: NSNotification) {

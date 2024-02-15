@@ -28,12 +28,21 @@ class TodayCombinationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNotification), name: NSNotification.Name("TodayCombinationDetailViewControllerDismissed"), object: nil)
         
         prepare()
         setupNaviBar()
         setupTextField()
         setupTableView()
         setupFloatingButton()
+    }
+    
+    @objc func handleNotification() {
+        prepare()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - 초기 설정

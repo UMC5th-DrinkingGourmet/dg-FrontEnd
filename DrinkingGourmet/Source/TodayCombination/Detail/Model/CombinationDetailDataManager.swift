@@ -42,10 +42,10 @@ class CombinationDetailDataManager {
     }
     
     // MARK: - 오늘의 조합 댓글 페이징 조회
-    func fetchCombinatiCommentData(_ combinationID: Int,
-                                   _ parameters: CombinationCommentInput,
-                                   _ viewController: TodayCombinationDetailViewController,
-                                   completion: @escaping (CombinationCommentModel?) -> Void) {
+    func fetchCombinatiCommentData (_ combinationID: Int,
+                                    _ parameters: CombinationCommentInput.fetchCombinatiCommentDataInput,
+                                    _ viewController: TodayCombinationDetailViewController,
+                                    completion: @escaping (CombinationCommentModel?) -> Void) {
         
         AF.request("\(baseURL)/combination-comments/\(combinationID)",
                    method: .get,
@@ -60,6 +60,34 @@ class CombinationDetailDataManager {
                 print("오늘의 조합 댓글 페이징 조회 - \(error)")
                 completion(nil)
             }
+        }
+    }
+
+    // MARK: - 오늘의 조합 댓글 작성
+    func postComment (_ combinationID: Int,
+                      _ parameters: CombinationCommentInput.postCommentInput) {
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/combination-comments/\(combinationID)",
+                       method: .post,
+                       parameters: parameters,
+                       encoder: JSONParameterEncoder.default,
+                       headers: headers).responseJSON { response in
+                switch response.result {
+                case .success(let value):
+//                    print("Response: \(value)")
+                    print("댓글 작성 성공")
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
+            }
+        } catch {
+            print("Failed to get access token")
         }
     }
     
