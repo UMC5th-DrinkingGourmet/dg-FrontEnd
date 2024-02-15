@@ -5,13 +5,15 @@
 //  Created by 이승민 on 2/10/24.
 //
 
-import Foundation
-
-struct CombinationHomeInput: Codable {
-    var page: Int?
-}
-
-struct CombinationSearchInput: Codable {
-    var page: Int?
-    var keyword: String?
+struct CombinationHomeInput {
+    
+    struct fetchCombinationHomeDataInput: Codable {
+        var page: Int?
+    }
+    
+    struct fetchCombinationSearchDataInput: Codable {
+        var page: Int?
+        var keyword: String?
+    }
+    
 }
