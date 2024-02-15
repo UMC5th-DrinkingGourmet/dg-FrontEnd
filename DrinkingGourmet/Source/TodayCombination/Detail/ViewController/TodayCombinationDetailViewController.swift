@@ -27,20 +27,6 @@ class TodayCombinationDetailViewController: UIViewController {
         view = todayCombinationDetailView
     }
     
-    // MARK: - 오늘의 조합 홈 화면으로 돌아갈 때
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // 키보드 관련 알림 해제
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-
-        // 뷰 컨트롤러가 화면에서 사라질 때 알림 발송
-        if isMovingFromParent {
-            NotificationCenter.default.post(name: NSNotification.Name("TodayCombinationDetailViewControllerDismissed"), object: nil)
-        }
-    }
-    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -175,6 +161,7 @@ class TodayCombinationDetailViewController: UIViewController {
             CombinationDetailDataManager().postComment(combinationId, input)
             prepare()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                // 댓글 작성 후 스크롤뷰 최하단으로 이동
                 self.todayCombinationDetailView.scrollView.setContentOffset(CGPoint(x: 0, y: self.todayCombinationDetailView.scrollView.contentSize.height - self.todayCombinationDetailView.scrollView.bounds.height), animated: true)
             }
         }
