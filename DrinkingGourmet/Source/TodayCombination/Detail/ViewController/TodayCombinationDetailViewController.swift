@@ -155,19 +155,30 @@ class TodayCombinationDetailViewController: UIViewController {
     @objc func commentsInputButtonTapped() {
         guard let text = todayCombinationDetailView.commentsInputView.textField.text, !text.isEmpty else { return }
         
+        todayCombinationDetailView.commentsInputView.textField.resignFirstResponder() // 키보드 숨기기
+
         let input = CombinationCommentInput.postCommentInput(content: text, parentId: "0")
-        
+
         if let combinationId = self.combinationId {
             CombinationDetailDataManager().postComment(combinationId, input)
             prepare()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                // 댓글 작성 후 스크롤뷰 최하단으로 이동
-                self.todayCombinationDetailView.scrollView.setContentOffset(CGPoint(x: 0, y: self.todayCombinationDetailView.scrollView.contentSize.height - self.todayCombinationDetailView.scrollView.bounds.height), animated: true)
-            }
-        }
 
-        todayCombinationDetailView.commentsInputView.textField.text = "" // 텍스트필드 초기화
-        todayCombinationDetailView.commentsInputView.textField.resignFirstResponder() // 키보드 숨기기
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+                
+                // 스크롤뷰를 맨 위로 이동
+                self.todayCombinationDetailView.scrollView.contentOffset = .zero
+            }
+
+            fetchingMore = false
+            totalPageNum = 0
+            nowPageNum = 0
+            
+            todayCombinationDetailView.commentsInputView.textField.text = "" // 텍스트필드 초기화
+        }
     }
     
     // MARK: - 답글쓰기
