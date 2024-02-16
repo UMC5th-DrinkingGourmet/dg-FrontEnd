@@ -5,7 +5,6 @@
 //  Created by 이승민 on 2/14/24.
 //
 
-// MARK: - 오늘의 조합 상세보기 댓글 페이징 조회 Model
 struct CombinationCommentModel: Codable {
     let isSuccess: Bool
     let code, message: String
@@ -19,7 +18,9 @@ struct CombinationCommentModel: Codable {
     
     struct CombinationCommentList: Codable {
         let id: Int
-        let content, memberName, updatedAt: String
+        let content, memberNickName: String
+        let memberProfile: String?
+        let updatedAt: String
         let childCount: Int
         let childComments: [CombinationCommentList]
     }

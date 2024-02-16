@@ -11,6 +11,7 @@ import Then
 
 class TodayCombinationCell: UITableViewCell {
     
+    // MARK: - View
     let mainImage = UIImageView().then {
         $0.image = UIImage(named: "img_community_today_thumbnail")
         $0.layer.cornerRadius = 8
@@ -56,13 +57,8 @@ class TodayCombinationCell: UITableViewCell {
         $0.contentMode = .scaleAspectFit
 //        $0.isHidden = true
     }
-    
-    // MARK: - 셀 간 간격 조정
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0))
-    }
 
+    // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupContentView()
@@ -74,8 +70,13 @@ class TodayCombinationCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - 셀 테두리 설정
-    func setupContentView() {
+    // MARK: - UI
+    override func layoutSubviews() { // 셀 간 간격 설정
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0))
+    }
+
+    func setupContentView() { // 셀 테두리 설정
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 8
         contentView.layer.borderColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1).cgColor

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CommentsView: UIStackView {
     
@@ -26,7 +27,7 @@ class CommentsView: UIStackView {
     }
     
     func addViews() {
-//        addArrangedSubviews([CommentView(.comment), CommentView(.reply), CommentView(.reply), CommentView(.comment), CommentView(.reply), CommentView(.comment, isLast: true)])
+        //        addArrangedSubviews([CommentView(.comment), CommentView(.reply), CommentView(.reply), CommentView(.comment), CommentView(.reply), CommentView(.comment, isLast: true)])
     }
     
     func configureComments(_ comments: [CombinationCommentModel.CombinationCommentList]) {
@@ -46,9 +47,14 @@ class CommentsView: UIStackView {
     }
     
     private func configureCommentView(_ view: CommentView, with data: CombinationCommentModel.CombinationCommentList) {
-        view.nameLabel.text = data.memberName
-        view.dateLabel.text = data.updatedAt
-        view.contentLabel.text = data.content
-        view.replyCountLabel.text = "답글 \(data.childCount)"
+        if let imageUrlString = data.memberProfile {
+            if let imageUrl = URL(string: imageUrlString) {
+                view.profileImageView.kf.setImage(with: imageUrl)
+            }
+            view.nameLabel.text = data.memberNickName
+            view.dateLabel.text = data.updatedAt
+            view.contentLabel.text = data.content
+            view.replyCountLabel.text = "답글 \(data.childCount)"
+        }
     }
 }

@@ -11,6 +11,7 @@ import Then
 
 class TodayCombinationViewController: UIViewController {
     
+    // MARK: - Properties
     var arrayCombinationHome: [CombinationHomeModel.CombinationHomeList] = []
     var fetchingMore: Bool = false
     var totalPageNum: Int = 0
@@ -30,22 +31,15 @@ class TodayCombinationViewController: UIViewController {
         
         prepare()
         setupNaviBar()
+        setupTextField()
         setupTableView()
         setupFloatingButton()
     }
     
+    // MARK: - 초기 설정
     func prepare() {
-        todayCombinationView.customSearchBar.textField.delegate = self
+        let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
         
-        todayCombinationView.customSearchBar.textField.attributedPlaceholder = NSAttributedString(
-            string: "오늘의 조합 검색",
-            attributes: [
-                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
-                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
-            ]
-        )
-        
-        let input = CombinationHomeInput(page: 0)
         CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
             if let model = model {
                 self?.totalPageNum = model.result.totalPage
@@ -76,6 +70,20 @@ class TodayCombinationViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
+    // MARK: - 텍스트필드 설정
+    func setupTextField() {
+        let tb = todayCombinationView.customSearchBar.textField
+        
+        tb.delegate = self
+        tb.attributedPlaceholder = NSAttributedString(
+            string: "오늘의 조합 검색",
+            attributes: [
+                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
+                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
+            ]
+        )
+    }
+    
     // MARK: - 테이블뷰 설정
     func setupTableView() {
         let tb = todayCombinationView.tableView
@@ -97,27 +105,6 @@ class TodayCombinationViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    // MARK: - 페이징
-    func fetchNextPage() {
-//        print(#function)
-//        print("nowPageNum - \(nowPageNum)") // 현재 페이지
-        nowPageNum = nowPageNum + 1
-        let nextPage = nowPageNum
-//        print("nextPage : \(nextPage)") // 다음 요청할 페이지
-        let input = CombinationHomeInput(page: nextPage)
-        
-        CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-//            print(input)
-//            print("테스트")
-            if let model = model {
-                self?.arrayCombinationHome += model.result.combinationList
-                self?.fetchingMore = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    self?.todayCombinationView.tableView.reloadData()
-                }
-            }
-        }
-    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -172,6 +159,7 @@ extension TodayCombinationViewController: UITableViewDelegate {
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
 
+    // 페이징
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -185,6 +173,27 @@ extension TodayCombinationViewController: UITableViewDelegate {
                 fetchingMore = true
 //                print("fetchingMore - \(fetchingMore)")
                 fetchNextPage()
+            }
+        }
+    }
+    
+    func fetchNextPage() {
+//        print(#function)
+//        print("nowPageNum - \(nowPageNum)") // 현재 페이지
+        nowPageNum = nowPageNum + 1
+        let nextPage = nowPageNum
+//        print("nextPage : \(nextPage)") // 다음 요청할 페이지
+        let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: nextPage)
+        
+        CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
+//            print(input)
+//            print("테스트")
+            if let model = model {
+                self?.arrayCombinationHome += model.result.combinationList
+                self?.fetchingMore = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self?.todayCombinationView.tableView.reloadData()
+                }
             }
         }
     }
