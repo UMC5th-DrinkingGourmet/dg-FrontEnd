@@ -8,6 +8,7 @@
 import UIKit
 
 struct SelectWeatherResource {
+    
     private let weatherButtonImage: [UIImage] = [
         UIImage(imageLiteralResourceName: "chip_weather1"),
         UIImage(imageLiteralResourceName: "chip_weather2"),
@@ -21,6 +22,7 @@ struct SelectWeatherResource {
         UIImage(imageLiteralResourceName: "chip_weather10"),
         UIImage(imageLiteralResourceName: "chip_weather11")
     ]
+    
     private let weatherButtonSelectedImage: [UIImage] = [
         UIImage(imageLiteralResourceName: "chip_weather1_selected"),
         UIImage(imageLiteralResourceName: "chip_weather2_selected"),

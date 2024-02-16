@@ -10,13 +10,17 @@ import SnapKit
 
 final class FoodSearchBarView: UIView {
     
-    private var foodSearchField: UITextField = {
+    var foodSearchField: UITextField = {
         let textField = UITextField()
         
         textField.placeHolder(string: "치킨", color: UIColor.baseColor.base07)
         textField.text = ""
         textField.textColor = UIColor.baseColor.base01
         textField.font = UIFont.systemFont(ofSize: 20)
+        
+        //수정 제안 제거
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
         
         return textField
     }()
@@ -31,7 +35,7 @@ final class FoodSearchBarView: UIView {
     }()
     
     
-    private var lineView: UIView = {
+    var lineView: UIView = {
         let lineView = UIView()
         lineView.backgroundColor = UIColor.baseColor.base07
         return lineView
@@ -97,16 +101,16 @@ final class FoodSearchBarView: UIView {
     }
     
     @objc private func clearTextField(_ sender: UIButton) {
-        foodSearchField.text = ""
+        self.foodSearchField.text = ""
     }
 }
 
 extension FoodSearchBarView: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    internal func textFieldDidBeginEditing(_ textField: UITextField) {
         lineView.backgroundColor = UIColor.baseColor.base01
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    internal func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text == "" {
             lineView.backgroundColor = UIColor.baseColor.base07
         }

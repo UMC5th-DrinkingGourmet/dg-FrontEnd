@@ -7,60 +7,47 @@
 
 import UIKit
 
-class InputMyFoodViewController: UIViewController {
+class InputMyFoodViewController: UIViewController, UITextFieldDelegate {
+    var isTextInput = true
     
     lazy var progressBar: UIProgressView = {
         let progressBar = UIProgressView()
         progressBar.clipsToBounds = true
         progressBar.layer.cornerRadius = 5
         progressBar.tintColor = .black
-        progressBar.trackTintColor = UIColor(named: "base08")
-        
+        progressBar.trackTintColor = UIColor.baseColor.base08
         return progressBar
     }()
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = UIColor(named: "base01")
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "드실 음식을 입력해주세요."
-        
+        text.text = "드실 음식을 입력해주세요."
         return text
     }()
-    
     
     lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+        text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "오늘은 어떤 음식과 함께 하시나요?"
-        
         return text
-        
     }()
     
-    lazy var searchBar: FoodSearchBarView = .init()
-    
-    lazy var foodSearchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "치킨"
-        searchBar.searchBarStyle = .minimal
+    lazy var searchBar: FoodSearchBarView = {
+        let searchBar = FoodSearchBarView()
+        searchBar.foodSearchField.delegate = self
         return searchBar
     }()
-    
-    lazy var nextButton = makeNextButton(buttonTitle: "다음")
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
-    
-    
+
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isTextInput)
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         title = "주류추천"
         
@@ -128,4 +115,3 @@ class InputMyFoodViewController: UIViewController {
         }
     }
 }
-

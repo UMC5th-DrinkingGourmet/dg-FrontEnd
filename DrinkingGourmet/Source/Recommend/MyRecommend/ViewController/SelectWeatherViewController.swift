@@ -8,6 +8,7 @@
 import UIKit
 
 class SelectWeatherViewController: UIViewController {
+    
     var buttonSelected: Bool = false
     
     private let resource: SelectWeatherResource = SelectWeatherResource()
@@ -22,50 +23,38 @@ class SelectWeatherViewController: UIViewController {
         let progressBar = UIProgressView()
         progressBar.clipsToBounds = true
         progressBar.layer.cornerRadius = 5
-        progressBar.tintColor = .black
-        progressBar.trackTintColor = UIColor(named: "base08")
+        progressBar.tintColor = UIColor.baseColor.base01
+        progressBar.trackTintColor = UIColor.baseColor.base08
         
         return progressBar
     }()
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = UIColor(named: "base01")
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "지금 날씨는 어떤가요?"
-        
+        text.text = "지금 날씨는 어떤가요?"
         return text
     }()
     
     
     lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+        text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "날씨와 어울리는 주류를 추천해드릴게요."
-        
         return text
-        
     }()
     
-    lazy var buttonArry: UIButton = {
-        let button = UIButton()
-        button.setImage(buttonImageArray[0], for: .normal)
-        //button.setImage(buttonSelectedImageArray[0], for: .highlighted)
-        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var nextButton = makeNextButton(buttonTitle: "다음")
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: true)
     lazy var skipButton = makeSkipButton()
-    lazy var buttonArray = makeButtonArray(buttonImageArray: buttonImageArray)
+    lazy var buttonArray = makeRecommendButtonArray(buttonArray: buttonImageArray)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         // navigation
         title = "주류추천"
@@ -141,7 +130,6 @@ class SelectWeatherViewController: UIViewController {
         
         for i in 0..<buttonArray.count {
             let button = buttonArray[i]
-            let buttonWidth = button.frame.width
             let widthMargin = buttonImageArray[i].size.width + 8
             let buttonHeight: Int = Int(buttonImageArray[i].size.height + 8)
             

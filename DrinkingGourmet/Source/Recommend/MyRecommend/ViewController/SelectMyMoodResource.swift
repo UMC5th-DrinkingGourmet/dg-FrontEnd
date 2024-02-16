@@ -8,6 +8,7 @@
 import UIKit
 
 struct SelectMyMoodResource {
+    
     private let moodButtonImage: [UIImage] = [
         UIImage(imageLiteralResourceName: "chip_emotion1"),
         UIImage(imageLiteralResourceName: "chip_emotion2"),
@@ -21,6 +22,7 @@ struct SelectMyMoodResource {
         UIImage(imageLiteralResourceName: "chip_emotion10"),
         UIImage(imageLiteralResourceName: "chip_emotion11")
     ]
+    
     private let moodButtonSelectedImage: [UIImage] = [
         UIImage(imageLiteralResourceName: "chip_emotion1_selected"),
         UIImage(imageLiteralResourceName: "chip_emotion2_selected"),

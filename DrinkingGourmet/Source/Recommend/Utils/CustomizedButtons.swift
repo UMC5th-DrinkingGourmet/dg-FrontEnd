@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CustomRecommendButtons: UIButton {
+class CustomizedRecommendButtons: UIButton {
     init(buttonTitle: String) {
         super.init(frame: .zero)
         
@@ -25,13 +25,34 @@ class CustomRecommendButtons: UIButton {
     }
 }
 
-func makeNextButton(buttonTitle: String) -> UIButton {
+func customizedDrinkingButton(title: String, foregroundColor: UIColor, backgroundColor: UIColor, borderColor: UIColor) -> UIButton {
+    let btn = UIButton()
+    
+    btn.backgroundColor = backgroundColor
+    btn.setTitle(title, for: .normal)
+    btn.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
+    btn.setTitleColor(foregroundColor, for: .normal)
+    btn.layer.cornerRadius = 8
+    btn.layer.masksToBounds = true
+    btn.layer.borderColor = borderColor.cgColor
+    btn.layer.borderWidth = 1
+    
+    return btn
+}
+
+func makeNextButton(buttonTitle: String, buttonSelectability: Bool) -> UIButton {
     let btn = UIButton()
     
     btn.setTitle(buttonTitle, for: .normal)
-    btn.backgroundColor = UIColor.baseColor.base01
     btn.setTitleColor(UIColor.baseColor.base10, for: .normal)
-    btn.titleEdgeInsets.top = -40
+    btn.contentVerticalAlignment = .top
+    btn.titleEdgeInsets.top = 10
+    
+    if buttonSelectability {
+        btn.backgroundColor = UIColor.baseColor.base01
+    }else {
+        btn.backgroundColor = UIColor.baseColor.base06
+    }
     
     btn.snp.makeConstraints { make in
         make.height.equalTo(100)
@@ -52,15 +73,28 @@ func makeSkipButton() -> UIButton {
     return btn
 }
 
-func makeButtonArray(buttonImageArray: [UIImage]) -> [UIButton] {
+func makeButtonArray(buttonArray: [String]) -> [UIButton] {
     var buttons: [UIButton] = []
     
-    for (index, image) in buttonImageArray.enumerated() {
-        let button = UIButton()
-        button.setImage(image, for: .normal)
-        button.tag = index // Set the tag to the current index
+    for (index, name) in buttonArray.enumerated() {
+        let button: CustomizedRecommendButtons = {
+            CustomizedRecommendButtons(buttonTitle: name)
+            
+        }()
+        button.tag = index
         buttons.append(button)
     }
     return buttons
 }
-
+//used
+func makeRecommendButtonArray(buttonArray: [UIImage]) -> [UIButton] {
+    var buttons: [UIButton] = []
+    
+    for (index, image) in buttonArray.enumerated() {
+        let button = UIButton()
+        button.setImage(buttonArray[index], for: .normal)
+        button.tag = index
+        buttons.append(button)
+    }
+    return buttons
+}

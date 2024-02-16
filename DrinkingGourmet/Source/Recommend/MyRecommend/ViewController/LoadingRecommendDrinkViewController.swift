@@ -12,11 +12,10 @@ class LoadingRecommendDrinkViewController: UIViewController {
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = .black
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "00님을 위한 주류를\n선정하고 있어요."
+        text.text = "00님을 위한 주류를\n선정하고 있어요."
         return text
     }()
     
@@ -24,13 +23,12 @@ class LoadingRecommendDrinkViewController: UIViewController {
         let animation = LottieAnimation.named("Animation - 1707200937141")
         let animationView = LottieAnimationView(animation: animation)
         animationView.loopMode = .loop // 애니메이션을 반복 재생하도록 설정
-        
         return animationView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         // navigation
         title = "주류추천"

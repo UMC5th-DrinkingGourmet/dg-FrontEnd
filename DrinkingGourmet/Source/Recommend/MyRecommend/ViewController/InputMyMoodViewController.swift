@@ -8,37 +8,35 @@
 import UIKit
 
 class InputMyMoodViewController: UIViewController {
-    let placeHolderText = "기분을 적어주세요"
-    let placeHolderColor = UIColor.baseColor.base07
+    
+    private let placeHolderText = "기분을 적어주세요"
+    private let placeHolderColor = UIColor.baseColor.base07
+    private let maxCount = 130
     
     lazy var progressBar: UIProgressView = {
         let progressBar = UIProgressView()
         progressBar.clipsToBounds = true
         progressBar.layer.cornerRadius = 5
-        progressBar.tintColor = .black
-        progressBar.trackTintColor = UIColor(named: "base08")
-        
+        progressBar.tintColor = UIColor.baseColor.base01
+        progressBar.trackTintColor = UIColor.baseColor.base08
         return progressBar
     }()
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = UIColor(named: "base01")
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "기분은 어떠신가요?"
-        
+        text.text = "기분은 어떠신가요?"
         return text
     }()
     
     lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+        text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "에피소드를 곁들여주세요."
-        //textView로 입력받기
         return text
         
     }()
@@ -51,7 +49,10 @@ class InputMyMoodViewController: UIViewController {
         textView.text = placeHolderText
         textView.textColor = placeHolderColor
         textView.delegate = self
-    
+        
+        //수정 제안 제거
+        textView.autocorrectionType = .no
+        textView.spellCheckingType = .no
         return textView
     }()
     
@@ -70,7 +71,7 @@ class InputMyMoodViewController: UIViewController {
         return label
     }()
     
-    lazy var nextButton = makeNextButton(buttonTitle: "다음")
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: true)
     lazy var skipButton = makeSkipButton()
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -79,7 +80,7 @@ class InputMyMoodViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         myMoodInputView.delegate = self
         myMoodInputView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -174,7 +175,6 @@ class InputMyMoodViewController: UIViewController {
 
 // MARK:  - TextViewDelegate
 extension InputMyMoodViewController: UITextViewDelegate {
-
     func textViewDidBeginEditing(_ textView: UITextView) {
         guard textView.textColor == UIColor.baseColor.base07 else { return }
         if textView.text == placeHolderText && textView.textColor == placeHolderColor {
@@ -188,19 +188,20 @@ extension InputMyMoodViewController: UITextViewDelegate {
             textView.text = placeHolderText
             textView.textColor = placeHolderColor
         }
-    }
-}
-extension InputMyMoodViewController {
-    func textViewDidChange(_ textView: UITextView) {
-        
-        let charCount = textView.text.count
-        let maxCount = 130
-        
-        // UI Controll
         if textView.text.count >= maxCount {
             textView.text.removeLast()
-            textViewBottomLine.backgroundColor = UIColor.baseColor.base01
-        } else if textView.text == "" {
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.count > maxCount {
+            textView.text = String(textView.text.prefix(maxCount))
+        }
+        
+        let charCount = textView.text.count
+        
+        // UI Controll
+        if textView.text == "" {
             textViewBottomLine.backgroundColor = UIColor.baseColor.base07
         } else {
             textViewBottomLine.backgroundColor = UIColor.baseColor.base01

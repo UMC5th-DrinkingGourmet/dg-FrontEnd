@@ -17,31 +17,28 @@ class UserDrinkingTasteViewController: UIViewController {
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = .black
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
         text.textAlignment = .center
-        text.text =
-        "000님,\n환영합니다"
+        text.text = "000님,\n환영합니다"
         return text
     }()
     
     lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+        text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "회원가입이 완료되었습니다"
-        
         return text
-        
     }()
     
-    lazy var nextButton = makeNextButton(buttonTitle: "시작하기")
+    lazy var nextButton = makeNextButton(buttonTitle: "시작하기", buttonSelectability: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         //navigation
         title = "주류추천"
