@@ -31,7 +31,7 @@
 		2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */; };
 		2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
-		2EC8ADFF2B81151400C575D9 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2EC8ADFE2B81151400C575D9 /* Secret.xcconfig */; };
+		2EC839AA2B7FF7A8009A67C7 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
 		2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */; };
 		2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32ED2B71153500059188 /* MainMenuBannerCollectionViewCell.swift */; };
@@ -173,7 +173,7 @@
 		2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCreationViewController.swift; sourceTree = "<group>"; };
 		2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
-		2EC8ADFE2B81151400C575D9 /* Secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Secret.xcconfig; path = ../Secret.xcconfig; sourceTree = "<group>"; };
+		2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Secret.xcconfig; path = ../Secret.xcconfig; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
 		2EFA32EC2B70F1C100059188 /* DrinkingGourmet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkingGourmet.entitlements; sourceTree = "<group>"; };
@@ -366,7 +366,7 @@
 		2E6C26BB2B497AD200C87B4A = {
 			isa = PBXGroup;
 			children = (
-				2EC8ADFE2B81151400C575D9 /* Secret.xcconfig */,
+				2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */,
 				2E6C26C62B497AD200C87B4A /* DrinkingGourmet */,
 				2E6C26C52B497AD200C87B4A /* Products */,
 			);
@@ -1101,7 +1101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
-				2EC8ADFF2B81151400C575D9 /* Secret.xcconfig in Resources */,
+				2EC839AA2B7FF7A8009A67C7 /* Secret.xcconfig in Resources */,
 				97EB4AF82B720CDB009A62EB /* Animation - 1707200937141.json in Resources */,
 				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
 				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
