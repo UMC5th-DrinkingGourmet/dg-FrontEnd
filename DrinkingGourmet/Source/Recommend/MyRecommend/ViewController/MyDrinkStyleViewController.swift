@@ -12,32 +12,31 @@ class MyDrinkStyleViewController: UIViewController {
        
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = .black
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "오늘은 어떤 주류와\n어울리는 음식으로\n기분전환을 해보시겠어요?"
+        text.text = "오늘은 어떤 주류와\n어울리는 음식으로\n기분전환을 해보시겠어요?"
         return text
     }()
     
-    private lazy var recommendButton: CustomRecommendButtons = {
-        let button = CustomRecommendButtons(buttonTitle: "주류추천")
+    private lazy var recommendButton: CustomizedRecommendButtons = {
+        let button = CustomizedRecommendButtons(buttonTitle: "주류추천")
         return button
     }()
-    private lazy var myRecommendButton: CustomRecommendButtons = {
-        let button = CustomRecommendButtons(buttonTitle: "내가 받은 추천")
+    private lazy var myRecommendButton: CustomizedRecommendButtons = {
+        let button = CustomizedRecommendButtons(buttonTitle: "내가 받은 추천")
         return button
     }()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         // navigation
         title = "주류추천"
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-        navigationController?.navigationBar.tintColor = UIColor.black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.baseColor.base01]
+        navigationController?.navigationBar.tintColor = UIColor.baseColor.base01
         navigationController?.navigationBar.isTranslucent = true
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.leftBarButtonItem = backButton
