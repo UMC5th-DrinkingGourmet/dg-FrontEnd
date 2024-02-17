@@ -9,37 +9,34 @@ import UIKit
 
 class GetUserInfoViewController: UIViewController {
     
-    lazy var guideText: UILabel = {
+    private lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = UIColor(named: "base01")
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "주류 추천을 위해\n00님의 정보를 알려주세요."
+        text.text = "주류 추천을 위해\n00님의 정보를 알려주세요."
         return text
     }()
     
-    lazy var subGuideText: UILabel = {
+    private lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+         text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "지금 입력하신 기본 정보는 주류 추천에 활용되며\n수정이 가능합니다."
-        
         return text
-        
     }()
     
-    lazy var nextButton = makeNextButton(buttonTitle: "다음")
+    private lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         // navigation
         title = "주류추천"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-        navigationController?.navigationBar.tintColor = UIColor.black
+        navigationController?.navigationBar.tintColor = UIColor.baseColor.base01
         navigationController?.navigationBar.isTranslucent = true
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.leftBarButtonItem = backButton
@@ -76,9 +73,9 @@ class GetUserInfoViewController: UIViewController {
         }
         
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(0)
-            make.leading.equalToSuperview().offset(0)
-            make.trailing.equalToSuperview().offset(0)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.height.equalTo(100)
             nextButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
