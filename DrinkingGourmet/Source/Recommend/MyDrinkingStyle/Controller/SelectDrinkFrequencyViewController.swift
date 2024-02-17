@@ -82,9 +82,11 @@ class SelectDrinkFrequencyViewController: UIViewController {
     // MARK: - Actions
     func updateNextButtonSelectableColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base01
+        isSelectedButton = true
     }
     func updateNextButtonColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base06
+        isSelectedButton = false
     }
     
     func updateButtonSelectedColor(_ button: UIButton) {
@@ -110,19 +112,16 @@ class SelectDrinkFrequencyViewController: UIViewController {
                 self.selectedButtonIndex = index
                 updateButtonSelectedColor(sender)
                 updateButtonColor(buttonArray[selectedButtonIndex])
-                isSelectedButton = true
                 updateNextButtonSelectableColor(nextButton)
             } else {
                 updateButtonColor(sender)
                 self.selectedButtonIndex = nil
-                isSelectedButton = false
                 updateNextButtonColor(nextButton)
             }
         } else {
             // 현재 선택된 버튼이 없는 경우
             self.selectedButtonIndex = index
             updateButtonSelectedColor(sender)
-            isSelectedButton = true
             updateNextButtonSelectableColor(nextButton)
         }
     }

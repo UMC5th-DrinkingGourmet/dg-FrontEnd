@@ -74,9 +74,11 @@ class SelectDrunkDegreeViewController: UIViewController {
     // MARK: - Actions
     func updateNextButtonSelectableColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base01
+        isSelectedButton = true
     }
     func updateNextButtonColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base06
+        isSelectedButton = false
     }
     
     // MARK: - Constraints
@@ -129,7 +131,6 @@ class SelectDrunkDegreeViewController: UIViewController {
 extension SelectDrunkDegreeViewController: SliderViewDelegate {
     func sliderView(_ sender: SliderView, changedValue value: Int) {
         desireLevel = value
-        isSelectedButton = true
         updateNextButtonSelectableColor(nextButton)
     }
 }

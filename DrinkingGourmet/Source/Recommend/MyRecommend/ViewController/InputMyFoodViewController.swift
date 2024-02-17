@@ -104,9 +104,11 @@ class InputMyFoodViewController: UIViewController {
     // MARK: - Actions
     func updateNextButtonSelectableColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base01
+        isTextInput = true
     }
     func updateNextButtonColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base06
+        isTextInput = false
     }
     
     @objc private func clearTextField(_ sender: UIButton) {
@@ -195,18 +197,15 @@ class InputMyFoodViewController: UIViewController {
 extension InputMyFoodViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.text?.count != nil {
-            isTextInput = true
             updateLineViewColor()
         }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text == "" {
-            isTextInput = false
             updateNextButtonColor(nextButton)
         }
         else {
-            isTextInput = true
             updateNextButtonSelectableColor(nextButton)
         }
         updateLineViewColor()
