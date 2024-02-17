@@ -9,14 +9,10 @@ import UIKit
 
 class SelectWeatherViewController: UIViewController {
     
-    var buttonSelected: Bool = false
-    
+    private var isSelectedButton = false
     private let resource: SelectWeatherResource = SelectWeatherResource()
-    var buttonImageArray: [UIImage] {
-        return resource.weatherButtonImageArray()
-    }
-    var buttonSelectedImageArray: [UIImage] {
-        return resource.weatherButtonSelectedImageArray()
+    private var buttonTitleArray: [String] {
+        return resource.weatherButtonTitleArray()
     }
     
     lazy var progressBar: UIProgressView = {
@@ -48,9 +44,13 @@ class SelectWeatherViewController: UIViewController {
         return text
     }()
     
-    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: true)
+    private var selectedButtonCount: Int = 0
+    private var buttonSelected: [Bool] = []
+    
+    
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isSelectedButton)
     lazy var skipButton = makeSkipButton()
-    lazy var buttonArray = makeRecommendButtonArray(buttonArray: buttonImageArray)
+    lazy var buttonArray = makeRecommendButtonArray(buttonArray: buttonTitleArray)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,24 +70,72 @@ class SelectWeatherViewController: UIViewController {
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
-    @objc func nextButtonTapped(_ sender: UIButton) {
+    @objc func skipButtonTapped(_ sender: UIButton) {
         let nextViewController = LoadingRecommendDrinkViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
-    
-    // MARK: - Actions
-    @objc func buttonTapped(_ sender: UIButton){
-        let index = sender.tag
-        print(index)
-        if buttonSelected {
-            buttonSelected = false
-            sender.setImage(buttonImageArray[index], for: .normal)
+    @objc func nextButtonTapped(_ sender: UIButton) {
+        if isSelectedButton {
+            let nextViewController = LoadingRecommendDrinkViewController()
+            navigationController?.pushViewController(nextViewController, animated: true)
         } else {
-            buttonSelected = true
-            sender.setImage(buttonSelectedImageArray[index], for: .normal)
+            return
         }
     }
     
+    // MARK: - Actions
+    func updateNextButtonSelectableColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base01
+        isSelectedButton = true
+    }
+    func updateNextButtonColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base06
+        isSelectedButton = false
+    }
+    
+    @objc func makeRecommendButtonArray(buttonArray: [String]) -> [UIButton] {
+        var buttons: [UIButton] = []
+        
+        for (index, _) in buttonArray.enumerated() {
+            let button = customizedRecommendButton(title: buttonArray[index], foregroundColor: .baseColor.base03, backgroundColor: .baseColor.base10, borderColor: .baseColor.base08)
+            button.tag = index
+            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+            buttons.append(button)
+            
+            buttonSelected.append(false)
+        }
+        
+        return buttons
+    }
+    
+    private func updateButtonSelectedColor(_ button: UIButton) {
+        button.setTitleColor(UIColor.customColor.customOrange, for: .normal)
+        button.backgroundColor = UIColor.customColor.customOrange.withAlphaComponent(0.05)
+        button.layer.borderColor = UIColor.customColor.customOrange.cgColor
+    }
+    
+    private func updateButtonColor(_ button: UIButton) {
+        button.setTitleColor(UIColor.baseColor.base03, for: .normal)
+        button.backgroundColor = UIColor.baseColor.base10
+        button.layer.borderColor = UIColor.baseColor.base08.cgColor
+    }
+    
+    @objc func buttonTapped(_ sender: UIButton) {
+        let index = sender.tag
+        
+        if buttonSelected[index] {
+            buttonSelected[index] = false
+            if !(buttonSelected.contains(true)) {
+                updateNextButtonColor(nextButton)
+            }
+            updateButtonColor(sender)
+            
+        } else {
+            updateNextButtonSelectableColor(nextButton)
+            buttonSelected[index] = true
+            updateButtonSelectedColor(sender)
+        }
+    }
     
     // MARK: - Constraints
     
@@ -124,37 +172,39 @@ class SelectWeatherViewController: UIViewController {
         }
         
         // Button Array
-         let viewFrame: CGFloat = self.view.frame.width - 32
-         var buttonFrameWidth = viewFrame
-         var heightMargin = 45
-        
+        let viewFrame: CGFloat = self.view.frame.width - 40
+        let defaultMargin: CGFloat = 8
+        var buttonFrameWidth = viewFrame
+        var topMargin: CGFloat = 45
+    
         for i in 0..<buttonArray.count {
             let button = buttonArray[i]
-            let widthMargin = buttonImageArray[i].size.width + 8
-            let buttonHeight: Int = Int(buttonImageArray[i].size.height + 8)
-            
-            button.snp.makeConstraints { make in
-                if (buttonFrameWidth - widthMargin) >= 0 {
-                    make.leading.equalToSuperview().offset(20 + viewFrame - buttonFrameWidth)
-                    make.top.equalTo(subGuideText.snp.bottom).offset(heightMargin)
-                    make.size.equalTo(buttonImageArray[i].size) // 버튼의 크기 설정
-                } else {
-                    buttonFrameWidth = viewFrame
-                    heightMargin += buttonHeight
-                    make.leading.equalToSuperview().offset(20 + viewFrame - buttonFrameWidth)
-                    make.top.equalTo(subGuideText.snp.bottom).offset(heightMargin)
-                    make.size.equalTo(buttonImageArray[i].size) // 버튼의 크기 설정
+            let buttonWidth = CGFloat(button.frame.width)
+            let buttonHeight = CGFloat(button.frame.height)
+            buttonArray[i].snp.makeConstraints { make in
+                
+                if buttonFrameWidth - buttonWidth >= 0 {
+                    make.leading.equalTo(subGuideText).offset(viewFrame - buttonFrameWidth)
+                    make.top.equalTo(subGuideText.snp.bottom).offset(topMargin)
                 }
-                buttonFrameWidth -= widthMargin
+                else {
+                    buttonFrameWidth = viewFrame
+                    topMargin += (buttonHeight + defaultMargin)
+                    make.leading.equalToSuperview().offset(20 + viewFrame - buttonFrameWidth)
+                    make.top.equalTo(subGuideText.snp.bottom).offset(topMargin)
+                }
+                
+                make.width.equalTo(buttonArray[i].frame.width)
+                make.height.equalTo(buttonHeight)
             }
-            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+            buttonFrameWidth -= (buttonWidth + defaultMargin)
         }
         
         skipButton.snp.makeConstraints { make in
             make.bottom.equalTo(nextButton.snp.top)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            skipButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
+            skipButton.addTarget(self, action: #selector(skipButtonTapped(_:)), for: .touchUpInside)
         }
         
         nextButton.snp.makeConstraints { make in

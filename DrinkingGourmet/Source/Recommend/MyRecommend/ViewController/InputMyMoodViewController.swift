@@ -8,6 +8,7 @@
 import UIKit
 
 class InputMyMoodViewController: UIViewController {
+    private var isTextInput = false
     
     private let placeHolderText = "기분을 적어주세요"
     private let placeHolderColor = UIColor.baseColor.base07
@@ -71,7 +72,7 @@ class InputMyMoodViewController: UIViewController {
         return label
     }()
     
-    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: true)
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isTextInput)
     lazy var skipButton = makeSkipButton()
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -98,11 +99,28 @@ class InputMyMoodViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func nextButtonTapped(_ sender: UIButton) {
+    @objc func skipButtonTapped(_ sender: UIButton) {
         let nextViewController = SelectWeatherViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
+    @objc func nextButtonTapped(_ sender: UIButton) {
+        if isTextInput {
+            let nextViewController = SelectWeatherViewController()
+            navigationController?.pushViewController(nextViewController, animated: true)
+        } else {
+            return
+        }
+    }
     
+    // MARK: - Actions
+    func updateNextButtonSelectableColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base01
+        isTextInput = true
+    }
+    func updateNextButtonColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base06
+        isTextInput = false
+    }
     
     // MARK: - Constraints
     func setAddSubViews() {
@@ -160,7 +178,7 @@ class InputMyMoodViewController: UIViewController {
             make.bottom.equalTo(nextButton.snp.top)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            skipButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
+            skipButton.addTarget(self, action: #selector(skipButtonTapped(_:)), for: .touchUpInside)
         }
         
         nextButton.snp.makeConstraints { make in
@@ -203,8 +221,10 @@ extension InputMyMoodViewController: UITextViewDelegate {
         // UI Controll
         if textView.text == "" {
             textViewBottomLine.backgroundColor = UIColor.baseColor.base07
+            updateNextButtonColor(nextButton)
         } else {
             textViewBottomLine.backgroundColor = UIColor.baseColor.base01
+            updateNextButtonSelectableColor(nextButton)
         }
         textViewCharCount.text = "\(charCount)/130"
     }

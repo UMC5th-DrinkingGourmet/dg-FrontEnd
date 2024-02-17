@@ -130,7 +130,7 @@ class SelectAlcoholDegreeViewController: UIViewController {
     @objc func makeDrinkingButtonArray(buttonArray: [String]) -> [UIButton] {
         var buttons: [UIButton] = []
         
-        for (index, name) in buttonArray.enumerated() {
+        for (index, _) in buttonArray.enumerated() {
             let button = customizedDrinkingButton(title: buttonArray[index], foregroundColor: .baseColor.base03, backgroundColor: .baseColor.base10, borderColor: .baseColor.base08)
             button.tag = index
             button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)

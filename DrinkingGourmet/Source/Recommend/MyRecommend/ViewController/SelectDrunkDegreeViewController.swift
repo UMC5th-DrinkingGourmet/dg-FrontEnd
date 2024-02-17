@@ -36,21 +36,16 @@ class SelectDrunkDegreeViewController: UIViewController {
         return text
     }()
     
-    private let mainLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1"
-        label.font = .boldSystemFont(ofSize: 22)
-        return label
-    }()
-    
     private let sliderView: SliderView = .init(maxValue: 5)
     
-    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: true)
-    
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isSelectedButton)
+    private var desireLevel: Int? = nil
+    private var isSelectedButton = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.baseColor.base10
+        
         sliderView.delegate = self
         
         // navigation
@@ -67,10 +62,22 @@ class SelectDrunkDegreeViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
-        let nextViewController = InputMyFoodViewController()
-        navigationController?.pushViewController(nextViewController, animated: true)
+        if isSelectedButton {
+            let nextViewController = InputMyFoodViewController()
+            navigationController?.pushViewController(nextViewController, animated: true)
+        } else {
+            return
+        }
     }
     
+
+    // MARK: - Actions
+    func updateNextButtonSelectableColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base01
+    }
+    func updateNextButtonColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base06
+    }
     
     // MARK: - Constraints
     func setAddSubViews() {
@@ -121,6 +128,8 @@ class SelectDrunkDegreeViewController: UIViewController {
 // MARK: - SliderViewDelegate
 extension SelectDrunkDegreeViewController: SliderViewDelegate {
     func sliderView(_ sender: SliderView, changedValue value: Int) {
-        mainLabel.text = "\(value)"
+        desireLevel = value
+        isSelectedButton = true
+        updateNextButtonSelectableColor(nextButton)
     }
 }

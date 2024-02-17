@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+
 class CustomizedRecommendButtons: UIButton {
     init(buttonTitle: String) {
         super.init(frame: .zero)
@@ -36,6 +37,27 @@ func customizedDrinkingButton(title: String, foregroundColor: UIColor, backgroun
     btn.layer.masksToBounds = true
     btn.layer.borderColor = borderColor.cgColor
     btn.layer.borderWidth = 1
+    
+    return btn
+}
+
+func customizedRecommendButton(title: String, foregroundColor: UIColor, backgroundColor: UIColor, borderColor: UIColor) -> UIButton {
+    let btn = UIButton()
+    
+    btn.backgroundColor = backgroundColor
+    btn.setTitle(title, for: .normal)
+    btn.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
+    btn.setTitleColor(foregroundColor, for: .normal)
+    btn.layer.cornerRadius = 20
+    btn.layer.masksToBounds = true
+    btn.layer.borderColor = borderColor.cgColor
+    btn.layer.borderWidth = 1
+    
+    
+    let titleWidth = (title as NSString).size(withAttributes: [.font: btn.titleLabel!.font!]).width
+    let buttonWidth = titleWidth + 50
+    
+    btn.frame.size = CGSize(width: buttonWidth, height: 40)
     
     return btn
 }
@@ -71,30 +93,4 @@ func makeSkipButton() -> UIButton {
         make.height.equalTo(90)
     }
     return btn
-}
-
-func makeButtonArray(buttonArray: [String]) -> [UIButton] {
-    var buttons: [UIButton] = []
-    
-    for (index, name) in buttonArray.enumerated() {
-        let button: CustomizedRecommendButtons = {
-            CustomizedRecommendButtons(buttonTitle: name)
-            
-        }()
-        button.tag = index
-        buttons.append(button)
-    }
-    return buttons
-}
-//used
-func makeRecommendButtonArray(buttonArray: [UIImage]) -> [UIButton] {
-    var buttons: [UIButton] = []
-    
-    for (index, image) in buttonArray.enumerated() {
-        let button = UIButton()
-        button.setImage(buttonArray[index], for: .normal)
-        button.tag = index
-        buttons.append(button)
-    }
-    return buttons
 }
