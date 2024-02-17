@@ -71,7 +71,7 @@ class SelectDrinkFrequencyViewController: UIViewController {
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
-            let nextViewController = WelcomeUserViewController()
+            let nextViewController = WelcomeViewController()
             navigationController?.pushViewController(nextViewController, animated: true)
         } else {
             return

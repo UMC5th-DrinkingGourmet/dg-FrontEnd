@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GetRecommendViewController: UIViewController {
+class GetDrinkingRecommendViewController: UIViewController {
     private let foodName: String = "드실 음식"
     private let drinkName: String = "상큼한 칵테일"
     private let recommendReason: String = "오늘 날씨가 화창하니 기분이 좋은 여자친구와 함께 고기를 먹는 데이트라면, 상큼하고 청량감 넘치는 칵테일이 최적의 선택입니다.\n\n이러한 칵테일은 달콤한 맛과 함께 상쾌한 느낌을 주어 기분 좋은 분위기를 연출할 수 있습니다.이러한 칵테일은 달콤한 맛과 함께 상쾌한 느낌을 주어 기분 좋은 분위기를 연출할 수 있습니다."
