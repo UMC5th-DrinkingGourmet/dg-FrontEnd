@@ -12,7 +12,13 @@ import PhotosUI
 
 class UploadViewController: UIViewController {
     
+    var tempImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+    
     var imageList: [UIImage] = []
+    
+    lazy var pngDataList: [Data] = imageList.compactMap { $0.pngData() }
     
     private let imageLabel = UILabel().then {
         $0.text = "사진"
@@ -84,7 +90,8 @@ class UploadViewController: UIViewController {
         view.addSubviews([
             imageLabel,
             uploadBtn,
-            collectionView
+            collectionView,
+            tempImageView
         ])
     }
     
@@ -106,6 +113,11 @@ class UploadViewController: UIViewController {
             $0.leading.equalTo(uploadBtn.snp.trailing).offset(16)
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(115)
+        }
+        
+        tempImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalTo(100)
         }
     }
     
@@ -243,7 +255,8 @@ extension UploadViewController: PHPickerViewControllerDelegate {
                     self?.imageList.append(image)
                     self?.collectionView.reloadData()
                     
-                    print(self?.imageList)
+                    print(self?.imageList ?? "No data available")
+                    print(self?.pngDataList.first?.count ?? "No data available")
                 }
             }
         }
