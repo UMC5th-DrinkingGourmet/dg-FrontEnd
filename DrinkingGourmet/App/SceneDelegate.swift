@@ -18,20 +18,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         window.rootViewController = UINavigationController(rootViewController: UploadViewController())
-//        do {
-//            let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
-//            print("Refresh Token: \(refreshToken)")
-//            UserInfoDataManager.shared.loginWithProviderInfo { [weak self] in
-//                        DispatchQueue.main.async {
-//                            self?.window?.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
-//                            self?.window?.makeKeyAndVisible()
-//                        }
-//                    }
-////            window.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
-//        } catch {
-//            print("Refresh Token not found")
-//            window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
-//        }
+        do {
+            let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
+            print("Refresh Token: \(refreshToken)")
+            UserInfoDataManager.shared.loginWithProviderInfo { [weak self] in
+                        DispatchQueue.main.async {
+                            self?.window?.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
+                            self?.window?.makeKeyAndVisible()
+                        }
+                    }
+//            window.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
+        } catch {
+            print("Refresh Token not found")
+            window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
+        }
 
         window.makeKeyAndVisible()
     }

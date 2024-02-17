@@ -101,7 +101,7 @@ class TodayCombinationViewController: UIViewController {
     }
     
     @objc func floatingButtonTapped() {
-        let vc = UploadViewController()
+        let vc = CombinationUploadVC()
         navigationController?.pushViewController(vc, animated: true)
     }
     
