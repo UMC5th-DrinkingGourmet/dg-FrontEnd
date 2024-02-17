@@ -99,6 +99,13 @@
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchVC.swift */; };
 		56C9B29F2B7CE8E000C59D60 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 56C9B29E2B7CE8E000C59D60 /* Lottie */; };
 		56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EAD5892B6C6C1A005C3A80 /* TodayCombinationView.swift */; };
+		56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */; };
+		56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7172B8000CA000F6CA4 /* LikeView.swift */; };
+		56F8A71A2B800D6F000F6CA4 /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7192B800D6F000F6CA4 /* LikeCell.swift */; };
+		56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A71E2B80111A000F6CA4 /* LikeAllCombinationModel.swift */; };
+		56F8A7212B80114C000F6CA4 /* LikeAllRecipeBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */; };
+		56F8A7232B801153000F6CA4 /* LikeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7222B801153000F6CA4 /* LikeDataManager.swift */; };
+		56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7242B801166000F6CA4 /* LikeInput.swift */; };
 		97EB4AC22B70F5E6009A62EB /* InputMyMoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4ABB2B70F5E5009A62EB /* InputMyMoodViewController.swift */; };
 		97EB4AC32B70F5E6009A62EB /* InputMyFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4ABC2B70F5E5009A62EB /* InputMyFoodViewController.swift */; };
 		97EB4AC42B70F5E6009A62EB /* SelectMyMoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4ABD2B70F5E5009A62EB /* SelectMyMoodViewController.swift */; };
@@ -210,6 +217,13 @@
 		56C9B2992B7CE70100C59D60 /* WeeklyBestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestDataManager.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchVC.swift; sourceTree = "<group>"; };
 		56EAD5892B6C6C1A005C3A80 /* TodayCombinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationView.swift; sourceTree = "<group>"; };
+		56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
+		56F8A7172B8000CA000F6CA4 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
+		56F8A7192B800D6F000F6CA4 /* LikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
+		56F8A71E2B80111A000F6CA4 /* LikeAllCombinationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeAllCombinationModel.swift; sourceTree = "<group>"; };
+		56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeAllRecipeBookModel.swift; sourceTree = "<group>"; };
+		56F8A7222B801153000F6CA4 /* LikeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeDataManager.swift; sourceTree = "<group>"; };
+		56F8A7242B801166000F6CA4 /* LikeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeInput.swift; sourceTree = "<group>"; };
 		97EB4ABB2B70F5E5009A62EB /* InputMyMoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMyMoodViewController.swift; sourceTree = "<group>"; };
 		97EB4ABC2B70F5E5009A62EB /* InputMyFoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMyFoodViewController.swift; sourceTree = "<group>"; };
 		97EB4ABD2B70F5E5009A62EB /* SelectMyMoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectMyMoodViewController.swift; sourceTree = "<group>"; };
@@ -398,6 +412,7 @@
 		2E6C26E32B497EB900C87B4A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				56F8A7112B80008B000F6CA4 /* Like */,
 				2EB001902B5E40A400B74580 /* UserAuthentication */,
 				2E0274DD2B6FCE6200F92177 /* MainMenu */,
 				5668A3302B6F66DD0009FCD6 /* RecipeBook */,
@@ -806,6 +821,44 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		56F8A7112B80008B000F6CA4 /* Like */ = {
+			isa = PBXGroup;
+			children = (
+				56F8A71D2B8010B7000F6CA4 /* Model */,
+				56F8A7132B8000A6000F6CA4 /* View */,
+				56F8A7122B800099000F6CA4 /* ViewController */,
+			);
+			path = Like;
+			sourceTree = "<group>";
+		};
+		56F8A7122B800099000F6CA4 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		56F8A7132B8000A6000F6CA4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				56F8A7172B8000CA000F6CA4 /* LikeView.swift */,
+				56F8A7192B800D6F000F6CA4 /* LikeCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		56F8A71D2B8010B7000F6CA4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				56F8A7242B801166000F6CA4 /* LikeInput.swift */,
+				56F8A71E2B80111A000F6CA4 /* LikeAllCombinationModel.swift */,
+				56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */,
+				56F8A7222B801153000F6CA4 /* LikeDataManager.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		97EB4AB62B70F565009A62EB /* MyRecommend */ = {
 			isa = PBXGroup;
 			children = (
@@ -981,6 +1034,7 @@
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				97EB4AE72B70F704009A62EB /* CustomizedButtons.swift in Sources */,
 				97EB4AC22B70F5E6009A62EB /* InputMyMoodViewController.swift in Sources */,
+				56F8A7232B801153000F6CA4 /* LikeDataManager.swift in Sources */,
 				56C9B2982B7CE6E400C59D60 /* WeeklyBestModel.swift in Sources */,
 				97EB4AC32B70F5E6009A62EB /* InputMyFoodViewController.swift in Sources */,
 				56C9B2962B7CE6D200C59D60 /* WeeklyBestInput.swift in Sources */,
@@ -989,6 +1043,7 @@
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				5601EBD12B7C29480043CCD4 /* RecipeBookDetailImageInput.swift in Sources */,
+				56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */,
 				5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */,
 				5668A2F92B6EDCC00009FCD6 /* CommunityHome.swift in Sources */,
 				5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */,
@@ -1006,6 +1061,7 @@
 				2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */,
 				5668A34D2B6FBAF00009FCD6 /* RecipeBookDetailVC.swift in Sources */,
 				2E56A0DB2B76499A007747ED /* UserInfoDataManager.swift in Sources */,
+				56F8A71A2B800D6F000F6CA4 /* LikeCell.swift in Sources */,
 				2E56A0DD2B78861B007747ED /* KeyChain.swift in Sources */,
 				5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */,
 				5668A2FB2B6EDCCC0009FCD6 /* CommunityHomeDataManager.swift in Sources */,
@@ -1024,6 +1080,7 @@
 				5601EBBB2B7BEED30043CCD4 /* CombinationCommentInput.swift in Sources */,
 				97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */,
 				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
+				56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */,
 				5601EBC02B7C10F90043CCD4 /* RecipeBookHomeInput.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				5601EBC82B7C169A0043CCD4 /* RecipeBookSearchVC.swift in Sources */,
@@ -1046,15 +1103,18 @@
 				5668A3052B6EE3C70009FCD6 /* WeeklyBestView.swift in Sources */,
 				97EB4AD62B70F668009A62EB /* UserDrinkingTasteViewController.swift in Sources */,
 				2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */,
+				56F8A7212B80114C000F6CA4 /* LikeAllRecipeBookModel.swift in Sources */,
 				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				5668A3472B6FBAB20009FCD6 /* RecipeBookDetailView.swift in Sources */,
 				56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */,
+				56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */,
 				5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */,
 				97EB4ACC2B70F63B009A62EB /* SelectWeatherResource.swift in Sources */,
 				5668A3BB2B76B2120009FCD6 /* CombinationHomeDataManager.swift in Sources */,
 				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
 				97EB4AC72B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift in Sources */,
+				56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */,
 				97EB4AE52B70F704009A62EB /* CustomizedSlider.swift in Sources */,
 				5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */,
 				2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */,
