@@ -49,7 +49,7 @@ class LoadingRecommendDrinkViewController: UIViewController {
     }
     @objc func timerAction() {
         // - 3초 지연 일시 적용 - //
-        let nextViewController = GetDrinkingRecommendViewController()
+        let nextViewController = GetRecommendViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
     

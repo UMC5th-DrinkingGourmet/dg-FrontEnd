@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WelcomeViewController: UIViewController {
+class WelcomeUserViewController: UIViewController {
 
     lazy var welcomeImageView: UIImageView = { // 수정 요망
         let imgView = UIImageView()
