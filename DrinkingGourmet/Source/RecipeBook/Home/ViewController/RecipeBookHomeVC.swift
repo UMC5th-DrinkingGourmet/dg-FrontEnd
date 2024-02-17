@@ -10,7 +10,7 @@ import UIKit
 final class RecipeBookHomeVC: UIViewController {
     
     // MARK: - Properties
-    var arrayRecipeBookHome: [RecipeBookHomeModel.Result] = []
+    var arrayRecipeBookHome: [RecipeBookHomeModel.RecipeList] = []
     var fetchingMore: Bool = false
     var totalPageNum: Int = 0
     var nowPageNum: Int = 0
@@ -29,28 +29,19 @@ final class RecipeBookHomeVC: UIViewController {
         
         prepare()
         setupNaviBar()
+        setupTextField()
         setupTableView()
         setupFloatingButton()
     }
     
     func prepare() {
-        recipeBookHomeView.customSearchBar.textField.delegate = self
-        
-        recipeBookHomeView.customSearchBar.textField.attributedPlaceholder = NSAttributedString(
-            string: "레시피북 검색",
-            attributes: [
-                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
-                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
-            ]
-        )
-        
-        let input = RecipeBookHomeInput(page: 0)
+        let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: 0)
         RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
             guard let self = self else { return }
             
             if let model = model {
-//                self.totalPageNum = model.result.totalPage
-                self.arrayRecipeBookHome = model.result
+                self.totalPageNum = model.result.totalPage
+                self.arrayRecipeBookHome = model.result.recipeList
                 DispatchQueue.main.async {
                     self.recipeBookHomeView.tableView.reloadData()
                 }
@@ -75,6 +66,19 @@ final class RecipeBookHomeVC: UIViewController {
         navigationController?.navigationBar.backIndicatorImage = customBackImage
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
+    // MARK: - 텍스트필드 설정
+    func setupTextField() {
+        recipeBookHomeView.customSearchBar.textField.delegate = self
+        
+        recipeBookHomeView.customSearchBar.textField.attributedPlaceholder = NSAttributedString(
+            string: "레시피북 검색",
+            attributes: [
+                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
+                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
+            ]
+        )
     }
     
     // MARK: - 테이블뷰 설정
@@ -119,12 +123,19 @@ extension RecipeBookHomeVC: UITableViewDataSource {
         
         let recipeBook = arrayRecipeBookHome[indexPath.row]
         
-        // 이미지 API 필요
+        // 나중에 수정
+        if !recipeBook.recipeImageList.isEmpty {
+            if let url = URL(string: recipeBook.recipeImageList[0]) {
+                cell.mainImage.kf.setImage(with: url)
+            }
+        } else {
+            cell.mainImage.image = nil
+        }
         
         cell.titleLabel.text = recipeBook.name
         
-//        let hashtags = combination.hashTageList.map { "#\($0)" }.joined(separator: " ")
-//        cell.hashtagLabel.text = hashtags
+        let hashtags = recipeBook.hashTagNameList.map { "#\($0)" }.joined(separator: " ")
+        cell.hashtagLabel.text = hashtags
         
         cell.commentNumLabel.text = "\(recipeBook.commentCount)"
         
@@ -144,5 +155,36 @@ extension RecipeBookHomeVC: UITableViewDelegate {
         let recipeBookDetailVC = RecipeBookDetailVC()
         recipeBookDetailVC.recipeBookId = selectedItem
         navigationController?.pushViewController(recipeBookDetailVC, animated: true)
+    }
+    
+    // 페이징
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.bounds.size.height
+        
+        if offsetY > contentHeight - height {
+            if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
+                fetchingMore = true
+                fetchNextPage()
+            }
+        }
+    }
+    
+    func fetchNextPage() {
+        nowPageNum = nowPageNum + 1
+        let nextPage = nowPageNum
+        let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: nextPage)
+        
+        RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
+            guard let self = self else { return }
+            if let model = model {
+                self.arrayRecipeBookHome += model.result.recipeList
+                self.fetchingMore = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.recipeBookHomeView.tableView.reloadData()
+                }
+            }
+        }
     }
 }
