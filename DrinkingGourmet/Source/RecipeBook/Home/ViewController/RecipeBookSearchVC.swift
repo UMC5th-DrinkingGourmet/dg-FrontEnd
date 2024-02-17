@@ -118,7 +118,7 @@ extension RecipeBookSearchVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder() // 키보드 숨기기
         
-        let input = RecipeBookSearchInput(page: 0, keyword: searchResultView.searchBar.textField.text)
+        let input = RecipeBookHomeInput.fetchRecipeBookDataForSearchInput(page: 0, keyword: searchResultView.searchBar.textField.text)
         
         RecipeBookHomeDataManager().fetchRecipeBookDataForSearch(input, self) { [weak self] model in
             if let model = model {
@@ -128,7 +128,7 @@ extension RecipeBookSearchVC: UITextFieldDelegate {
                 }
                 
 //                todayCombinationViewController.totalPageNum = model.result.totalPage
-                recipeBookHomeVC.arrayRecipeBookHome = model.result
+                recipeBookHomeVC.arrayRecipeBookHome = model.result.recipeList
                 
                 // 스크롤을 맨 위로 이동
                 recipeBookHomeVC.recipeBookHomeView.tableView.setContentOffset(CGPoint(x: 0, y: -recipeBookHomeVC.recipeBookHomeView.tableView.contentInset.top), animated: false)

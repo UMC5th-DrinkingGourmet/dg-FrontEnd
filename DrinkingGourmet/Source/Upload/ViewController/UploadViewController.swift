@@ -12,7 +12,7 @@ import PhotosUI
 
 class UploadViewController: UIViewController {
     
-    var imageList: [NSItemProvider] = []
+    var imageList: [UIImage] = []
     
     private let imageLabel = UILabel().then {
         $0.text = "사진"
@@ -107,7 +107,6 @@ class UploadViewController: UIViewController {
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(115)
         }
-        
     }
     
     func configView() {
@@ -229,42 +228,25 @@ extension UploadViewController {
             
         self.present(alertController, animated: false, completion: nil)
     }
-    
-    private func displayImages() {
-        guard !imageList.isEmpty else { return }
+}
 
-        let group = DispatchGroup()
 
-        // 각 itemProvider에서 UIImage를 로드하고 처리
-        for itemProvider in imageList {
-            group.enter()
-
-            // 로드 핸들러를 통해 UIImage를 처리
-            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                guard let self = self, let image = image as? UIImage else {
-                    group.leave()
+extension UploadViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard let image = image as? UIImage else {
                     return
                 }
 
                 DispatchQueue.main.async {
-                    self.imageList.append(NSItemProvider(object: image))
-                    group.leave()
+                    self?.imageList.append(image)
+                    self?.collectionView.reloadData()
+                    
+                    print(self?.imageList)
                 }
             }
         }
-
-        group.notify(queue: DispatchQueue.main) {
-            self.collectionView.reloadData()
-        }
-    }
-}
-
-extension UploadViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        imageList.append(contentsOf: results.map(\.itemProvider))
-
-        collectionView.reloadData()
-        
         picker.dismiss(animated: true)
     }
 }
@@ -275,27 +257,18 @@ extension UploadViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
-        
-        let itemProvider = imageList[indexPath.item]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
             
-        if itemProvider.canLoadObject(ofClass: UIImage.self) {
-            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                guard let image = image as? UIImage else { return }
-                
-                DispatchQueue.main.async {
-                    cell.uploadedImageView.image = image
-                    cell.uploadedImageView.layer.cornerRadius = 8
-                    cell.uploadedImageView.layer.masksToBounds = true
-                }
-            }
+            let image = imageList[indexPath.item]
+            cell.uploadedImageView.image = image
+            cell.uploadedImageView.layer.cornerRadius = 8
+            cell.uploadedImageView.layer.masksToBounds = true
+
+            cell.deleteBtn.tag = indexPath.row
+            cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
+            
+            return cell
         }
-        
-        cell.deleteBtn.tag = indexPath.row
-        cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
-        
-        return cell
-    }
     
     @objc func deleteImg(sender: UIButton) {
         let index = sender.tag
