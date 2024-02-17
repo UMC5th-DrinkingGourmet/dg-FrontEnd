@@ -29,6 +29,7 @@ class LikeViewController: UIViewController {
         prepare()
         setupNaviBar()
         setupCollectionView()
+        setupButton()
     }
     
     // MARK: - 초기 설정
@@ -38,7 +39,7 @@ class LikeViewController: UIViewController {
             guard let self = self else { return }
             
             if let model = model {
-//                self.totalPageNum = model.result.totalPage
+                self.totalPageNum = model.result.totalPage
                 self.arrayLikeAllCombination = model.result.combinationList
                 DispatchQueue.main.async {
                     self.likeView.collectionView.reloadData()
@@ -69,6 +70,27 @@ class LikeViewController: UIViewController {
         cv.register(LikeCell.self, forCellWithReuseIdentifier: "LikeCell")
     }
     
+    // MARK: - 버튼 설정
+    func setupButton() {
+        likeView.combinationButton.addTarget(self, action: #selector(combinationButtonTapped), for: .touchUpInside)
+        likeView.recipeBookButton.addTarget(self, action: #selector(recipeBookButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func combinationButtonTapped() {
+        likeView.recipeBookLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+        likeView.combinationLabel.textColor = .black
+        likeView.rightLine.backgroundColor = .clear
+        likeView.leftLine.backgroundColor = .customOrange
+        prepare()
+    }
+    
+    @objc func recipeBookButtonTapped() {
+        likeView.recipeBookLabel.textColor = .black
+        likeView.combinationLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+        likeView.rightLine.backgroundColor = .customOrange
+        likeView.leftLine.backgroundColor = .clear
+    }
+    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -76,17 +98,19 @@ extension LikeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikeCell", for: indexPath) as! LikeCell
         
-//        let combination = arrayLikeAllCombination[indexPath.item]
-//        if let url = URL(string: combination.combinationImageUrl) {
-//            cell.mainImage.kf.setImage(with: url)
-//        }
-        cell.backgroundColor = .lightGray
+        let combination = arrayLikeAllCombination[indexPath.item]
+        if let url = URL(string: combination.combinationImageUrl) {
+            cell.mainImage.kf.setImage(with: url)
+        }
+        
+        cell.mainLabel.text = arrayLikeAllCombination[indexPath.item].title
+        
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15/*arrayLikeAllCombination.count*/
+        return arrayLikeAllCombination.count
     }
 }
 

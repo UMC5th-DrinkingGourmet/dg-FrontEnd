@@ -12,7 +12,7 @@ class LikeView: UIView {
     // MARK: - View
     private let combinationBackView = UIView()
     
-    private let combinationButton = UIButton().then {
+    let combinationButton = UIButton().then {
         $0.backgroundColor = .clear
     }
     
@@ -28,7 +28,7 @@ class LikeView: UIView {
     
     private let recipeBookBackView = UIView()
     
-    private let recipeBookButton = UIButton().then {
+    let recipeBookButton = UIButton().then {
         $0.backgroundColor = .clear
     }
     
