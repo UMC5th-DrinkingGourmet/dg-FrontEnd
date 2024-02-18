@@ -68,22 +68,33 @@ class TodayCombinationDetailViewController: UIViewController {
     func updateUIWithData() {
         self.todayCombinationDetailView.imageCollectionView.reloadData()
         
-        self.todayCombinationDetailView.pageControl.numberOfPages =  combinationDetailData?.result.combinationResult.combinationImageList.count ?? 0
+        guard let combinationDetailData = combinationDetailData else { return }
         
-        self.todayCombinationDetailView.userNameLabel.text = "\(combinationDetailData?.result.memberResult.name ?? "이름") 님의 레시피"
+        if combinationDetailData.result.memberResult.nickName == UserDefaultManager.shared.userNickname {
+            self.todayCombinationDetailView.moreButton.isHidden = false
+        }
         
-        if combinationDetailData?.result.combinationResult.isCombinationLike == true {
+        if let urlString = combinationDetailData.result.memberResult.profileImageUrl {
+            let url = URL(string: urlString)
+            self.todayCombinationDetailView.profileImage.kf.setImage(with: url)
+        }
+        
+        self.todayCombinationDetailView.pageControl.numberOfPages =  combinationDetailData.result.combinationResult.combinationImageList.count
+        
+        self.todayCombinationDetailView.userNameLabel.text = "\(combinationDetailData.result.memberResult.nickName) 님의 레시피"
+        
+        if combinationDetailData.result.combinationResult.isCombinationLike == true {
             self.isLiked = true
             self.todayCombinationDetailView.likeIconButton.setImage(UIImage(named: "ic_like_selected"), for: .normal)
         }
         
-        self.todayCombinationDetailView.hashtagLabel.text = combinationDetailData?.result.combinationResult.hashTagList.map { "#\($0)" }.joined(separator: " ")
+        self.todayCombinationDetailView.hashtagLabel.text = combinationDetailData.result.combinationResult.hashTagList.map { "\($0)" }.joined(separator: " ")
         
-        self.todayCombinationDetailView.titleLabel.text = combinationDetailData?.result.combinationResult.title
+        self.todayCombinationDetailView.titleLabel.text = combinationDetailData.result.combinationResult.title
         
-        self.todayCombinationDetailView.descriptionLabel.text = combinationDetailData?.result.combinationResult.content
+        self.todayCombinationDetailView.descriptionLabel.text = combinationDetailData.result.combinationResult.content
         
-        self.todayCombinationDetailView.commentAreaView.titleLabel.text = "댓글 \(combinationDetailData?.result.combinationCommentResult.totalElements ?? 0)"
+        self.todayCombinationDetailView.commentAreaView.titleLabel.text = "댓글 \(combinationDetailData.result.combinationCommentResult.totalElements)"
         
         if !arrayCombinationComment.isEmpty {
             todayCombinationDetailView.commentAreaView.commentsView.configureComments(arrayCombinationComment)
@@ -126,7 +137,14 @@ class TodayCombinationDetailViewController: UIViewController {
     
     @objc func moreButtonTapped() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive, handler: nil)
+        
+        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) {_ in
+//            if let combinationId = self.combinationId {
+//                CombinationDetailDataManager().deleteCombination(combinationId)
+//                self.navigationController?.popViewController(animated: true)
+//            }
+        }
+        
         let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         

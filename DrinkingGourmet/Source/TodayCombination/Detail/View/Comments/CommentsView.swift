@@ -52,7 +52,7 @@ class CommentsView: UIStackView {
                 view.profileImageView.kf.setImage(with: imageUrl)
             }
             view.nameLabel.text = data.memberNickName
-            view.dateLabel.text = data.updatedAt
+            view.dateLabel.text = data.createdAt
             view.contentLabel.text = data.content
             view.replyCountLabel.text = "답글 \(data.childCount)"
         }
