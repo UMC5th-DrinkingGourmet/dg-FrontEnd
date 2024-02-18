@@ -27,7 +27,7 @@ struct CombinationDetailModel: Codable {
         let content: String
         let memberNickName: String
         let memberProfile: String?
-        let updatedAt: String
+        let createdAt: String
         let childCount: Int
         let childComments: [CombinationCommentList]
     }
@@ -42,7 +42,7 @@ struct CombinationDetailModel: Codable {
     
     struct MemberResult: Codable {
         let memberId: Int
-        let name: String
+        let nickName: String
         let profileImageUrl: String?
     }
 }

@@ -20,7 +20,7 @@ struct CombinationCommentModel: Codable {
         let id: Int
         let content, memberNickName: String
         let memberProfile: String?
-        let updatedAt: String
+        let createdAt: String
         let childCount: Int
         let childComments: [CombinationCommentList]
     }
