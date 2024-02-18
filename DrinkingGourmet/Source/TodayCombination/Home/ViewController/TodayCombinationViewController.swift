@@ -13,9 +13,9 @@ class TodayCombinationViewController: UIViewController {
     
     // MARK: - Properties
     var arrayCombinationHome: [CombinationHomeModel.CombinationHomeList] = []
-    var fetchingMore: Bool = false
     var totalPageNum: Int = 0
-    var nowPageNum: Int = 0
+    var pageNum: Int = 0
+    var isLastPage: Bool = false
     
     let todayCombinationView = TodayCombinationView()
     
@@ -41,11 +41,14 @@ class TodayCombinationViewController: UIViewController {
         let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
         
         CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
+            guard let self = self else { return }
+            
             if let model = model {
-                self?.totalPageNum = model.result.totalPage
-                self?.arrayCombinationHome = model.result.combinationList
+                self.totalPageNum = model.result.totalPage
+                self.isLastPage = model.result.isLast
+                self.arrayCombinationHome = model.result.combinationList
                 DispatchQueue.main.async {
-                    self?.todayCombinationView.tableView.reloadData()
+                    self.todayCombinationView.tableView.reloadData()
                 }
             }
         }
@@ -90,6 +93,7 @@ class TodayCombinationViewController: UIViewController {
         
         tb.dataSource = self
         tb.delegate = self
+        tb.prefetchDataSource = self
         
         tb.rowHeight = 232 // 셀 높이 고정
         tb.register(TodayCombinationCell.self, forCellReuseIdentifier: "TodayCombinationCell")
@@ -130,13 +134,12 @@ extension TodayCombinationViewController: UITableViewDataSource {
         let combination = arrayCombinationHome[indexPath.row]
         
         if let url = URL(string: combination.combinationImageUrl) {
-            cell.mainImage.kf.setImage(with: url)
+                    cell.mainImage.kf.setImage(with: url)
         }
         
         cell.titleLabel.text = combination.title
         
-        let hashtags = combination.hashTageList.map { "#\($0)" }.joined(separator: " ")
-        cell.hashtagLabel.text = hashtags
+        cell.hashtagLabel.text = combination.hashTageList.map { "\($0)" }.joined(separator: " ")
         
         cell.commentNumLabel.text = "\(combination.commentCount)"
         
@@ -150,7 +153,6 @@ extension TodayCombinationViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension TodayCombinationViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = arrayCombinationHome[indexPath.row].combinationId
         
@@ -158,41 +160,28 @@ extension TodayCombinationViewController: UITableViewDelegate {
         todayCombinationDetailVC.combinationId = selectedItem
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
+}
 
-    // 페이징
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let height = scrollView.bounds.size.height
-        
-        if offsetY > contentHeight - height {
-//            print("맨 아래에 도달")
-//            print("totalPageNum - \(totalPageNum)")
-//            print("nowPageNum - \(nowPageNum)")
-            if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
-                fetchingMore = true
-//                print("fetchingMore - \(fetchingMore)")
-                fetchNextPage()
-            }
-        }
-    }
-    
-    func fetchNextPage() {
-//        print(#function)
-//        print("nowPageNum - \(nowPageNum)") // 현재 페이지
-        nowPageNum = nowPageNum + 1
-        let nextPage = nowPageNum
-//        print("nextPage : \(nextPage)") // 다음 요청할 페이지
-        let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: nextPage)
-        
-        CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-//            print(input)
-//            print("테스트")
-            if let model = model {
-                self?.arrayCombinationHome += model.result.combinationList
-                self?.fetchingMore = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self?.todayCombinationView.tableView.reloadData()
+// MARK: - UITableViewDataSourcePrefetching
+extension TodayCombinationViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            
+            if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum &&  !isLastPage {
+                
+                pageNum += 1
+                
+                let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: pageNum)
+                
+                CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
+                    if let model = model {
+                        guard let self = self else { return }
+                        self.arrayCombinationHome += model.result.combinationList
+                        self.isLastPage = model.result.isLast
+                        DispatchQueue.main.async {
+                            self.todayCombinationView.tableView.reloadData()
+                        }
+                    }
                 }
             }
         }
