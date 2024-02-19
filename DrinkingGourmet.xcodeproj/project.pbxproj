@@ -33,6 +33,7 @@
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
 		2EC839AA2B7FF7A8009A67C7 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
+		2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */; };
 		2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */; };
 		2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32ED2B71153500059188 /* MainMenuBannerCollectionViewCell.swift */; };
 		2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32EF2B714B6200059188 /* UILabel + setLineSpacing.swift */; };
@@ -175,6 +176,7 @@
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Secret.xcconfig; path = ../Secret.xcconfig; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+setPlaceholder.swift"; sourceTree = "<group>"; };
 		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
 		2EFA32EC2B70F1C100059188 /* DrinkingGourmet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkingGourmet.entitlements; sourceTree = "<group>"; };
 		2EFA32ED2B71153500059188 /* MainMenuBannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuBannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 				2E6C26FA2B4984B700C87B4A /* UIButton+Configuration.swift */,
 				2E6C270A2B4989D900C87B4A /* UIView+Gradient.swift */,
 				2EFA32EF2B714B6200059188 /* UILabel + setLineSpacing.swift */,
+				2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1140,6 +1143,7 @@
 				56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchVC.swift in Sources */,
 				56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */,
 				5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */,
+				2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				97EB4AE72B70F704009A62EB /* CustomizedButtons.swift in Sources */,
 				56AE284D2B83ED52009CE0A1 /* MyPageUserModel.swift in Sources */,

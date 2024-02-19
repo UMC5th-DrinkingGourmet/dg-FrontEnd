@@ -14,7 +14,7 @@ class CombinationUploadVC: UIViewController {
     
     // MARK: - Properties
     
-    var imageList: [NSItemProvider] = []
+    var imageList: [UIImage] = []
     
     var arrayRecommendList: [CombinationUploadModel.fetchRecommendListModel.RecommendResponseDTOList] = []
     
@@ -39,7 +39,7 @@ class CombinationUploadVC: UIViewController {
     let roundView = UIView().then {
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
+        $0.layer.borderColor = UIColor.customColor.checkMarkGray.cgColor
     }
     
     let combinationTextField = UITextField().then {
@@ -85,7 +85,7 @@ class CombinationUploadVC: UIViewController {
     }
     
     let grayLine1 = UIView().then {
-        $0.backgroundColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        $0.backgroundColor = UIColor.customColor.checkMarkGray
     }
     
     // 사진
@@ -156,7 +156,7 @@ class CombinationUploadVC: UIViewController {
     }
     
     let grayLine2 = UIView().then {
-        $0.backgroundColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        $0.backgroundColor = UIColor.customColor.checkMarkGray
     }
     
     let titleWarningLabel = UILabel().then {
@@ -165,6 +165,13 @@ class CombinationUploadVC: UIViewController {
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.attributedText = NSMutableAttributedString(string: "최소 5자 / 최대 80자", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    lazy var contentInputView = InputTextFieldView(frame: .zero).then {
+        $0.onTextChanged = { [weak self] text in
+//            print("텍스트 길이: \(text.count)")
+            
+        }
     }
     
     // 작성완료
@@ -254,7 +261,7 @@ class CombinationUploadVC: UIViewController {
     func prepare() {
         let input = CombinationUploadInput.fetchRecommendListDataInput(page: 0, size: 20)
         
-        CombinationUploadDataManager().fetchRecommendListData(input, self) { [weak self] model in
+        CombinationUploadDataManager.shared.fetchRecommendListData(input, self) { [weak self] model in
             guard let self = self else { return }
             
             if let model = model {
@@ -271,7 +278,7 @@ class CombinationUploadVC: UIViewController {
         
         scrollView.addSubview(contentView)
         
-        contentView.addSubviews([combinationLabel, roundView, combinationTextField, combinationButtonIcon, hashtagLabel, hashtagTextField, grayLine1, imageLabel, uploadBtn, collectionView, titleLabel, titleTextField, grayLine2, titleWarningLabel])
+        contentView.addSubviews([combinationLabel, roundView, combinationTextField, combinationButtonIcon, hashtagLabel, hashtagTextField, grayLine1, imageLabel, uploadBtn, collectionView, titleLabel, titleTextField, grayLine2, titleWarningLabel, contentInputView])
     }
     
     func configLayout() {
@@ -389,16 +396,47 @@ class CombinationUploadVC: UIViewController {
             make.trailing.equalTo(grayLine2.snp.trailing)
         }
         
+        contentInputView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(72)
+            $0.top.equalTo(titleWarningLabel.snp.bottom).offset(54)
+        }
+        
     }
     
     func configView() {
         uploadBtn.addTarget(self, action: #selector(uploadBtnClicked), for: .touchUpInside)
+        
+        contentInputView.title = "내용"
+        contentInputView.placeholder = "내용을 입력해주세요"
+        contentInputView.xBtn.isHidden = true
+        contentInputView.textfieldText = ""
+        
+        completionButton.addTarget(self, action: #selector(completionBtnClicked), for: .touchUpInside)
+    }
+    
+    @objc func completionBtnClicked() {
+        if completionButton.isEnabled == true {
+            print("클릭")
+            print("Uploading \(imageList.count) images.")
+            CombinationUploadDataManager.shared.uploadImages(imageList) { result in
+                switch result {
+                case .success(let responseString):
+                    print("Response: \(responseString)")
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
+            }
+        } else {
+            print("클릭 불가")
+        }
     }
     
     func setupTextField() {
         combinationTextField.delegate = self
         hashtagTextField.delegate = self
         titleTextField.delegate = self
+        contentInputView.textField.delegate = self
     }
     
     // 피커뷰
@@ -542,44 +580,24 @@ extension CombinationUploadVC {
             
         self.present(alertController, animated: false, completion: nil)
     }
-    
-    private func displayImages() {
-        guard !imageList.isEmpty else { return }
-
-        let group = DispatchGroup()
-
-        // 각 itemProvider에서 UIImage를 로드하고 처리
-        for itemProvider in imageList {
-            group.enter()
-
-            // 로드 핸들러를 통해 UIImage를 처리
-            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                guard let self = self, let image = image as? UIImage else {
-                    group.leave()
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    self.imageList.append(NSItemProvider(object: image))
-                    group.leave()
-                }
-            }
-        }
-
-        group.notify(queue: DispatchQueue.main) {
-            self.collectionView.reloadData()
-        }
-    }
 }
 
 extension CombinationUploadVC: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        imageList.append(contentsOf: results.map(\.itemProvider))
-        
-        print("Selected Images: \(imageList)")
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard let image = image as? UIImage else {
+                    return
+                }
 
-        collectionView.reloadData()
-        
+                DispatchQueue.main.async {
+                    self?.imageList.append(image)
+                    self?.collectionView.reloadData()
+                    
+                    print(self?.imageList ?? "No data available")
+                }
+            }
+        }
         picker.dismiss(animated: true)
     }
 }
@@ -590,27 +608,18 @@ extension CombinationUploadVC: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
-        
-        let itemProvider = imageList[indexPath.item]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
             
-        if itemProvider.canLoadObject(ofClass: UIImage.self) {
-            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                guard let image = image as? UIImage else { return }
-                
-                DispatchQueue.main.async {
-                    cell.uploadedImageView.image = image
-                    cell.uploadedImageView.layer.cornerRadius = 8
-                    cell.uploadedImageView.layer.masksToBounds = true
-                }
-            }
+            let image = imageList[indexPath.item]
+            cell.uploadedImageView.image = image
+            cell.uploadedImageView.layer.cornerRadius = 8
+            cell.uploadedImageView.layer.masksToBounds = true
+
+            cell.deleteBtn.tag = indexPath.row
+            cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
+            
+            return cell
         }
-        
-        cell.deleteBtn.tag = indexPath.row
-        cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
-        
-        return cell
-    }
     
     @objc func deleteImg(sender: UIButton) {
         let index = sender.tag
@@ -666,11 +675,11 @@ extension CombinationUploadVC: UITextFieldDelegate {
     }
     
     private func updateGrayLine1Color(text: String) {
-        grayLine1.backgroundColor = text.isEmpty ? UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1) : .customOrange
+        grayLine1.backgroundColor = text.isEmpty ? UIColor.customColor.checkMarkGray : .customOrange
     }
     
     private func updateGrayLine2Color(text: String) {
-        grayLine2.backgroundColor = text.count >= 5 ? .customOrange : UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        grayLine2.backgroundColor = text.count >= 5 ? .customOrange : UIColor.customColor.checkMarkGray
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -689,7 +698,8 @@ extension CombinationUploadVC: UITextFieldDelegate {
         return !(combinationTextField.text?.isEmpty ?? true) &&
         !(hashtagTextField.text?.isEmpty ?? true) &&
         !(titleTextField.text?.isEmpty ?? true) &&
-        5 <= titleTextField.text!.count && titleTextField.text!.count <= 80
+        5 <= titleTextField.text!.count && titleTextField.text!.count <= 80 &&
+        10 <= contentInputView.textField.text!.count
     }
     
     // 리턴 클릭 시 키보드 숨기기
@@ -698,7 +708,6 @@ extension CombinationUploadVC: UITextFieldDelegate {
         return true
     }
 }
-
 
 // MARK: - 피커뷰
 extension CombinationUploadVC: UIPickerViewDataSource {

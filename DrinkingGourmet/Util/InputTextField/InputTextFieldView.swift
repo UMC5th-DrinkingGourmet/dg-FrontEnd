@@ -19,6 +19,7 @@ class InputTextFieldView: UIView {
     var placeholder: String? {
         didSet {
             textField.placeholder = placeholder
+            textField.setPlaceholder(color: .checkmarkGray)
         }
     }
     
