@@ -8,23 +8,15 @@
 import UIKit
 
 struct SelectDrinkFrequencyResource {
-    private let frequencyButtonImage: [UIImage] = [
-        UIImage(imageLiteralResourceName: "BTN_m2"),
-        UIImage(imageLiteralResourceName: "BTN_w1"),
-        UIImage(imageLiteralResourceName: "BTN_w2"),
-        UIImage(imageLiteralResourceName: "BTN_w4")
-    ]
-    private let frequencyButtonSelectedImage: [UIImage] = [
-        UIImage(imageLiteralResourceName: "BTN_m2_selected"),
-        UIImage(imageLiteralResourceName: "BTN_w1_selected"),
-        UIImage(imageLiteralResourceName: "BTN_w2_selected"),
-        UIImage(imageLiteralResourceName: "BTN_w4_selected")
+    
+    private let frequencyButtonTitle: [String] = [
+        "월 2~3회",
+        "주 1회",
+        "주 2회",
+        "주 4회 이상"
     ]
     
-    func frequencyButtonImageArray() -> [UIImage] {
-        return frequencyButtonImage
-    }
-    func frequencyButtonSelectedImageArray() -> [UIImage] {
-        return frequencyButtonSelectedImage
+    func frequencyButtonTitleArray() -> [String] {
+        return frequencyButtonTitle
     }
 }

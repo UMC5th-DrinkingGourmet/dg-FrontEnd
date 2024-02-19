@@ -8,60 +8,76 @@
 import UIKit
 
 class InputMyFoodViewController: UIViewController {
+    private var isTextInput = false
     
     lazy var progressBar: UIProgressView = {
         let progressBar = UIProgressView()
         progressBar.clipsToBounds = true
         progressBar.layer.cornerRadius = 5
         progressBar.tintColor = .black
-        progressBar.trackTintColor = UIColor(named: "base08")
-        
+        progressBar.trackTintColor = UIColor.baseColor.base08
         return progressBar
     }()
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = UIColor(named: "base01")
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "드실 음식을 입력해주세요."
-        
+        text.text = "드실 음식을 입력해주세요."
         return text
     }()
-    
     
     lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+        text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "오늘은 어떤 음식과 함께 하시나요?"
-        
         return text
+    }()
+    
+    var foodSearchField: UITextField = {
+        let textField = UITextField()
         
+        textField.placeHolder(string: "치킨", color: UIColor.baseColor.base07)
+        textField.text = ""
+        textField.textColor = UIColor.baseColor.base01
+        textField.font = UIFont.systemFont(ofSize: 20)
+        
+        //수정 제안 제거
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
+        
+        return textField
     }()
     
-    lazy var searchBar: FoodSearchBarView = .init()
-    
-    lazy var foodSearchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "치킨"
-        searchBar.searchBarStyle = .minimal
-        return searchBar
+    private lazy var clearButton: UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
+        btn.addTarget(self, action: #selector(clearTextField), for: .touchUpInside)
+        btn.tintColor = UIColor.baseColor.base07
+        
+        return btn
     }()
     
-    lazy var nextButton = makeNextButton(buttonTitle: "다음")
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
+    private var lineView: UIView = {
+        let lineView = UIView()
+        lineView.backgroundColor = UIColor.baseColor.base07
+        return lineView
+    }()
+
     
-    
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isTextInput)
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
+        foodSearchField.delegate = self
+        
+        // navigation
         title = "주류추천"
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
@@ -77,17 +93,53 @@ class InputMyFoodViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
-        let nextViewController = SelectMyMoodViewController()
-        navigationController?.pushViewController(nextViewController, animated: true)
+        if isTextInput {
+            let nextViewController = SelectMyMoodViewController()
+            navigationController?.pushViewController(nextViewController, animated: true)
+        } else {
+            return
+        }
     }
     
+    // MARK: - Actions
+    func updateNextButtonSelectableColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base01
+        isTextInput = true
+    }
+    func updateNextButtonColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base06
+        isTextInput = false
+    }
+    
+    @objc private func clearTextField(_ sender: UIButton) {
+        self.foodSearchField.text = ""
+        updateNextButtonColor(nextButton)
+        //isTextInput = false
+        updateLineViewColor()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    // MARK: - Search Field UI Custom
+    private func updateLineViewColor() {
+        if isTextInput {
+            lineView.backgroundColor = UIColor.baseColor.base01
+        }
+        else {
+            lineView.backgroundColor = UIColor.baseColor.base07
+        }
+    }
     
     // MARK: - Constraints
     func setAddSubViews() {
         view.addSubview(progressBar)
         view.addSubview(guideText)
         view.addSubview(subGuideText)
-        view.addSubview(searchBar)
+        view.addSubview(foodSearchField)
+        view.addSubview(clearButton)
+        view.addSubview(lineView)
         view.addSubview(nextButton)
     }
     
@@ -113,11 +165,23 @@ class InputMyFoodViewController: UIViewController {
             make.height.equalTo(21)
         }
         
-        searchBar.snp.makeConstraints { make in
+        foodSearchField.snp.makeConstraints { make in
             make.top.equalTo(subGuideText.snp.bottom).offset(40)
             make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.trailing.equalToSuperview().offset(-44)
             make.height.equalTo(44)
+        }
+        clearButton.snp.makeConstraints { make in
+            make.leading.equalTo(foodSearchField.snp.trailing)
+            make.centerY.equalTo(foodSearchField)
+            make.height.equalTo(24)
+        }
+        
+        lineView.snp.makeConstraints { make in
+            make.top.equalTo(foodSearchField.snp.bottom)
+            make.leading.equalTo(foodSearchField.snp.leading)
+            make.trailing.equalTo(clearButton.snp.trailing)
+            make.height.equalTo(1)
         }
         
         nextButton.snp.makeConstraints { make in
@@ -129,3 +193,22 @@ class InputMyFoodViewController: UIViewController {
     }
 }
 
+// MARK: - TextFieldDelegate
+extension InputMyFoodViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        isTextInput = true
+        updateLineViewColor()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text == "" {
+            isTextInput = false
+            updateNextButtonColor(nextButton)
+            updateLineViewColor()
+        }
+        else {
+            updateNextButtonSelectableColor(nextButton)
+        }
+        updateLineViewColor()
+    }
+}

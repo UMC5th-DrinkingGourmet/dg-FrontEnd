@@ -8,13 +8,11 @@
 import UIKit
 
 class SelectAlcoholDegreeViewController: UIViewController {
-
+    
+    private var isSelectedButton = false
     private let resource: SelectAlcoholDegreeResource = SelectAlcoholDegreeResource()
-    var buttonImageArray: [UIImage] {
-        return resource.alcoholDegreeButtonImageArray()
-    }
-    var buttonSelectedImageArray: [UIImage] {
-        return resource.alcoholDegreeButtonSelectedImageArray()
+    private var buttonTitleArray: [String] {
+        return resource.alcoholDegreeButtonTitleArray()
     }
     
     lazy var progressBar: UIProgressView = {
@@ -22,42 +20,40 @@ class SelectAlcoholDegreeViewController: UIViewController {
         progressBar.clipsToBounds = true
         progressBar.layer.cornerRadius = 5
         progressBar.tintColor = .black
-        progressBar.trackTintColor = UIColor(named: "base08")
-        
+        progressBar.trackTintColor = UIColor.baseColor.base08
         return progressBar
     }()
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = UIColor(named: "base01")
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text =
-        "즐겨먹는 도수를 선택해주세요."
+        text.text = "즐겨먹는 도수를 선택해주세요."
         return text
     }()
     
     
     lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+         text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "00님과 어울리는 주류를 추천해드릴게요."
-        
         return text
-        
     }()
     
     
     private var buttonSelected = false
-    lazy var nextButton = makeNextButton(buttonTitle: "다음")
+    private var selectedButtonIndex: Int?
+    
+    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isSelectedButton)
     lazy var skipButton = makeSkipButton()
-    lazy var buttonArray = makeButtonArray(buttonImageArray: buttonImageArray)
+    lazy var buttonArray = makeDrinkingButtonArray(buttonArray: buttonTitleArray)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         //navigation
         title = "주류추천"
@@ -74,23 +70,74 @@ class SelectAlcoholDegreeViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
-        let nextViewController = SelectDrinkCapacityViewController()
-        navigationController?.pushViewController(nextViewController, animated: true)
+        if isSelectedButton {
+            let nextViewController = SelectDrinkCapacityViewController()
+            navigationController?.pushViewController(nextViewController, animated: true)
+        } else {
+            return
+        }
     }
     
     
     // MARK: - Actions
-    @objc func buttonTapped(_ sender: UIButton){
+    func updateNextButtonSelectableColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base01
+        isSelectedButton = true
+    }
+    func updateNextButtonColor(_ button: UIButton) {
+        button.backgroundColor = UIColor.baseColor.base06
+        isSelectedButton = false
+    }
+    func updateButtonSelectedColor(_ button: UIButton) {
+        button.setTitleColor(UIColor.customColor.customOrange, for: .normal)
+        button.backgroundColor = UIColor.customColor.customOrange.withAlphaComponent(0.05)
+        button.layer.borderColor = UIColor.customColor.customOrange.cgColor
+    }
+    
+    func updateButtonColor(_ button: UIButton) {
+        button.setTitleColor(UIColor.baseColor.base03, for: .normal)
+        button.backgroundColor = UIColor.baseColor.base10
+        button.layer.borderColor = UIColor.baseColor.base08.cgColor
+    }
+    
+    @objc func buttonTapped(_ sender: UIButton) {
         let index = sender.tag
-        if buttonSelected {
-            buttonSelected = false
-            sender.setImage(buttonImageArray[index], for: .normal)
+        
+        // 이미 선택된 버튼이 있는 경우
+        if let selectedButtonIndex = selectedButtonIndex {
+            
+            updateButtonSelectedColor(buttonArray[selectedButtonIndex])
+            
+            if selectedButtonIndex != index {
+                self.selectedButtonIndex = index
+                updateButtonSelectedColor(sender)
+                updateButtonColor(buttonArray[selectedButtonIndex])
+                updateNextButtonSelectableColor(nextButton)
+            } else {
+                updateButtonColor(sender)
+                self.selectedButtonIndex = nil
+                updateNextButtonColor(nextButton)
+            }
         } else {
-            buttonSelected = true
-            sender.setImage(buttonSelectedImageArray[index], for: .normal)
+            // 현재 선택된 버튼이 없는 경우
+            self.selectedButtonIndex = index
+            updateButtonSelectedColor(sender)
+            updateNextButtonSelectableColor(nextButton)
         }
     }
     
+    @objc func makeDrinkingButtonArray(buttonArray: [String]) -> [UIButton] {
+        var buttons: [UIButton] = []
+        
+        for (index, _) in buttonArray.enumerated() {
+            let button = customizedDrinkingButton(title: buttonArray[index], foregroundColor: .baseColor.base03, backgroundColor: .baseColor.base10, borderColor: .baseColor.base08)
+            button.tag = index
+            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+            buttons.append(button)
+        }
+        
+        return buttons
+    }
     
     // MARK: - Constraints
     func setAddSubViews() {
@@ -125,38 +172,23 @@ class SelectAlcoholDegreeViewController: UIViewController {
             make.height.equalTo(21)
         }
         
-        // Button Array
-         let viewFrame: CGFloat = self.view.frame.width - 32
-         var buttonFrameWidth = viewFrame
-         var heightMargin = 45
-        
+        var topMargin = 45
+        let heightMargin: CGFloat = 8
+        let buttonHeight: CGFloat = 56
         for i in 0..<buttonArray.count {
-            let button = buttonArray[i]
-            let buttonWidth = buttonImageArray[i].size.width
-            let widthMargin = buttonImageArray[i].size.width + 8
-            let buttonHeight: Int = Int(buttonImageArray[i].size.height + 8)
-            
-            button.snp.makeConstraints { make in
-                if (buttonFrameWidth - widthMargin) >= 0 {
-                    make.leading.equalToSuperview().offset(20 + viewFrame - buttonFrameWidth)
-                    make.top.equalTo(subGuideText.snp.bottom).offset(heightMargin)
-                    make.size.equalTo(buttonImageArray[i].size) // 버튼의 크기 설정
-                } else {
-                    buttonFrameWidth = viewFrame
-                    heightMargin += buttonHeight
-                    make.leading.equalToSuperview().offset(20 + viewFrame - buttonFrameWidth)
-                    make.top.equalTo(subGuideText.snp.bottom).offset(heightMargin)
-                    make.size.equalTo(buttonImageArray[i].size) // 버튼의 크기 설정
-                }
-                buttonFrameWidth -= widthMargin
+            buttonArray[i].snp.makeConstraints { make in
+                make.leading.equalToSuperview().offset(20)
+                make.trailing.equalToSuperview().offset(-20)
+                make.height.equalTo(buttonHeight)
+                make.top.equalTo(subGuideText.snp.bottom).offset(topMargin)
             }
-            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+            topMargin += Int((buttonHeight + heightMargin))
         }
         
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(0)
-            make.leading.equalToSuperview().offset(0)
-            make.trailing.equalToSuperview().offset(0)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.height.equalTo(100)
             nextButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }

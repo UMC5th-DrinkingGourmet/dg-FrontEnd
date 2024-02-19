@@ -1,5 +1,5 @@
 //
-//  UserDrinkingTasteViewController.swift
+//  WelcomeViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 김희은 on 1/10/24.
@@ -7,41 +7,39 @@
 
 import UIKit
 
-class UserDrinkingTasteViewController: UIViewController {
+class WelcomeViewController: UIViewController {
 
     lazy var welcomeImageView: UIImageView = { // 수정 요망
         let imgView = UIImageView()
         imgView.image = UIImage(named: "img_welcome")!
+        imgView.contentMode = .scaleAspectFit
         return imgView
     }()
     
     lazy var guideText: UILabel = {
         let text = UILabel()
-        text.textColor = .black
+        text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
         text.textAlignment = .center
-        text.text =
-        "000님,\n환영합니다"
+        text.text = "000님,\n환영합니다"
         return text
     }()
     
     lazy var subGuideText: UILabel = {
         let text = UILabel()
-        text.textColor = .lightGray
+        text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
         text.text = "회원가입이 완료되었습니다"
-        
         return text
-        
     }()
     
-    lazy var nextButton = makeNextButton(buttonTitle: "시작하기")
+    lazy var nextButton = makeNextButton(buttonTitle: "시작하기", buttonSelectability: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.baseColor.base10
         
         //navigation
         title = "주류추천"
@@ -72,21 +70,23 @@ class UserDrinkingTasteViewController: UIViewController {
     
     func makeConstraints() {
         welcomeImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(121)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(123)
             make.centerX.equalTo(self.view)
+            make.height.equalToSuperview().multipliedBy(0.253)
         }
+
         guideText.snp.makeConstraints { make in
-            //make.top.equalToSuperview().offset(43)
+            make.top.equalTo(subGuideText.snp.bottom).offset(16)
             make.bottom.equalTo(nextButton.snp.top).offset(-89)
             make.centerX.equalTo(self.view)
             make.height.equalTo(72)
         }
         subGuideText.snp.makeConstraints { make in
-            make.bottom.equalTo(guideText.snp.top).offset(-16)
             make.centerX.equalTo(self.view)
             make.height.equalTo(42)
         }
         nextButton.snp.makeConstraints { make in
+            //make.top.equalTo(guideText.snp.bottom).offset(89)
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()

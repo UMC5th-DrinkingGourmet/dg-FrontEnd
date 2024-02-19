@@ -43,8 +43,6 @@ final class SliderView: UIView {
         return view
     }()
     
-    private var dividers: [UIView] = []
-    
     private var maxValue: Int
     private var touchBeganPosX: CGFloat?
     private var didLayoutSubViews: Bool = false
@@ -195,12 +193,16 @@ final class SliderView: UIView {
             if offSet < 0 || offSet > trackView.frame.width { return } // 제스쳐가 trackView의 범위를 벗어나는 경우 무시
             let slicedPosX = (trackView.frame.width-28) / CGFloat(maxValue - 1) // maxValue를 기준으로 trackView를 n등분
             
-            // value = 반올림(현재 제스쳐 좌표 / 1단위의 크기) -> 슬라이더의 값이 변할 때마다 똑똑 끊기는 효과를 주기 위해
+            
             let newValue = round((offSet-14) / slicedPosX)
-            offSet = 14 + slicedPosX * newValue  - (thumbSize / 2)
+            offSet = 14 + slicedPosX * newValue - (thumbSize / 2)
+            
+            if value != Int(newValue + 1) {
+                value = Int(newValue + 1)
+            }
             
             // select 전, thumb View가 없어야 함
-            // select됐을 때, thumb View가 있어야 함...
+            // select됐을 때, thumb View가 있어야 함
             if offSet <= trackView.frame.width && offSet >= ((slicedPosX * 3) + 14 ) {
                 fillTrackView.snp.updateConstraints { make in
                     make.width.equalTo(trackView.frame.width)
