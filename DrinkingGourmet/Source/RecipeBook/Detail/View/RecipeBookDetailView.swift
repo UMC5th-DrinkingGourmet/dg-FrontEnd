@@ -63,6 +63,7 @@ final class RecipeBookDetailView: UIView {
     let moreButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         $0.tintColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        $0.isHidden = true
     }
     
     let titleLabel = UILabel().then {

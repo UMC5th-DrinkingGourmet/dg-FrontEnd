@@ -10,44 +10,134 @@ import Alamofire
 class RecipeBookDetailDataManager {
     
     private let baseURL = "https://drink-gourmet.kro.kr"
-    private let testAccessToken: HTTPHeaders = [
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYWthb18xMjM0NTY3ODkiLCJpYXQiOjE3MDc4MTY0OTQsImV4cCI6MTcwODQyMTI5NH0.tL3VWPK1W_3IR3_eIyOS0Lmn1qNTnfKRcb-nkNU7Glo"
-    ]
     
     // MARK: - 레시피북 상세정보 조회
     func fetchRecipeBookDetailData(_ recipeBookId: Int, _ viewController: RecipeBookDetailVC, completion: @escaping (RecipeBookDetailModel?) -> Void) {
         
-        AF.request("\(baseURL)/recipes/\(recipeBookId)", method: .get, headers: testAccessToken).validate().responseDecodable(of: RecipeBookDetailModel.self) { response in
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/recipes/\(recipeBookId)",
+                       method: .get,
+                       headers: headers)
+            .validate()
+            .responseDecodable(of: RecipeBookDetailModel.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print("레시피북 상세정보 조회 - 네트워킹 성공")
+                    completion(result)
+                case .failure(let error):
+                    print("레시피북 상세정보 조회 - \(error)")
+                    completion(nil)
+                }
+            }
+        } catch {
+            print("Failed to get access token")
+        }
+    }
+    
+    // MARK: - 레시피북 댓글 페이징 조회
+    func fetchRecipeBookCommentData (_ recipeBookId: Int,
+                                    _ parameters: RecipeBookCommentInput.fetchRecipeBookCommentDataInput,
+                                    _ viewController: RecipeBookDetailVC,
+                                    completion: @escaping (RecipeBookCommentModel?) -> Void) {
+        
+        AF.request("\(baseURL)/recipe-comments/\(recipeBookId)",
+                   method: .get,
+                   parameters: parameters)
+        .validate()
+        .responseDecodable(of: RecipeBookCommentModel.self) { response in
             switch response.result {
             case .success(let result):
-                print("레시피북 상세정보 조회 - 네트워킹 성공")
+                print("레시피북 페이징 조회 - 네트워킹 성공")
                 completion(result)
             case .failure(let error):
-                print("레시피북 상세정보 조회 - \(error)")
+                print("레시피북 댓글 페이징 조회 - \(error)")
                 completion(nil)
             }
         }
     }
     
-    // MARK: - 레시피북 상세정보 이미지 조회
-    func fetchRecipeBookDetailImageData(_ parameters: RecipeBookDetailImageInput,
-                                       _ viewController: RecipeBookDetailVC,
-                                       completion: @escaping (RecipeBookDetailImageModel?) -> Void) {
-        
-        AF.request("\(baseURL)/recipe-images",
-                   method: .get,
-                   parameters: parameters,
-                   headers: testAccessToken)
-        .validate()
-        .responseDecodable(of: RecipeBookDetailImageModel.self) { response in
-            switch response.result {
-            case .success(let result):
-                print("레시피북 상세정보 이미지 조회 - 네트워킹 성공")
-                completion(result)
-            case .failure(let error):
-                print("레시피북 상세정보 이미지 조회 - \(error)")
-                completion(nil)
+    // MARK: - 오늘의 조합 댓글 작성
+    func postComment (_ recipeBookId: Int,
+                      _ parameters: RecipeBookCommentInput.postCommentInput) {
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/recipe-comments/\(recipeBookId)",
+                       method: .post,
+                       parameters: parameters,
+                       encoder: JSONParameterEncoder.default,
+                       headers: headers).responseJSON { response in
+                switch response.result {
+                case .success(_):
+                    print("레시피북 댓글 작성 성공")
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
             }
+        } catch {
+            print("Failed to get access token")
         }
     }
+    
+    // MARK: - 레시피북 삭제
+    func deleteRecipeBook (_ recipeBookId: Int,
+                            completion: @escaping () -> Void) {
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/recipes/\(recipeBookId)",
+                       method: .delete,
+                       headers: headers)
+            .responseJSON { response in
+                switch response.result {
+                case .success(_):
+                    print("레시피북 삭제 - 네트워킹 성공")
+                case .failure(let error):
+                    print("레시피북 삭제 - \(error)")
+                }
+            }
+        } catch {
+            print("Failed to get access token")
+        }
+    }
+    
+    // MARK: - 레시피북 좋아요 누르기
+    func postLike (_ recipeBookId: Int) {
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/recipe-likes/\(recipeBookId)",
+                       method: .post,
+                       headers: headers)
+            .responseJSON { response in
+                switch response.result {
+                case .success(_):
+                    print("레시피북 좋아요 누르기 - 네트워킹 성공")
+                case .failure(let error):
+                    print("레시피북 좋아요 누르기 - \(error)")
+                }
+            }
+        } catch {
+            print("Failed to get access token")
+        }
+    }
+    
 }
