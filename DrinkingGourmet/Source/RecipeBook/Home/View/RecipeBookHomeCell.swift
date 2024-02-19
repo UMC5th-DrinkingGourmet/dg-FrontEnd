@@ -53,7 +53,6 @@ final class RecipeBookHomeCell: UITableViewCell {
     let likeSelectedIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_like_selected")
         $0.contentMode = .scaleAspectFit
-//        $0.isHidden = true
     }
     
     // MARK: - Init
@@ -72,6 +71,11 @@ final class RecipeBookHomeCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0))
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        likeSelectedIcon.isHidden = true
     }
     
     func setupContentView() {
