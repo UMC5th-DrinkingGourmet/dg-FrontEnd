@@ -14,8 +14,10 @@ final class RecipeBookDetailVC: UIViewController {
     var fetchingMore: Bool = false
     var totalPageNum: Int = 0
     var nowPageNum: Int = 0
+    var commentsNum: Int = 0
     
     var recipeBookDetailData: RecipeBookDetailModel?
+    var arrayRecipeBookComment: [RecipeBookCommentModel.CommentList] = []
     
     private let recipeBookDetailView = RecipeBookDetailView()
     
@@ -49,12 +51,21 @@ final class RecipeBookDetailVC: UIViewController {
                 guard let self = self else { return }
                 self.recipeBookDetailData = detailModel
                 
-                DispatchQueue.main.async {
-                    self.updateUIWithData()
+                let recipeBookCommentInput = RecipeBookCommentInput.fetchRecipeBookCommentDataInput(page: 0)
+                RecipeBookDetailDataManager().fetchRecipeBookCommentData(recipeBookId, recipeBookCommentInput, self) { commentModel in
+                    if let commentModel = commentModel {
+                        self.totalPageNum = commentModel.result.totalPage
+                        self.commentsNum = commentModel.result.totalElements
+                        self.arrayRecipeBookComment = commentModel.result.commentList
+                        DispatchQueue.main.async {
+                            self.updateUIWithData()
+                        }
+                    }
                 }
             }
         }
     }
+
     
     @objc func endEditing(){
         view.endEditing(true)
@@ -66,21 +77,18 @@ final class RecipeBookDetailVC: UIViewController {
         
         guard let recipeBookDetailData = recipeBookDetailData else { return }
         
-        if recipeBookDetailData.result.memberNickName == UserDefaultManager.shared.userNickname {
+        if recipeBookDetailData.result.member.nickName == UserDefaultManager.shared.userNickname {
             self.recipeBookDetailView.moreButton.isHidden = false
         }
-        
-        // 프로필 이미지 세팅
-        /*
-        if let urlString = combinationDetailData.result.memberResult.profileImageUrl {
+
+        if let urlString = recipeBookDetailData.result.member.profileImageUrl {
             let url = URL(string: urlString)
-            self.todayCombinationDetailView.profileImage.kf.setImage(with: url)
+            self.recipeBookDetailView.profileImage.kf.setImage(with: url)
         }
-         */
         
         self.recipeBookDetailView.pageControl.numberOfPages = recipeBookDetailData.result.recipeImageList.count
         
-        self.recipeBookDetailView.userNameLabel.text = "\(recipeBookDetailData.result.memberNickName) 님의 레시피"
+        self.recipeBookDetailView.userNameLabel.text = "\(recipeBookDetailData.result.member.nickName) 님의 레시피"
         
         if recipeBookDetailData.result.like == true {
             self.isLiked = true
@@ -100,6 +108,12 @@ final class RecipeBookDetailVC: UIViewController {
         self.recipeBookDetailView.ingredientListLabel.text = recipeBookDetailData.result.ingredient
         
         self.recipeBookDetailView.descriptionLabel.text = recipeBookDetailData.result.recipeInstruction
+        
+        self.recipeBookDetailView.commentAreaView.titleLabel.text = "댓글 \(commentsNum)"
+        
+        if !arrayRecipeBookComment.isEmpty {
+            recipeBookDetailView.commentAreaView.commentsView.configureRecipeBookComments(arrayRecipeBookComment)
+        }
     }
     
     // MARK: - 이미지 컬렉션뷰 설정
@@ -136,7 +150,18 @@ final class RecipeBookDetailVC: UIViewController {
     
     @objc func moreButtonTapped() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive, handler: nil)
+        
+        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
+            guard let recipeBookId = self.recipeBookId else { return }
+            
+            RecipeBookDetailDataManager().deleteRecipeBook(recipeBookId) {
+                // 레시피북 삭제는 잘 되는데 자동으로 pop이 되지 않는 버그 있음
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
+        
         let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
@@ -150,19 +175,43 @@ final class RecipeBookDetailVC: UIViewController {
     // MARK: - 댓글 삭제/수정 버튼 설정
     func configureCommentMoreButton() {
         for commentView in recipeBookDetailView.commentAreaView.commentsView.arrangedSubviews.compactMap({ $0 as? CommentView }) {
-                commentView.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
-            }
+            commentView.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+        }
     }
     
     // MARK: - 댓글입력창 설정
     func setupCommentsInputView() {
-        let commentsInputView = recipeBookDetailView.commentsInputView
-        commentsInputView.textField.delegate = self
-        commentsInputView.button.addTarget(self, action: #selector(commentsInputButtonTapped), for: .touchUpInside)
+        let cv = recipeBookDetailView.commentsInputView
+        cv.textField.delegate = self
+        cv.button.addTarget(self, action: #selector(commentsInputButtonTapped), for: .touchUpInside)
     }
     
     @objc func commentsInputButtonTapped() {
-        print("레시피북 댓글입력창 버튼 눌림")
+        guard let text = self.recipeBookDetailView.commentsInputView.textField.text, !text.isEmpty else { return }
+        
+        self.recipeBookDetailView.commentsInputView.textField.resignFirstResponder() // 키보드 숨기기
+        
+        let input = RecipeBookCommentInput.postCommentInput(content: text, parentId: "0")
+        
+        if let recipeBookId = self.recipeBookId {
+            RecipeBookDetailDataManager().postComment(recipeBookId, input)
+            prepare()
+            
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+                
+                // 스크롤뷰를 맨 위로 이동
+                self.recipeBookDetailView.scrollView.contentOffset = .zero
+            }
+            fetchingMore = false
+            totalPageNum = 0
+            nowPageNum = 0
+            
+            self.recipeBookDetailView.commentsInputView.textField.text = "" // 텍스트필드 초기화
+        }
     }
     
 }
@@ -218,8 +267,43 @@ extension RecipeBookDetailVC: UIScrollViewDelegate {
     
     // 페이지컨트롤 업데이트
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let index = Int(scrollView.contentOffset.x / recipeBookDetailView.imageCollectionView.bounds.width)
-        recipeBookDetailView.pageControl.currentPage = index
+        if scrollView == self.recipeBookDetailView.imageCollectionView {
+            let index = Int(scrollView.contentOffset.x / recipeBookDetailView.imageCollectionView.bounds.width)
+            recipeBookDetailView.pageControl.currentPage = index
+        } else if scrollView == self.recipeBookDetailView.scrollView {
+            // 페이징 처리
+            let offsetY = scrollView.contentOffset.y
+            let contentHeight = scrollView.contentSize.height
+            let height = scrollView.bounds.size.height
+            
+            if offsetY > contentHeight - height {
+                if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
+                    
+                    fetchingMore = true
+                    fetchNextPage()
+                }
+            }
+        }
+    }
+    
+    func fetchNextPage() {
+        nowPageNum = nowPageNum + 1
+        
+        let nextPage = nowPageNum
+        let input = RecipeBookCommentInput.fetchRecipeBookCommentDataInput(page: nextPage)
+        
+        if let recipeBookId = self.recipeBookId {
+            RecipeBookDetailDataManager().fetchRecipeBookCommentData(recipeBookId, input, self) { [weak self] commentModel in
+                guard let self = self else { return }
+                if let commentModel = commentModel {
+                    self.arrayRecipeBookComment += commentModel.result.commentList
+                    self.fetchingMore = false
+                    DispatchQueue.main.async {
+                        self.recipeBookDetailView.commentAreaView.commentsView.configureRecipeBookComments(self.arrayRecipeBookComment)
+                    }
+                }
+            }
+        }
     }
 }
 

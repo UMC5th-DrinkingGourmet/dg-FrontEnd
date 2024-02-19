@@ -57,4 +57,32 @@ class CommentsView: UIStackView {
 //            view.replyCountLabel.text = "답글 \(data.childCount)"
         }
     }
+    
+    // 레시피북 댓글 설정
+    func configureRecipeBookComments(_ comments: [RecipeBookCommentModel.CommentList]) {
+        arrangedSubviews.forEach { $0.removeFromSuperview() }  // 기존 뷰들 제거
+        
+        for comment in comments {
+            let commentView = CommentView(.comment)
+            configureRecipeBookView(commentView, with: comment)
+            addArrangedSubview(commentView)
+            
+            for childComment in comment.childCommentList {
+                let replyView = CommentView(.reply)
+                configureRecipeBookView(replyView, with: childComment)
+                addArrangedSubview(replyView)
+            }
+        }
+    }
+    
+    // 댓글 뷰 구성
+    private func configureRecipeBookView(_ view: CommentView, with data: RecipeBookCommentModel.CommentList) {
+        if let imageUrl = URL(string: data.member.profileImageUrl ?? "") {
+            view.profileImageView.kf.setImage(with: imageUrl)
+        }
+        view.nameLabel.text = data.member.nickName
+        view.dateLabel.text = data.createdDate
+        view.contentLabel.text = data.content
+    }
+    
 }

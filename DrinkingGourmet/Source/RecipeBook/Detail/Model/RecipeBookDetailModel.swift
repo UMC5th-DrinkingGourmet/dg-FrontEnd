@@ -16,10 +16,16 @@ struct RecipeBookDetailModel: Codable {
         let likeCount, commentCount: Int
         let ingredient, recipeInstruction, recommendCombination: String
         let state: Bool
-        let memberNickName: String
+        let member: Member
         let recipeImageList: [String]
         let hashTagNameList: [String]
         let like: Bool
+    }
+    
+    struct Member: Codable {
+        let memberId: Int
+        let nickName: String
+        let profileImageUrl: String?
     }
 }
 
