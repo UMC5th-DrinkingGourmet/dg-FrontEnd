@@ -16,7 +16,6 @@ final class RecipeBookDetailVC: UIViewController {
     var nowPageNum: Int = 0
     
     var recipeBookDetailData: RecipeBookDetailModel?
-    var arrayrecipeBookDetailImage: [String] = []
     
     private let recipeBookDetailView = RecipeBookDetailView()
     
@@ -50,14 +49,8 @@ final class RecipeBookDetailVC: UIViewController {
                 guard let self = self else { return }
                 self.recipeBookDetailData = detailModel
                 
-                let input = RecipeBookDetailImageInput(recipeId: recipeBookId)
-                RecipeBookDetailDataManager().fetchRecipeBookDetailImageData(input, self) { imgModel in
-                    if let imgModel = imgModel {
-                        self.arrayrecipeBookDetailImage = imgModel.result
-                        DispatchQueue.main.async {
-                            self.updateUIWithData()
-                        }
-                    }
+                DispatchQueue.main.async {
+                    self.updateUIWithData()
                 }
             }
         }
@@ -71,28 +64,42 @@ final class RecipeBookDetailVC: UIViewController {
     func updateUIWithData() {
         self.recipeBookDetailView.imageCollectionView.reloadData()
         
-        self.recipeBookDetailView.pageControl.numberOfPages = arrayrecipeBookDetailImage.count
+        guard let recipeBookDetailData = recipeBookDetailData else { return }
         
-        self.recipeBookDetailView.userNameLabel.text = "\(recipeBookDetailData?.result.memberName ?? "이름") 님의 레시피"
+        if recipeBookDetailData.result.memberNickName == UserDefaultManager.shared.userNickname {
+            self.recipeBookDetailView.moreButton.isHidden = false
+        }
         
-//        if combinationDetailData?.result.combinationResult.isCombinationLike == true {
-//            self.isLiked = true
-//            self.todayCombinationDetailView.likeIconButton.setImage(UIImage(named: "ic_like_selected"), for: .normal)
-//        }
+        // 프로필 이미지 세팅
+        /*
+        if let urlString = combinationDetailData.result.memberResult.profileImageUrl {
+            let url = URL(string: urlString)
+            self.todayCombinationDetailView.profileImage.kf.setImage(with: url)
+        }
+         */
         
-//        self.todayCombinationDetailView.hashtagLabel.text = combinationDetailData?.result.combinationResult.hashTagList.map { "#\($0)" }.joined(separator: " ")
+        self.recipeBookDetailView.pageControl.numberOfPages = recipeBookDetailData.result.recipeImageList.count
         
-        self.recipeBookDetailView.titleLabel.text = recipeBookDetailData?.result.name
+        self.recipeBookDetailView.userNameLabel.text = "\(recipeBookDetailData.result.memberNickName) 님의 레시피"
         
-        self.recipeBookDetailView.recipeBookDetailInfoView.timeNumLabel.text = recipeBookDetailData?.result.cookingTime
+        if recipeBookDetailData.result.like == true {
+            self.isLiked = true
+            self.recipeBookDetailView.likeIconButton.setImage(UIImage(named: "ic_like_selected"), for: .normal)
+        }
         
-        self.recipeBookDetailView.recipeBookDetailInfoView.kcalNumLabel.text = recipeBookDetailData?.result.calorie
+        self.recipeBookDetailView.hashtagLabel.text = recipeBookDetailData.result.hashTagNameList.map { "\($0)" }.joined(separator: " ")
         
-        self.recipeBookDetailView.recipeBookDetailInfoView.likeNumLabel.text = "\(recipeBookDetailData?.result.likeCount ?? 99)"
+        self.recipeBookDetailView.titleLabel.text = recipeBookDetailData.result.title
+
+        self.recipeBookDetailView.recipeBookDetailInfoView.timeNumLabel.text = recipeBookDetailData.result.cookingTime
         
-        self.recipeBookDetailView.ingredientListLabel.text = recipeBookDetailData?.result.ingredient
+        self.recipeBookDetailView.recipeBookDetailInfoView.kcalNumLabel.text = recipeBookDetailData.result.calorie
         
-        self.recipeBookDetailView.descriptionLabel.text = recipeBookDetailData?.result.recipeInstruction
+        self.recipeBookDetailView.recipeBookDetailInfoView.likeNumLabel.text = "\(recipeBookDetailData.result.likeCount)"
+        
+        self.recipeBookDetailView.ingredientListLabel.text = recipeBookDetailData.result.ingredient
+        
+        self.recipeBookDetailView.descriptionLabel.text = recipeBookDetailData.result.recipeInstruction
     }
     
     // MARK: - 이미지 컬렉션뷰 설정
@@ -160,15 +167,17 @@ final class RecipeBookDetailVC: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension RecipeBookDetailVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayrecipeBookDetailImage.count
+        return recipeBookDetailData?.result.recipeImageList.count ?? 0
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeBookDetailCell", for: indexPath) as! RecipeBookDetailCell
 
-        let imageUrlString = arrayrecipeBookDetailImage[indexPath.item]
-        if let imageUrl = URL(string: imageUrlString) {
-            cell.mainImage.kf.setImage(with: imageUrl)
+        if let imageUrlString = recipeBookDetailData?.result.recipeImageList[indexPath.item] {
+            if let imageUrl = URL(string: imageUrlString) {
+                cell.mainImage.kf.setImage(with: imageUrl)
+            }
         }
         
         return cell
@@ -211,10 +220,10 @@ extension RecipeBookDetailVC: UIScrollViewDelegate {
     }
 }
 
-// MARK: - 댓글입력창
+// MARK: - UITextFieldDelegate
 extension RecipeBookDetailVC: UITextFieldDelegate {
     
-    // 리턴 클릭 시 키보드 내림
+    // 댓글 입력창 리턴 클릭 시 키보드 내림
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -226,11 +235,6 @@ extension RecipeBookDetailVC {
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func keyboardUp(notification: NSNotification) {
