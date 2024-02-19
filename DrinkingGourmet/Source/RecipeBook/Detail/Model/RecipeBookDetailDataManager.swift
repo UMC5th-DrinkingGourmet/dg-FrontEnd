@@ -40,4 +40,28 @@ class RecipeBookDetailDataManager {
         }
     }
     
+    // MARK: - 레시피북 좋아요 누르기
+    func postLike (_ recipeBookId: Int) {
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/recipe-likes/\(recipeBookId)",
+                       method: .post,
+                       headers: headers).responseJSON { response in
+                switch response.result {
+                case .success(_):
+                    print("레시피북 좋아요 누르기 - 네트워킹 성공")
+                case .failure(let error):
+                    print("레시피북 좋아요 누르기 - \(error)")
+                }
+            }
+        } catch {
+            print("Failed to get access token")
+        }
+    }
+    
 }

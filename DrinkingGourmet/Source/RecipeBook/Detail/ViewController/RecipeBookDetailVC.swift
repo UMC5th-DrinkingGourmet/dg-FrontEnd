@@ -123,6 +123,9 @@ final class RecipeBookDetailVC: UIViewController {
         isLiked.toggle()
         let imageName = isLiked ? "ic_like_selected" : "ic_like"
         recipeBookDetailView.likeIconButton.setImage(UIImage(named: imageName), for: .normal)
+        if let recipeBookId = self.recipeBookId {
+            RecipeBookDetailDataManager().postLike(recipeBookId)
+        }
     }
     
     // MARK: - 게시글 삭제/수정 버튼 설정
