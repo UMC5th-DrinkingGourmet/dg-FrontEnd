@@ -22,6 +22,7 @@ class MyPageCell: UICollectionViewCell {
     
     let heartIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_like_selected")
+        $0.isHidden = true
     }
     
     override init(frame: CGRect) {

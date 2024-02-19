@@ -14,7 +14,9 @@ class MyPageLowerView: UIView {
     // 추천
     private let recommendBackView = UIView()
     
-    let recommendButton = UIView()
+    let recommendButton = UIButton().then {
+        $0.backgroundColor = .clear
+    }
     
     let recommendLabel = UILabel().then {
         $0.text = "오늘의 조합"
