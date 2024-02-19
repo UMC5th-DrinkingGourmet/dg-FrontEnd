@@ -1,144 +1,175 @@
-//
-//  LikeViewController.swift
-//  DrinkingGourmet
-//
-//  Created by 이승민 on 2/17/24.
-//
+    //
+    //  LikeViewController.swift
+    //  DrinkingGourmet
+    //
+    //  Created by 이승민 on 2/17/24.
+    //
 
-import UIKit
+    import UIKit
 
-class LikeViewController: UIViewController {
-    // MARK: - Properties
-    var totalPageNum: Int = 0
-    
-    var arrayLikeAllCombination: [LikeAllCombinationModel.CombinationList] = []
-    var arrayLikeAllRecipeBook: [LikeAllRecipeBookModel.RecipeList] = []
-    
-    let likeView = LikeView()
-    
-    // MARK: - View 설정
-    override func loadView() {
-        view = likeView
-    }
-    
-    // MARK: - viewDidLoad()
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
+    class LikeViewController: UIViewController {
+        // MARK: - Properties
+        var totalPageNum: Int = 0
+        var isleftButton: Bool = true
         
-        prepare()
-        setupNaviBar()
-        setupCollectionView()
-        setupButton()
-    }
-    
-    // MARK: - 초기 설정
-    func prepare() {
-        let input = LikeInput(page: 0)
-        LikeDataManager().fetchLikeAllCombinationData(input, self) { [weak self] model in
-            guard let self = self else { return }
+        var arrayLikeAllCombination: [LikeAllCombinationModel.CombinationList] = []
+        var arrayLikeAllRecipeBook: [LikeAllRecipeBookModel.RecipeList] = []
+        
+        let likeView = LikeView()
+        
+        // MARK: - View 설정
+        override func loadView() {
+            view = likeView
+        }
+        
+        // MARK: - viewDidLoad()
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            view.backgroundColor = .white
             
-            if let model = model {
-                self.totalPageNum = model.result.totalPage
-                self.arrayLikeAllCombination = model.result.combinationList
-                DispatchQueue.main.async {
-                    self.likeView.collectionView.reloadData()
+            prepare()
+            setupNaviBar()
+            setupCollectionView()
+            setupButton()
+        }
+        
+        // MARK: - 초기 설정
+        func prepare() {
+            let input = LikeInput(page: 0)
+            LikeDataManager().fetchLikeAllCombinationData(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.arrayLikeAllCombination = model.result.combinationList
+                    DispatchQueue.main.async {
+                        self.likeView.collectionView.reloadData()
+                    }
                 }
             }
         }
-    }
-    
-    // MARK: - 네비게이션바 설정
-    func setupNaviBar() {
-        title = "좋아요"
         
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        // MARK: - 네비게이션바 설정
+        func setupNaviBar() {
+            title = "좋아요"
+            
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
 
-        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
-        navigationController?.navigationBar.backIndicatorImage = customBackImage
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-    }
-    
-    // MARK: - 컬렌션뷰 설정
-    func setupCollectionView() {
-        let cv = likeView.collectionView
-        cv.dataSource = self
-        cv.delegate = self
-        
-        cv.register(LikeCell.self, forCellWithReuseIdentifier: "LikeCell")
-    }
-    
-    // MARK: - 버튼 설정
-    func setupButton() {
-        likeView.combinationButton.addTarget(self, action: #selector(combinationButtonTapped), for: .touchUpInside)
-        likeView.recipeBookButton.addTarget(self, action: #selector(recipeBookButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc func combinationButtonTapped() {
-        likeView.recipeBookLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
-        likeView.combinationLabel.textColor = .black
-        likeView.rightLine.backgroundColor = .clear
-        likeView.leftLine.backgroundColor = .customOrange
-        prepare()
-    }
-    
-    @objc func recipeBookButtonTapped() {
-        likeView.recipeBookLabel.textColor = .black
-        likeView.combinationLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
-        likeView.rightLine.backgroundColor = .customOrange
-        likeView.leftLine.backgroundColor = .clear
-    }
-    
-}
-
-// MARK: - UICollectionViewDataSource
-extension LikeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikeCell", for: indexPath) as! LikeCell
-        
-        let combination = arrayLikeAllCombination[indexPath.item]
-        if let url = URL(string: combination.combinationImageUrl) {
-            cell.mainImage.kf.setImage(with: url)
+            let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
+            navigationController?.navigationBar.backIndicatorImage = customBackImage
+            navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
+            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         }
         
-        cell.mainLabel.text = arrayLikeAllCombination[indexPath.item].title
+        // MARK: - 컬렌션뷰 설정
+        func setupCollectionView() {
+            let cv = likeView.collectionView
+            cv.dataSource = self
+            cv.delegate = self
+            
+            cv.register(LikeCell.self, forCellWithReuseIdentifier: "LikeCell")
+        }
         
+        // MARK: - 버튼 설정
+        func setupButton() {
+            likeView.combinationButton.addTarget(self, action: #selector(combinationButtonTapped), for: .touchUpInside)
+            likeView.recipeBookButton.addTarget(self, action: #selector(recipeBookButtonTapped), for: .touchUpInside)
+        }
         
-        return cell
+        @objc func combinationButtonTapped() {
+            isleftButton = true
+            arrayLikeAllCombination = []
+            
+            likeView.recipeBookLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+            likeView.combinationLabel.textColor = .black
+            likeView.rightLine.backgroundColor = .clear
+            likeView.leftLine.backgroundColor = .customOrange
+            prepare()
+        }
+        
+        @objc func recipeBookButtonTapped() {
+            isleftButton = false
+            arrayLikeAllRecipeBook = []
+            
+            likeView.recipeBookLabel.textColor = .black
+            likeView.combinationLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+            likeView.rightLine.backgroundColor = .customOrange
+            likeView.leftLine.backgroundColor = .clear
+            
+            let input = LikeInput(page: 0)
+            LikeDataManager().fetchLikeAllRecipeBookData(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.arrayLikeAllRecipeBook = model.result.recipeList
+                    DispatchQueue.main.async {
+                        self.likeView.collectionView.reloadData()
+                    }
+                }
+            }
+        }
+        
     }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayLikeAllCombination.count
-    }
-}
 
-// MARK: - UICollectionViewDelegateFlowLayout
-extension LikeViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemsPerRow: CGFloat = 3
-        let paddingWidth = itemsPerRow - 1
-        let availableWidth = collectionView.frame.width - paddingWidth
-        let widthPerItem = availableWidth / itemsPerRow
+    // MARK: - UICollectionViewDataSource
+    extension LikeViewController: UICollectionViewDataSource {
+        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            if isleftButton {
+                return arrayLikeAllCombination.count
+            } else {
+                return arrayLikeAllRecipeBook.count
+            }
+            
+        }
         
-        return CGSize(width: widthPerItem, height: widthPerItem)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1.0
-    }
-    
-    // 셀 선택
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedItem = arrayLikeAllCombination[indexPath.row].combinationId
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikeCell", for: indexPath) as! LikeCell
+            
+            if isleftButton {
+                let combination = arrayLikeAllCombination[indexPath.item]
+                if let url = URL(string: combination.combinationImageUrl) {
+                    cell.mainImage.kf.setImage(with: url)
+                }
+                cell.mainLabel.text = arrayLikeAllCombination[indexPath.item].title
+            } else {
+                let recipeBook = arrayLikeAllRecipeBook[indexPath.item]
+                if let url = URL(string: recipeBook.recipeImageUrl) {
+                    cell.mainImage.kf.setImage(with: url)
+                }
+                cell.mainLabel.text = arrayLikeAllRecipeBook[indexPath.item].name
+            }
+            return cell
+        }
         
-        let todayCombinationDetailVC = TodayCombinationDetailViewController()
-        todayCombinationDetailVC.combinationId = selectedItem
-        navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
-}
+
+    // MARK: - UICollectionViewDelegateFlowLayout
+    extension LikeViewController: UICollectionViewDelegateFlowLayout {
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            let itemsPerRow: CGFloat = 3
+            let paddingWidth = itemsPerRow - 1
+            let availableWidth = collectionView.frame.width - paddingWidth
+            let widthPerItem = availableWidth / itemsPerRow
+            
+            return CGSize(width: widthPerItem, height: widthPerItem)
+        }
+        
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+            return 1.0
+        }
+        
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+            return 1.0
+        }
+        
+        // 셀 선택
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let selectedItem = arrayLikeAllCombination[indexPath.row].combinationId
+            
+            let todayCombinationDetailVC = TodayCombinationDetailViewController()
+            todayCombinationDetailVC.combinationId = selectedItem
+            navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
+        }
+    }
