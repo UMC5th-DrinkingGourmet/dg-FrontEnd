@@ -127,6 +127,9 @@ class TodayCombinationDetailViewController: UIViewController {
         isLiked.toggle()
         let imageName = isLiked ? "ic_like_selected" : "ic_like"
         todayCombinationDetailView.likeIconButton.setImage(UIImage(named: imageName), for: .normal)
+        if let combinationId = combinationId {
+            CombinationDetailDataManager().postLike(combinationId)
+        }
     }
     
     // MARK: - 게시글 삭제/수정 버튼 설정
