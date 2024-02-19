@@ -8,25 +8,16 @@
 import UIKit
 
 struct SelectTypeOfLiquorResource {
-    private let liquorTypeButtonImage: [UIImage] = [
-        UIImage(imageLiteralResourceName: "BTN_soju"),
-        UIImage(imageLiteralResourceName: "BTN_beer"),
-        UIImage(imageLiteralResourceName: "BTN_wine"),
-        UIImage(imageLiteralResourceName: "BTN_sake"),
-        UIImage(imageLiteralResourceName: "BTN_whiskey")
-    ]
-    private let liquorTypeButtonSelectedImage: [UIImage] = [
-        UIImage(imageLiteralResourceName: "BTN_soju_selected"),
-        UIImage(imageLiteralResourceName: "BTN_beer_selected"),
-        UIImage(imageLiteralResourceName: "BTN_wine_selected"),
-        UIImage(imageLiteralResourceName: "BTN_sake_selected"),
-        UIImage(imageLiteralResourceName: "BTN_whiskey_selected")
+    
+    private let liquorTypeButtonTitle: [String] = [
+        "소주",
+        "맥주",
+        "와인",
+        "사케",
+        "위스키"
     ]
     
-    func liquorTypeButtonImageArray() -> [UIImage] {
-        return liquorTypeButtonImage
-    }
-    func liquorTypeButtonSelectedImageArray() -> [UIImage] {
-        return liquorTypeButtonSelectedImage
+    func liquorTypeButtonTitleArray() -> [String] {
+        return liquorTypeButtonTitle
     }
 }

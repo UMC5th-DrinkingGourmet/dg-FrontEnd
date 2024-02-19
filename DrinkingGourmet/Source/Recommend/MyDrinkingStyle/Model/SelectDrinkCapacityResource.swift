@@ -8,23 +8,15 @@
 import UIKit
 
 struct SelectDrinkCapacityResource {
-    private let capacityButtonImage: [UIImage] = [
-        UIImage(imageLiteralResourceName: "BTN_0.5"),
-        UIImage(imageLiteralResourceName: "BTN_1"),
-        UIImage(imageLiteralResourceName: "BTN_1.5"),
-        UIImage(imageLiteralResourceName: "BTN_2.0")
-    ]
-    private let capacityButtonSelectedImage: [UIImage] = [
-        UIImage(imageLiteralResourceName: "BTN_0.5_selected"),
-        UIImage(imageLiteralResourceName: "BTN_1_selected"),
-        UIImage(imageLiteralResourceName: "BTN_1.5_selected"),
-        UIImage(imageLiteralResourceName: "BTN_2.0_selected")
-    ]
     
-    func capacityButtonImageArray() -> [UIImage] {
-        return capacityButtonImage
-    }
-    func capacityButtonSelectedImageArray() -> [UIImage] {
-        return capacityButtonSelectedImage
+    private let capacityButtonTitle: [String] = [
+        "반 병 이하",
+        "한 병",
+        "1병 반",
+        "2병 이상"
+    ]
+
+    func capacityButtonTitleArray() -> [String] {
+        return capacityButtonTitle
     }
 }
