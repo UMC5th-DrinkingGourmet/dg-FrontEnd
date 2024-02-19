@@ -54,7 +54,7 @@ class CommentsView: UIStackView {
             view.nameLabel.text = data.memberNickName
             view.dateLabel.text = data.createdAt
             view.contentLabel.text = data.content
-            view.replyCountLabel.text = "답글 \(data.childCount)"
+//            view.replyCountLabel.text = "답글 \(data.childCount)"
         }
     }
 }

@@ -133,6 +133,8 @@ extension TodayCombinationViewController: UITableViewDataSource {
         
         let combination = arrayCombinationHome[indexPath.row]
         
+        cell.likeSelectedIcon.isHidden = !combination.isLike
+        
         if let url = URL(string: combination.combinationImageUrl) {
                     cell.mainImage.kf.setImage(with: url)
         }

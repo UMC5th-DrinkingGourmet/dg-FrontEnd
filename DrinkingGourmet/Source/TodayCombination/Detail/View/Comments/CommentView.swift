@@ -87,7 +87,7 @@ class CommentView: UIView {
     
     func addViews() {
         addSubviews(
-            [profileImageView, nameLabel, dateLabel, contentLabel, replyButton, replyCountLabel, moreButton, dividerLineView]
+            [profileImageView, nameLabel, dateLabel, contentLabel, /*replyButton, replyCountLabel,*/ moreButton, dividerLineView]
         )
     }
     
@@ -114,16 +114,16 @@ class CommentView: UIView {
             make.trailing.equalToSuperview().inset(40)
         }
         
-        replyButton.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(2)
-            make.leading.equalTo(nameLabel)
-            make.height.equalTo(12)
-        }
-        
-        replyCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(replyButton)
-            make.leading.equalTo(replyButton.snp.trailing).offset(16)
-        }
+//        replyButton.snp.makeConstraints { make in
+//            make.top.equalTo(contentLabel.snp.bottom).offset(2)
+//            make.leading.equalTo(nameLabel)
+//            make.height.equalTo(12)
+//        }
+//        
+//        replyCountLabel.snp.makeConstraints { make in
+//            make.top.equalTo(replyButton)
+//            make.leading.equalTo(replyButton.snp.trailing).offset(16)
+//        }
         
         moreButton.snp.makeConstraints { make in
             make.size.equalTo(16)
@@ -132,7 +132,7 @@ class CommentView: UIView {
         }
         
         dividerLineView.snp.makeConstraints { make in
-            make.top.equalTo(replyButton.snp.bottom).offset(12)
+            make.top.equalTo(contentLabel.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(21)
             make.bottom.equalToSuperview()
             make.height.equalTo(1)
