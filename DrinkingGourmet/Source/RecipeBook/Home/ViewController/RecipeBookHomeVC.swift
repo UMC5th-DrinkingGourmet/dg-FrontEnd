@@ -11,9 +11,9 @@ final class RecipeBookHomeVC: UIViewController {
     
     // MARK: - Properties
     var arrayRecipeBookHome: [RecipeBookHomeModel.RecipeList] = []
-    var fetchingMore: Bool = false
     var totalPageNum: Int = 0
-    var nowPageNum: Int = 0
+    var pageNum: Int = 0
+    var isLastPage: Bool = false
     
     let recipeBookHomeView = RecipeBookHomeView()
     
@@ -41,6 +41,7 @@ final class RecipeBookHomeVC: UIViewController {
             
             if let model = model {
                 self.totalPageNum = model.result.totalPage
+                self.isLastPage = model.result.isLast
                 self.arrayRecipeBookHome = model.result.recipeList
                 DispatchQueue.main.async {
                     self.recipeBookHomeView.tableView.reloadData()
@@ -87,6 +88,7 @@ final class RecipeBookHomeVC: UIViewController {
         
         tb.dataSource = self
         tb.delegate = self
+        tb.prefetchDataSource = self
         
         tb.rowHeight = 232 // 셀 높이 고정
         tb.register(RecipeBookHomeCell.self, forCellReuseIdentifier: "RecipeBookHomeCell")
@@ -103,6 +105,7 @@ final class RecipeBookHomeVC: UIViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension RecipeBookHomeVC: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -112,6 +115,7 @@ extension RecipeBookHomeVC: UITextFieldDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension RecipeBookHomeVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -119,23 +123,20 @@ extension RecipeBookHomeVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeBookHomeCell", for: indexPath) as! RecipeBookHomeCell
         
         let recipeBook = arrayRecipeBookHome[indexPath.row]
         
-        // 나중에 수정
-        if !recipeBook.recipeImageList.isEmpty {
-            if let url = URL(string: recipeBook.recipeImageList[0]) {
-                cell.mainImage.kf.setImage(with: url)
-            }
-        } else {
-            cell.mainImage.image = nil
+        cell.likeSelectedIcon.isHidden = !recipeBook.like
+        
+        if let url = URL(string: recipeBook.recipeImageList[0]) {
+            cell.mainImage.kf.setImage(with: url)
         }
         
-        cell.titleLabel.text = recipeBook.name
+        cell.titleLabel.text = recipeBook.title
         
-        let hashtags = recipeBook.hashTagNameList.map { "#\($0)" }.joined(separator: " ")
-        cell.hashtagLabel.text = hashtags
+        cell.hashtagLabel.text = recipeBook.hashTagNameList.map { "#\($0)" }.joined(separator: " ")
         
         cell.commentNumLabel.text = "\(recipeBook.commentCount)"
         
@@ -147,6 +148,7 @@ extension RecipeBookHomeVC: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension RecipeBookHomeVC: UITableViewDelegate {
     // 셀 선택시 Detail 화면으로
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -156,33 +158,28 @@ extension RecipeBookHomeVC: UITableViewDelegate {
         recipeBookDetailVC.recipeBookId = selectedItem
         navigationController?.pushViewController(recipeBookDetailVC, animated: true)
     }
-    
-    // 페이징
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let height = scrollView.bounds.size.height
-        
-        if offsetY > contentHeight - height {
-            if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
-                fetchingMore = true
-                fetchNextPage()
-            }
-        }
-    }
-    
-    func fetchNextPage() {
-        nowPageNum = nowPageNum + 1
-        let nextPage = nowPageNum
-        let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: nextPage)
-        
-        RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
-            guard let self = self else { return }
-            if let model = model {
-                self.arrayRecipeBookHome += model.result.recipeList
-                self.fetchingMore = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.recipeBookHomeView.tableView.reloadData()
+}
+
+// MARK: - UITableViewDataSourcePrefetching
+extension RecipeBookHomeVC: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            
+            if arrayRecipeBookHome.count - 1 == indexPath.row && pageNum < totalPageNum &&  !isLastPage {
+                
+                pageNum += 1
+                
+                let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: pageNum)
+                
+                RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
+                    if let model = model {
+                        guard let self = self else { return }
+                        self.arrayRecipeBookHome += model.result.recipeList
+                        self.isLastPage = model.result.isLast
+                        DispatchQueue.main.async {
+                            self.recipeBookHomeView.tableView.reloadData()
+                        }
+                    }
                 }
             }
         }

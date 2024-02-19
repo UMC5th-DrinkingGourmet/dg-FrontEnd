@@ -18,12 +18,13 @@ struct RecipeBookHomeModel: Codable {
     
     struct RecipeList: Codable {
         let id: Int
-        let name, info, cookingTime, calorie: String
+        let title, cookingTime, calorie: String
         let likeCount, commentCount: Int
         let ingredient, recipeInstruction, recommendCombination: String
         let state: Bool
         let memberNickName: String
         let recipeImageList: [String]
         let hashTagNameList: [String]
+        let like: Bool
     }
 }
