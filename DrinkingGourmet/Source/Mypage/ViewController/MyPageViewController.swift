@@ -255,8 +255,6 @@ extension MyPageViewController: UICollectionViewDataSource {
             }
             cell.mainLabel.text = "\(recipeBook.name)"
         }
-        
-        cell.backgroundColor = .green
         return cell
     }
 }
