@@ -17,12 +17,27 @@ class MyPageViewController: UIViewController {
     
     // MARK: - Properties
     var currentTab: MyPageTab = .recommend
+    var totalPageNum: Int = 0
+    var pageNum: Int = 0
+    var isLastPage: Bool = false
+    
+    var userData: MyPageUserModel?
+    var arrayRecommendData: [MyPageRecommendModel.RecommendResponseDTOList] = []
+    var arrayCombinationData: [MyPageCombinationModel.CombinationList] = []
+    var arrayRecipeBookData: [MyPageRecipeBookModel.RecipeList] = []
     
     private let myPageView = MyPageView()
     
     // MARK: - View 설정
     override func loadView() {
         view = myPageView
+    }
+    
+    // MARK: - viewWillAppear()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateUI()
     }
     
     // MARK: - viewDidLoad()
@@ -33,6 +48,81 @@ class MyPageViewController: UIViewController {
         setupNaviBar()
         setupCollectionView()
         setupButton()
+    }
+    
+    // MARK: - 초기 설정
+    private func updateUI() {
+        loadUserData()
+        
+        if currentTab == .recommend { // 추천
+            loadRecommendData()
+        } else if currentTab == .combination { // 오늘의 조합
+            loadCombinationData()
+        } else { // 레시피북
+            //            loadRecipeBookData()
+        }
+    }
+    
+    // 유저 데이터 로딩 후 업데이트
+    private func loadUserData() {
+        MyPageDataManager().fetchUserData(self) { [weak self] model in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                if let urlString = model?.result.profileImageUrl {
+                    let url = URL(string: urlString)
+                    self.myPageView.profileImage.kf.setImage(with: url)
+                }
+                
+                self.myPageView.nameLabel.text = model?.result.nickName
+            }
+        }
+    }
+    
+    // 추천 받은 조합 데이터 로딩
+    private func loadRecommendData() {
+        let input = MyPageInput.fetchRecommendListDataInput(page: 0, size: 30)
+        MyPageDataManager().fetchRecommendListData(input, self) { [weak self] model in
+            guard let self = self else { return }
+            
+            if let model = model {
+                self.arrayRecommendData = model.result.recommendResponseDTOList
+                DispatchQueue.main.async {
+                    self.myPageView.myPageLowerView.collectionView.reloadData()
+                }
+            }
+            
+        }
+    }
+    
+    // 내가 작성한 오늘의 조합 데이터 로딩
+    private func loadCombinationData() {
+        let input = MyPageInput.fetchCombinationDataInput(page: 0)
+        MyPageDataManager().fetchCombinationData(input, self) { [weak self] model in
+            guard let self = self else { return }
+            
+            if let model = model {
+                self.arrayCombinationData = model.result.combinationList
+                DispatchQueue.main.async {
+                    self.myPageView.myPageLowerView.collectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    // 내가 작성한 레시피북 데이터 로딩
+    private func loadRecipeBookData() {
+        let input = MyPageInput.fetchRecipeBookDataInput(page: 0)
+        MyPageDataManager().fetchRecipeBookData(input, self) { [weak self] model in
+            guard let self = self else { return }
+            
+            if let model = model {
+                self.arrayRecipeBookData = model.result.recipeList
+                DispatchQueue.main.async {
+                    self.myPageView.myPageLowerView.collectionView.reloadData()
+                }
+            }
+        }
     }
     
     // MARK: - 네비게이션바 설정
@@ -89,6 +179,8 @@ class MyPageViewController: UIViewController {
         myPageView.myPageLowerView.centerLine.backgroundColor = .clear
         myPageView.myPageLowerView.rightLine.backgroundColor = .clear
         
+        loadRecommendData()
+        
     }
     
     @objc func combinationButtonTapped() { // 오늘의 조합
@@ -102,6 +194,8 @@ class MyPageViewController: UIViewController {
         
         myPageView.myPageLowerView.leftLine.backgroundColor = .clear
         myPageView.myPageLowerView.rightLine.backgroundColor = .clear
+        
+        loadCombinationData()
         
     }
     
@@ -117,41 +211,56 @@ class MyPageViewController: UIViewController {
         myPageView.myPageLowerView.leftLine.backgroundColor = .clear
         myPageView.myPageLowerView.centerLine.backgroundColor = .clear
         
+        loadRecipeBookData()
+        
     }
-
+    
 }
 
 // MARK: - UICollectionViewDataSource
 extension MyPageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        switch currentTab {
-//        case .recommend:
-//            // 추천 탭 아이템 선택 처리
-//        case .combination:
-//            // 조합 탭 아이템 선택 처리
-//        case .recipeBook:
-//            // 레시피북 탭 아이템 선택 처리
-        return 20
+        switch currentTab {
+        case .recommend:
+            return arrayRecommendData.count
+        case .combination:
+            return arrayCombinationData.count
+        case .recipeBook:
+            return arrayRecipeBookData.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyPageCell", for: indexPath) as! MyPageCell
         
-//        switch currentTab {
-//        case .recommend:
-//            // 추천 탭 아이템 선택 처리
-//        case .combination:
-//            // 조합 탭 아이템 선택 처리
-//        case .recipeBook:
-//            // 레시피북 탭 아이템 선택 처리
+        switch currentTab {
+        case .recommend: // 추천
+            let recommend = arrayRecommendData[indexPath.item]
+            if let url = URL(string: recommend.imageUrl) {
+                cell.mainImage.kf.setImage(with: url)
+            }
+            cell.mainLabel.text = "\(recommend.foodName) & \(recommend.drinkName)"
+            
+        case .combination: // 오늘의 조합
+            let combination = arrayCombinationData[indexPath.item]
+            if let url = URL(string: combination.combinationImageUrl) {
+                cell.mainImage.kf.setImage(with: url)
+            }
+            cell.mainLabel.text = "\(combination.title)"
+            
+        case .recipeBook: // 레시피북
+            let recipeBook = arrayRecipeBookData[indexPath.item]
+            if let url = URL(string: recipeBook.recipeImageUrl) {
+                cell.mainImage.kf.setImage(with: url)
+            }
+            cell.mainLabel.text = "\(recipeBook.name)"
+        }
         
         cell.backgroundColor = .green
-        
         return cell
     }
-    
-    
 }
+
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension MyPageViewController: UICollectionViewDelegateFlowLayout {
@@ -175,17 +284,17 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
     // 셀 선택
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-//        if isleftButton { // 오늘의 조합
-//            let selectedItem = arrayLikeAllCombination[indexPath.row].combinationId
-//            let todayCombinationDetailVC = TodayCombinationDetailViewController()
-//            todayCombinationDetailVC.combinationId = selectedItem
-//            navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
-//        } else { // 레시피북
-//            let selectedItem = arrayLikeAllRecipeBook[indexPath.row].id
-//            let recipeBookDetailVC = RecipeBookDetailVC()
-//            recipeBookDetailVC.recipeBookId = selectedItem
-//            navigationController?.pushViewController(recipeBookDetailVC, animated: true)
-//        }
-        
+        if currentTab == .combination { // 오늘의 조합
+            let selectedItem = arrayCombinationData[indexPath.row].combinationId
+            let todayCombinationDetailVC = TodayCombinationDetailViewController()
+            todayCombinationDetailVC.combinationId = selectedItem
+            navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
+        } else if currentTab == .recipeBook { // 레시피북
+            let selectedItem = arrayRecipeBookData[indexPath.row].id
+            let recipeBookDetailVC = RecipeBookDetailVC()
+            recipeBookDetailVC.recipeBookId = selectedItem
+            navigationController?.pushViewController(recipeBookDetailVC, animated: true)
+        }
     }
+    
 }

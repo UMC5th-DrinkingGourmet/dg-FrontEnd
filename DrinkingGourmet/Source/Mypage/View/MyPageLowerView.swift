@@ -19,7 +19,7 @@ class MyPageLowerView: UIView {
     }
     
     let recommendLabel = UILabel().then {
-        $0.text = "오늘의 조합"
+        $0.text = "추천"
         $0.textColor = .black
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
     }
@@ -108,7 +108,7 @@ class MyPageLowerView: UIView {
         
         leftLine.snp.makeConstraints { make in
             make.width.equalTo(backViewWidth)
-            make.height.equalTo(1)
+            make.height.equalTo(2)
             make.top.equalTo(recommendBackView.snp.bottom)
             make.leading.equalTo(recommendBackView)
         }
@@ -160,7 +160,7 @@ class MyPageLowerView: UIView {
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(leftLine.snp.bottom)
+            make.top.equalTo(leftLine.snp.bottom).offset(1)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
