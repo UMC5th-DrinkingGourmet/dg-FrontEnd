@@ -55,7 +55,6 @@ class TodayCombinationCell: UITableViewCell {
     let likeSelectedIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_like_selected")
         $0.contentMode = .scaleAspectFit
-//        $0.isHidden = true
     }
 
     // MARK: - Init
@@ -74,6 +73,11 @@ class TodayCombinationCell: UITableViewCell {
     override func layoutSubviews() { // 셀 간 간격 설정
         super.layoutSubviews()
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0))
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        likeSelectedIcon.isHidden = true
     }
 
     func setupContentView() { // 셀 테두리 설정
