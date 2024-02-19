@@ -12,6 +12,8 @@ class MyPageView: UIView {
     // MARK: - View
     let profileImage = UIImageView().then {
         $0.image = UIImage(named: "ic_profile_mypage")
+        $0.layer.cornerRadius = 32
+        $0.clipsToBounds = true
     }
     
     let nameLabel = UILabel().then {
