@@ -81,8 +81,23 @@ class CommentsView: UIStackView {
             view.profileImageView.kf.setImage(with: imageUrl)
         }
         view.nameLabel.text = data.member.nickName
-        view.dateLabel.text = data.createdDate
+        view.dateLabel.text = formatDate(data.createdDate)
         view.contentLabel.text = data.content
     }
     
+    func formatDate(_ dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.locale = Locale(identifier: "en_US_POSIX") // ISO8601 형식 처리를 위해 설정
+        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS" // 서버에서 오는 날짜 형식에 맞춤
+
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "yyyy.MM.dd HH:mm" // 원하는 출력 형식
+
+        if let date = inputFormatter.date(from: dateString) {
+            return outputFormatter.string(from: date)
+        } else {
+            return ""
+        }
+    }
+
 }

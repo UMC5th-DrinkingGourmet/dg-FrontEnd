@@ -139,6 +139,19 @@ final class RecipeBookDetailVC: UIViewController {
         recipeBookDetailView.likeIconButton.setImage(UIImage(named: imageName), for: .normal)
         if let recipeBookId = self.recipeBookId {
             RecipeBookDetailDataManager().postLike(recipeBookId)
+            self.fetchRecipeBookDetail()
+        }
+    }
+    
+    func fetchRecipeBookDetail() { // 하트 아이콘 실시간 반영
+        if let recipeBookId = self.recipeBookId {
+            RecipeBookDetailDataManager().fetchRecipeBookDetailData(recipeBookId, self) { [weak self] detailModel in
+                guard let self = self else { return }
+                self.recipeBookDetailData = detailModel
+                DispatchQueue.main.async {
+                    self.updateUIWithData()
+                }
+            }
         }
     }
     
