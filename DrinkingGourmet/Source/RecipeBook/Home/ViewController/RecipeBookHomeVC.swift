@@ -100,7 +100,7 @@ final class RecipeBookHomeVC: UIViewController {
     }
     
     @objc func floatingButtonTapped() {
-        let vc = CombinationUploadVC()
+        let vc = RecipeBookUploadViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
 }
