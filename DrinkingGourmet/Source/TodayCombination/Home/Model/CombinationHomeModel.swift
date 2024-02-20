@@ -20,7 +20,7 @@ struct CombinationHomeModel: Codable {
     struct CombinationHomeList: Codable {
         let combinationId: Int
         let title: String
-        let combinationImageUrl: String
+        let combinationImageUrl: String?
         let likeCount, commentCount: Int
         let hashTageList: [String]
         let isLike: Bool
