@@ -22,11 +22,14 @@ class WeeklyBestVC: UIViewController {
         view = weeklyBestView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        prepare()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        prepare()
         setupNaviBar()
         setupTableView()
         setupCustomSearchBar()
@@ -103,6 +106,8 @@ extension WeeklyBestVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeeklyBestCell", for: indexPath) as! WeeklyBestCell
         
         let weeklyBest = arrayWeeklyBest[indexPath.row]
+        
+        cell.likeSelectedIcon.isHidden = !weeklyBest.isLike
         
         if let url = URL(string: weeklyBest.combinationImageUrl) {
             cell.mainImage.kf.setImage(with: url)

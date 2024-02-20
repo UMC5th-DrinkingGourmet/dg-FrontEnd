@@ -59,6 +59,11 @@ class WeeklyBestCell: UITableViewCell {
         super.layoutSubviews()
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0))
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        likeSelectedIcon.isHidden = true
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
