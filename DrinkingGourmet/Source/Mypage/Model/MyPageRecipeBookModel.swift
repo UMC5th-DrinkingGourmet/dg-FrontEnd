@@ -1,11 +1,11 @@
 //
-//  LikeAllRecipeBookModel.swift
+//  MyPageRecipeBookModel.swift
 //  DrinkingGourmet
 //
-//  Created by 이승민 on 2/17/24.
+//  Created by 이승민 on 2/20/24.
 //
 
-struct LikeAllRecipeBookModel: Codable {
+struct MyPageRecipeBookModel: Codable {
     let isSuccess: Bool
     let code, message: String
     let result: Result
