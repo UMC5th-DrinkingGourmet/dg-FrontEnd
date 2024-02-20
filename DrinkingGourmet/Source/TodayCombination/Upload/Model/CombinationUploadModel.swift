@@ -19,6 +19,7 @@ struct CombinationUploadModel {
         }
         
         struct RecommendResponseDTOList: Codable {
+            let recommendID: Int
             let foodName, drinkName, recommendReason: String
             let imageUrl: String
         }
@@ -44,5 +45,22 @@ struct CombinationUploadModel {
     }
 
     
-    
+    // 게시글 작성 요청API Model
+    struct WritingPostModel: Codable {
+        let title, content: String
+        let recommendId: Int
+        let hashTagNameList, combinationImageList: [String]
+    }
+
+    // 게시글 작성 응답API Model
+    struct WritingPostResponseModel: Codable {
+        let isSuccess: Bool
+        let code, message: String
+        let result: Result
+        
+        struct Result: Codable {
+            let combinationId: Int
+            let createdAt: String
+        }
+    }
 }

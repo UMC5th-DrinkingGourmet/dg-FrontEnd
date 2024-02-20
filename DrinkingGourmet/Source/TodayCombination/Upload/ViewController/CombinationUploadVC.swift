@@ -16,6 +16,8 @@ class CombinationUploadVC: UIViewController {
     
     var imageList: [UIImage] = []
     
+    var recommendId: Int?
+    
     var arrayRecommendList: [CombinationUploadModel.fetchRecommendListModel.RecommendResponseDTOList] = []
     
     // MARK: - View
@@ -27,6 +29,7 @@ class CombinationUploadVC: UIViewController {
     let contentView = UIView()
     
     let pickerView = UIPickerView()
+   
     
     // 선택한 조합
     let combinationLabel = UILabel().then {
@@ -43,6 +46,8 @@ class CombinationUploadVC: UIViewController {
     }
     
     let combinationTextField = UITextField().then {
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
         $0.tintColor = .clear
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
@@ -72,6 +77,8 @@ class CombinationUploadVC: UIViewController {
     
     let hashtagTextField = UITextField().then {
 //        $0.text = "#"
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         
@@ -143,6 +150,8 @@ class CombinationUploadVC: UIViewController {
     }
     
     let titleTextField = UITextField().then {
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         
@@ -204,7 +213,7 @@ class CombinationUploadVC: UIViewController {
         setupTextField()
         
         createPickerView()
-        
+ 
         checkPermission()
         
         // 키보드 알림 등록
@@ -423,6 +432,21 @@ class CombinationUploadVC: UIViewController {
                 switch result {
                 case .success(let responseString):
                     print("Response: \(responseString)")
+                    // 이미지 업로드가 성공하면 게시글 업로드
+                    if let recommendId = self.recommendId, let combinationImageList = responseString.result?.combinationImageList, let hashtagString = self.hashtagTextField.text {
+                        let hashTagNameList = hashtagString.components(separatedBy: " ")
+                        let postModel = CombinationUploadModel.WritingPostModel(title: self.combinationTextField.text!, content: self.contentInputView.textfieldText!, recommendId: recommendId, hashTagNameList: hashTagNameList, combinationImageList: combinationImageList)
+                        CombinationUploadDataManager.shared.uploadPost(postModel) { result in
+                            switch result {
+                            case .success(let responseString):
+                                print("Post upload response: \(responseString)")
+                                self.navigationController?.popViewController(animated: true)
+                            case .failure(let error):
+                                print("Post upload error: \(error)")
+                            }
+                        }
+                    } 
+                    
                 case .failure(let error):
                     print("Error: \(error)")
                 }
@@ -728,6 +752,8 @@ extension CombinationUploadVC: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         roundView.layer.borderColor = UIColor.customOrange.cgColor
         combinationTextField.text = "\(arrayRecommendList[row].foodName) & \(arrayRecommendList[row].drinkName)"
+        recommendId = arrayRecommendList[row].recommendID
+        print("recommendId: \(String(describing: recommendId))")
     }
 }
 

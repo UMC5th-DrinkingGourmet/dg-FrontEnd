@@ -37,6 +37,8 @@ class InputTextFieldView: UIView {
     }
     
     lazy var textField = UITextField().then {
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
         $0.textColor = .black
         $0.text = "textfield.text"
         $0.attributedPlaceholder = NSAttributedString(
