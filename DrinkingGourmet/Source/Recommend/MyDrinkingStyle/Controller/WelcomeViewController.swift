@@ -86,7 +86,6 @@ class WelcomeViewController: UIViewController {
             make.height.equalTo(42)
         }
         nextButton.snp.makeConstraints { make in
-            //make.top.equalTo(guideText.snp.bottom).offset(89)
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()

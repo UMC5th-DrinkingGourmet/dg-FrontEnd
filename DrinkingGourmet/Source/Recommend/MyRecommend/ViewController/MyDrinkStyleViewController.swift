@@ -50,9 +50,9 @@ class MyDrinkStyleViewController: UIViewController {
         let nextViewController = RecommendViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
-    // - mypage 완성 시 수정 - //
+
     @objc func myRecommendButtonTapped(_ sender: UIButton) {
-        let nextViewController = GetUserInfoViewController() // myPage로 연결
+        let nextViewController = MyPageViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
 
@@ -84,7 +84,7 @@ class MyDrinkStyleViewController: UIViewController {
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(50)
-            //myRecommendButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
+            myRecommendButton.addTarget(self, action: #selector(myRecommendButtonTapped(_:)), for: .touchUpInside)
         }
     }
 }
