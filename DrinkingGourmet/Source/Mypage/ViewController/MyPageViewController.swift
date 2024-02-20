@@ -286,11 +286,13 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
             let selectedItem = arrayCombinationData[indexPath.row].combinationId
             let todayCombinationDetailVC = TodayCombinationDetailViewController()
             todayCombinationDetailVC.combinationId = selectedItem
+            todayCombinationDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
         } else if currentTab == .recipeBook { // 레시피북
             let selectedItem = arrayRecipeBookData[indexPath.row].id
             let recipeBookDetailVC = RecipeBookDetailVC()
             recipeBookDetailVC.recipeBookId = selectedItem
+            recipeBookDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(recipeBookDetailVC, animated: true)
         }
     }
