@@ -24,9 +24,15 @@ class TodayCombinationViewController: UIViewController {
         view = todayCombinationView
     }
     
+    var isReturningFromSearch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        prepare()
+        if !isReturningFromSearch {
+            arrayCombinationHome.removeAll()
+            fetchData()
+        }
+        isReturningFromSearch = false
     }
     
     // MARK: - viewDidLoad()
@@ -34,15 +40,14 @@ class TodayCombinationViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        
         setupNaviBar()
         setupTextField()
         setupTableView()
         setupFloatingButton()
     }
     
-    // MARK: - 초기 설정
-    func prepare() {
+    // MARK: - 데이터 가져오기
+    func fetchData() {
         let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
         pageNum = 0
         
