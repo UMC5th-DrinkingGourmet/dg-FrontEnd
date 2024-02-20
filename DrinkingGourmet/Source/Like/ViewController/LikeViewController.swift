@@ -10,9 +10,6 @@ import UIKit
 class LikeViewController: UIViewController {
     // MARK: - Properties
     var isleftButton: Bool = true
-    var totalPageNum: Int = 0
-    var pageNum: Int = 0
-    var isLastPage: Bool = false
     
     var arrayLikeAllCombination: [LikeAllCombinationModel.CombinationList] = []
     var arrayLikeAllRecipeBook: [LikeAllRecipeBookModel.RecipeList] = []
@@ -56,8 +53,6 @@ class LikeViewController: UIViewController {
             guard let self = self else { return }
             
             if let model = model {
-                self.totalPageNum = model.result.totalPage
-                self.isLastPage = model.result.isLast
                 self.arrayLikeAllCombination = model.result.combinationList
                 DispatchQueue.main.async {
                     self.likeView.collectionView.reloadData()
@@ -73,8 +68,6 @@ class LikeViewController: UIViewController {
             guard let self = self else { return }
             
             if let model = model {
-                self.totalPageNum = model.result.totalPage
-                self.isLastPage = model.result.isLast
                 self.arrayLikeAllRecipeBook = model.result.recipeList
                 DispatchQueue.main.async {
                     self.likeView.collectionView.reloadData()
@@ -203,33 +196,5 @@ extension LikeViewController: UICollectionViewDelegateFlowLayout {
             navigationController?.pushViewController(recipeBookDetailVC, animated: true)
         }
         
-    }
-}
-
-// MARK: - UICollectionViewDataSourcePrefetching
-extension LikeViewController: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        if isleftButton { // 오늘의 조합
-            for indexPath in indexPaths {
-                if arrayLikeAllCombination.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
-                    pageNum += 1
-                    
-                    let input = LikeInput(page: pageNum)
-                    
-                    LikeDataManager().fetchLikeAllCombinationData(input, self) { [weak self] model in
-                        guard let self = self else { return }
-                        if let model = model {
-                            self.arrayLikeAllCombination += model.result.combinationList
-                            self.isLastPage = model.result.isLast
-                            DispatchQueue.main.async {
-                                self.likeView.collectionView.reloadData()
-                            }
-                        }
-                    }
-                }
-            }
-        } else { // 레시피북
-            
-        }
     }
 }
