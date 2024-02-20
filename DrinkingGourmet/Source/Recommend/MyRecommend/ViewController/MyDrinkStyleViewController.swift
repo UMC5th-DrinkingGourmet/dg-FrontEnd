@@ -48,6 +48,7 @@ class MyDrinkStyleViewController: UIViewController {
     // MARK: - Navigation
     @objc func nextButtonTapped(_ sender: UIButton) {
         let nextViewController = RecommendViewController()
+        nextViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextViewController, animated: true)
     }
 
