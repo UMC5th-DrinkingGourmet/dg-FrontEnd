@@ -24,12 +24,17 @@ class TodayCombinationViewController: UIViewController {
         view = todayCombinationView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        prepare()
+    }
+    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        prepare()
+        
         setupNaviBar()
         setupTextField()
         setupTableView()
@@ -39,6 +44,7 @@ class TodayCombinationViewController: UIViewController {
     // MARK: - 초기 설정
     func prepare() {
         let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
+        pageNum = 0
         
         CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
             guard let self = self else { return }
