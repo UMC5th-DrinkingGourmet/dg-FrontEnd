@@ -16,19 +16,20 @@ struct RecipeBookUpoadModel {
     
     // MARK: - ImageResponseModel
     struct ImageUploadResponse: Codable {
-        let isSuccess: Bool
-        let code, message: String
-        let result: Result
+        let isSuccess: Bool?
+        let code, message: String?
+        let result: Result?
     }
-    
+
     // MARK: - Result
     struct Result: Codable {
-        let imageURLList: [String]
+        let imageURLList: [String]?
 
         enum CodingKeys: String, CodingKey {
             case imageURLList = "imageUrlList"
         }
     }
+
     
     
     
@@ -46,7 +47,7 @@ struct RecipeBookUpoadModel {
     }
 
     struct Results: Codable {
-        let id: Int
+        let id: Int?
         let title, cookingTime, calorie: String
         let likeCount, commentCount: Int
         let ingredient, recipeInstruction, recommendCombination: String

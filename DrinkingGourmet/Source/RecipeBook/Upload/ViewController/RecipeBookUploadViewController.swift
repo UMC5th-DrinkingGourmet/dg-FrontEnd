@@ -169,14 +169,6 @@ class RecipeBookUploadViewController: UIViewController {
         $0.backgroundColor = UIColor.customColor.checkMarkGray
     }
     
-    let titleWarningLabel = UILabel().then {
-        $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
-        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
-        var paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "최소 5자 / 최대 80자", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
-    }
-    
     lazy var contentInputView = InputTextFieldView(frame: .zero).then {
         $0.onTextChanged = { [weak self] text in
 //            print("텍스트 길이: \(text.count)")
@@ -292,7 +284,7 @@ class RecipeBookUploadViewController: UIViewController {
         
         scrollView.addSubview(contentView)
         
-        contentView.addSubviews([combinationLabel, roundView, combinationTextField, combinationButtonIcon, hashtagLabel, hashtagTextField, grayLine1, imageLabel, uploadBtn, collectionView, titleLabel, titleTextField, grayLine2, titleWarningLabel, contentInputView, ingredientView, recipeView])
+        contentView.addSubviews([combinationLabel, roundView, combinationTextField, combinationButtonIcon, hashtagLabel, hashtagTextField, grayLine1, imageLabel, uploadBtn, collectionView, titleLabel, titleTextField, grayLine2, contentInputView, ingredientView, recipeView])
     }
     
     func configLayout() {
@@ -405,15 +397,10 @@ class RecipeBookUploadViewController: UIViewController {
             make.leading.trailing.equalTo(titleTextField)
         }
         
-        titleWarningLabel.snp.makeConstraints { make in
-            make.top.equalTo(grayLine2.snp.bottom).offset(8)
-            make.trailing.equalTo(grayLine2.snp.trailing)
-        }
-        
         contentInputView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(72)
-            $0.top.equalTo(titleWarningLabel.snp.bottom).offset(54)
+            $0.top.equalTo(grayLine2.snp.bottom).offset(54)
         }
         
         ingredientView.snp.makeConstraints {
@@ -455,30 +442,36 @@ class RecipeBookUploadViewController: UIViewController {
         if completionButton.isEnabled == true {
             print("클릭")
             print("Uploading \(imageList.count) images.")
-            RecipeBookUploadDataManager.shared.uploadImages(imageList) { (response, error) in
+            let postModel = RecipeBookUpoadModel.RecipeRequest(
+                title: self.combinationTextField.text!,
+                cookingTime: self.titleLabel.text!,
+                calorie: self.contentInputView.textField.text!,
+                ingredient: self.ingredientView.textField.text!,
+                recipeInstruction: self.recipeView.textField.text!,
+                recommendCombination: self.combinationTextField.text!,
+                hashTagNameList: ["#dummy"]
+            )
+
+            RecipeBookUploadDataManager.shared.uploadPost(postModel) { (response, error) in
                 if let error = error {
-                    print("Error: \(error)")
-                } else if let response = response {
-                    print("Response: \(response)")
-                    // 이미지 업로드가 성공하면 게시글 업로드
-                    let postModel = RecipeBookUpoadModel.RecipeRequest(
-                        title: self.combinationTextField.text!,
-                        cookingTime: self.titleLabel.text!,
-                        calorie: self.contentInputView.textField.text!,
-                        ingredient: self.ingredientView.textField.text!,
-                        recipeInstruction: self.recipeView.textField.text!,
-                        recommendCombination: self.combinationTextField.text!,
-                        hashTagNameList: ["#dummy"]
-                    )
-                    RecipeBookUploadDataManager.shared.uploadPost(postModel) { (response, error) in
+                    print("Post upload error: \(error)")
+                } else if let response = response, let recipeId = response.result.id {
+                    print("Post upload response: \(response)")
+                    print("recipeId: \(recipeId)")
+                    // 게시글 업로드가 성공하면 이미지 업로드
+                    RecipeBookUploadDataManager.shared.uploadImages(self.imageList, recipeId: recipeId) { (response, error) in
                         if let error = error {
-                            print("Post upload error: \(error)")
+                            print("Error: \(error)")
                         } else if let response = response {
-                            print("Post upload response: \(response)")
+                            print("Response: \(response)")
+                            DispatchQueue.main.async {
+                                self.navigationController?.popViewController(animated: true)
+                            }
                         }
                     }
                 }
             }
+
         } else {
             print("클릭 불가")
         }
@@ -499,15 +492,13 @@ class RecipeBookUploadViewController: UIViewController {
         pickerView.delegate = self
         pickerView.dataSource = self
 
-        // 텍스트 필드의 입력 방식을 피커 뷰로 설정
         combinationTextField.inputView = pickerView
 
-        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)) // 툴바의 너비를 화면의 너비와 같도록 설정
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(dismissPickerView))
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
 
-        // 툴바를 텍스트 필드의 inputAccessoryView로 설정
         combinationTextField.inputAccessoryView = toolbar
     }
 }
@@ -707,9 +698,7 @@ extension RecipeBookUploadViewController: UITextFieldDelegate {
             let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
 
             updateGrayLine2Color(text: updatedText)
-        }
-        
-        if textField == hashtagTextField {
+        }else if textField == hashtagTextField {
             // 띄어쓰기가 입력될 때 # 추가
             if string == " ", let text = textField.text {
                 textField.text = text + " #"
@@ -720,7 +709,28 @@ extension RecipeBookUploadViewController: UITextFieldDelegate {
             let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
 
             updateGrayLine1Color(text: updatedText)
+        } else if textField == contentInputView.textField {
+            let currentText = textField.text ?? ""
+            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+                
+        contentInputView.borderView.backgroundColor = updatedText.isEmpty ? UIColor.customColor.checkMarkGray : UIColor.customColor.customOrange
+        } else if textField == recipeView.textField {
+            let currentText = textField.text ?? ""
+            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+                
+            recipeView.borderView.backgroundColor = updatedText.isEmpty ? UIColor.customColor.checkMarkGray : UIColor.customColor.customOrange
+        } else if textField == recipeView.textField {
+            let currentText = textField.text ?? ""
+            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+                
+            recipeView.borderView.backgroundColor = updatedText.isEmpty ? UIColor.customColor.checkMarkGray : UIColor.customColor.customOrange
+        } else if textField == ingredientView.textField {
+            let currentText = textField.text ?? ""
+            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+                
+            ingredientView.borderView.backgroundColor = updatedText.isEmpty ? UIColor.customColor.checkMarkGray : UIColor.customColor.customOrange
         }
+        
         return true
     }
     
@@ -748,10 +758,9 @@ extension RecipeBookUploadViewController: UITextFieldDelegate {
         return !(combinationTextField.text?.isEmpty ?? true) &&
         !(hashtagTextField.text?.isEmpty ?? true) &&
         !(titleTextField.text?.isEmpty ?? true) &&
-        5 <= titleTextField.text!.count && titleTextField.text!.count <= 80 &&
-        0 <= contentInputView.textField.text!.count &&
-        10 <= ingredientView.textField.text!.count &&
-        10 <= recipeView.textField.text!.count
+        !(contentInputView.textField.text?.isEmpty ?? true) &&
+        !(ingredientView.textField.text?.isEmpty ?? true) &&
+        !(recipeView.textField.text?.isEmpty ?? true)
     }
     
     // 리턴 클릭 시 키보드 숨기기
