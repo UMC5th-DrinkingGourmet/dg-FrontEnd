@@ -8,13 +8,13 @@
 import UIKit
 
 class GetDrinkingRecommendViewController: UIViewController {
-    let myRecommendModelManager = MyRecommendModelManager.shared
+    let myRecommendModelData = MyRecommendModelData.shared
     //MyRecommendModelManager.model.result?.imageUrl
     // MARK: - View
     lazy var mainImage: UIImageView = {
         let iv = UIImageView()
         
-        if let imageUrl = myRecommendModelManager.model?.result?.imageUrl,
+        if let imageUrl = myRecommendModelData.model?.result?.imageUrl,
                let url = URL(string: imageUrl) {
                 iv.kf.setImage(with: url)
         } else {
@@ -35,7 +35,7 @@ class GetDrinkingRecommendViewController: UIViewController {
         paragraphStyle.lineHeightMultiple = 1.25
         lb.textAlignment = .center
         
-        if let text = myRecommendModelManager.model?.result?.drinkName
+        if let text = myRecommendModelData.model?.result?.drinkName
                {
             lb.text = text
             lb.attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.kern: -0.84, NSAttributedString.Key.paragraphStyle: paragraphStyle])
@@ -58,7 +58,7 @@ class GetDrinkingRecommendViewController: UIViewController {
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         
-        if let text = myRecommendModelManager.model?.result?.recommendReason
+        if let text = myRecommendModelData.model?.result?.recommendReason
                {
             $0.text = text
             $0.attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
@@ -77,6 +77,8 @@ class GetDrinkingRecommendViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
+        
+        button.addTarget(self, action: #selector(anotherRecommendButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -87,14 +89,29 @@ class GetDrinkingRecommendViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
+        
+        //button.addTarget(self, action: #selector(myRecommendListButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
+    // MARK: - Navigation
+    @objc func anotherRecommendButtonTapped(_ sender: UIButton) {
+        let nextViewController = MyDrinkStyleViewController()
+        navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    @objc func myRecommendListButtonTapped(_ sender: UIButton) {
+        let nextViewController = MyDrinkStyleViewController() // - 수정: 마이페이지로 - //
+        navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .white
         setupNaviBar()
         setAddSubViews()
         makeConstraints()

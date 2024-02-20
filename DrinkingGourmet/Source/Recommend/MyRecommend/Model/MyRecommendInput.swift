@@ -6,8 +6,8 @@
 //
 import Alamofire
 
-class recommendsRequestParameters: Codable {
-    static let shared = recommendsRequestParameters()
+class RecommendsRequestParameters: Codable {
+    static let shared = RecommendsRequestParameters()
      
     var desireLevel: Int = 0
     var foodName: String = ""

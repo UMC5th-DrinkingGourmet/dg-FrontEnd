@@ -27,8 +27,8 @@ final class SliderView: UIView {
     
     private lazy var thumbView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.baseColor.base08
-        
+        //view.backgroundColor = UIColor.baseColor.base08
+        view.backgroundColor = UIColor.customColor.customOrange
         view.isUserInteractionEnabled = true
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         view.addGestureRecognizer(gesture)
@@ -104,7 +104,8 @@ final class SliderView: UIView {
         }
         thumbView.snp.makeConstraints { make in
             make.centerY.equalTo(trackView)
-            make.leading.equalTo(trackView).offset(14 - thumbSize/2)
+            let leadingCenter = UIScreen.main.bounds.size.width/2 - 20
+            make.leading.equalTo(trackView).offset(leadingCenter - (thumbSize/2))
             make.size.equalTo(thumbSize)
         }
         fillTrackView.snp.makeConstraints { make in

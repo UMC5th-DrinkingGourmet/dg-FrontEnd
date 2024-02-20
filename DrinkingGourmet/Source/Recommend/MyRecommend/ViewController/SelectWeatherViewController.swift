@@ -8,7 +8,7 @@
 import UIKit
 
 class SelectWeatherViewController: UIViewController {
-    let myRecommendModelManager = MyRecommendModelManager.shared
+    let myRecommendModelData = MyRecommendModelData.shared
     private var isSelectedButton = false
     private let resource: SelectWeatherResource = SelectWeatherResource()
     private var buttonTitleArray: [String] {
@@ -71,17 +71,16 @@ class SelectWeatherViewController: UIViewController {
     }
     
     @objc func skipButtonTapped(_ sender: UIButton) {
-        let recommendParam = recommendsRequestParameters.shared
+        let recommendParam = RecommendsRequestParameters.shared
         recommendParam.weather = " "
         
-        //MyRecommendDataManager().postRecommendsRequest(recommendParam)
-        
+        MyRecommendDataManager().postRecommendsRequest(recommendParam)
         let nextViewController = LoadingRecommendDrinkViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
-            let recommendParam = recommendsRequestParameters.shared
+            let recommendParam = RecommendsRequestParameters.shared
             recommendParam.weather = updateSelectedButtonTitles()
             
             // MARK: - API 통신

@@ -9,7 +9,7 @@ import UIKit
 import Lottie
 
 class LoadingRecommendDrinkViewController: UIViewController {
-    let myRecommendModelManager = MyRecommendModelManager.shared
+    let myRecommendModelData = MyRecommendModelData.shared
     
     var startTime: Date?
       var elapsedTime: TimeInterval = 0
@@ -55,7 +55,7 @@ class LoadingRecommendDrinkViewController: UIViewController {
         elapsedTime += 1
         
         // 주류 추천 완료 여부 확인
-        if let time = myRecommendModelManager.netWorkDuration, elapsedTime >= time {
+        if let time = myRecommendModelData.netWorkDuration, elapsedTime > time {
             // 타이머 정지
             timer?.invalidate()
             timer = nil
@@ -79,8 +79,9 @@ class LoadingRecommendDrinkViewController: UIViewController {
             make.height.equalTo(72)
         }
         loadingAnimationView.snp.makeConstraints { make in
-            make.top.equalTo(guideText.snp.bottom).offset(150)
+            //make.top.equalTo(guideText.snp.bottom).offset(150)
             make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.width.equalTo(90)
             make.height.equalTo(90)
         }

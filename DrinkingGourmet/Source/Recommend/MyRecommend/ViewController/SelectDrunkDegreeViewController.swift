@@ -63,7 +63,7 @@ class SelectDrunkDegreeViewController: UIViewController {
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
-            let recommendParam = recommendsRequestParameters.shared
+            let recommendParam = RecommendsRequestParameters.shared
             if let myDesireLevel = myDesireLevel {
                 recommendParam.desireLevel = myDesireLevel
             }

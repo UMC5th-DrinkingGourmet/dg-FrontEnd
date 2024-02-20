@@ -70,7 +70,7 @@ class SelectMyMoodViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     @objc func skipButtonTapped(_ sender: UIButton) {
-        let recommendParam = recommendsRequestParameters.shared
+        let recommendParam = RecommendsRequestParameters.shared
         recommendParam.feeling = ""
         
         let nextViewController = InputMyMoodViewController()
@@ -78,7 +78,7 @@ class SelectMyMoodViewController: UIViewController {
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
-            let recommendParam = recommendsRequestParameters.shared
+            let recommendParam = RecommendsRequestParameters.shared
             recommendParam.feeling = updateSelectedButtonTitles()
             
             let nextViewController = InputMyMoodViewController()

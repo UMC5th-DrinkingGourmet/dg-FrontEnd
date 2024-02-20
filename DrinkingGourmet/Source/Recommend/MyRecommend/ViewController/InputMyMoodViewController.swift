@@ -75,7 +75,7 @@ class InputMyMoodViewController: UIViewController {
     lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isTextInput)
     lazy var skipButton = makeSkipButton()
     
-    let firstRecommendParam = recommendsRequestParameters.shared
+    let firstRecommendParam = RecommendsRequestParameters.shared
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
@@ -105,17 +105,17 @@ class InputMyMoodViewController: UIViewController {
         
         let nextViewController = SelectWeatherViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
-        let recommendParam = recommendsRequestParameters.shared
+        let recommendParam = RecommendsRequestParameters.shared
         recommendParam.feeling += " "
         //print(recommendParam.feeling)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         
         if isTextInput {
-            let recommendParam = recommendsRequestParameters.shared
+            let recommendParam = RecommendsRequestParameters.shared
             recommendParam.feeling = updateInputMyMood()
             //logic 상 문제 발생.
-            print(recommendParam.feeling)
+            //print(recommendParam.feeling)
             
             let nextViewController = SelectWeatherViewController()
             navigationController?.pushViewController(nextViewController, animated: true)

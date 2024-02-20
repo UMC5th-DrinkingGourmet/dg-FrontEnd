@@ -7,8 +7,8 @@
 
 import Alamofire
 
-class MyRecommendModelManager {
-    static let shared = MyRecommendModelManager()
+class MyRecommendModelData {
+    static let shared = MyRecommendModelData()
     
     private init() {}
     

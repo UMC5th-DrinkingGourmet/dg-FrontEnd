@@ -40,8 +40,8 @@ class InputMyFoodViewController: UIViewController {
     var foodSearchField: UITextField = {
         let textField = UITextField()
         
-        //textField.placeHolder(string: "치킨", color: UIColor.baseColor.base07)
-        textField.text = "깐풍기" // ""
+        textField.placeHolder(string: "치킨", color: UIColor.baseColor.base07)
+        textField.text = ""
         textField.textColor = UIColor.baseColor.base01
         textField.font = UIFont.systemFont(ofSize: 20)
         
@@ -94,7 +94,7 @@ class InputMyFoodViewController: UIViewController {
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isTextInput {
-            let recommendParam = recommendsRequestParameters.shared
+            let recommendParam = RecommendsRequestParameters.shared
             
             if let foodName = foodSearchField.text {
                 recommendParam.foodName = foodName

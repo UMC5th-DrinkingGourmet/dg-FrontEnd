@@ -13,7 +13,7 @@ class MyRecommendDataManager {
     
     
     // MARK: - 주류추천
-    func postRecommendsRequest (_ parameters: recommendsRequestParameters) {
+    func postRecommendsRequest (_ parameters: RecommendsRequestParameters) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             
@@ -26,14 +26,14 @@ class MyRecommendDataManager {
                        parameters: parameters,
                        encoder: JSONParameterEncoder.default,
                        headers: headers).responseDecodable(of: MyRecommendModel.self) { response in
-                let myRecommendModelManager = MyRecommendModelManager.shared
+                let myRecommendModelData = MyRecommendModelData.shared
             
                 switch response.result {
                 case .success(let myRecommendModel):
-                    myRecommendModelManager.model = myRecommendModel
-                    //debugPrint(myRecommendModelManager.model)
+                    myRecommendModelData.model = myRecommendModel
+                    //debugPrint(myRecommendModelData.model)
                     if let duration = response.metrics?.taskInterval.duration {
-                        myRecommendModelManager.netWorkDuration = Double(duration)
+                        myRecommendModelData.netWorkDuration = Double(duration)
                         print("Network Duration: \(duration)")
                     }
                     
