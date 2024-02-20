@@ -8,7 +8,7 @@
 import UIKit
 
 class InputMyFoodViewController: UIViewController {
-    private var isTextInput = true // false
+    private var isTextInput = false // false
     
     lazy var progressBar: UIProgressView = {
         let progressBar = UIProgressView()
