@@ -455,31 +455,28 @@ class RecipeBookUploadViewController: UIViewController {
         if completionButton.isEnabled == true {
             print("클릭")
             print("Uploading \(imageList.count) images.")
-            CombinationUploadDataManager.shared.uploadImages(imageList) { result in
-                switch result {
-                case .success(let responseString):
-                    print("Response: \(responseString)")
-                    // 이미지 업로드가 성공하면 게시글 업로드
-                    // 이미지 업로드가 성공하면 게시글 업로드
-                                    let postModel = RecipeBookUpoadModel.RecipeRequest(
-                                        title: self.combinationTextField.text!,
-                                        cookingTime: self.titleLabel.text!,
-                                        calorie: self.contentInputView.textField.text!,
-                                        ingredient: self.ingredientView.textField.text!,
-                                        recipeInstruction: self.recipeView.textField.text!,
-                                        recommendCombination: self.combinationTextField.text!,
-                                        hashTagNameList: ["#dummy"]
-                                    )
-                                    RecipeBookUploadDataManager.shared.uploadPost(postModel) { result in
-                                        switch result {
-                                        case .success(let responseString):
-                                            print("Post upload response: \(responseString)")
-                                        case .failure(let error):
-                                            print("Post upload error: \(error)")
-                                        }
-                                    }
-                case .failure(let error):
+            RecipeBookUploadDataManager.shared.uploadImages(imageList) { (response, error) in
+                if let error = error {
                     print("Error: \(error)")
+                } else if let response = response {
+                    print("Response: \(response)")
+                    // 이미지 업로드가 성공하면 게시글 업로드
+                    let postModel = RecipeBookUpoadModel.RecipeRequest(
+                        title: self.combinationTextField.text!,
+                        cookingTime: self.titleLabel.text!,
+                        calorie: self.contentInputView.textField.text!,
+                        ingredient: self.ingredientView.textField.text!,
+                        recipeInstruction: self.recipeView.textField.text!,
+                        recommendCombination: self.combinationTextField.text!,
+                        hashTagNameList: ["#dummy"]
+                    )
+                    RecipeBookUploadDataManager.shared.uploadPost(postModel) { (response, error) in
+                        if let error = error {
+                            print("Post upload error: \(error)")
+                        } else if let response = response {
+                            print("Post upload response: \(response)")
+                        }
+                    }
                 }
             }
         } else {

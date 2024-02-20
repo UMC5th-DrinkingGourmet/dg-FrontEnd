@@ -3,7 +3,7 @@
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 2/16/24.
-//
+
 
 struct ErrorResponseModel: Codable {
     let timestamp: String
@@ -57,7 +57,7 @@ class CombinationUploadDataManager {
     }
     
     // MARK: - 오늘의 조합 이미지 업로드
-    func uploadImages(_ images: [UIImage], completion: @escaping (Result<CombinationUploadModel.imageUploadResponse, Error>) -> Void) {
+    func uploadImages(_ images: [UIImage], completion: @escaping (CombinationUploadModel.imageUploadResponse?, Error?) -> Void) {
         let url = "\(baseURL)/combinationImages"
         
         do {
@@ -86,23 +86,24 @@ class CombinationUploadDataManager {
                 case 200:
                     if let data = response.value {
                         print("이미지 업로드 성공")
-                        completion(.success(data))
+                        completion(data, nil)
                     } else {
                         print("이미지 업로드 실패: \(response)")
-                        completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "이미지 업로드 실패"])))
+                        completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "이미지 업로드 실패"]))
                     }
                 default:
                     print("이미지 업로드 실패: \(response)")
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "이미지 업로드 실패"])))
+                    completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "이미지 업로드 실패"]))
                 }
             }
         } catch {
             print("Failed to get access token")
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"])))
+            completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"]))
         }
     }
 
-    func uploadPost(_ postModel: CombinationUploadModel.WritingPostModel, completion: @escaping (Result<CombinationUploadModel.WritingPostResponseModel, Error>) -> Void) {
+
+    func uploadPost(_ postModel: CombinationUploadModel.WritingPostModel, completion: @escaping (CombinationUploadModel.WritingPostResponseModel?, Error?) -> Void) {
         let url = "\(baseURL)/combinations/recommends"
         
         do {
@@ -117,27 +118,28 @@ class CombinationUploadDataManager {
                 .responseDecodable(of: CombinationUploadModel.WritingPostResponseModel.self) { response in
                     
                     switch response.result {
-                            case .success(let data):
-                                print("게시글 업로드 성공")
-                                completion(.success(data))
-                            case .failure:
-                                if let data = response.data {
-                                    let decoder = JSONDecoder()
-                                    if let errorResponse = try? decoder.decode(ErrorResponseModel.self, from: data) {
-                                        print("Server error response: \(errorResponse)")
-                                    } else if let str = String(data: data, encoding: .utf8) {
-                                        print("Server response: \(str)")
-                                    }
-                                }
-                                
-                                print("게시글 업로드 실패")
-                                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "게시글 업로드 실패"])))
+                    case .success(let data):
+                        print("게시글 업로드 성공")
+                        completion(data, nil)
+                    case .failure(let error):
+                        if let data = response.data {
+                            let decoder = JSONDecoder()
+                            if let errorResponse = try? decoder.decode(ErrorResponseModel.self, from: data) {
+                                print("Server error response: \(errorResponse)")
+                            } else if let str = String(data: data, encoding: .utf8) {
+                                print("Server response: \(str)")
                             }
                         }
+                        
+                        print("게시글 업로드 실패")
+                        completion(nil, error)
+                    }
+                }
         } catch {
             print("Failed to get access token")
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"])))
+            completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"]))
         }
     }
+
 
 }

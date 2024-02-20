@@ -1,10 +1,10 @@
+////
+////  CombinationUploadVC.swift
+////  DrinkingGourmet
+////
+////  Created by 이승민 on 2/16/24.
+////
 //
-//  CombinationUploadVC.swift
-//  DrinkingGourmet
-//
-//  Created by 이승민 on 2/16/24.
-//
-
 import SnapKit
 import Then
 import Photos
@@ -428,33 +428,37 @@ class CombinationUploadVC: UIViewController {
         if completionButton.isEnabled == true {
             print("클릭")
             print("Uploading \(imageList.count) images.")
-            CombinationUploadDataManager.shared.uploadImages(imageList) { result in
-                switch result {
-                case .success(let responseString):
-                    print("Response: \(responseString)")
+            CombinationUploadDataManager.shared.uploadImages(imageList) { (response, error) in
+                if let error = error {
+                    print("Error: \(error)")
+                } else if let response = response {
+                    print("Response: \(response)")
                     // 이미지 업로드가 성공하면 게시글 업로드
-                    if let recommendId = self.recommendId, let combinationImageList = responseString.result?.combinationImageList, let hashtagString = self.hashtagTextField.text {
+                    if let recommendId = self.recommendId,
+                       let combinationImageList = response.result?.combinationImageList,
+                       let hashtagString = self.hashtagTextField.text {
                         let hashTagNameList = hashtagString.components(separatedBy: " ")
-                        let postModel = CombinationUploadModel.WritingPostModel(title: self.combinationTextField.text!, content: self.contentInputView.textfieldText!, recommendId: recommendId, hashTagNameList: hashTagNameList, combinationImageList: combinationImageList)
-                        CombinationUploadDataManager.shared.uploadPost(postModel) { result in
-                            switch result {
-                            case .success(let responseString):
-                                print("Post upload response: \(responseString)")
-                                self.navigationController?.popViewController(animated: true)
-                            case .failure(let error):
+                        let postModel = CombinationUploadModel.WritingPostModel(title: self.combinationTextField.text!,
+                                                                                content: self.contentInputView.textfieldText!,
+                                                                                recommendId: recommendId,
+                                                                                hashTagNameList: hashTagNameList,
+                                                                                combinationImageList: combinationImageList)
+                        CombinationUploadDataManager.shared.uploadPost(postModel) { (response, error) in
+                            if let error = error {
                                 print("Post upload error: \(error)")
+                            } else if let response = response {
+                                print("Post upload response: \(response)")
+                                self.navigationController?.popViewController(animated: true)
                             }
                         }
-                    } 
-                    
-                case .failure(let error):
-                    print("Error: \(error)")
+                    }
                 }
             }
         } else {
             print("클릭 불가")
         }
     }
+
     
     func setupTextField() {
         combinationTextField.delegate = self
