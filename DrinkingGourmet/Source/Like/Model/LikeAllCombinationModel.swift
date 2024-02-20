@@ -19,7 +19,7 @@ struct LikeAllCombinationModel: Codable {
     struct CombinationList: Codable {
         let combinationId: Int
         let title: String
-        let combinationImageUrl: String
+        let combinationImageUrl: String?
     }
 }
 
