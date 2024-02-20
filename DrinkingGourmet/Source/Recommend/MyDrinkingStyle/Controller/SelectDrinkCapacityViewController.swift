@@ -70,6 +70,13 @@ class SelectDrinkCapacityViewController: UIViewController {
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
+            
+            let myDrinkingStyleParam = myDrinkingStyleParameters.shared
+            guard let index = selectedButtonIndex else {
+                return
+            }
+            myDrinkingStyleParam.drinkingLimit = buttonTitleArray[index]
+            
             let nextViewController = SelectDrinkFrequencyViewController()
             navigationController?.pushViewController(nextViewController, animated: true)
         } else {

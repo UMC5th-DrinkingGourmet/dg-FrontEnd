@@ -22,7 +22,7 @@ class WelcomeViewController: UIViewController {
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
         text.textAlignment = .center
-        text.text = "000님,\n환영합니다"
+        text.text = "\(UserDefaultManager.shared.userNickname)님,\n환영합니다"
         return text
     }()
     

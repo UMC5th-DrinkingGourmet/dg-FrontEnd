@@ -14,7 +14,7 @@ class GetUserInfoViewController: UIViewController {
         text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text = "주류 추천을 위해\n00님의 정보를 알려주세요."
+        text.text = "주류 추천을 위해\n\(UserDefaultManager.shared.userNickname)님의 정보를 알려주세요."
         return text
     }()
     

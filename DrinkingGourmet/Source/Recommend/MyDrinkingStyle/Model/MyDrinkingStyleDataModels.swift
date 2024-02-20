@@ -15,9 +15,7 @@ class myDrinkingStyleParameters: Codable{
     var drinkingLimit: String?
     var drinkingTimes: String?
     
-    private init() {
-        
-    }
+    private init() { }
 }
 
 struct MyDrinkingStyleResponse: Codable{
