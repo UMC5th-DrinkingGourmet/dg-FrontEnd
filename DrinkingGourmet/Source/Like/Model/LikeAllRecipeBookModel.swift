@@ -19,6 +19,6 @@ struct LikeAllRecipeBookModel: Codable {
     struct RecipeList: Codable {
         let id: Int
         let name: String
-        let recipeImageUrl: String
+        let recipeImageUrl: String?
     }
 }

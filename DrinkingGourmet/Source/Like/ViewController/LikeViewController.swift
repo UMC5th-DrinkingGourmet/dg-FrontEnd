@@ -146,13 +146,13 @@ extension LikeViewController: UICollectionViewDataSource {
         
         if isleftButton { // 오늘의 조합
             let combination = arrayLikeAllCombination[indexPath.item]
-            if let url = URL(string: combination.combinationImageUrl) {
+            if let url = URL(string: combination.combinationImageUrl ?? "defualtImage") {
                 cell.mainImage.kf.setImage(with: url)
             } // 레시피북
             cell.mainLabel.text = arrayLikeAllCombination[indexPath.item].title
         } else {
             let recipeBook = arrayLikeAllRecipeBook[indexPath.item]
-            if let url = URL(string: recipeBook.recipeImageUrl) {
+            if let url = URL(string: recipeBook.recipeImageUrl ?? "defualtImage") {
                 cell.mainImage.kf.setImage(with: url)
             }
             cell.mainLabel.text = arrayLikeAllRecipeBook[indexPath.item].name
@@ -188,11 +188,13 @@ extension LikeViewController: UICollectionViewDelegateFlowLayout {
             let selectedItem = arrayLikeAllCombination[indexPath.row].combinationId
             let todayCombinationDetailVC = TodayCombinationDetailViewController()
             todayCombinationDetailVC.combinationId = selectedItem
+            todayCombinationDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
         } else { // 레시피북
             let selectedItem = arrayLikeAllRecipeBook[indexPath.row].id
             let recipeBookDetailVC = RecipeBookDetailVC()
             recipeBookDetailVC.recipeBookId = selectedItem
+            recipeBookDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(recipeBookDetailVC, animated: true)
         }
         
