@@ -136,7 +136,7 @@ class MainMenuViewController: UIViewController {
     
     func configButton() {
         recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
-
+        recommendView.goBtn.addTarget(self, action: #selector(recommendViewTapped), for: .touchUpInside)
         todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
         
         logoutBtn.addTarget(self, action: #selector(logoutBtnClicked), for: .touchUpInside)
@@ -144,6 +144,10 @@ class MainMenuViewController: UIViewController {
 
     @objc func recipeBookBtnTapped() {
         navigationController?.pushViewController(RecipeBookHomeVC(), animated: true)
+    }
+    
+    @objc func recommendViewTapped() {
+        navigationController?.pushViewController(MyDrinkStyleViewController(), animated: true)
     }
 
     @objc func todayCombiBtnTapped() {

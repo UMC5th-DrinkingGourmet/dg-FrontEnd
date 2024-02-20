@@ -18,11 +18,10 @@ class GetDrinkingRecommendViewController: UIViewController {
                let url = URL(string: imageUrl) {
                 iv.kf.setImage(with: url)
         } else {
-            // 이미지 URL이 없을 경우 검은색 배경 표시
             iv.backgroundColor = .black
         }
         
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 8
         iv.clipsToBounds = true
         return iv
@@ -40,8 +39,7 @@ class GetDrinkingRecommendViewController: UIViewController {
             lb.text = text
             lb.attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.kern: -0.84, NSAttributedString.Key.paragraphStyle: paragraphStyle])
         } else {
-            // 이미지 URL이 없을 경우 검은색 배경 표시
-            lb.text = "추천 음료 없음."
+            lb.text = " "
         }
         
         
@@ -63,7 +61,7 @@ class GetDrinkingRecommendViewController: UIViewController {
             $0.text = text
             $0.attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
         } else {
-            $0.text = " ... "
+            $0.text = " "
         }
         
 
@@ -90,7 +88,7 @@ class GetDrinkingRecommendViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
         
-        //button.addTarget(self, action: #selector(myRecommendListButtonTapped(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(myRecommendListButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -100,7 +98,7 @@ class GetDrinkingRecommendViewController: UIViewController {
         navigationController?.pushViewController(nextViewController, animated: true)
     }
     @objc func myRecommendListButtonTapped(_ sender: UIButton) {
-        let nextViewController = MyDrinkStyleViewController() // - 수정: 마이페이지로 - //
+        let nextViewController = MyPageViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
     
