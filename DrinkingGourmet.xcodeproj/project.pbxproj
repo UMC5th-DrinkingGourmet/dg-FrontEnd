@@ -34,7 +34,6 @@
 		2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */; };
 		2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
-		2EC839AA2B7FF7A8009A67C7 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
 		2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */; };
 		2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */; };
@@ -127,6 +126,10 @@
 		56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7242B801166000F6CA4 /* LikeInput.swift */; };
 		97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */; };
 		97599BFC2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599BFB2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift */; };
+		97599C0E2B84F539009B9CF9 /* AnotherDrinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599C0D2B84F539009B9CF9 /* AnotherDrinksView.swift */; };
+		97599C102B84F551009B9CF9 /* NewDrinkDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599C0F2B84F551009B9CF9 /* NewDrinkDetailInfoView.swift */; };
+		97599C122B84F577009B9CF9 /* NewDrinkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599C112B84F577009B9CF9 /* NewDrinkDetailView.swift */; };
+		97599C152B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599C142B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift */; };
 		975F09032B816D18009C6F0E /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F09022B816D18009C6F0E /* WelcomeViewController.swift */; };
 		975F09052B816E09009C6F0E /* GetDrinkingRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F09042B816E09009C6F0E /* GetDrinkingRecommendViewController.swift */; };
 		975F09202B827267009C6F0E /* MyRecommendModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F091F2B827267009C6F0E /* MyRecommendModelData.swift */; };
@@ -185,7 +188,6 @@
 		2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCreationViewController.swift; sourceTree = "<group>"; };
 		2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
-		2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Secret.xcconfig; path = ../Secret.xcconfig; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+setPlaceholder.swift"; sourceTree = "<group>"; };
 		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
@@ -269,6 +271,10 @@
 		56F8A7242B801166000F6CA4 /* LikeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeInput.swift; sourceTree = "<group>"; };
 		97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDrinkingStyleDataManager.swift; sourceTree = "<group>"; };
 		97599BFB2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDrinkingStyleDataModels.swift; sourceTree = "<group>"; };
+		97599C0D2B84F539009B9CF9 /* AnotherDrinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherDrinksView.swift; sourceTree = "<group>"; };
+		97599C0F2B84F551009B9CF9 /* NewDrinkDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDrinkDetailInfoView.swift; sourceTree = "<group>"; };
+		97599C112B84F577009B9CF9 /* NewDrinkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDrinkDetailView.swift; sourceTree = "<group>"; };
+		97599C142B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDrinkDetailViewController.swift; sourceTree = "<group>"; };
 		975F09022B816D18009C6F0E /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		975F09042B816E09009C6F0E /* GetDrinkingRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDrinkingRecommendViewController.swift; sourceTree = "<group>"; };
 		975F091F2B827267009C6F0E /* MyRecommendModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecommendModelData.swift; sourceTree = "<group>"; };
@@ -410,7 +416,6 @@
 		2E6C26BB2B497AD200C87B4A = {
 			isa = PBXGroup;
 			children = (
-				2EC839A92B7FF7A8009A67C7 /* Secret.xcconfig */,
 				2E6C26C62B497AD200C87B4A /* DrinkingGourmet */,
 				2E6C26C52B497AD200C87B4A /* Products */,
 			);
@@ -487,6 +492,7 @@
 		2E6C26E32B497EB900C87B4A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				97599C092B84F4F8009B9CF9 /* NewDrinks */,
 				56AE28402B83D533009CE0A1 /* Mypage */,
 				56F8A7112B80008B000F6CA4 /* Like */,
 				2EB001902B5E40A400B74580 /* UserAuthentication */,
@@ -997,6 +1003,41 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		97599C092B84F4F8009B9CF9 /* NewDrinks */ = {
+			isa = PBXGroup;
+			children = (
+				97599C0A2B84F4F8009B9CF9 /* Model */,
+				97599C132B84FB9D009B9CF9 /* View */,
+				97599C0B2B84F4F8009B9CF9 /* ViewController */,
+			);
+			path = NewDrinks;
+			sourceTree = "<group>";
+		};
+		97599C0A2B84F4F8009B9CF9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		97599C0B2B84F4F8009B9CF9 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				97599C142B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		97599C132B84FB9D009B9CF9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				97599C0D2B84F539009B9CF9 /* AnotherDrinksView.swift */,
+				97599C0F2B84F551009B9CF9 /* NewDrinkDetailInfoView.swift */,
+				97599C112B84F577009B9CF9 /* NewDrinkDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		975F091E2B827245009C6F0E /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1151,7 +1192,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
-				2EC839AA2B7FF7A8009A67C7 /* Secret.xcconfig in Resources */,
 				97EB4AF82B720CDB009A62EB /* Animation - 1707200937141.json in Resources */,
 				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
 				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
@@ -1194,6 +1234,7 @@
 				56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */,
 				5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */,
 				2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */,
+				97599C122B84F577009B9CF9 /* NewDrinkDetailView.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				97EB4AE72B70F704009A62EB /* CustomizedButtons.swift in Sources */,
 				56AE284D2B83ED52009CE0A1 /* MyPageUserModel.swift in Sources */,
@@ -1217,6 +1258,7 @@
 				5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */,
 				5668A3452B6F68780009FCD6 /* RecipeBookHomeCell.swift in Sources */,
 				5668A2FD2B6EDCD70009FCD6 /* CommunityHomeView.swift in Sources */,
+				97599C0E2B84F539009B9CF9 /* AnotherDrinksView.swift in Sources */,
 				97EB4AEB2B7140D2009A62EB /* SelectTypeOfLiquorResource.swift in Sources */,
 				5668A34B2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift in Sources */,
 				5668A3012B6EDCFC0009FCD6 /* CommunityHomeVC.swift in Sources */,
@@ -1266,9 +1308,11 @@
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestVC.swift in Sources */,
 				2EFA32FA2B71629100059188 /* GradientView.swift in Sources */,
+				97599C152B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
 				5668A3412B6F68280009FCD6 /* RecipeBookHomeVC.swift in Sources */,
 				2EFA32F22B714CC000059188 /* RecommendView.swift in Sources */,
+				97599C102B84F551009B9CF9 /* NewDrinkDetailInfoView.swift in Sources */,
 				97EB4AC42B70F5E6009A62EB /* SelectMyMoodViewController.swift in Sources */,
 				5668A3032B6EE3BD0009FCD6 /* WeeklyBestCell.swift in Sources */,
 				5668A3052B6EE3C70009FCD6 /* WeeklyBestView.swift in Sources */,
