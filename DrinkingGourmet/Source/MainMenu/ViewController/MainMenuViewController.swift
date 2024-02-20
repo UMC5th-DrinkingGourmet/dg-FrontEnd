@@ -167,6 +167,7 @@ class MainMenuViewController: UIViewController {
         recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
         recommendView.goBtn.addTarget(self, action: #selector(recommendViewTapped), for: .touchUpInside)
         todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
+        newAlcoholBtn.addTarget(self, action: #selector(newAlcoholBtnTapped), for: .touchUpInside)
         
         logoutBtn.addTarget(self, action: #selector(logoutBtnClicked), for: .touchUpInside)
     }
@@ -185,6 +186,13 @@ class MainMenuViewController: UIViewController {
         let todayCombinationViewController = TodayCombinationViewController()
         todayCombinationViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(todayCombinationViewController, animated: true)
+    }
+    
+    /* 모이치 */
+    @objc func newAlcoholBtnTapped() {
+        let newAlcoholViewController = NewAlcoholViewController()
+        newAlcoholViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(newAlcoholViewController, animated: true)
     }
     
     @objc func logoutBtnClicked() {
