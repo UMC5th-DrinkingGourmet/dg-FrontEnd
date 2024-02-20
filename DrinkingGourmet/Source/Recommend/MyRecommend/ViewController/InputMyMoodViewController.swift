@@ -75,6 +75,8 @@ class InputMyMoodViewController: UIViewController {
     lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isTextInput)
     lazy var skipButton = makeSkipButton()
     
+    let firstRecommendParam = RecommendsRequestParameters.shared
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -100,11 +102,21 @@ class InputMyMoodViewController: UIViewController {
     }
     
     @objc func skipButtonTapped(_ sender: UIButton) {
+        
         let nextViewController = SelectWeatherViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
+        let recommendParam = RecommendsRequestParameters.shared
+        recommendParam.feeling += " "
+        //print(recommendParam.feeling)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
+        
         if isTextInput {
+            let recommendParam = RecommendsRequestParameters.shared
+            recommendParam.feeling = updateInputMyMood()
+            //logic 상 문제 발생.
+            //print(recommendParam.feeling)
+            
             let nextViewController = SelectWeatherViewController()
             navigationController?.pushViewController(nextViewController, animated: true)
         } else {
@@ -120,6 +132,16 @@ class InputMyMoodViewController: UIViewController {
     func updateNextButtonColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base06
         isTextInput = false
+    }
+    
+    func updateInputMyMood() -> String {
+        // 이 부분에 myMoodInputView.text를 mood에 저장하고 return 하
+        if let mood = myMoodInputView.text {
+            return mood
+        }
+        else {
+            return ""
+        }
     }
     
     // MARK: - Constraints

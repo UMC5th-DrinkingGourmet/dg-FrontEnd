@@ -71,6 +71,13 @@ class SelectAlcoholDegreeViewController: UIViewController {
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
+            
+            let myDrinkingStyleParam = myDrinkingStyleParameters.shared
+            guard let index = selectedButtonIndex else {
+                return
+            }
+            myDrinkingStyleParam.preferredAlcoholDegree = buttonTitleArray[index]
+            
             let nextViewController = SelectDrinkCapacityViewController()
             navigationController?.pushViewController(nextViewController, animated: true)
         } else {

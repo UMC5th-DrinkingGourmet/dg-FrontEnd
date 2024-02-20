@@ -35,27 +35,24 @@ class MyDrinkStyleViewController: UIViewController {
         
         // navigation
         title = "주류추천"
+        navigationItem.hidesBackButton = true
+        
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.baseColor.base01]
         navigationController?.navigationBar.tintColor = UIColor.baseColor.base01
         navigationController?.navigationBar.isTranslucent = true
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = backButton
         
         setAddSubViews()
         makeConstraints()
     }
     
     // MARK: - Navigation
-    @objc func backButtonPressed() {
-        navigationController?.popViewController(animated: true)
-    }
     @objc func nextButtonTapped(_ sender: UIButton) {
         let nextViewController = RecommendViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
-    // - mypage 완성 시 수정 - //
+
     @objc func myRecommendButtonTapped(_ sender: UIButton) {
-        let nextViewController = RecommendViewController() // myPage로 연결
+        let nextViewController = MyPageViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
 
@@ -87,7 +84,7 @@ class MyDrinkStyleViewController: UIViewController {
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(50)
-            //myRecommendButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
+            myRecommendButton.addTarget(self, action: #selector(myRecommendButtonTapped(_:)), for: .touchUpInside)
         }
     }
 }

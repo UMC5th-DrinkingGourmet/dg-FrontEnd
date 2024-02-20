@@ -142,10 +142,14 @@ class TodayCombinationDetailViewController: UIViewController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) {_ in
-//            if let combinationId = self.combinationId {
-//                CombinationDetailDataManager().deleteCombination(combinationId)
-//                self.navigationController?.popViewController(animated: true)
-//            }
+            guard let combinationId = self.combinationId else { return }
+            
+            CombinationDetailDataManager().deleteCombination(combinationId) {
+                // 오늘의 조합 삭제는 잘 되는데 자동으로 pop이 되지 않는 버그 있음
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         }
         
         let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)

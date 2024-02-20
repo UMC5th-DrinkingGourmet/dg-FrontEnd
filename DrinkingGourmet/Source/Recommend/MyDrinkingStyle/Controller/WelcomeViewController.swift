@@ -22,7 +22,7 @@ class WelcomeViewController: UIViewController {
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
         text.textAlignment = .center
-        text.text = "000님,\n환영합니다"
+        text.text = "\(UserDefaultManager.shared.userNickname)님,\n환영합니다"
         return text
     }()
     
@@ -86,7 +86,6 @@ class WelcomeViewController: UIViewController {
             make.height.equalTo(42)
         }
         nextButton.snp.makeConstraints { make in
-            //make.top.equalTo(guideText.snp.bottom).offset(89)
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()

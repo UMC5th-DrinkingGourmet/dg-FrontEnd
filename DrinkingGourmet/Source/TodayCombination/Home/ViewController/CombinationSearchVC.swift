@@ -10,7 +10,6 @@ import UIKit
 class CombinationSearchVC: UIViewController {
     
     // MARK: - Properties
-    var exampleArray = ["오늘의조합 검색화면 TEST", "오늘의조합 검색화면 TEST", "오늘의조합 검색화면 TEST", "오늘의조합 검색화면 TEST", "오늘의조합 검색화면 TEST", "오늘의조합 검색화면 TEST"]
     
     private let searchResultView = SearchResultView()
     
@@ -23,9 +22,8 @@ class CombinationSearchVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
+        
         setupTextField()
-        setupTableView()
         setupButton()
     }
     
@@ -56,57 +54,15 @@ class CombinationSearchVC: UIViewController {
         )
     }
     
-    // MARK: - 테이블뷰 설정
-    func setupTableView() {
-        let tb = searchResultView.tableView
-        
-        tb.dataSource = self
-        tb.rowHeight = 48
-        tb.register(SearchResultCell.self, forCellReuseIdentifier: "SearchResultCell")
-    }
-    
     // MARK: - 버튼 설정
     func setupButton() {
         searchResultView.cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        
-        searchResultView.deleteAllButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
     }
     
     @objc func cancelButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func deleteAllButtonTapped() {
-        exampleArray.removeAll()
-        searchResultView.tableView.reloadData()
-    }
-
-}
-
-// MARK: - UITableViewDataSource
-extension CombinationSearchVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exampleArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as! SearchResultCell
-        
-        cell.searchLabel.text = exampleArray[indexPath.row]
-        cell.delegate = self
-        cell.selectionStyle = .none
-        
-        return cell
-    }
-}
-
-// MARK: - SearchResultCellDelegate
-extension CombinationSearchVC: SearchResultCellDelegate {
-    func didTapDeleteButton(in cell: SearchResultCell) { // X 버튼 터치 시 행 삭제
-        guard let indexPath = searchResultView.tableView.indexPath(for: cell) else { return }
-        exampleArray.remove(at: indexPath.row)
-        searchResultView.tableView.deleteRows(at: [indexPath], with: .automatic)
-    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -117,21 +73,22 @@ extension CombinationSearchVC: UITextFieldDelegate {
         let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: 0, keyword: searchResultView.searchBar.textField.text)
         
         CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
+            guard let self = self else { return }
             if let model = model {
-                self?.navigationController?.popViewController(animated: true)
-                guard let todayCombinationViewController = self?.navigationController?.topViewController as? TodayCombinationViewController else {
-                    return
-                }
-                
-                todayCombinationViewController.totalPageNum = model.result.totalPage
-                todayCombinationViewController.arrayCombinationHome = model.result.combinationList
-                
-                // 스크롤을 맨 위로 이동
-                todayCombinationViewController.todayCombinationView.tableView.setContentOffset(CGPoint(x: 0, y: -todayCombinationViewController.todayCombinationView.tableView.contentInset.top), animated: false)
-                
-                todayCombinationViewController.todayCombinationView.tableView.reloadData()
+                self.updateCombinationHomeVC(with: model.result.combinationList)
             }
         }
         return true
+    }
+    
+    private func updateCombinationHomeVC(with data: [CombinationHomeModel.CombinationHomeList]) {
+        guard let todayCombinationViewController = navigationController?.viewControllers.first(where: { $0 is TodayCombinationViewController }) as? TodayCombinationViewController else {
+            return
+        }
+        
+        todayCombinationViewController.isReturningFromSearch = true
+        todayCombinationViewController.arrayCombinationHome = data
+        todayCombinationViewController.todayCombinationView.tableView.reloadData()
+        navigationController?.popViewController(animated: true)
     }
 }

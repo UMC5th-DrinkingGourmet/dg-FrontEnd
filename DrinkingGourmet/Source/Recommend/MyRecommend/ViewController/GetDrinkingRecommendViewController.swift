@@ -8,36 +8,64 @@
 import UIKit
 
 class GetDrinkingRecommendViewController: UIViewController {
-    private let foodName: String = "드실 음식"
-    private let drinkName: String = "상큼한 칵테일"
-    private let recommendReason: String = "오늘 날씨가 화창하니 기분이 좋은 여자친구와 함께 고기를 먹는 데이트라면, 상큼하고 청량감 넘치는 칵테일이 최적의 선택입니다.\n\n이러한 칵테일은 달콤한 맛과 함께 상쾌한 느낌을 주어 기분 좋은 분위기를 연출할 수 있습니다.이러한 칵테일은 달콤한 맛과 함께 상쾌한 느낌을 주어 기분 좋은 분위기를 연출할 수 있습니다."
-    private let imageUrl: String = ""
-    
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .black
-        return imageView
+    let myRecommendModelData = MyRecommendModelData.shared
+    //MyRecommendModelManager.model.result?.imageUrl
+    // MARK: - View
+    lazy var mainImage: UIImageView = {
+        let iv = UIImageView()
+        
+        if let imageUrl = myRecommendModelData.model?.result?.imageUrl,
+               let url = URL(string: imageUrl) {
+                iv.kf.setImage(with: url)
+        } else {
+            iv.backgroundColor = .black
+        }
+        
+        iv.contentMode = .scaleAspectFill
+        iv.layer.cornerRadius = 8
+        iv.clipsToBounds = true
+        return iv
     }()
     
     lazy var drinkNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = drinkName
-        label.textAlignment = .center
-        label.textColor = UIColor.baseColor.base01
-        label.font = UIFont.systemFont(ofSize: 28.0)
-        return label
+        let lb = UILabel()
+        lb.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 28)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        lb.textAlignment = .center
+        
+        if let text = myRecommendModelData.model?.result?.drinkName
+               {
+            lb.text = text
+            lb.attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.kern: -0.84, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        } else {
+            lb.text = " "
+        }
+        
+        
+        return lb
     }()
     
-    lazy var recommendReasonLabel: UILabel = {
-        // label vertical alignment 정의 필요
-        let label = UILabel()
-        label.text = recommendReason
-        label.textAlignment = .left
-        label.textColor = UIColor.baseColor.base04
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 16.0)
-        return label
-    }()
+    lazy var scrollView = UIScrollView()
+    
+    lazy var descriptionLabel = UILabel().then {
+        $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byWordWrapping
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        
+        if let text = myRecommendModelData.model?.result?.recommendReason
+               {
+            $0.text = text
+            $0.attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        } else {
+            $0.text = " "
+        }
+        
+
+    }
     
     lazy var anotherRecommendButton: UIButton = {
         let button = UIButton()
@@ -47,6 +75,8 @@ class GetDrinkingRecommendViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
+        
+        button.addTarget(self, action: #selector(anotherRecommendButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -57,72 +87,86 @@ class GetDrinkingRecommendViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
+        
+        button.addTarget(self, action: #selector(myRecommendListButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
+    // MARK: - Navigation
+    @objc func anotherRecommendButtonTapped(_ sender: UIButton) {
+        let nextViewController = MyDrinkStyleViewController()
+        navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    @objc func myRecommendListButtonTapped(_ sender: UIButton) {
+        let nextViewController = MyPageViewController()
+        navigationController?.pushViewController(nextViewController, animated: true)
+    }
     
+    // MARK: - viewDidLoad()
     override func viewDidLoad() {
-        super.viewDidLoad()
         
-        view.backgroundColor = UIColor.baseColor.base10
-        
-        // navigation
-        title = "주류추천"
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = backButton
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .white
+        setupNaviBar()
         setAddSubViews()
         makeConstraints()
-        
     }
     
-    // MARK: - Actions
-    @objc func backButtonPressed() {
-        navigationController?.popViewController(animated: true)
+    func setupNaviBar() {
+        title = "주류추천"
+        navigationItem.hidesBackButton = true
     }
     
-    // MARK: - Constraints
+    // MARK: - UI
     func setAddSubViews() {
-        view.addSubview(imageView)
-        view.addSubview(drinkNameLabel)
-        view.addSubview(recommendReasonLabel)
-        view.addSubview(anotherRecommendButton)
-        view.addSubview(myRecommendListButton)
+        view.addSubviews([mainImage, drinkNameLabel, scrollView, anotherRecommendButton, myRecommendListButton])
+        
+        scrollView.addSubview(descriptionLabel)
     }
     
     func makeConstraints() {
-        imageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(11)
-            make.height.equalTo(self.view.snp.height).multipliedBy(0.322)
+        
+        mainImage.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(49)
+            make.leading.equalToSuperview().offset(67.5)
+            make.trailing.equalToSuperview().offset(-67.5)
+            make.height.equalTo(240)
         }
+        
         drinkNameLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(imageView.snp.bottom).offset(43)
-            make.height.equalTo(50)
+            make.top.equalTo(mainImage.snp.bottom).offset(14)
+            make.centerX.equalTo(mainImage)
         }
-        recommendReasonLabel.snp.makeConstraints  { make in
-            make.top.equalTo(drinkNameLabel.snp.bottom).offset(16)
+        
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(drinkNameLabel.snp.bottom).offset(14)
             make.leading.equalToSuperview().offset(55)
             make.trailing.equalToSuperview().offset(-55)
-            make.bottom.equalTo(anotherRecommendButton.snp.top).offset(-30)
+            make.height.equalTo(168)
         }
+        
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.bottom.equalTo(scrollView)
+            make.leading.trailing.equalTo(scrollView).inset(1)
+            make.width.equalTo(scrollView.snp.width).offset(-2)
+        }
+        
         anotherRecommendButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-30)
-            //make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalTo(myRecommendListButton.snp.leading).offset(-20)
-            make.height.equalTo(59)
-            make.width.equalTo(myRecommendListButton)
+            make.top.equalTo(scrollView.snp.bottom).offset(41)
+            make.leading.equalTo(scrollView)
+            make.trailing.equalTo(mainImage.snp.centerX).offset(-4)
+            make.height.equalTo(49)
         }
+        
         myRecommendListButton.snp.makeConstraints { make in
-            make.bottom.equalTo(anotherRecommendButton)
-            make.trailing.equalToSuperview().offset(-20)
-            make.leading.equalTo(anotherRecommendButton.snp.trailing).offset(20)
-            make.height.equalTo(59)
-            make.width.equalTo(anotherRecommendButton)
+            make.top.equalTo(anotherRecommendButton)
+            make.leading.equalTo(mainImage.snp.centerX).offset(4)
+            make.trailing.equalTo(scrollView)
+            make.height.equalTo(anotherRecommendButton)
         }
     }
 }
+

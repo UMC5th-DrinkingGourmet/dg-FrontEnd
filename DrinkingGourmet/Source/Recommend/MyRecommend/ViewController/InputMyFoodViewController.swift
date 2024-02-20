@@ -8,7 +8,7 @@
 import UIKit
 
 class InputMyFoodViewController: UIViewController {
-    private var isTextInput = false
+    private var isTextInput = true // false
     
     lazy var progressBar: UIProgressView = {
         let progressBar = UIProgressView()
@@ -94,6 +94,12 @@ class InputMyFoodViewController: UIViewController {
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isTextInput {
+            let recommendParam = RecommendsRequestParameters.shared
+            
+            if let foodName = foodSearchField.text {
+                recommendParam.foodName = foodName
+            }
+            
             let nextViewController = SelectMyMoodViewController()
             navigationController?.pushViewController(nextViewController, animated: true)
         } else {
@@ -112,7 +118,7 @@ class InputMyFoodViewController: UIViewController {
     }
     
     @objc private func clearTextField(_ sender: UIButton) {
-        self.foodSearchField.text = ""
+        self.foodSearchField.text = " "
         updateNextButtonColor(nextButton)
         //isTextInput = false
         updateLineViewColor()
