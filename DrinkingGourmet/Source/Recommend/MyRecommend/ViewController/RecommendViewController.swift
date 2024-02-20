@@ -14,7 +14,7 @@ class RecommendViewController: UIViewController {
         text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text = "00님을 위한 주류를\n추천해드립니다."
+        text.text = "\(UserDefaultManager.shared.userNickname)님을 위한 주류를\n추천해드립니다."
         return text
     }()
     

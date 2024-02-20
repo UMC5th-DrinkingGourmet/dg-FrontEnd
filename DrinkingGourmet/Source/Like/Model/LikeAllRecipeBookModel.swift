@@ -19,11 +19,6 @@ struct LikeAllRecipeBookModel: Codable {
     struct RecipeList: Codable {
         let id: Int
         let name: String
-        let recipeImageURL: String
-
-        enum CodingKeys: String, CodingKey {
-            case id, name
-            case recipeImageURL = "recipeImageUrl"
-        }
+        let recipeImageUrl: String
     }
 }

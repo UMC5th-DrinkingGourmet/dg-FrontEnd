@@ -34,7 +34,7 @@ class SelectDrinkFrequencyViewController: UIViewController {
         return text
     }()
     
-    
+
     lazy var subGuideText: UILabel = {
         let text = UILabel()
         text.textColor = UIColor.baseColor.base05
@@ -72,13 +72,30 @@ class SelectDrinkFrequencyViewController: UIViewController {
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
             let nextViewController = WelcomeViewController()
-            navigationController?.pushViewController(nextViewController, animated: true)
+            let myDrinkingStyleParam = myDrinkingStyleParameters.shared
+            guard let index = selectedButtonIndex else {
+                return
+            }
+            myDrinkingStyleParam.drinkingTimes = buttonTitleArray[index]
+            
+            // patch 함수 추가.
+            MyDrinkingStyleDataManager().patchMyDrinkingStyleData(myDrinkingStyleParam) { result in
+                switch result {
+                case .success:
+                    print("API 요청 성공")
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                case .failure(let error):
+                    print("API 요청 실패: \(error)")
+                    // 실패에 대한 적절한 오류 처리
+                }
+            }
         } else {
             return
         }
     }
+
     
-    
+
     // MARK: - Actions
     func updateNextButtonSelectableColor(_ button: UIButton) {
         button.backgroundColor = UIColor.baseColor.base01

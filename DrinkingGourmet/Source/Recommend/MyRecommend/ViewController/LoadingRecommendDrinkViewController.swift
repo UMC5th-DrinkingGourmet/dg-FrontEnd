@@ -9,13 +9,18 @@ import UIKit
 import Lottie
 
 class LoadingRecommendDrinkViewController: UIViewController {
+    let myRecommendModelData = MyRecommendModelData.shared
+    
+    var startTime: Date?
+      var elapsedTime: TimeInterval = 0
+      var timer: Timer?
     
     lazy var guideText: UILabel = {
         let text = UILabel()
         text.textColor = UIColor.baseColor.base01
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text = "00님을 위한 주류를\n선정하고 있어요."
+        text.text = "\(UserDefaultManager.shared.userNickname)님을 위한 주류를\n선정하고 있어요."
         return text
     }()
     
@@ -32,27 +37,35 @@ class LoadingRecommendDrinkViewController: UIViewController {
         
         // navigation
         title = "주류추천"
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = backButton
+        navigationItem.hidesBackButton = true
         
-        // 임시 타이머
-        Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: false)
+        // 타이머 시작
+        startTime = Date()
+        // 1초마다 timerHandler 메서드 호출
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerHandler), userInfo: nil, repeats: true)
         
         loadingAnimationView.play()
         setAddSubViews()
         makeConstraints()
     }
     
-    // MARK: - Actions
-    @objc func backButtonPressed() {
-        navigationController?.popViewController(animated: true)
+    // MARK: - Timer
+    @objc func timerHandler() {
+        // 1초마다 elapsedTime 증가
+        elapsedTime += 1
+        
+        // 주류 추천 완료 여부 확인
+        if let time = myRecommendModelData.netWorkDuration, elapsedTime > time {
+            // 타이머 정지
+            timer?.invalidate()
+            timer = nil
+            
+            // 주류 추천 완료 시 다음 뷰컨트롤러로 이동
+            let nextViewController = GetDrinkingRecommendViewController()
+            navigationController?.pushViewController(nextViewController, animated: true)
+        }
     }
-    @objc func timerAction() {
-        // - 3초 지연 일시 적용 - //
-        let nextViewController = GetDrinkingRecommendViewController()
-        navigationController?.pushViewController(nextViewController, animated: true)
-    }
-    
+        
     // MARK: - Constraints
     func setAddSubViews() {
         view.addSubview(guideText)
@@ -66,8 +79,9 @@ class LoadingRecommendDrinkViewController: UIViewController {
             make.height.equalTo(72)
         }
         loadingAnimationView.snp.makeConstraints { make in
-            make.top.equalTo(guideText.snp.bottom).offset(150)
+            //make.top.equalTo(guideText.snp.bottom).offset(150)
             make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.width.equalTo(90)
             make.height.equalTo(90)
         }

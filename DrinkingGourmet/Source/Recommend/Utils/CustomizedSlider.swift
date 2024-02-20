@@ -27,8 +27,8 @@ final class SliderView: UIView {
     
     private lazy var thumbView: UIView = {
         let view = UIView()
+        //view.backgroundColor = UIColor.baseColor.base08
         view.backgroundColor = UIColor.customColor.customOrange
-        
         view.isUserInteractionEnabled = true
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         view.addGestureRecognizer(gesture)
@@ -56,7 +56,7 @@ final class SliderView: UIView {
         return .init(width: .zero, height: thumbSize)
     }
     
-    var value: Int = 1 {
+    var value: Int = 0 {
         didSet {
             delegate?.sliderView(self, changedValue: value)
         }
@@ -104,7 +104,8 @@ final class SliderView: UIView {
         }
         thumbView.snp.makeConstraints { make in
             make.centerY.equalTo(trackView)
-            make.leading.equalTo(trackView).offset(14)
+            let leadingCenter = UIScreen.main.bounds.size.width/2 - 20
+            make.leading.equalTo(trackView).offset(leadingCenter - (thumbSize/2))
             make.size.equalTo(thumbSize)
         }
         fillTrackView.snp.makeConstraints { make in
@@ -181,9 +182,9 @@ final class SliderView: UIView {
     
     @objc func handlePan(_ recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: thumbView)
+        thumbView.backgroundColor = UIColor.customColor.customOrange
         
         if recognizer.state == .began {
-            // 팬 제스쳐가 시작된 x좌표 저장
             touchBeganPosX = thumbView.frame.minX
         }
         if recognizer.state == .changed {
@@ -230,8 +231,10 @@ final class SliderView: UIView {
                 }
             }
             
+            
             thumbView.snp.updateConstraints { make in
                 make.leading.equalTo(trackView).offset(offSet)
+                
             }
         }
     }

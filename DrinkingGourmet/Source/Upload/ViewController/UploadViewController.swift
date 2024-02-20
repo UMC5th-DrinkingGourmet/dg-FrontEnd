@@ -1,8 +1,35 @@
+////
+////  UploadViewController.swift
+////  DrinkingGourmet
+////
+////  Created by hwijinjeong on 2/2/24.
+////
 //
-//  UploadViewController.swift
-//  DrinkingGourmet
+//import SnapKit
+//import Then
+//import Photos
+//import PhotosUI
 //
-//  Created by hwijinjeong on 2/2/24.
+//class UploadViewController: UIViewController {
+//    
+//    var tempImageView = UIImageView().then {
+//        $0.contentMode = .scaleAspectFit
+//    }
+//    
+//    var imageList: [UIImage] = []
+//    
+//    lazy var pngDataList: [Data] = imageList.compactMap { $0.pngData() }
+//    
+//    private let imageLabel = UILabel().then {
+//        $0.text = "사진"
+//        $0.textColor = .black
+//        $0.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+//    }
+//    
+//    private let uploadBtn = UIButton().then {
+//        let resizedImg = UIImage(systemName: "camera.fill")?.resizedImage(to: CGSize(width: 30, height: 20))
+//        var configuration = UIButton.Configuration.plain()
+//        configuration.baseBackgroundColor = .clear
 //
 
 import SnapKit
