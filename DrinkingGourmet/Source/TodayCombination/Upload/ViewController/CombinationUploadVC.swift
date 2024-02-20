@@ -438,17 +438,20 @@ class CombinationUploadVC: UIViewController {
                        let combinationImageList = response.result?.combinationImageList,
                        let hashtagString = self.hashtagTextField.text {
                         let hashTagNameList = hashtagString.components(separatedBy: " ")
-                        let postModel = CombinationUploadModel.WritingPostModel(title: self.combinationTextField.text!,
-                                                                                content: self.contentInputView.textfieldText!,
-                                                                                recommendId: recommendId,
-                                                                                hashTagNameList: hashTagNameList,
-                                                                                combinationImageList: combinationImageList)
+                        let postModel = CombinationUploadModel.WritingPostModel(
+                            title: self.combinationTextField.text!,
+                            content: self.contentInputView.textField.text ?? "contentInputView",
+                            recommendId: recommendId,
+                            hashTagNameList: hashTagNameList,
+                            combinationImageList: combinationImageList)
                         CombinationUploadDataManager.shared.uploadPost(postModel) { (response, error) in
                             if let error = error {
                                 print("Post upload error: \(error)")
                             } else if let response = response {
                                 print("Post upload response: \(response)")
-                                self.navigationController?.popViewController(animated: true)
+                                DispatchQueue.main.async {
+                                    self.navigationController?.popViewController(animated: true)
+                                }
                             }
                         }
                     }
@@ -699,6 +702,14 @@ extension CombinationUploadVC: UITextFieldDelegate {
 
             updateGrayLine1Color(text: updatedText)
         }
+        
+        if textField == contentInputView.textField {
+            let currentText = textField.text ?? ""
+            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+                
+        contentInputView.borderView.backgroundColor = updatedText.isEmpty ? UIColor.customColor.checkMarkGray : UIColor.customColor.customOrange
+        }
+        
         return true
     }
     

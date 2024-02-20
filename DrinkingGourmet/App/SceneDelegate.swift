@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print("Refresh Token: \(refreshToken)")
             UserInfoDataManager.shared.loginWithProviderInfo { [weak self] in
                         DispatchQueue.main.async {
-                            self?.window?.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
+                            self?.window?.rootViewController = UINavigationController(rootViewController: MainMenuViewController()) // 여기를 탭바 컨트롤러로 변경
                             self?.window?.makeKeyAndVisible()
                         }
                     }

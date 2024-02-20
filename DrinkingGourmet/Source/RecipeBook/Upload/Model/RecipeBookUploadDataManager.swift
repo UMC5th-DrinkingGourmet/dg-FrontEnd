@@ -50,9 +50,48 @@ class RecipeBookUploadDataManager {
         }
     }
     
+    // MARK: - 레시피북 게시글 업로드
+    func uploadPost(_ postModel: RecipeBookUpoadModel.RecipeRequest, completion: @escaping (RecipeBookUpoadModel.RecipeResponseModel?, Error?) -> Void) {
+        let url = "\(baseURL)/recipes"
+        
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+                "Content-Type": "application/json"
+            ]
+            
+            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers)
+                .responseDecodable(of: RecipeBookUpoadModel.RecipeResponseModel.self) { response in
+                    
+                    switch response.result {
+                    case .success(let data):
+                        print("게시글 업로드 성공")
+                        completion(data, nil)
+                    case .failure(let error):
+                        if let data = response.data {
+                            let decoder = JSONDecoder()
+                            if let errorResponse = try? decoder.decode(ErrorResponseModel.self, from: data) {
+                                print("Server error response: \(errorResponse)")
+                            } else if let str = String(data: data, encoding: .utf8) {
+                                print("Server response: \(str)")
+                            }
+                        }
+                        
+                        print("게시글 업로드 실패")
+                        completion(nil, error)
+                    }
+                }
+        } catch {
+            print("Failed to get access token")
+            completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"]))
+        }
+    }
+
     // MARK: - 레시피북 이미지 업로드
-    func uploadImages(_ images: [UIImage], completion: @escaping (RecipeBookUpoadModel.ImageUploadResponse?, Error?) -> Void) {
-        let url = "\(baseURL)/recipes-images"
+    func uploadImages(_ images: [UIImage], recipeId: Int, completion: @escaping (RecipeBookUpoadModel.ImageUploadResponse?, Error?) -> Void) {
+        let url = "\(baseURL)/recipe-images?recipeId=\(recipeId)"
         
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -97,42 +136,6 @@ class RecipeBookUploadDataManager {
     }
 
     
-    // MARK: - 레시피북 게시글 업로드
-    func uploadPost(_ postModel: RecipeBookUpoadModel.RecipeRequest, completion: @escaping (RecipeBookUpoadModel.RecipeResponseModel?, Error?) -> Void) {
-        let url = "\(baseURL)/recipes"
-        
-        do {
-            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
-            
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(accessToken)",
-                "Content-Type": "application/json"
-            ]
-            
-            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers)
-                .responseDecodable(of: RecipeBookUpoadModel.RecipeResponseModel.self) { response in
-                    
-                    switch response.result {
-                    case .success(let data):
-                        print("게시글 업로드 성공")
-                        completion(data, nil)
-                    case .failure(let error):
-                        if let data = response.data {
-                            let decoder = JSONDecoder()
-                            if let errorResponse = try? decoder.decode(ErrorResponseModel.self, from: data) {
-                                print("Server error response: \(errorResponse)")
-                            } else if let str = String(data: data, encoding: .utf8) {
-                                print("Server response: \(str)")
-                            }
-                        }
-                        
-                        print("게시글 업로드 실패")
-                        completion(nil, error)
-                    }
-                }
-        } catch {
-            print("Failed to get access token")
-            completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"]))
-        }
-    }
+    
+    
 }
