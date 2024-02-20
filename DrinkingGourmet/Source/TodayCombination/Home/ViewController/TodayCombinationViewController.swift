@@ -24,21 +24,32 @@ class TodayCombinationViewController: UIViewController {
         view = todayCombinationView
     }
     
+    var isReturningFromSearch = false
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isReturningFromSearch {
+            arrayCombinationHome.removeAll()
+            fetchData()
+        }
+        isReturningFromSearch = false
+    }
+    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        prepare()
         setupNaviBar()
         setupTextField()
         setupTableView()
         setupFloatingButton()
     }
     
-    // MARK: - 초기 설정
-    func prepare() {
+    // MARK: - 데이터 가져오기
+    func fetchData() {
         let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
+        pageNum = 0
         
         CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
             guard let self = self else { return }
