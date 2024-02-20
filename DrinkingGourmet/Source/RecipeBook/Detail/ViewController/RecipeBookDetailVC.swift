@@ -164,14 +164,17 @@ final class RecipeBookDetailVC: UIViewController {
     @objc func moreButtonTapped() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
-            guard let recipeBookId = self.recipeBookId else { return }
-            
-            RecipeBookDetailDataManager().deleteRecipeBook(recipeBookId) {
-                // 레시피북 삭제는 잘 되는데 자동으로 pop이 되지 않는 버그 있음
-                DispatchQueue.main.async {
-                    self.navigationController?.popViewController(animated: true)
-                }
+        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
+            guard let self = self, let recipeBookId = self.recipeBookId else { return }
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+                let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+            }
+            RecipeBookDetailDataManager().deleteRecipeBook(recipeBookId){
+                
             }
         }
         
