@@ -9,8 +9,6 @@ import UIKit
 
 class RecipeBookSearchVC: UIViewController {
     
-    var exampleArray = ["레시피북 검색화면 TEST", "오늘의조합 검색화면 TEST", "오늘의조합 검색화면 TEST"]
-    
     private let searchResultView = SearchResultView()
     
     // MARK: - View 설정
@@ -59,9 +57,6 @@ class RecipeBookSearchVC: UIViewController {
     func setupTableView() {
         let tb = searchResultView.tableView
         
-        tb.dataSource = self
-        tb.delegate = self
-        
         tb.rowHeight = 48
         tb.register(SearchResultCell.self, forCellReuseIdentifier: "SearchResultCell")
     }
@@ -78,39 +73,9 @@ class RecipeBookSearchVC: UIViewController {
     }
     
     @objc func deleteAllButtonTapped() {
-        exampleArray.removeAll()
         searchResultView.tableView.reloadData()
     }
 
-}
-
-extension RecipeBookSearchVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exampleArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as! SearchResultCell
-        
-        cell.searchLabel.text = exampleArray[indexPath.row]
-        cell.delegate = self
-        cell.selectionStyle = .none
-        
-        return cell
-    }
-}
-
-extension RecipeBookSearchVC: UITableViewDelegate {
-    
-}
-
-// MARK: - 검색 결과 화면 X 버튼 터치 시 행 삭제
-extension RecipeBookSearchVC: SearchResultCellDelegate {
-    func didTapDeleteButton(in cell: SearchResultCell) {
-        guard let indexPath = searchResultView.tableView.indexPath(for: cell) else { return }
-        exampleArray.remove(at: indexPath.row)
-        searchResultView.tableView.deleteRows(at: [indexPath], with: .automatic)
-    }
 }
 
 // MARK: - UITextFieldDelegate
