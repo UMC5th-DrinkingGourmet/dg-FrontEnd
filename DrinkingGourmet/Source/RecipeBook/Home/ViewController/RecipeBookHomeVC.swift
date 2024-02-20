@@ -22,12 +22,15 @@ final class RecipeBookHomeVC: UIViewController {
         view = recipeBookHomeView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        prepare()
+    }
+    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        prepare()
         setupNaviBar()
         setupTextField()
         setupTableView()
@@ -36,6 +39,8 @@ final class RecipeBookHomeVC: UIViewController {
     
     func prepare() {
         let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: 0)
+        pageNum = 0
+        
         RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
             guard let self = self else { return }
             
@@ -130,9 +135,16 @@ extension RecipeBookHomeVC: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !recipeBook.like
         
-        if let url = URL(string: recipeBook.recipeImageList[0]) {
-            cell.mainImage.kf.setImage(with: url)
+        if !recipeBook.recipeImageList.isEmpty {
+            if let url = URL(string: recipeBook.recipeImageList[0]) {
+                cell.mainImage.kf.setImage(with: url)
+            }
+        } else {
+            // 이미지 리스트가 비어 있을 경우의 처리
+            // 예: 기본 이미지 설정 또는 이미지 뷰 숨기기
+            cell.mainImage.image = UIImage(named: "defaultImage") // "defaultImage"는 기본 이미지의 이름
         }
+
         
         cell.titleLabel.text = recipeBook.title
         
