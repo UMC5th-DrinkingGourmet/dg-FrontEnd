@@ -110,8 +110,13 @@
 		56F8A7212B80114C000F6CA4 /* LikeAllRecipeBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */; };
 		56F8A7232B801153000F6CA4 /* LikeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7222B801153000F6CA4 /* LikeDataManager.swift */; };
 		56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7242B801166000F6CA4 /* LikeInput.swift */; };
+		97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */; };
+		97599BFC2B840269009B9CF9 /* MyDrinkingStyleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599BFB2B840269009B9CF9 /* MyDrinkingStyleInput.swift */; };
 		975F09032B816D18009C6F0E /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F09022B816D18009C6F0E /* WelcomeViewController.swift */; };
 		975F09052B816E09009C6F0E /* GetDrinkingRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F09042B816E09009C6F0E /* GetDrinkingRecommendViewController.swift */; };
+		975F09202B827267009C6F0E /* MyRecommendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F091F2B827267009C6F0E /* MyRecommendModel.swift */; };
+		975F09242B827B75009C6F0E /* MyRecommendDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F09232B827B75009C6F0E /* MyRecommendDataManager.swift */; };
+		975F09262B8282D7009C6F0E /* MyRecommendInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F09252B8282D7009C6F0E /* MyRecommendInput.swift */; };
 		97EB4AC22B70F5E6009A62EB /* InputMyMoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4ABB2B70F5E5009A62EB /* InputMyMoodViewController.swift */; };
 		97EB4AC32B70F5E6009A62EB /* InputMyFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4ABC2B70F5E5009A62EB /* InputMyFoodViewController.swift */; };
 		97EB4AC42B70F5E6009A62EB /* SelectMyMoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4ABD2B70F5E5009A62EB /* SelectMyMoodViewController.swift */; };
@@ -232,15 +237,20 @@
 		56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeAllRecipeBookModel.swift; sourceTree = "<group>"; };
 		56F8A7222B801153000F6CA4 /* LikeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeDataManager.swift; sourceTree = "<group>"; };
 		56F8A7242B801166000F6CA4 /* LikeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeInput.swift; sourceTree = "<group>"; };
+		97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDrinkingStyleDataManager.swift; sourceTree = "<group>"; };
+		97599BFB2B840269009B9CF9 /* MyDrinkingStyleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDrinkingStyleInput.swift; sourceTree = "<group>"; };
 		975F09022B816D18009C6F0E /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		975F09042B816E09009C6F0E /* GetDrinkingRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDrinkingRecommendViewController.swift; sourceTree = "<group>"; };
+		975F091F2B827267009C6F0E /* MyRecommendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecommendModel.swift; sourceTree = "<group>"; };
+		975F09232B827B75009C6F0E /* MyRecommendDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecommendDataManager.swift; sourceTree = "<group>"; };
+		975F09252B8282D7009C6F0E /* MyRecommendInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecommendInput.swift; sourceTree = "<group>"; };
 		97EB4ABB2B70F5E5009A62EB /* InputMyMoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMyMoodViewController.swift; sourceTree = "<group>"; };
 		97EB4ABC2B70F5E5009A62EB /* InputMyFoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMyFoodViewController.swift; sourceTree = "<group>"; };
 		97EB4ABD2B70F5E5009A62EB /* SelectMyMoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectMyMoodViewController.swift; sourceTree = "<group>"; };
 		97EB4ABE2B70F5E5009A62EB /* SelectWeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectWeatherViewController.swift; sourceTree = "<group>"; };
 		97EB4AC02B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectDrunkDegreeViewController.swift; sourceTree = "<group>"; };
-		97EB4AC92B70F626009A62EB /* SelectMyMoodResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectMyMoodResource.swift; path = DrinkingGourmet/Source/Recommend/MyRecommend/ViewController/SelectMyMoodResource.swift; sourceTree = SOURCE_ROOT; };
-		97EB4ACB2B70F63B009A62EB /* SelectWeatherResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectWeatherResource.swift; path = DrinkingGourmet/Source/Recommend/MyRecommend/ViewController/SelectWeatherResource.swift; sourceTree = SOURCE_ROOT; };
+		97EB4AC92B70F626009A62EB /* SelectMyMoodResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectMyMoodResource.swift; path = DrinkingGourmet/Source/Recommend/MyRecommend/Model/SelectMyMoodResource.swift; sourceTree = SOURCE_ROOT; };
+		97EB4ACB2B70F63B009A62EB /* SelectWeatherResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectWeatherResource.swift; path = DrinkingGourmet/Source/Recommend/MyRecommend/Model/SelectWeatherResource.swift; sourceTree = SOURCE_ROOT; };
 		97EB4ACD2B70F668009A62EB /* SelectTypeOfLiquorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTypeOfLiquorViewController.swift; sourceTree = "<group>"; };
 		97EB4ACE2B70F668009A62EB /* MyDrinkStyleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyDrinkStyleViewController.swift; sourceTree = "<group>"; };
 		97EB4ACF2B70F668009A62EB /* SelectDrinkCapacityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectDrinkCapacityViewController.swift; sourceTree = "<group>"; };
@@ -490,16 +500,6 @@
 			);
 			name = View;
 			path = ../View;
-			sourceTree = "<group>";
-		};
-		2E6C26E92B4981EA00C87B4A /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				97EB4AC92B70F626009A62EB /* SelectMyMoodResource.swift */,
-				97EB4ACB2B70F63B009A62EB /* SelectWeatherResource.swift */,
-			);
-			name = Model;
-			path = ../Model;
 			sourceTree = "<group>";
 		};
 		2E6C270C2B498D6D00C87B4A /* TabBar */ = {
@@ -896,10 +896,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		975F091E2B827245009C6F0E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				975F09252B8282D7009C6F0E /* MyRecommendInput.swift */,
+				975F09232B827B75009C6F0E /* MyRecommendDataManager.swift */,
+				975F091F2B827267009C6F0E /* MyRecommendModel.swift */,
+				97EB4AC92B70F626009A62EB /* SelectMyMoodResource.swift */,
+				97EB4ACB2B70F63B009A62EB /* SelectWeatherResource.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		97EB4AB62B70F565009A62EB /* MyRecommend */ = {
 			isa = PBXGroup;
 			children = (
-				2E6C26E92B4981EA00C87B4A /* Model */,
+				975F091E2B827245009C6F0E /* Model */,
 				2E6C26E82B4981E600C87B4A /* View */,
 				2E6C26E72B4981DD00C87B4A /* ViewController */,
 			);
@@ -919,6 +931,8 @@
 		97EB4AB82B70F579009A62EB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				97599BFB2B840269009B9CF9 /* MyDrinkingStyleInput.swift */,
+				97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */,
 				97EB4AEA2B7140D2009A62EB /* SelectTypeOfLiquorResource.swift */,
 				97EB4AEC2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift */,
 				97EB4AEE2B714100009A62EB /* SelectDrinkCapacityResource.swift */,
@@ -1059,8 +1073,10 @@
 				97EB4AED2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift in Sources */,
 				2EFA32F72B7156EF00059188 /* RecipeBookCollectionViewCell.swift in Sources */,
 				56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */,
+				975F09202B827267009C6F0E /* MyRecommendModel.swift in Sources */,
 				2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */,
 				97EB4AC52B70F5E6009A62EB /* SelectWeatherViewController.swift in Sources */,
+				97599BFC2B840269009B9CF9 /* MyDrinkingStyleInput.swift in Sources */,
 				5668A34F2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift in Sources */,
 				5601EBCB2B7C1E470043CCD4 /* RecipeBookDetailModel.swift in Sources */,
 				975F09052B816E09009C6F0E /* GetDrinkingRecommendViewController.swift in Sources */,
@@ -1114,6 +1130,7 @@
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				5668A3D12B78F69C0009FCD6 /* CombinationSearchVC.swift in Sources */,
 				975F09032B816D18009C6F0E /* WelcomeViewController.swift in Sources */,
+				97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */,
 				5601EBC62B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift in Sources */,
 				97EB4AFC2B720D42009A62EB /* LoadingRecommendDrinkViewController.swift in Sources */,
 				5668A3432B6F68610009FCD6 /* RecipeBookHomeView.swift in Sources */,
@@ -1122,6 +1139,7 @@
 				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
 				56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */,
 				5601EBC02B7C10F90043CCD4 /* RecipeBookHomeInput.swift in Sources */,
+				975F09242B827B75009C6F0E /* MyRecommendDataManager.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				5601EBC82B7C169A0043CCD4 /* RecipeBookSearchVC.swift in Sources */,
 				2E0274E02B6FCF5200F92177 /* MainMenuViewController.swift in Sources */,
@@ -1151,6 +1169,7 @@
 				56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */,
 				5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */,
 				97EB4ACC2B70F63B009A62EB /* SelectWeatherResource.swift in Sources */,
+				975F09262B8282D7009C6F0E /* MyRecommendInput.swift in Sources */,
 				5668A3BB2B76B2120009FCD6 /* CombinationHomeDataManager.swift in Sources */,
 				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
 				97EB4AC72B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift in Sources */,
@@ -1305,6 +1324,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DrinkingGourmet/DrinkingGourmet.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 25HUNR4S37;
@@ -1327,6 +1347,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.DrinkingGourmet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1343,6 +1364,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DrinkingGourmet/DrinkingGourmet.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 25HUNR4S37;
@@ -1365,6 +1387,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.DrinkingGourmet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

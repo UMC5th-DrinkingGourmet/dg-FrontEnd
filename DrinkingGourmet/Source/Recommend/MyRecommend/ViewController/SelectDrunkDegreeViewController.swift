@@ -39,7 +39,7 @@ class SelectDrunkDegreeViewController: UIViewController {
     private let sliderView: SliderView = .init(maxValue: 5)
     
     lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isSelectedButton)
-    private var desireLevel: Int? = nil
+    private var myDesireLevel: Int? = nil// = 1
     private var isSelectedButton = false
     
     override func viewDidLoad() {
@@ -56,17 +56,19 @@ class SelectDrunkDegreeViewController: UIViewController {
         setAddSubViews()
         makeConstraints()
     }
-    
+
     // MARK: - Navigation
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
+            let recommendParam = recommendsRequestParameters.shared
+            if let myDesireLevel = myDesireLevel {
+                recommendParam.desireLevel = myDesireLevel
+            }
             let nextViewController = InputMyFoodViewController()
             navigationController?.pushViewController(nextViewController, animated: true)
-        } else {
-            return
         }
     }
     
@@ -126,7 +128,7 @@ class SelectDrunkDegreeViewController: UIViewController {
 // MARK: - SliderViewDelegate
 extension SelectDrunkDegreeViewController: SliderViewDelegate {
     func sliderView(_ sender: SliderView, changedValue value: Int) {
-        desireLevel = value
+        myDesireLevel = value
         updateNextButtonSelectableColor(nextButton)
     }
 }

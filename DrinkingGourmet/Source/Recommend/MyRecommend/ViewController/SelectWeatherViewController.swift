@@ -8,7 +8,7 @@
 import UIKit
 
 class SelectWeatherViewController: UIViewController {
-    
+    let myRecommendModelManager = MyRecommendModelManager.shared
     private var isSelectedButton = false
     private let resource: SelectWeatherResource = SelectWeatherResource()
     private var buttonTitleArray: [String] {
@@ -44,9 +44,8 @@ class SelectWeatherViewController: UIViewController {
         return text
     }()
     
-    private var selectedButtonCount: Int = 0
-    private var buttonSelected: [Bool] = []
-    
+    private var isButtonSelected: [Bool] = []
+    private var selectedButtonTitles = ""
     
     lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isSelectedButton)
     lazy var skipButton = makeSkipButton()
@@ -70,15 +69,27 @@ class SelectWeatherViewController: UIViewController {
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
+    
     @objc func skipButtonTapped(_ sender: UIButton) {
+        let recommendParam = recommendsRequestParameters.shared
+        recommendParam.weather = " "
+        
+        //MyRecommendDataManager().postRecommendsRequest(recommendParam)
+        
         let nextViewController = LoadingRecommendDrinkViewController()
         navigationController?.pushViewController(nextViewController, animated: true)
     }
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
+            let recommendParam = recommendsRequestParameters.shared
+            recommendParam.weather = updateSelectedButtonTitles()
+            
+            // MARK: - API 통신
+            MyRecommendDataManager().postRecommendsRequest(recommendParam)
             let nextViewController = LoadingRecommendDrinkViewController()
-            navigationController?.pushViewController(nextViewController, animated: true)
-        } else {
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+        else {
             return
         }
     }
@@ -93,6 +104,16 @@ class SelectWeatherViewController: UIViewController {
         isSelectedButton = false
     }
     
+    private func updateSelectedButtonTitles() -> String {
+        var selectedButtonTitles = ""
+        for index in 0..<isButtonSelected.count {
+            if isButtonSelected[index] {
+                selectedButtonTitles += "\(buttonTitleArray[index]), "
+            }
+        }
+        return selectedButtonTitles
+    }
+    
     @objc func makeRecommendButtonArray(buttonArray: [String]) -> [UIButton] {
         var buttons: [UIButton] = []
         
@@ -102,7 +123,7 @@ class SelectWeatherViewController: UIViewController {
             button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
             buttons.append(button)
             
-            buttonSelected.append(false)
+            isButtonSelected.append(false)
         }
         
         return buttons
@@ -123,20 +144,20 @@ class SelectWeatherViewController: UIViewController {
     @objc func buttonTapped(_ sender: UIButton) {
         let index = sender.tag
         
-        if buttonSelected[index] {
-            buttonSelected[index] = false
-            if !(buttonSelected.contains(true)) {
+        if isButtonSelected[index] {
+            isButtonSelected[index] = false
+            if !(isButtonSelected.contains(true)) {
                 updateNextButtonColor(nextButton)
             }
             updateButtonColor(sender)
             
         } else {
             updateNextButtonSelectableColor(nextButton)
-            buttonSelected[index] = true
+            isButtonSelected[index] = true
             updateButtonSelectedColor(sender)
         }
     }
-    
+
     // MARK: - Constraints
     
     func setAddSubViews() {

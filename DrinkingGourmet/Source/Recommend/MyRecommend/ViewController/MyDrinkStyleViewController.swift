@@ -55,7 +55,7 @@ class MyDrinkStyleViewController: UIViewController {
     }
     // - mypage 완성 시 수정 - //
     @objc func myRecommendButtonTapped(_ sender: UIButton) {
-        let nextViewController = RecommendViewController() // myPage로 연결
+        let nextViewController = GetUserInfoViewController() // myPage로 연결
         navigationController?.pushViewController(nextViewController, animated: true)
     }
 
