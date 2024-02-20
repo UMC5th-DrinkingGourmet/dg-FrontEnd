@@ -41,22 +41,22 @@ class TabBarViewController: UITabBarController {
             selectedImage: UIImage(named: "ic_navigation_home_selected")
         )
         recommendVC.tabBarItem = UITabBarItem(
-            title: "",
+            title: "주류추천",
             image: UIImage(named: "ic_navigation_recommend"),
             selectedImage: UIImage(named: "ic_navigation_recommend_selected")
         )
         communityHomeVC.tabBarItem = UITabBarItem(
-            title: "",
+            title: "홈",
             image: UIImage(named: "ic_navigation_community"),
             selectedImage: UIImage(named: "ic_navigation_community_selected")
         )
         likeVC.tabBarItem = UITabBarItem(
-            title: "",
+            title: "좋아요",
             image: UIImage(named: "ic_navigation_like"),
             selectedImage: UIImage(named: "ic_navigation_like_selected")
         )
         myPageVC.tabBarItem = UITabBarItem(
-            title: "",
+            title: "마이페이지",
             image: UIImage(named: "ic_navigation_mypage"),
             selectedImage: UIImage(named: "ic_navigation_mypage_selected")
         )
