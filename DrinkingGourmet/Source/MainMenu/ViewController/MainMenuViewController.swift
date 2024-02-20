@@ -119,9 +119,26 @@ class MainMenuViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        setupNaviBar()
         configHierarchy()
         layout()
         configButton()
+    }
+    
+    func setupNaviBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground() // 불투명
+        appearance.backgroundColor = .white
+        
+        // 네비게이션바 밑줄 삭제
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        // 백버튼 커스텀
+        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
+        navigationController?.navigationBar.backIndicatorImage = customBackImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -143,7 +160,9 @@ class MainMenuViewController: UIViewController {
     }
 
     @objc func recipeBookBtnTapped() {
-        navigationController?.pushViewController(RecipeBookHomeVC(), animated: true)
+        let recipeBookHomeVC = RecipeBookHomeVC()
+        recipeBookHomeVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(recipeBookHomeVC, animated: true)
     }
     
     @objc func recommendViewTapped() {
@@ -151,7 +170,9 @@ class MainMenuViewController: UIViewController {
     }
 
     @objc func todayCombiBtnTapped() {
-        navigationController?.pushViewController(TodayCombinationViewController(), animated: true)
+        let todayCombinationViewController = TodayCombinationViewController()
+        todayCombinationViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(todayCombinationViewController, animated: true)
     }
     
     @objc func logoutBtnClicked() {
