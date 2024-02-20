@@ -1,16 +1,17 @@
-////
-////  CombinationUploadVC.swift
-////  DrinkingGourmet
-////
-////  Created by 이승민 on 2/16/24.
-////
 //
+//  RecipeBookUploadViewController.swift
+//  DrinkingGourmet
+//
+//  Created by hwijinjeong on 2/20/24.
+//
+
+import UIKit
 import SnapKit
 import Then
 import Photos
 import PhotosUI
 
-class CombinationUploadVC: UIViewController {
+class RecipeBookUploadViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -141,12 +142,12 @@ class CombinationUploadVC: UIViewController {
         return layout
     }
     
-    //제목
+    //소요시간
     let titleLabel = UILabel().then {
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "제목", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "소요시간", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     let titleTextField = UITextField().then {
@@ -161,7 +162,7 @@ class CombinationUploadVC: UIViewController {
             .kern: -0.48
         ]
         
-        $0.attributedPlaceholder = NSAttributedString(string: "제목을 입력해주세요.", attributes: attributes)
+        $0.attributedPlaceholder = NSAttributedString(string: "소요시간을 입력해주세요.", attributes: attributes)
     }
     
     let grayLine2 = UIView().then {
@@ -182,6 +183,10 @@ class CombinationUploadVC: UIViewController {
             
         }
     }
+    
+    var ingredientView = InputTextFieldView(frame: .zero)
+    
+    var recipeView = InputTextFieldView(frame: .zero)
     
     // 작성완료
     let completionView = UIView().then {
@@ -270,7 +275,7 @@ class CombinationUploadVC: UIViewController {
     func prepare() {
         let input = CombinationUploadInput.fetchRecommendListDataInput(page: 0, size: 20)
         
-        CombinationUploadDataManager.shared.fetchRecommendListData(input, self) { [weak self] model in
+        RecipeBookUploadDataManager.shared.fetchRecommendListData(input, self) { [weak self] model in
             guard let self = self else { return }
             
             if let model = model {
@@ -287,7 +292,7 @@ class CombinationUploadVC: UIViewController {
         
         scrollView.addSubview(contentView)
         
-        contentView.addSubviews([combinationLabel, roundView, combinationTextField, combinationButtonIcon, hashtagLabel, hashtagTextField, grayLine1, imageLabel, uploadBtn, collectionView, titleLabel, titleTextField, grayLine2, titleWarningLabel, contentInputView])
+        contentView.addSubviews([combinationLabel, roundView, combinationTextField, combinationButtonIcon, hashtagLabel, hashtagTextField, grayLine1, imageLabel, uploadBtn, collectionView, titleLabel, titleTextField, grayLine2, titleWarningLabel, contentInputView, ingredientView, recipeView])
     }
     
     func configLayout() {
@@ -301,7 +306,7 @@ class CombinationUploadVC: UIViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
-            make.height.equalTo(800)
+            make.height.equalTo(1000)
         }
         
         // 작성완료
@@ -411,15 +416,37 @@ class CombinationUploadVC: UIViewController {
             $0.top.equalTo(titleWarningLabel.snp.bottom).offset(54)
         }
         
+        ingredientView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(72)
+            $0.top.equalTo(contentInputView.snp.bottom).offset(54)
+        }
+        
+        recipeView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(72)
+            $0.top.equalTo(ingredientView.snp.bottom).offset(54)
+        }
+        
     }
     
     func configView() {
         uploadBtn.addTarget(self, action: #selector(uploadBtnClicked), for: .touchUpInside)
         
-        contentInputView.title = "내용"
-        contentInputView.placeholder = "내용을 입력해주세요"
+        contentInputView.title = "칼로리"
+        contentInputView.placeholder = "칼로리를 입력해주세요"
         contentInputView.xBtn.isHidden = true
         contentInputView.textfieldText = ""
+        
+        ingredientView.title = "재료"
+        ingredientView.placeholder = "재료를 입력해주세요"
+        ingredientView.xBtn.isHidden = true
+        ingredientView.textfieldText = ""
+        
+        recipeView.title = "조리방법"
+        recipeView.placeholder = "조리방법을 입력해주세요"
+        recipeView.xBtn.isHidden = true
+        recipeView.textfieldText = ""
         
         completionButton.addTarget(self, action: #selector(completionBtnClicked), for: .touchUpInside)
     }
@@ -428,28 +455,26 @@ class CombinationUploadVC: UIViewController {
         if completionButton.isEnabled == true {
             print("클릭")
             print("Uploading \(imageList.count) images.")
-            CombinationUploadDataManager.shared.uploadImages(imageList) { (response, error) in
+            RecipeBookUploadDataManager.shared.uploadImages(imageList) { (response, error) in
                 if let error = error {
                     print("Error: \(error)")
                 } else if let response = response {
                     print("Response: \(response)")
                     // 이미지 업로드가 성공하면 게시글 업로드
-                    if let recommendId = self.recommendId,
-                       let combinationImageList = response.result?.combinationImageList,
-                       let hashtagString = self.hashtagTextField.text {
-                        let hashTagNameList = hashtagString.components(separatedBy: " ")
-                        let postModel = CombinationUploadModel.WritingPostModel(title: self.combinationTextField.text!,
-                                                                                content: self.contentInputView.textfieldText!,
-                                                                                recommendId: recommendId,
-                                                                                hashTagNameList: hashTagNameList,
-                                                                                combinationImageList: combinationImageList)
-                        CombinationUploadDataManager.shared.uploadPost(postModel) { (response, error) in
-                            if let error = error {
-                                print("Post upload error: \(error)")
-                            } else if let response = response {
-                                print("Post upload response: \(response)")
-                                self.navigationController?.popViewController(animated: true)
-                            }
+                    let postModel = RecipeBookUpoadModel.RecipeRequest(
+                        title: self.combinationTextField.text!,
+                        cookingTime: self.titleLabel.text!,
+                        calorie: self.contentInputView.textField.text!,
+                        ingredient: self.ingredientView.textField.text!,
+                        recipeInstruction: self.recipeView.textField.text!,
+                        recommendCombination: self.combinationTextField.text!,
+                        hashTagNameList: ["#dummy"]
+                    )
+                    RecipeBookUploadDataManager.shared.uploadPost(postModel) { (response, error) in
+                        if let error = error {
+                            print("Post upload error: \(error)")
+                        } else if let response = response {
+                            print("Post upload response: \(response)")
                         }
                     }
                 }
@@ -458,13 +483,15 @@ class CombinationUploadVC: UIViewController {
             print("클릭 불가")
         }
     }
-
+    
     
     func setupTextField() {
         combinationTextField.delegate = self
         hashtagTextField.delegate = self
         titleTextField.delegate = self
         contentInputView.textField.delegate = self
+        ingredientView.textField.delegate = self
+        recipeView.textField.delegate = self
     }
     
     // 피커뷰
@@ -475,22 +502,17 @@ class CombinationUploadVC: UIViewController {
         // 텍스트 필드의 입력 방식을 피커 뷰로 설정
         combinationTextField.inputView = pickerView
 
-        // 피커 뷰 위에 툴바 추가
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)) // 툴바의 너비를 화면의 너비와 같도록 설정
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(dismissPickerView))
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
-        toolbar.isUserInteractionEnabled = true
 
+        // 툴바를 텍스트 필드의 inputAccessoryView로 설정
         combinationTextField.inputAccessoryView = toolbar
     }
-    
 }
 
-extension CombinationUploadVC {
+extension RecipeBookUploadViewController {
     @objc func dismissPickerView() {
         view.endEditing(true)
     }
@@ -610,7 +632,7 @@ extension CombinationUploadVC {
     }
 }
 
-extension CombinationUploadVC: PHPickerViewControllerDelegate {
+extension RecipeBookUploadViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         for result in results {
             result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
@@ -630,7 +652,7 @@ extension CombinationUploadVC: PHPickerViewControllerDelegate {
     }
 }
 
-extension CombinationUploadVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension RecipeBookUploadViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageList.count
     }
@@ -669,7 +691,7 @@ extension CombinationUploadVC: UICollectionViewDelegate, UICollectionViewDataSou
     
 }
 
-extension CombinationUploadVC: UITextFieldDelegate {
+extension RecipeBookUploadViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == hashtagTextField, textField.text?.isEmpty ?? true {
@@ -727,7 +749,9 @@ extension CombinationUploadVC: UITextFieldDelegate {
         !(hashtagTextField.text?.isEmpty ?? true) &&
         !(titleTextField.text?.isEmpty ?? true) &&
         5 <= titleTextField.text!.count && titleTextField.text!.count <= 80 &&
-        10 <= contentInputView.textField.text!.count
+        0 <= contentInputView.textField.text!.count &&
+        10 <= ingredientView.textField.text!.count &&
+        10 <= recipeView.textField.text!.count
     }
     
     // 리턴 클릭 시 키보드 숨기기
@@ -738,7 +762,7 @@ extension CombinationUploadVC: UITextFieldDelegate {
 }
 
 // MARK: - 피커뷰
-extension CombinationUploadVC: UIPickerViewDataSource {
+extension RecipeBookUploadViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -748,7 +772,7 @@ extension CombinationUploadVC: UIPickerViewDataSource {
     }
 }
 
-extension CombinationUploadVC: UIPickerViewDelegate {
+extension RecipeBookUploadViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return "\(arrayRecommendList[row].foodName) & \(arrayRecommendList[row].drinkName)"
     }

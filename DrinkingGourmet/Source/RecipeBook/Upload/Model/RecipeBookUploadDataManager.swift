@@ -1,30 +1,24 @@
 //
-//  CombinationUploadDataManager.swift
+//  RecipeBookUploadDataManager.swift
 //  DrinkingGourmet
 //
-//  Created by 이승민 on 2/16/24.
-
-
-struct ErrorResponseModel: Codable {
-    let timestamp: String
-    let status: Int
-    let error, path: String
-}
+//  Created by hwijinjeong on 2/20/24.
+//
 
 import UIKit
 import Alamofire
 
-class CombinationUploadDataManager {
-    static let shared = CombinationUploadDataManager()
+class RecipeBookUploadDataManager {
+    static let shared = RecipeBookUploadDataManager()
     
     private init() { }
     
     private let baseURL = "https://drink-gourmet.kro.kr"
     
-    // MARK: - 오늘의 조합 홈 조회
+    // MARK: - 조합 조회
     func fetchRecommendListData(_ parameters: CombinationUploadInput.fetchRecommendListDataInput,
-                                  _ viewController: CombinationUploadVC,
-                                    completion: @escaping (CombinationUploadModel.fetchRecommendListModel?) -> Void) {
+                                _ viewController: RecipeBookUploadViewController,
+                                completion: @escaping (CombinationUploadModel.fetchRecommendListModel?) -> Void) {
         do {
             // Keychain에서 액세스 토큰 가져오기
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -56,9 +50,9 @@ class CombinationUploadDataManager {
         }
     }
     
-    // MARK: - 오늘의 조합 이미지 업로드
-    func uploadImages(_ images: [UIImage], completion: @escaping (CombinationUploadModel.imageUploadResponse?, Error?) -> Void) {
-        let url = "\(baseURL)/combinationImages"
+    // MARK: - 레시피북 이미지 업로드
+    func uploadImages(_ images: [UIImage], completion: @escaping (RecipeBookUpoadModel.ImageUploadResponse?, Error?) -> Void) {
+        let url = "\(baseURL)/recipes-images"
         
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -72,13 +66,13 @@ class CombinationUploadDataManager {
                 for (index, image) in images.enumerated() {
                     if let jpegData = image.jpegData(compressionQuality: 0.2) {
                         multipartFormData.append(jpegData,
-                                                 withName: "imageUrls",
+                                                 withName: "file",
                                                  fileName: "image\(index).jpeg",
                                                  mimeType: "image/jpeg")
                     }
                 }
             }, to: url, method: .post, headers: headers)
-            .responseDecodable(of: CombinationUploadModel.imageUploadResponse.self) { response in
+            .responseDecodable(of: RecipeBookUpoadModel.ImageUploadResponse.self) { response in
                 debugPrint(response)
                 guard let statusCode = response.response?.statusCode else { return }
 
@@ -102,9 +96,10 @@ class CombinationUploadDataManager {
         }
     }
 
-
-    func uploadPost(_ postModel: CombinationUploadModel.WritingPostModel, completion: @escaping (CombinationUploadModel.WritingPostResponseModel?, Error?) -> Void) {
-        let url = "\(baseURL)/combinations/recommends"
+    
+    // MARK: - 레시피북 게시글 업로드
+    func uploadPost(_ postModel: RecipeBookUpoadModel.RecipeRequest, completion: @escaping (RecipeBookUpoadModel.RecipeResponseModel?, Error?) -> Void) {
+        let url = "\(baseURL)/recipes"
         
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -115,7 +110,7 @@ class CombinationUploadDataManager {
             ]
             
             AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers)
-                .responseDecodable(of: CombinationUploadModel.WritingPostResponseModel.self) { response in
+                .responseDecodable(of: RecipeBookUpoadModel.RecipeResponseModel.self) { response in
                     
                     switch response.result {
                     case .success(let data):
@@ -140,6 +135,4 @@ class CombinationUploadDataManager {
             completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"]))
         }
     }
-
-
 }
