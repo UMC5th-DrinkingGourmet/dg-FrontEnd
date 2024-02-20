@@ -52,8 +52,16 @@ class MyDrinkStyleViewController: UIViewController {
     }
 
     @objc func myRecommendButtonTapped(_ sender: UIButton) {
-        let nextViewController = MyPageViewController()
-        navigationController?.pushViewController(nextViewController, animated: true)
+        if let tabBarVC = self.tabBarController as? TabBarViewController {
+            // '마이페이지' 탭을 선택
+            tabBarVC.selectedIndex = 4
+            
+            // '마이페이지' 탭의 네비게이션 컨트롤러를 가져옴
+            if let myPageNavController = tabBarVC.viewControllers?[4] as? UINavigationController {
+                // 네비게이션 컨트롤러의 스택을 루트 뷰 컨트롤러로 초기화
+                myPageNavController.popToRootViewController(animated: true)
+            }
+        }
     }
 
     

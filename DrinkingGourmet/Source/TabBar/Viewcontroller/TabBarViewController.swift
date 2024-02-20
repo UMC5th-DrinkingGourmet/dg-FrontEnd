@@ -46,7 +46,7 @@ class TabBarViewController: UITabBarController {
             selectedImage: UIImage(named: "ic_navigation_recommend_selected")
         )
         communityHomeVC.tabBarItem = UITabBarItem(
-            title: "홈",
+            title: "커뮤니티",
             image: UIImage(named: "ic_navigation_community"),
             selectedImage: UIImage(named: "ic_navigation_community_selected")
         )
