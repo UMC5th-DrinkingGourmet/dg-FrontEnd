@@ -99,6 +99,7 @@
 		56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */; };
 		56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */; };
 		56A9A9402B6B530400EF7CA6 /* CommentAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */; };
+		56A9EC3B2B857388004BD199 /* RecommendDetailResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9EC3A2B857388004BD199 /* RecommendDetailResponseModel.swift */; };
 		56AE28452B83D57B009CE0A1 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28442B83D57B009CE0A1 /* MyPageView.swift */; };
 		56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */; };
 		56AE28492B83DDE8009CE0A1 /* MyPageLowerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28482B83DDE8009CE0A1 /* MyPageLowerView.swift */; };
@@ -245,6 +246,7 @@
 		56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAreaView.swift; sourceTree = "<group>"; };
+		56A9EC3A2B857388004BD199 /* RecommendDetailResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendDetailResponseModel.swift; sourceTree = "<group>"; };
 		56AE28442B83D57B009CE0A1 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		56AE28482B83DDE8009CE0A1 /* MyPageLowerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageLowerView.swift; sourceTree = "<group>"; };
@@ -950,6 +952,7 @@
 				56AE28522B83F6D9009CE0A1 /* MyPageRecommendModel.swift */,
 				56AE28542B8403BC009CE0A1 /* MyPageCombinationModel.swift */,
 				56AE28562B84068A009CE0A1 /* MyPageRecipeBookModel.swift */,
+				56A9EC3A2B857388004BD199 /* RecommendDetailResponseModel.swift */,
 				56AE284E2B83ED5A009CE0A1 /* MyPageDataManager.swift */,
 			);
 			path = Model;
@@ -1279,6 +1282,7 @@
 				5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */,
 				2E5407982B84BE7200724513 /* RecipeBookUpoadModel.swift in Sources */,
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
+				56A9EC3B2B857388004BD199 /* RecommendDetailResponseModel.swift in Sources */,
 				5601EBCD2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift in Sources */,
 				2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */,
 				2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */,
