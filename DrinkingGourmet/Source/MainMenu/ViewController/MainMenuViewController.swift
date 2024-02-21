@@ -179,7 +179,16 @@ class MainMenuViewController: UIViewController {
     }
     
     @objc func recommendViewTapped() {
-        navigationController?.pushViewController(MyDrinkStyleViewController(), animated: true)
+        if let tabBarVC = self.tabBarController as? TabBarViewController {
+            // '주류추천' 탭을 선택
+            tabBarVC.selectedIndex = 0
+            
+            // '주류추천' 탭의 네비게이션 컨트롤러를 가져옴
+            if let myPageNavController = tabBarVC.viewControllers?[0] as? UINavigationController {
+                // 네비게이션 컨트롤러의 스택을 루트 뷰 컨트롤러로 초기화
+                myPageNavController.popToRootViewController(animated: true)
+            }
+        }
     }
 
     @objc func todayCombiBtnTapped() {
