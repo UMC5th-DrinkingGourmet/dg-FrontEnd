@@ -80,6 +80,18 @@ class MainMenuViewController: UIViewController {
         $0.backgroundColor = .clear
     }
     
+    let newAlcoholBtn = UIButton().then {
+        $0.trailingBtnConfiguration(title: "새로 출시된 주류", font: .boldSystemFont(ofSize: 20), foregroundColor: .black, padding: 8, image: UIImage(systemName: "chevron.right"), imageSize: CGSize(width: 10, height: 12))
+    }
+    
+    let newAlcoholImage = UIImageView().then {
+        $0.image = UIImage(named: "img_main_new_alcohol")
+    }
+    
+    let mainAdImage = UIImageView().then {
+        $0.image = UIImage(named: "img_main_ad")
+    }
+    
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
@@ -155,6 +167,7 @@ class MainMenuViewController: UIViewController {
         recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
         recommendView.goBtn.addTarget(self, action: #selector(recommendViewTapped), for: .touchUpInside)
         todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
+        newAlcoholBtn.addTarget(self, action: #selector(newAlcoholBtnTapped), for: .touchUpInside)
         
         logoutBtn.addTarget(self, action: #selector(logoutBtnClicked), for: .touchUpInside)
     }
@@ -173,6 +186,13 @@ class MainMenuViewController: UIViewController {
         let todayCombinationViewController = TodayCombinationViewController()
         todayCombinationViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(todayCombinationViewController, animated: true)
+    }
+    
+    /* 모이치 */
+    @objc func newAlcoholBtnTapped() {
+        let newAlcoholViewController = NewAlcoholViewController()
+        newAlcoholViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(newAlcoholViewController, animated: true)
     }
     
     @objc func logoutBtnClicked() {
@@ -232,19 +252,23 @@ class MainMenuViewController: UIViewController {
             recipeBookCollectionView,
             todayCombiBtn,
             todayCombiCollectionView,
-            logoutBtn
+            newAlcoholBtn,
+            newAlcoholImage,
+            mainAdImage
+//            logoutBtn
         ])
     }
     
     func layout() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView)
             $0.edges.equalTo(scrollView)
-            $0.height.equalTo(1000)
+            $0.height.equalTo(1650)
         }
         
         bannerCollectionView.snp.makeConstraints {
@@ -285,11 +309,29 @@ class MainMenuViewController: UIViewController {
             $0.height.equalTo(160)
         }
         
-        logoutBtn.snp.makeConstraints {
-            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(12)
-            $0.trailing.equalToSuperview().offset(-12)
-            $0.height.equalTo(20)
+        /* 모이치 */
+        newAlcoholBtn.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(48)
+            $0.height.equalTo(30)
         }
+        
+        newAlcoholImage.snp.makeConstraints { make in
+            make.top.equalTo(newAlcoholBtn.snp.bottom).offset(18)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().inset(20)
+        }
+        
+        mainAdImage.snp.makeConstraints { make in
+            make.top.equalTo(newAlcoholImage.snp.bottom).offset(48)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+//        logoutBtn.snp.makeConstraints {
+//            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(12)
+//            $0.trailing.equalToSuperview().offset(-12)
+//            $0.height.equalTo(20)
+//        }
         
     }
     

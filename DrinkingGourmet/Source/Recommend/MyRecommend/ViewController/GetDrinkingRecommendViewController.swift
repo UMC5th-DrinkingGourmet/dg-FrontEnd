@@ -94,8 +94,16 @@ class GetDrinkingRecommendViewController: UIViewController {
     
     // MARK: - Navigation
     @objc func anotherRecommendButtonTapped(_ sender: UIButton) {
-        let nextViewController = MyDrinkStyleViewController()
-        navigationController?.pushViewController(nextViewController, animated: true)
+        if let tabBarVC = self.tabBarController as? TabBarViewController {
+            // '주류추천' 탭을 선택
+            tabBarVC.selectedIndex = 0
+            
+            // '주류추천' 탭의 네비게이션 컨트롤러를 가져옴
+            if let vc = tabBarVC.viewControllers?[0] as? UINavigationController {
+                // 네비게이션 컨트롤러의 스택을 루트 뷰 컨트롤러로 초기화
+                vc.popToRootViewController(animated: true)
+            }
+        }
     }
     @objc func myRecommendListButtonTapped(_ sender: UIButton) {
         if let tabBarVC = self.tabBarController as? TabBarViewController {
