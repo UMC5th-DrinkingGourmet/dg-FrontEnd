@@ -91,6 +91,7 @@ extension CommunityHomeVC: UITableViewDelegate {
         }
         
         if let detailViewController = detailVC {
+            detailViewController.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(detailViewController, animated: true)
         }
     }
