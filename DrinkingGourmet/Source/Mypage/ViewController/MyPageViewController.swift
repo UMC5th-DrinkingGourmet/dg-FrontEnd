@@ -294,6 +294,21 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
             recipeBookDetailVC.recipeBookId = selectedItem
             recipeBookDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(recipeBookDetailVC, animated: true)
+        } else if currentTab == .recommend { // 추천
+            let selectedItem = arrayRecommendData[indexPath.row].recommendID
+            MyPageDataManager().fetchRecommendDetailData(selectedItem, self) { model in
+                guard let model = model else { return }
+                
+                let getDrinkingRecommendVC = GetDrinkingRecommendViewController()
+                
+                if let url = URL(string: model.result.imageUrl) {
+                    getDrinkingRecommendVC.mainImage.kf.setImage(with: url)
+                }
+                getDrinkingRecommendVC.drinkNameLabel.text = model.result.drinkName
+                getDrinkingRecommendVC.descriptionLabel.text = model.result.recommendReason
+                self.navigationController?.pushViewController(getDrinkingRecommendVC, animated: true)
+            }
+            
         }
     }
     
