@@ -118,6 +118,8 @@
 		56C9B29A2B7CE70100C59D60 /* WeeklyBestDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B2992B7CE70100C59D60 /* WeeklyBestDataManager.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchVC.swift */; };
 		56C9B29F2B7CE8E000C59D60 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 56C9B29E2B7CE8E000C59D60 /* Lottie */; };
+		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
+		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
 		56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EAD5892B6C6C1A005C3A80 /* TodayCombinationView.swift */; };
 		56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */; };
 		56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7172B8000CA000F6CA4 /* LikeView.swift */; };
@@ -265,6 +267,8 @@
 		56C9B2972B7CE6E400C59D60 /* WeeklyBestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestModel.swift; sourceTree = "<group>"; };
 		56C9B2992B7CE70100C59D60 /* WeeklyBestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestDataManager.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchVC.swift; sourceTree = "<group>"; };
+		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
+		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		56EAD5892B6C6C1A005C3A80 /* TodayCombinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationView.swift; sourceTree = "<group>"; };
 		56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
 		56F8A7172B8000CA000F6CA4 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
@@ -496,6 +500,7 @@
 		2E6C26E32B497EB900C87B4A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				56D649932BB2BCE6002ABC93 /* Report */,
 				5644C8F62B856E470025E44F /* NewAlcohol */,
 				97599C092B84F4F8009B9CF9 /* NewDrinks */,
 				56AE28402B83D533009CE0A1 /* Mypage */,
@@ -987,6 +992,31 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		56D649932BB2BCE6002ABC93 /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				56D649952BB2BD03002ABC93 /* View */,
+				56D649942BB2BCF5002ABC93 /* ViewController */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
+		56D649942BB2BCF5002ABC93 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				56D649962BB2BD1E002ABC93 /* ReportViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		56D649952BB2BD03002ABC93 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				56D649982BB2BD24002ABC93 /* ReportView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		56F8A7112B80008B000F6CA4 /* Like */ = {
 			isa = PBXGroup;
 			children = (
@@ -1331,6 +1361,7 @@
 				2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestVC.swift in Sources */,
+				56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */,
 				2EFA32FA2B71629100059188 /* GradientView.swift in Sources */,
 				97599C152B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
@@ -1359,6 +1390,7 @@
 				56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */,
 				97EB4AE52B70F704009A62EB /* CustomizedSlider.swift in Sources */,
 				5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */,
+				56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */,
 				2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */,
 				97EB4AD52B70F668009A62EB /* SelectDrinkCapacityViewController.swift in Sources */,
 				2E54079A2B84C51E00724513 /* RecipeBookUploadDataManager.swift in Sources */,
