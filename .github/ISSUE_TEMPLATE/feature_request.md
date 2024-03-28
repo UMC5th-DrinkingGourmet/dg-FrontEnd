@@ -7,17 +7,10 @@ assignees: ''
 
 ---
 
-## Description
-설명을 작성해주세요.
+# 👀 이슈 (issue)
 
-## TODO
-**UI**
-- [ ] todo1
-- [ ] todo2
+이슈에 대해 간략하게 설명해주세요
 
-**LOGIC**
-- [ ] todo1
-- [ ] todo2
+# 🚀 to-do
 
-## ETC
-기타사항
+- [ ] 할 것
