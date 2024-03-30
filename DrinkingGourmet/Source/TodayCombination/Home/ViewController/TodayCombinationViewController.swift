@@ -6,10 +6,8 @@
 //
 
 import UIKit
-import SnapKit
-import Then
 
-class TodayCombinationViewController: UIViewController {
+final class TodayCombinationViewController: UIViewController {
     
     // MARK: - Properties
     var arrayCombinationHome: [CombinationHomeModel.CombinationHomeList] = []
@@ -24,30 +22,21 @@ class TodayCombinationViewController: UIViewController {
         view = todayCombinationView
     }
     
-    var isReturningFromSearch = false
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if !isReturningFromSearch {
-            arrayCombinationHome.removeAll()
-            fetchData()
-        }
-        isReturningFromSearch = false
-    }
-    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        fetchData()
+        setupRefresh()
         setupNaviBar()
         setupTextField()
         setupTableView()
-        setupFloatingButton()
+        setupButton()
     }
     
     // MARK: - 데이터 가져오기
-    func fetchData() {
+    private func fetchData() {
         let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
         pageNum = 0
         
@@ -65,8 +54,17 @@ class TodayCombinationViewController: UIViewController {
         }
     }
     
+    // MARK: - 새로고침
+    private func setupRefresh() {
+        let rc = todayCombinationView.refreshControl
+        rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
+        rc.tintColor = .customOrange
+        
+        todayCombinationView.tableView.refreshControl = rc
+    }
+    
     // MARK: - 네비게이션바 설정
-    func setupNaviBar() {
+    private func setupNaviBar() {
         title = "오늘의 조합"
         
         let appearance = UINavigationBarAppearance()
@@ -85,11 +83,11 @@ class TodayCombinationViewController: UIViewController {
     }
     
     // MARK: - 텍스트필드 설정
-    func setupTextField() {
-        let tb = todayCombinationView.customSearchBar.textField
+    private func setupTextField() {
+        let tf = todayCombinationView.customSearchBar.textField
         
-        tb.delegate = self
-        tb.attributedPlaceholder = NSAttributedString(
+        tf.delegate = self
+        tf.attributedPlaceholder = NSAttributedString(
             string: "오늘의 조합 검색",
             attributes: [
                 .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
@@ -99,7 +97,7 @@ class TodayCombinationViewController: UIViewController {
     }
     
     // MARK: - 테이블뷰 설정
-    func setupTableView() {
+    private func setupTableView() {
         let tb = todayCombinationView.tableView
         
         tb.dataSource = self
@@ -110,16 +108,28 @@ class TodayCombinationViewController: UIViewController {
         tb.register(TodayCombinationCell.self, forCellReuseIdentifier: "TodayCombinationCell")
     }
     
-    // MARK: - 플로팅버튼 설정
-    func setupFloatingButton() {
+    // MARK: - 버튼 설정
+    private func setupButton() {
         todayCombinationView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
+    }
+    
+}
+
+// MARK: - @objc
+extension TodayCombinationViewController {
+    @objc func refreshTable(refresh: UIRefreshControl) {
+        print("새로고침 시작")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.fetchData()
+            refresh.endRefreshing()
+        }
     }
     
     @objc func floatingButtonTapped() {
         let vc = CombinationUploadVC()
         navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
 
 // MARK: - UITextFieldDelegate
@@ -147,7 +157,7 @@ extension TodayCombinationViewController: UITableViewDataSource {
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
         if let url = URL(string: combination.combinationImageUrl ?? "defaultImage") {
-                    cell.mainImage.kf.setImage(with: url)
+                    cell.thumnailImage.kf.setImage(with: url)
         }
         
         cell.titleLabel.text = combination.title
