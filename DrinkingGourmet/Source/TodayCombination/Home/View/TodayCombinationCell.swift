@@ -6,14 +6,11 @@
 //
 
 import UIKit
-import SnapKit
-import Then
 
-class TodayCombinationCell: UITableViewCell {
+final class TodayCombinationCell: UITableViewCell {
     
     // MARK: - View
-    let mainImage = UIImageView().then {
-        $0.image = UIImage(named: "img_community_today_thumbnail")
+    let thumnailImage = UIImageView().then {
         $0.layer.cornerRadius = 8
         $0.layer.masksToBounds = true
         $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -21,18 +18,16 @@ class TodayCombinationCell: UITableViewCell {
     }
     
     let titleLabel = UILabel().then {
-        $0.text = "테스트 & 장수막걸리"
-        $0.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+        $0.textColor = .black
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
     }
     
     let hashtagLabel = UILabel().then {
-        $0.text = "#해시태그 #테스트 #입니다"
         $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
     }
     
-    let commentIcon = UIImageView().then {
+    private let commentIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_reply")
     }
     
@@ -42,7 +37,7 @@ class TodayCombinationCell: UITableViewCell {
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
     }
     
-    let likeIcon = UIImageView().then {
+    private let likeIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_like")
     }
     
@@ -60,6 +55,7 @@ class TodayCombinationCell: UITableViewCell {
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         setupContentView()
         addViews()
         configureConstraints()
@@ -80,19 +76,28 @@ class TodayCombinationCell: UITableViewCell {
         likeSelectedIcon.isHidden = true
     }
 
-    func setupContentView() { // 셀 테두리 설정
+    private func setupContentView() { // 셀 테두리 설정
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 8
         contentView.layer.borderColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1).cgColor
     }
     
-    func addViews() {
-        contentView.addSubviews([mainImage, titleLabel, hashtagLabel, commentIcon, commentNumLabel, likeIcon, likeNumLabel, likeSelectedIcon])
+    private func addViews() {
+        contentView.addSubviews([
+            thumnailImage,
+            titleLabel,
+            hashtagLabel,
+            commentIcon,
+            commentNumLabel,
+            likeIcon,
+            likeNumLabel,
+            likeSelectedIcon
+        ])
     }
     
-    func configureConstraints() {
+    private func configureConstraints() {
         
-        mainImage.snp.makeConstraints { make in
+        thumnailImage.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.top)
             make.leading.equalTo(contentView.snp.leading).offset(1)
             make.trailing.equalTo(contentView.snp.trailing).offset(-1)
@@ -134,9 +139,9 @@ class TodayCombinationCell: UITableViewCell {
         }
         
         likeSelectedIcon.snp.makeConstraints { make in
-            make.top.equalTo(mainImage.snp.top).offset(16)
-            make.leading.equalTo(mainImage.snp.leading).offset(294)
-            make.trailing.equalTo(mainImage.snp.trailing).offset(-15)
+            make.top.equalTo(thumnailImage.snp.top).offset(16)
+            make.leading.equalTo(thumnailImage.snp.leading).offset(294)
+            make.trailing.equalTo(thumnailImage.snp.trailing).offset(-15)
         }
     }
 }

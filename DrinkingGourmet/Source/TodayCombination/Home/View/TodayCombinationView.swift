@@ -6,10 +6,8 @@
 //
 
 import UIKit
-import SnapKit
-import Then
 
-class TodayCombinationView: UIView {
+final class TodayCombinationView: UIView {
     
     // MARK: - View
     let tableView = UITableView().then {
@@ -17,6 +15,8 @@ class TodayCombinationView: UIView {
         $0.keyboardDismissMode = .onDrag // 스크롤 할 때 키보드 내리기
         $0.separatorStyle = .none // 테이블뷰 구분선 없애기
     }
+    
+    let refreshControl = UIRefreshControl()
     
     let customSearchBar = CustomSearchBar()
     
@@ -31,6 +31,7 @@ class TodayCombinationView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         addViews()
         configureConstraints()
     }
@@ -40,11 +41,15 @@ class TodayCombinationView: UIView {
     }
     
     // MARK: - UI
-    func addViews() {
-        self.addSubviews([tableView, customSearchBar, floatingButton])
+    private func addViews() {
+        self.addSubviews([
+            tableView,
+            customSearchBar,
+            floatingButton
+        ])
     }
     
-    func configureConstraints() {
+    private func configureConstraints() {
         customSearchBar.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(15)
             make.leading.equalToSuperview().offset(20)

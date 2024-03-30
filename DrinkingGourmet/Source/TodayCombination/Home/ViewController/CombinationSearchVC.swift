@@ -86,9 +86,9 @@ extension CombinationSearchVC: UITextFieldDelegate {
             return
         }
         
-        todayCombinationViewController.isReturningFromSearch = true
-        todayCombinationViewController.arrayCombinationHome = data
-        todayCombinationViewController.todayCombinationView.tableView.reloadData()
+//        todayCombinationViewController.isReturningFromSearch = true
+//        todayCombinationViewController.arrayCombinationHome = data
+//        todayCombinationViewController.todayCombinationView.tableView.reloadData()
         navigationController?.popViewController(animated: true)
     }
 }
