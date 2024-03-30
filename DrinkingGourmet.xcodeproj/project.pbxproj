@@ -68,10 +68,7 @@
 		5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */; };
 		5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2F02B6EDB580009FCD6 /* CustomSearchBar.swift */; };
 		5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2F22B6EDB9F0009FCD6 /* SearchResultVC.swift */; };
-		5668A2F92B6EDCC00009FCD6 /* CommunityHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2F82B6EDCC00009FCD6 /* CommunityHome.swift */; };
-		5668A2FB2B6EDCCC0009FCD6 /* CommunityHomeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2FA2B6EDCCC0009FCD6 /* CommunityHomeDataManager.swift */; };
 		5668A2FD2B6EDCD70009FCD6 /* CommunityHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2FC2B6EDCD70009FCD6 /* CommunityHomeView.swift */; };
-		5668A2FF2B6EDCE00009FCD6 /* CommunityHomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2FE2B6EDCE00009FCD6 /* CommunityHomeCell.swift */; };
 		5668A3012B6EDCFC0009FCD6 /* CommunityHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3002B6EDCFC0009FCD6 /* CommunityHomeVC.swift */; };
 		5668A3032B6EE3BD0009FCD6 /* WeeklyBestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3022B6EE3BD0009FCD6 /* WeeklyBestCell.swift */; };
 		5668A3052B6EE3C70009FCD6 /* WeeklyBestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3042B6EE3C70009FCD6 /* WeeklyBestView.swift */; };
@@ -228,10 +225,7 @@
 		5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomResultSearchBar.swift; sourceTree = "<group>"; };
 		5668A2F02B6EDB580009FCD6 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		5668A2F22B6EDB9F0009FCD6 /* SearchResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultVC.swift; sourceTree = "<group>"; };
-		5668A2F82B6EDCC00009FCD6 /* CommunityHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHome.swift; sourceTree = "<group>"; };
-		5668A2FA2B6EDCCC0009FCD6 /* CommunityHomeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeDataManager.swift; sourceTree = "<group>"; };
 		5668A2FC2B6EDCD70009FCD6 /* CommunityHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeView.swift; sourceTree = "<group>"; };
-		5668A2FE2B6EDCE00009FCD6 /* CommunityHomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeCell.swift; sourceTree = "<group>"; };
 		5668A3002B6EDCFC0009FCD6 /* CommunityHomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeVC.swift; sourceTree = "<group>"; };
 		5668A3022B6EE3BD0009FCD6 /* WeeklyBestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeeklyBestCell.swift; path = DrinkingGourmet/Source/Community/Home/ViewController/WeeklyBestCell.swift; sourceTree = SOURCE_ROOT; };
 		5668A3042B6EE3C70009FCD6 /* WeeklyBestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeeklyBestView.swift; path = DrinkingGourmet/Source/Community/Home/ViewController/WeeklyBestView.swift; sourceTree = SOURCE_ROOT; };
@@ -843,27 +837,16 @@
 		5668A2F42B6EDC690009FCD6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				5668A2F52B6EDC720009FCD6 /* Model */,
 				5668A2F62B6EDC770009FCD6 /* View */,
 				5668A2F72B6EDC800009FCD6 /* ViewController */,
 			);
 			path = Home;
 			sourceTree = "<group>";
 		};
-		5668A2F52B6EDC720009FCD6 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				5668A2F82B6EDCC00009FCD6 /* CommunityHome.swift */,
-				5668A2FA2B6EDCCC0009FCD6 /* CommunityHomeDataManager.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		5668A2F62B6EDC770009FCD6 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				5668A2FC2B6EDCD70009FCD6 /* CommunityHomeView.swift */,
-				5668A2FE2B6EDCE00009FCD6 /* CommunityHomeCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1306,7 +1289,6 @@
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */,
 				5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */,
-				5668A2F92B6EDCC00009FCD6 /* CommunityHome.swift in Sources */,
 				5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */,
 				5601EBC22B7C110C0043CCD4 /* RecipeBookHomeModel.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
@@ -1330,7 +1312,6 @@
 				56543EC92B7EF1190099E648 /* CombinationUploadInput.swift in Sources */,
 				2E56A0DD2B78861B007747ED /* KeyChain.swift in Sources */,
 				5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */,
-				5668A2FB2B6EDCCC0009FCD6 /* CommunityHomeDataManager.swift in Sources */,
 				56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */,
 				5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */,
 				2E5407982B84BE7200724513 /* RecipeBookUpoadModel.swift in Sources */,
@@ -1357,7 +1338,6 @@
 				5601EBC82B7C169A0043CCD4 /* RecipeBookSearchVC.swift in Sources */,
 				2E0274E02B6FCF5200F92177 /* MainMenuViewController.swift in Sources */,
 				2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */,
-				5668A2FF2B6EDCE00009FCD6 /* CommunityHomeCell.swift in Sources */,
 				97EB4ACA2B70F626009A62EB /* SelectMyMoodResource.swift in Sources */,
 				56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */,
 				56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */,
