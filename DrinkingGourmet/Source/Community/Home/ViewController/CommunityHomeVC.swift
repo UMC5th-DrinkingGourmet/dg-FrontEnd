@@ -58,6 +58,7 @@ extension CommunityHomeVC {
             return
         }
         
+        destinationVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(destinationVC, animated: true)
     }
 }
