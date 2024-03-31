@@ -22,22 +22,21 @@ final class RecipeBookHomeVC: UIViewController {
         view = recipeBookHomeView
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        prepare()
-    }
-    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        fetchData()
+        setupRefresh()
         setupNaviBar()
         setupTextField()
         setupTableView()
-        setupFloatingButton()
+        setupButton()
     }
     
-    func prepare() {
+    // MARK: - 데이터 가져오기
+    private func fetchData() {
         let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: 0)
         pageNum = 0
         
@@ -55,8 +54,17 @@ final class RecipeBookHomeVC: UIViewController {
         }
     }
     
+    // MARK: - 새로고침
+    private func setupRefresh() {
+        let rc = recipeBookHomeView.refreshControl
+        rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
+        rc.tintColor = .customOrange
+        
+        recipeBookHomeView.tableView.refreshControl = rc
+    }
+    
     // MARK: - 네비게이션바 설정
-    func setupNaviBar() {
+    private func setupNaviBar() {
         title = "음주미식회 레시피북"
         
         let appearance = UINavigationBarAppearance()
@@ -75,7 +83,7 @@ final class RecipeBookHomeVC: UIViewController {
     }
     
     // MARK: - 텍스트필드 설정
-    func setupTextField() {
+    private func setupTextField() {
         recipeBookHomeView.customSearchBar.textField.delegate = self
         
         recipeBookHomeView.customSearchBar.textField.attributedPlaceholder = NSAttributedString(
@@ -88,7 +96,7 @@ final class RecipeBookHomeVC: UIViewController {
     }
     
     // MARK: - 테이블뷰 설정
-    func setupTableView() {
+    private func setupTableView() {
         let tb = recipeBookHomeView.tableView
         
         tb.dataSource = self
@@ -99,9 +107,21 @@ final class RecipeBookHomeVC: UIViewController {
         tb.register(RecipeBookHomeCell.self, forCellReuseIdentifier: "RecipeBookHomeCell")
     }
     
-    // MARK: - 플로팅버튼 설정
-    func setupFloatingButton() {
+    // MARK: - 버튼 설정
+    func setupButton() {
         recipeBookHomeView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
+    }
+}
+
+// MARK: - @objc
+extension RecipeBookHomeVC {
+    @objc func refreshTable(refresh: UIRefreshControl) {
+        print("새로고침 시작")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.fetchData()
+            refresh.endRefreshing()
+        }
     }
     
     @objc func floatingButtonTapped() {
@@ -137,12 +157,12 @@ extension RecipeBookHomeVC: UITableViewDataSource {
         
         if !recipeBook.recipeImageList.isEmpty {
             if let url = URL(string: recipeBook.recipeImageList[0]) {
-                cell.mainImage.kf.setImage(with: url)
+                cell.thumnailImage.kf.setImage(with: url)
             }
         } else {
             // 이미지 리스트가 비어 있을 경우의 처리
             // 예: 기본 이미지 설정 또는 이미지 뷰 숨기기
-            cell.mainImage.image = UIImage(named: "defaultImage") // "defaultImage"는 기본 이미지의 이름
+            cell.thumnailImage.image = UIImage(named: "defaultImage") // "defaultImage"는 기본 이미지의 이름
         }
 
         
