@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeeklyBestVC: UIViewController {
+final class WeeklyBestVC: UIViewController {
     
     // MARK: - Properties
     var arrayWeeklyBest: [WeeklyBestModel.CombinationList] = []
@@ -22,14 +22,11 @@ class WeeklyBestVC: UIViewController {
         view = weeklyBestView
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        prepare()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
+        prepare()
+        setupRefresh()
         setupNaviBar()
         setupTableView()
         setupCustomSearchBar()
@@ -58,6 +55,15 @@ class WeeklyBestVC: UIViewController {
                 }
             }
         }
+    }
+    
+    // MARK: - 새로고침
+    private func setupRefresh() {
+        let rc = weeklyBestView.refreshControl
+        rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
+        rc.tintColor = .customOrange
+        
+        weeklyBestView.tableView.refreshControl = rc
     }
     
     // MARK: - 네비게이션바 설정
@@ -95,6 +101,17 @@ class WeeklyBestVC: UIViewController {
     }
 }
 
+extension WeeklyBestVC {
+    @objc func refreshTable(refresh: UIRefreshControl) {
+        print("새로고침 시작")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.prepare()
+            refresh.endRefreshing()
+        }
+    }
+}
+
 // MARK: - UITableViewDataSource
 extension WeeklyBestVC: UITableViewDataSource {
     
@@ -110,7 +127,7 @@ extension WeeklyBestVC: UITableViewDataSource {
         cell.likeSelectedIcon.isHidden = !weeklyBest.isLike
         
         if let url = URL(string: weeklyBest.combinationImageUrl) {
-            cell.mainImage.kf.setImage(with: url)
+            cell.thumnailImage.kf.setImage(with: url)
         }
         
         cell.titleLabel.text = weeklyBest.title
