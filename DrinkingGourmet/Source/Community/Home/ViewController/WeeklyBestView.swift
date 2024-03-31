@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeeklyBestView: UIView {
+final class WeeklyBestView: UIView {
     
     // MARK: - View
     let tableView = UITableView().then {
@@ -16,11 +16,15 @@ class WeeklyBestView: UIView {
         $0.separatorStyle = .none // 테이블뷰 구분선 없애기
     }
     
+    let refreshControl = UIRefreshControl()
+    
     let customSearchBar = CustomSearchBar()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
+        
         addViews()
         configureConstraints()
     }
@@ -30,21 +34,22 @@ class WeeklyBestView: UIView {
     }
     
     // MARK: - UI
-    func addViews() {
-        self.addSubviews([tableView, customSearchBar])
+    private func addViews() {
+        self.addSubviews([
+            tableView,
+            customSearchBar
+        ])
     }
     
-    func configureConstraints() {
+    private func configureConstraints() {
         customSearchBar.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(15)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
         
         tableView.snp.makeConstraints { make in
             make.top.equalTo(customSearchBar.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.trailing.equalTo(customSearchBar)
             make.bottom.equalToSuperview()
         }
     }
