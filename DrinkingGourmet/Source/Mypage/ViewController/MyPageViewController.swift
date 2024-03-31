@@ -148,7 +148,8 @@ class MyPageViewController: UIViewController {
     }
     
     @objc func settingButtonTapped() {
-        print("설정 버튼이 탭되었습니다.")
+        let VC = SettingHomeViewController()
+        navigationController?.pushViewController(VC, animated: true)
     }
     
     // MARK: - 컬렌션뷰 설정
