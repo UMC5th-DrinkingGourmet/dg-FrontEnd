@@ -7,18 +7,34 @@
 
 import UIKit
 
-class CommunityHomeView: UIView {
-
+final class CommunityHomeView: UIView {
     // MARK: - View
-    let tableView = UITableView().then {
-        $0.showsVerticalScrollIndicator = false // 스크롤바 숨기기
-        $0.keyboardDismissMode = .onDrag // 스크롤 할 때 키보드 내리기
-        $0.separatorStyle = .none // 테이블뷰 구분선 없애기
+    private let scrollView = UIScrollView()
+    
+    private let contentView = UIView()
+    
+    let combinationButton = UIButton().then {
+        $0.setImage(UIImage(named: "img_community_home_combination"), for: .normal)
+    }
+    
+    let weeklyBestButton = UIButton().then {
+        $0.setImage(UIImage(named: "img_community_home_weeklybest"), for: .normal)
+    }
+    
+    let recipeBookButton = UIButton().then {
+        $0.setImage(UIImage(named: "img_community_home_recipebook"), for: .normal)
+    }
+    
+    private let stackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 16
     }
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
+        
         addViews()
         configureConstraints()
     }
@@ -28,18 +44,42 @@ class CommunityHomeView: UIView {
     }
     
     // MARK: - UI
-    func addViews() {
-        self.addSubviews([tableView])
+    private func addViews() {
+        self.addSubview(scrollView)
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(stackView)
+        
+        stackView.addArrangedSubviews([
+            combinationButton,
+            weeklyBestButton,
+            recipeBookButton
+        ])
     }
     
     func configureConstraints() {
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(15)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview()
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView)
+            make.width.equalTo(scrollView)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(contentView)
+            make.leading.trailing.equalTo(contentView).inset(20)
+            make.bottom.equalTo(contentView)
+        }
+        
+        let buttons = [combinationButton, weeklyBestButton, recipeBookButton]
+
+        buttons.forEach { button in
+            button.snp.makeConstraints { make in
+                make.height.equalTo(170)
+            }
         }
     }
-
 }
-
