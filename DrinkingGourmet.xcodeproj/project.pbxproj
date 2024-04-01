@@ -54,8 +54,12 @@
 		5601EBC82B7C169A0043CCD4 /* RecipeBookSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBC72B7C169A0043CCD4 /* RecipeBookSearchVC.swift */; };
 		5601EBCB2B7C1E470043CCD4 /* RecipeBookDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBCA2B7C1E470043CCD4 /* RecipeBookDetailModel.swift */; };
 		5601EBCD2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBCC2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift */; };
-		5625E3792BB962D700269BBF /* SettingHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E3782BB962D700269BBF /* SettingHomeView.swift */; };
-		5625E37B2BB962EA00269BBF /* SettingHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E37A2BB962EA00269BBF /* SettingHomeViewController.swift */; };
+		5625E3792BB962D700269BBF /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E3782BB962D700269BBF /* SettingView.swift */; };
+		5625E37B2BB962EA00269BBF /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E37A2BB962EA00269BBF /* SettingViewController.swift */; };
+		5625E37D2BBABE8500269BBF /* SettingTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E37C2BBABE8500269BBF /* SettingTopView.swift */; };
+		5625E37F2BBAC25E00269BBF /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E37E2BBAC25E00269BBF /* SettingCell.swift */; };
+		5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E3812BBAD3F600269BBF /* SettingSections.swift */; };
+		5625E3842BBB3A8400269BBF /* SettingSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E3832BBB3A8400269BBF /* SettingSectionHeaderView.swift */; };
 		5644C8F92B856E700025E44F /* NewAlcoholViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5644C8F82B856E700025E44F /* NewAlcoholViewController.swift */; };
 		56543EBD2B7E9A880099E648 /* CombinationUploadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EBC2B7E9A880099E648 /* CombinationUploadVC.swift */; };
 		56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */; };
@@ -213,8 +217,12 @@
 		5601EBC72B7C169A0043CCD4 /* RecipeBookSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookSearchVC.swift; sourceTree = "<group>"; };
 		5601EBCA2B7C1E470043CCD4 /* RecipeBookDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailModel.swift; sourceTree = "<group>"; };
 		5601EBCC2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailDataManager.swift; sourceTree = "<group>"; };
-		5625E3782BB962D700269BBF /* SettingHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHomeView.swift; sourceTree = "<group>"; };
-		5625E37A2BB962EA00269BBF /* SettingHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHomeViewController.swift; sourceTree = "<group>"; };
+		5625E3782BB962D700269BBF /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		5625E37A2BB962EA00269BBF /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		5625E37C2BBABE8500269BBF /* SettingTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTopView.swift; sourceTree = "<group>"; };
+		5625E37E2BBAC25E00269BBF /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		5625E3812BBAD3F600269BBF /* SettingSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSections.swift; sourceTree = "<group>"; };
+		5625E3832BBB3A8400269BBF /* SettingSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSectionHeaderView.swift; sourceTree = "<group>"; };
 		5644C8F82B856E700025E44F /* NewAlcoholViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlcoholViewController.swift; sourceTree = "<group>"; };
 		56543EBC2B7E9A880099E648 /* CombinationUploadVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadVC.swift; sourceTree = "<group>"; };
 		56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadModel.swift; sourceTree = "<group>"; };
@@ -704,6 +712,7 @@
 		5625E3752BB962C300269BBF /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				5625E3802BBAD3EB00269BBF /* Model */,
 				5625E3772BB962CF00269BBF /* View */,
 				5625E3762BB962C700269BBF /* ViewController */,
 			);
@@ -713,7 +722,7 @@
 		5625E3762BB962C700269BBF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5625E37A2BB962EA00269BBF /* SettingHomeViewController.swift */,
+				5625E37A2BB962EA00269BBF /* SettingViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -721,9 +730,20 @@
 		5625E3772BB962CF00269BBF /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5625E3782BB962D700269BBF /* SettingHomeView.swift */,
+				5625E37C2BBABE8500269BBF /* SettingTopView.swift */,
+				5625E3782BB962D700269BBF /* SettingView.swift */,
+				5625E37E2BBAC25E00269BBF /* SettingCell.swift */,
+				5625E3832BBB3A8400269BBF /* SettingSectionHeaderView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		5625E3802BBAD3EB00269BBF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5625E3812BBAD3F600269BBF /* SettingSections.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		5644C8F62B856E470025E44F /* NewAlcohol */ = {
@@ -1281,6 +1301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5625E37D2BBABE8500269BBF /* SettingTopView.swift in Sources */,
 				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
 				56AE28552B8403BC009CE0A1 /* MyPageCombinationModel.swift in Sources */,
@@ -1295,18 +1316,20 @@
 				56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */,
 				97EB4AED2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift in Sources */,
 				2EFA32F72B7156EF00059188 /* RecipeBookCollectionViewCell.swift in Sources */,
+				5625E37F2BBAC25E00269BBF /* SettingCell.swift in Sources */,
 				56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */,
 				975F09202B827267009C6F0E /* MyRecommendModelData.swift in Sources */,
 				2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */,
 				56AE284F2B83ED5A009CE0A1 /* MyPageDataManager.swift in Sources */,
 				97EB4AC52B70F5E6009A62EB /* SelectWeatherViewController.swift in Sources */,
 				97599BFC2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift in Sources */,
-				5625E37B2BB962EA00269BBF /* SettingHomeViewController.swift in Sources */,
+				5625E37B2BB962EA00269BBF /* SettingViewController.swift in Sources */,
 				5668A34F2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift in Sources */,
 				5601EBCB2B7C1E470043CCD4 /* RecipeBookDetailModel.swift in Sources */,
 				975F09052B816E09009C6F0E /* GetDrinkingRecommendViewController.swift in Sources */,
 				97EB4AE92B71101E009A62EB /* GetUserInfoViewController.swift in Sources */,
 				97EB4AD82B70F668009A62EB /* SelectAlcoholDegreeViewController.swift in Sources */,
+				5625E3842BBB3A8400269BBF /* SettingSectionHeaderView.swift in Sources */,
 				56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchVC.swift in Sources */,
 				56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */,
 				5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */,
@@ -1380,7 +1403,7 @@
 				97EB4ACA2B70F626009A62EB /* SelectMyMoodResource.swift in Sources */,
 				56EAD58A2B6C6C1A005C3A80 /* TodayCombinationView.swift in Sources */,
 				56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */,
-				5625E3792BB962D700269BBF /* SettingHomeView.swift in Sources */,
+				5625E3792BB962D700269BBF /* SettingView.swift in Sources */,
 				2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestVC.swift in Sources */,
@@ -1411,6 +1434,7 @@
 				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
 				97EB4AC72B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift in Sources */,
 				56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */,
+				5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */,
 				97EB4AE52B70F704009A62EB /* CustomizedSlider.swift in Sources */,
 				5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */,
 				56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */,
