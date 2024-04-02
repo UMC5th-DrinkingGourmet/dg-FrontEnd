@@ -26,6 +26,7 @@ class MyPageViewController: UIViewController {
     var arrayCombinationData: [MyPageCombinationModel.CombinationList] = []
     var arrayRecipeBookData: [MyPageRecipeBookModel.RecipeList] = []
     
+    private let settingViewController = SettingViewController()
     private let myPageView = MyPageView()
     
     // MARK: - View 설정
@@ -63,18 +64,20 @@ class MyPageViewController: UIViewController {
         }
     }
     
-    // 유저 데이터 로딩 후 업데이트
+    // 유저 데이터 로딩 후 업데이트 & 설정창에 프로필이미지, 닉네임 넘겨주기
     private func loadUserData() {
         MyPageDataManager().fetchUserData(self) { [weak self] model in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 if let urlString = model?.result.profileImageUrl {
+                    self.settingViewController.profileImageUrl = urlString
                     let url = URL(string: urlString)
                     self.myPageView.profileImage.kf.setImage(with: url)
                 }
                 
                 self.myPageView.nameLabel.text = model?.result.nickName
+                self.settingViewController.nickName = model?.result.nickName
             }
         }
     }
@@ -148,7 +151,8 @@ class MyPageViewController: UIViewController {
     }
     
     @objc func settingButtonTapped() {
-        print("설정 버튼이 탭되었습니다.")
+        let VC = settingViewController
+        navigationController?.pushViewController(VC, animated: true)
     }
     
     // MARK: - 컬렌션뷰 설정
