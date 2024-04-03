@@ -30,7 +30,6 @@ final class RecipeBookHomeVC: UIViewController {
         fetchData()
         setupRefresh()
         setupNaviBar()
-        setupTextField()
         setupTableView()
         setupButton()
     }
@@ -82,19 +81,6 @@ final class RecipeBookHomeVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    // MARK: - 텍스트필드 설정
-    private func setupTextField() {
-        recipeBookHomeView.customSearchBar.textField.delegate = self
-        
-        recipeBookHomeView.customSearchBar.textField.attributedPlaceholder = NSAttributedString(
-            string: "레시피북 검색",
-            attributes: [
-                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
-                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
-            ]
-        )
-    }
-    
     // MARK: - 테이블뷰 설정
     private func setupTableView() {
         let tb = recipeBookHomeView.tableView
@@ -108,7 +94,8 @@ final class RecipeBookHomeVC: UIViewController {
     }
     
     // MARK: - 버튼 설정
-    func setupButton() {
+    private func setupButton() {
+        recipeBookHomeView.customSearchBar.searchBarButton.addTarget(self, action: #selector(searchBarButtonTapped), for: .touchUpInside)
         recipeBookHomeView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
     }
 }
@@ -124,19 +111,15 @@ extension RecipeBookHomeVC {
         }
     }
     
-    @objc func floatingButtonTapped() {
-        let vc = RecipeBookUploadViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-// MARK: - UITextFieldDelegate
-extension RecipeBookHomeVC: UITextFieldDelegate {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    @objc func searchBarButtonTapped() {
         let recipeBookSearchVC = RecipeBookSearchVC()
         recipeBookSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
         navigationController?.pushViewController(recipeBookSearchVC, animated: true)
+    }
+    
+    @objc func floatingButtonTapped() {
+        let vc = RecipeBookUploadViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -52,21 +52,19 @@ final class TodayCombinationView: UIView {
     private func configureConstraints() {
         customSearchBar.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(15)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(customSearchBar.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalTo(customSearchBar.snp.bottom).offset(15)
+            make.leading.trailing.equalTo(customSearchBar)
             make.bottom.equalToSuperview()
         }
         
         floatingButton.snp.makeConstraints { make in
             make.size.equalTo(50)
-            make.trailing.equalToSuperview().offset(-18)
-            make.bottom.equalToSuperview().offset(-58)
+            make.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset(58)
         }
     }
 }

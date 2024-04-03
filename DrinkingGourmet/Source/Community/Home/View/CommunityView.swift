@@ -1,5 +1,5 @@
 //
-//  CommunityHomeView.swift
+//  CommunityView.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 2/4/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CommunityHomeView: UIView {
+final class CommunityView: UIView {
     // MARK: - View
     private let scrollView = UIScrollView()
     
