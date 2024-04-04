@@ -1,5 +1,5 @@
 //
-//  CommunityHomeVC.swift
+//  CommunityViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 2/4/24.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-final class CommunityHomeVC: UIViewController {
+final class CommunityViewController: UIViewController {
     
-    private let communityHomeView = CommunityHomeView()
+    private let communityView = CommunityView()
     
     // MARK: - View 설정
     override func loadView() {
-        view = communityHomeView
+        view = communityView
     }
     
     // MARK: - viewDidLoad
@@ -36,23 +36,23 @@ final class CommunityHomeVC: UIViewController {
     }
     
     private func setupButtons() {
-        communityHomeView.combinationButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        communityHomeView.weeklyBestButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        communityHomeView.recipeBookButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        communityView.combinationButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        communityView.weeklyBestButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        communityView.recipeBookButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
     }
 }
 
 // MARK: - @objc
-extension CommunityHomeVC {
+extension CommunityViewController {
     @objc private func buttonTapped(_ sender: UIButton) {
         var destinationVC: UIViewController
         
         switch sender {
-        case communityHomeView.combinationButton:
+        case communityView.combinationButton:
             destinationVC = TodayCombinationViewController()
-        case communityHomeView.weeklyBestButton:
+        case communityView.weeklyBestButton:
             destinationVC = WeeklyBestVC()
-        case communityHomeView.recipeBookButton:
+        case communityView.recipeBookButton:
             destinationVC = RecipeBookHomeVC()
         default:
             return

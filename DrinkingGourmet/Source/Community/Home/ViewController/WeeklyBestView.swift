@@ -48,7 +48,7 @@ final class WeeklyBestView: UIView {
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(customSearchBar.snp.bottom).offset(10)
+            make.top.equalTo(customSearchBar.snp.bottom).offset(15)
             make.leading.trailing.equalTo(customSearchBar)
             make.bottom.equalToSuperview()
         }

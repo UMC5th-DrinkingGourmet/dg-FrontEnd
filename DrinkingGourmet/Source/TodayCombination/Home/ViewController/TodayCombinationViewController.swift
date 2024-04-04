@@ -30,7 +30,6 @@ final class TodayCombinationViewController: UIViewController {
         fetchData()
         setupRefresh()
         setupNaviBar()
-        setupTextField()
         setupTableView()
         setupButton()
     }
@@ -82,20 +81,6 @@ final class TodayCombinationViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    // MARK: - 텍스트필드 설정
-    private func setupTextField() {
-        let tf = todayCombinationView.customSearchBar.textField
-        
-        tf.delegate = self
-        tf.attributedPlaceholder = NSAttributedString(
-            string: "오늘의 조합 검색",
-            attributes: [
-                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
-                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
-            ]
-        )
-    }
-    
     // MARK: - 테이블뷰 설정
     private func setupTableView() {
         let tb = todayCombinationView.tableView
@@ -110,6 +95,7 @@ final class TodayCombinationViewController: UIViewController {
     
     // MARK: - 버튼 설정
     private func setupButton() {
+        todayCombinationView.customSearchBar.searchBarButton.addTarget(self, action: #selector(searchBarButtonTapped), for: .touchUpInside)
         todayCombinationView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
     }
     
@@ -126,18 +112,15 @@ extension TodayCombinationViewController {
         }
     }
     
-    @objc func floatingButtonTapped() {
-        let vc = CombinationUploadVC()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-// MARK: - UITextFieldDelegate
-extension TodayCombinationViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    @objc func searchBarButtonTapped() {
         let combinationSearchVC = CombinationSearchVC()
         combinationSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
         navigationController?.pushViewController(combinationSearchVC, animated: true)
+    }
+    
+    @objc func floatingButtonTapped() {
+        let vc = CombinationUploadVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -28,8 +28,8 @@ final class WeeklyBestVC: UIViewController {
         fetchData()
         setupRefresh()
         setupNaviBar()
-        setupTextField()
         setupTableView()
+        setupButton()
     }
     
     // MARK: - 데이터 가져오기
@@ -79,20 +79,6 @@ final class WeeklyBestVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    // MARK: - 텍스트필드 설정
-    private func setupTextField() {
-        let tf = weeklyBestView.customSearchBar.textField
-        
-        tf.delegate = self
-        tf.attributedPlaceholder = NSAttributedString(
-            string: "오늘의 조합 검색",
-            attributes: [
-                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
-                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
-            ]
-        )
-    }
-    
     // MARK: - 테이블뷰 설정
     private func setupTableView() {
         let tb = weeklyBestView.tableView
@@ -103,6 +89,12 @@ final class WeeklyBestVC: UIViewController {
         
         tb.rowHeight = 232 // 셀 높이 고정
         tb.register(WeeklyBestCell.self, forCellReuseIdentifier: "WeeklyBestCell")
+    }
+    
+    
+    // MARK: - 버튼 설정
+    private func setupButton() {
+        weeklyBestView.customSearchBar.searchBarButton.addTarget(self, action: #selector(searchBarButtonTapped), for: .touchUpInside)
     }
 }
 
@@ -116,11 +108,8 @@ extension WeeklyBestVC {
             refresh.endRefreshing()
         }
     }
-}
-
-// MARK: - UITextFieldDelegate
-extension WeeklyBestVC: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    
+    @objc func searchBarButtonTapped() {
         let weeklyBestSearchVC = WeeklyBestSearchVC()
         weeklyBestSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
         navigationController?.pushViewController(weeklyBestSearchVC, animated: true)
