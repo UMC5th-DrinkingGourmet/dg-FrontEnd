@@ -10,6 +10,9 @@ import UIKit
 class TodayCombinationDetailViewController: UIViewController {
     
     // MARK: - Properties
+    var selectedIndex: Int?
+    var isLiked = false
+    
     var combinationId: Int?
     var fetchingMore: Bool = false
     var totalPageNum: Int = 0
@@ -19,15 +22,13 @@ class TodayCombinationDetailViewController: UIViewController {
     var arrayCombinationComment: [CombinationCommentModel.CombinationCommentList] = []
     
     private let todayCombinationDetailView = TodayCombinationDetailView()
-    
-    private var isLiked = false
 
     // MARK: - View 설정
     override func loadView() {
         view = todayCombinationDetailView
     }
     
-    // MARK: - viewDidLoad()
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +38,20 @@ class TodayCombinationDetailViewController: UIViewController {
         configureMoreButton()
         configureCommentMoreButton()
         setupCommentsInputView()
+    }
+    
+    // 뒤로가기 할 때
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            guard let navigationController = navigationController,
+                  let todayCombinationViewController = navigationController.viewControllers.last as? TodayCombinationViewController,
+                  let selectedIndex = selectedIndex else {
+                return
+            }
+            todayCombinationViewController.arrayCombinationHome[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
+            todayCombinationViewController.todayCombinationView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
+        }
     }
     
     func prepare() {
