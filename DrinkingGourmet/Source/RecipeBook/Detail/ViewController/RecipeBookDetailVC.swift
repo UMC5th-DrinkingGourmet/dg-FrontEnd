@@ -10,6 +10,9 @@ import UIKit
 final class RecipeBookDetailVC: UIViewController {
     
     // MARK: - Properties
+    var selectedIndex: Int?
+    var isLiked = false
+    
     var recipeBookId: Int?
     var fetchingMore: Bool = false
     var totalPageNum: Int = 0
@@ -20,15 +23,13 @@ final class RecipeBookDetailVC: UIViewController {
     var arrayRecipeBookComment: [RecipeBookCommentModel.CommentList] = []
     
     private let recipeBookDetailView = RecipeBookDetailView()
-    
-    private var isLiked = false
 
     // MARK: - View 설정
     override func loadView() {
         view = recipeBookDetailView
     }
     
-    // MARK: - viewDidLoad()
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,6 +39,20 @@ final class RecipeBookDetailVC: UIViewController {
         configureMoreButton()
         configureCommentMoreButton()
         setupCommentsInputView()
+    }
+    
+    // 뒤로가기 할 때
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            guard let navigationController = navigationController,
+                  let RecipeBookHomeVC = navigationController.viewControllers.last as? RecipeBookHomeVC,
+                  let selectedIndex = selectedIndex else {
+                return
+            }
+            RecipeBookHomeVC.arrayRecipeBookHome[selectedIndex].like = isLiked // 좋아요 상태 업데이트
+            RecipeBookHomeVC.recipeBookHomeView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
+        }
     }
     
     func prepare() {
