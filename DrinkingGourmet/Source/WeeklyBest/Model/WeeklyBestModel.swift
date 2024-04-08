@@ -23,6 +23,6 @@ struct WeeklyBestModel: Codable {
         let combinationImageUrl: String
         let likeCount, commentCount: Int
         let hashTageList: [String]
-        let isLike: Bool
+        var isLike: Bool
     }
 }

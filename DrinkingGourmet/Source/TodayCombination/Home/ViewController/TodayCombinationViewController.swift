@@ -158,7 +158,8 @@ extension TodayCombinationViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension TodayCombinationViewController: UITableViewDelegate {func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension TodayCombinationViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = arrayCombinationHome[indexPath.row].combinationId
         
         let todayCombinationDetailVC = TodayCombinationDetailViewController()
