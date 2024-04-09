@@ -10,6 +10,10 @@ import UIKit
 class TodayCombinationDetailViewController: UIViewController {
     
     // MARK: - Properties
+    var isWeeklyBest = false
+    var selectedIndex: Int?
+    var isLiked = false
+    
     var combinationId: Int?
     var fetchingMore: Bool = false
     var totalPageNum: Int = 0
@@ -20,14 +24,12 @@ class TodayCombinationDetailViewController: UIViewController {
     
     private let todayCombinationDetailView = TodayCombinationDetailView()
     
-    private var isLiked = false
-
     // MARK: - View 설정
     override func loadView() {
         view = todayCombinationDetailView
     }
     
-    // MARK: - viewDidLoad()
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +39,30 @@ class TodayCombinationDetailViewController: UIViewController {
         configureMoreButton()
         configureCommentMoreButton()
         setupCommentsInputView()
+    }
+    
+    // 뒤로가기 할 때
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            if isWeeklyBest { // 주간 베스트 조합에서 PUSH 했을 때
+                guard let navigationController = navigationController,
+                      let WeeklyBestVC = navigationController.viewControllers.last as? WeeklyBestVC,
+                      let selectedIndex = selectedIndex else {
+                    return
+                }
+                WeeklyBestVC.arrayWeeklyBest[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
+                WeeklyBestVC.weeklyBestView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
+            }
+            
+            guard let navigationController = navigationController,
+                  let todayCombinationViewController = navigationController.viewControllers.last as? TodayCombinationViewController,
+                  let selectedIndex = selectedIndex else {
+                return
+            }
+            todayCombinationViewController.arrayCombinationHome[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
+            todayCombinationViewController.todayCombinationView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
+        }
     }
     
     func prepare() {
@@ -147,7 +173,7 @@ class TodayCombinationDetailViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
                 let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
                 self.present(alert, animated: true, completion: nil)
-
+                
                 Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
             }
             CombinationDetailDataManager().deleteCombination(combinationId){
@@ -184,23 +210,23 @@ class TodayCombinationDetailViewController: UIViewController {
         guard let text = todayCombinationDetailView.commentsInputView.textField.text, !text.isEmpty else { return }
         
         todayCombinationDetailView.commentsInputView.textField.resignFirstResponder() // 키보드 숨기기
-
+        
         let input = CombinationCommentInput.postCommentInput(content: text, parentId: "0")
-
+        
         if let combinationId = self.combinationId {
             CombinationDetailDataManager().postComment(combinationId, input)
             prepare()
-
+            
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
                 self.present(alert, animated: true, completion: nil)
-
+                
                 Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
                 
                 // 스크롤뷰를 맨 위로 이동
                 self.todayCombinationDetailView.scrollView.contentOffset = .zero
             }
-
+            
             fetchingMore = false
             totalPageNum = 0
             nowPageNum = 0
@@ -278,7 +304,7 @@ extension TodayCombinationDetailViewController: UIScrollViewDelegate {
             
             if offsetY > contentHeight - height {
                 if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
-//                    print("if문통과")
+                    //                    print("if문통과")
                     fetchingMore = true
                     fetchNextPage()
                 }
@@ -289,7 +315,7 @@ extension TodayCombinationDetailViewController: UIScrollViewDelegate {
     func fetchNextPage() {
         nowPageNum = nowPageNum + 1
         let nextPage = nowPageNum
-//        print("nextPage - \(nextPage)")
+        //        print("nextPage - \(nextPage)")
         let input = CombinationCommentInput.fetchCombinatiCommentDataInput(page: nextPage)
         
         if let combinationID = self.combinationId {

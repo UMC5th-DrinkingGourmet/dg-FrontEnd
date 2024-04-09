@@ -156,6 +156,9 @@ extension WeeklyBestVC: UITableViewDelegate {
         
         let todayCombinationDetailVC = TodayCombinationDetailViewController()
         todayCombinationDetailVC.combinationId = selectedItem
+        todayCombinationDetailVC.selectedIndex = indexPath.row
+        todayCombinationDetailVC.isLiked = arrayWeeklyBest[indexPath.row].isLike
+        todayCombinationDetailVC.isWeeklyBest = true
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
 }

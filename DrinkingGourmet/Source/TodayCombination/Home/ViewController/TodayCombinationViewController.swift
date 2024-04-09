@@ -164,6 +164,8 @@ extension TodayCombinationViewController: UITableViewDelegate {
         
         let todayCombinationDetailVC = TodayCombinationDetailViewController()
         todayCombinationDetailVC.combinationId = selectedItem
+        todayCombinationDetailVC.selectedIndex = indexPath.row
+        todayCombinationDetailVC.isLiked = arrayCombinationHome[indexPath.row].isLike
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
 }

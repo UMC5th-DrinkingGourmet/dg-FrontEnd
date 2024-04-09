@@ -25,7 +25,7 @@ struct RecipeBookHomeModel: Codable {
         let member: Member
         let recipeImageList: [String]
         let hashTagNameList: [String]
-        let like: Bool
+        var like: Bool
     }
     
     struct Member: Codable {

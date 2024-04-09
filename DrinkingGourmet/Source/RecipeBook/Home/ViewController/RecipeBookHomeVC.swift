@@ -171,6 +171,9 @@ extension RecipeBookHomeVC: UITableViewDelegate {
         
         let recipeBookDetailVC = RecipeBookDetailVC()
         recipeBookDetailVC.recipeBookId = selectedItem
+        recipeBookDetailVC.selectedIndex = indexPath.row
+        recipeBookDetailVC.isLiked = arrayRecipeBookHome[indexPath.row].like
+        
         navigationController?.pushViewController(recipeBookDetailVC, animated: true)
     }
 }
