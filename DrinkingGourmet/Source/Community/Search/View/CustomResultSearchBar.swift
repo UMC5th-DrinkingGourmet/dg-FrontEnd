@@ -26,13 +26,17 @@ class CustomResultSearchBar: UIView {
         $0.font = UIFont.systemFont(ofSize: 16)
         $0.tintColor = UIColor.customOrange // 커서 색상
         
-        $0.attributedPlaceholder = NSAttributedString(
-            string: "~~를 입력하세요.",
-            attributes: [
-                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
-                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
-            ]
-        )
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1),
+            .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 14)!,
+            .kern: -0.42,
+            .paragraphStyle: paragraphStyle
+        ]
+        
+        $0.attributedPlaceholder = NSAttributedString(string: "~~를 입력하세요.", attributes: attributes)
     }
     
     let magnifyingImage = UIImageView().then {
