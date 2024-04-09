@@ -10,6 +10,9 @@ import UIKit
 final class WeeklyBestVC: UIViewController {
     
     // MARK: - Properties
+    var isReturningFromSearch = false
+    var searchKeyword = ""
+    
     var arrayWeeklyBest: [WeeklyBestModel.CombinationList] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
@@ -33,19 +36,37 @@ final class WeeklyBestVC: UIViewController {
     }
     
     // MARK: - 데이터 가져오기
-    private func fetchData() {
-        let input = WeeklyBestInput(page: 0)
-        pageNum = 0
-        
-        WeeklyBestDataManager().fetchWeeklyBestData(input, self) { [weak self] model in
-            guard let self = self else { return }
+    func fetchData() {
+        if isReturningFromSearch { // 검색일 때
+            let input = fetchweeklyBestDataForSearchInput(page: 0, keyword: searchKeyword)
+            pageNum = 0
             
-            if let model = model {
-                self.totalPageNum = model.result.totalPage
-                self.isLastPage = model.result.isLast
-                self.arrayWeeklyBest = model.result.combinationList
-                DispatchQueue.main.async {
-                    self.weeklyBestView.tableView.reloadData()
+            WeeklyBestDataManager().fetchWeeklyBestDataForSearch(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.isLastPage = model.result.isLast
+                    self.arrayWeeklyBest = model.result.combinationList
+                    DispatchQueue.main.async {
+                        self.weeklyBestView.tableView.reloadData()
+                    }
+                }
+            }
+        } else {
+            let input = fetchWeeklyBestDataInput(page: 0)
+            pageNum = 0
+            
+            WeeklyBestDataManager().fetchWeeklyBestData(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.isLastPage = model.result.isLast
+                    self.arrayWeeklyBest = model.result.combinationList
+                    DispatchQueue.main.async {
+                        self.weeklyBestView.tableView.reloadData()
+                    }
                 }
             }
         }
@@ -53,6 +74,8 @@ final class WeeklyBestVC: UIViewController {
     
     // MARK: - 새로고침
     private func setupRefresh() {
+        isReturningFromSearch = false
+        
         let rc = weeklyBestView.refreshControl
         rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
         rc.tintColor = .customOrange
@@ -94,14 +117,19 @@ final class WeeklyBestVC: UIViewController {
     
     // MARK: - 버튼 설정
     private func setupButton() {
-        weeklyBestView.customSearchBar.searchBarButton.addTarget(self, action: #selector(searchBarButtonTapped), for: .touchUpInside)
+        weeklyBestView.customSearchBar.searchBarButton.addTarget(
+            self,
+            action: #selector(searchBarButtonTapped),
+            for: .touchUpInside
+        )
     }
 }
 
 // MARK: - @objc
 extension WeeklyBestVC {
     @objc func refreshTable(refresh: UIRefreshControl) {
-        print("새로고침 시작")
+        isReturningFromSearch = false
+        print("레시피북 새로고침")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.fetchData()
@@ -168,19 +196,39 @@ extension WeeklyBestVC: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             
-            if arrayWeeklyBest.count - 1 == indexPath.row && pageNum < totalPageNum &&  !isLastPage {
-                
-                pageNum += 1
-                
-                let inputt = WeeklyBestInput(page: pageNum)
-                
-                WeeklyBestDataManager().fetchWeeklyBestData(inputt, self) { [weak self] model in
-                    if let model = model {
-                        guard let self = self else { return }
-                        self.arrayWeeklyBest += model.result.combinationList
-                        self.isLastPage = model.result.isLast
-                        DispatchQueue.main.async {
-                            self.weeklyBestView.tableView.reloadData()
+            if isReturningFromSearch { // 검색일 때
+                if arrayWeeklyBest.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                    
+                    pageNum += 1
+                    
+                    let input = fetchweeklyBestDataForSearchInput(page: pageNum, keyword: searchKeyword)
+                    
+                    WeeklyBestDataManager().fetchWeeklyBestDataForSearch(input, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayWeeklyBest += model.result.combinationList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.weeklyBestView.tableView.reloadData()
+                            }
+                        }
+                    }
+                }
+            } else {
+                if arrayWeeklyBest.count - 1 == indexPath.row && pageNum < totalPageNum &&  !isLastPage {
+                    
+                    pageNum += 1
+                    
+                    let inputt = fetchWeeklyBestDataInput(page: pageNum)
+                    
+                    WeeklyBestDataManager().fetchWeeklyBestData(inputt, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayWeeklyBest += model.result.combinationList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.weeklyBestView.tableView.reloadData()
+                            }
                         }
                     }
                 }

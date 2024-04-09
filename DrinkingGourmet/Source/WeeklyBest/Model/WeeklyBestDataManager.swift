@@ -12,7 +12,7 @@ class WeeklyBestDataManager {
     private let baseURL = "https://drink-gourmet.kro.kr"
     
     // MARK: - 주간 베스트 조합 조회
-    func fetchWeeklyBestData(_ parameters: WeeklyBestInput,
+    func fetchWeeklyBestData(_ parameters: fetchWeeklyBestDataInput,
                              _ viewController: WeeklyBestVC,
                              completion: @escaping (WeeklyBestModel?) -> Void) {
         
@@ -49,8 +49,8 @@ class WeeklyBestDataManager {
     
     
     // MARK: - 주간 베스트 조합 검색
-    func fetchWeeklyBestDataForSearch(_ parameters: WeeklyBestSearchInput,
-                                      _ viewController: WeeklyBestSearchVC,
+    func fetchWeeklyBestDataForSearch(_ parameters: fetchweeklyBestDataForSearchInput,
+                                      _ viewController: WeeklyBestVC,
                                       completion: @escaping (WeeklyBestModel?) -> Void) {
         
         do {

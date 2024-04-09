@@ -6,12 +6,12 @@
 //
 
 // MARK: - 주간 베스트 조합 조회 Query Params
-struct WeeklyBestInput: Codable {
+struct fetchWeeklyBestDataInput: Codable {
     var page: Int?
 }
 
 // MARK: - 주간 베스트 조합 검색 Query Params
-struct WeeklyBestSearchInput: Codable {
+struct fetchweeklyBestDataForSearchInput: Codable {
     var page: Int?
     var keyword: String?
 }
