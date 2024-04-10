@@ -7,6 +7,173 @@
 
 import UIKit
 
+final class TodayCombinationDetailViewController: UIViewController, UIScrollViewDelegate {
+    var combinationDataSourceArray = ["1","2","3"]
+    
+    // MARK: - Properties
+    var isWeeklyBest = false
+    var selectedIndex: Int?
+    var isLiked = false
+    
+    var combinationId: Int?
+    var fetchingMore: Bool = false
+    var totalPageNum: Int = 0
+    var nowPageNum: Int = 0
+    
+    private let combinationDetailView = CombinationDetailView()
+    
+    // MARK: - View 설정
+    override func loadView() {
+        view = combinationDetailView
+    }
+    
+    // MARK: - ViewDidLodad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        addTapGesture()
+        setupTableView()
+        setupButton()
+    }
+    
+    private func addTapGesture() {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard(_:)))
+            view.addGestureRecognizer(tapGesture)
+        }
+
+        @objc
+        private func hideKeyboard(_ sender: Any) {
+            view.endEditing(true)
+        }
+    
+    private func setupTableView() {
+        let tb = combinationDetailView.tabelView
+        tb.dataSource = self
+        tb.delegate = self
+        tb.rowHeight = 68
+        tb.register(CombinationDetailCommentCell.self, forCellReuseIdentifier: "CombinationDetailCommentCell")
+        
+        tb.sectionHeaderHeight = UITableView.automaticDimension
+        tb.register(CombinationDetailHeaderView.self, forHeaderFooterViewReuseIdentifier: "CombinationDetailHeaderView")
+        
+//        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: combinationDetailView.tabelView.bounds.width, height: 0.01))
+//        combinationDetailView.tabelView.tableFooterView = footerView
+        tb.sectionFooterHeight = .leastNonzeroMagnitude
+    }
+    
+    private func setupButton() {
+        combinationDetailView.commentInputView.button.addTarget(self, action: #selector(testButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func testButtonTapped() {
+        print("버튼눌림")
+        view.endEditing(true) // 키보드 내리기
+        combinationDataSourceArray.append("새로운 셀") // 배열에 새로운 요소 추가
+        let newCellCount = combinationDataSourceArray.count // 새로운 셀의 개수 계산
+        let indexPath = IndexPath(row: newCellCount - 1, section: 0)
+        combinationDetailView.tabelView.insertRows(at: [indexPath], with: .automatic) // 새로운 셀 삽입
+        combinationDetailView.tabelView.scrollToRow(at: indexPath, at: .bottom, animated: true) // 새로운 셀이 추가된 위치로 스크롤
+    }
+}
+
+extension TodayCombinationDetailViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return combinationDataSourceArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CombinationDetailCommentCell", for: indexPath) as! CombinationDetailCommentCell
+        
+        return cell
+    }
+}
+
+extension TodayCombinationDetailViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CombinationDetailHeaderView") as? CombinationDetailHeaderView else {
+            return UIView()
+        }
+        // 헤더뷰에 있는 컬렉션 뷰의 델리게이트 설정
+        header.imageCollectionView.delegate = self
+        header.imageCollectionView.dataSource = self
+        // 셀 등록
+        header.imageCollectionView.register(CombinationDetailImageCell.self, forCellWithReuseIdentifier: "CombinationDetailImageCell")
+        
+        // 댓글 작성 버튼
+        
+        return header
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+extension TodayCombinationDetailViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CombinationDetailImageCell", for: indexPath) as! CombinationDetailImageCell
+
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension TodayCombinationDetailViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.bounds.size
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
+    }
+}
+
+// MARK: - 댓글입력창 눌렀을 때 텍스트필드 가려짐 해결
+extension TodayCombinationDetailViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardUp(notification: NSNotification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            let keyboardHeight = keyboardFrame.height
+            let safeAreaBottomInset = view.safeAreaInsets.bottom
+            let distanceToMove = keyboardHeight - safeAreaBottomInset // 키보드가 뷰를 가리는 거리
+            
+            UIView.animate(withDuration: 0.3) {
+                // Safe Area를 고려하여 뷰의 위치를 조정
+                self.view.transform = CGAffineTransform(translationX: 0, y: -distanceToMove)
+                // 텍스트 필드가 있는 테이블 뷰의 contentInset을 조정
+                self.combinationDetailView.tabelView.contentInset.bottom = keyboardHeight
+            }
+        }
+    }
+    
+    @objc func keyboardDown() {
+        UIView.animate(withDuration: 0.3) {
+            // 키보드가 사라질 때는 다시 원래 위치로 복원
+            self.view.transform = .identity
+            // 텍스트 필드가 있는 테이블 뷰의 contentInset을 초기화
+            self.combinationDetailView.tabelView.contentInset.bottom = 0
+        }
+    }
+}
+
+/*
+
 class TodayCombinationDetailViewController: UIViewController {
     
     // MARK: - Properties
@@ -370,3 +537,5 @@ extension TodayCombinationDetailViewController {
     }
     
 }
+
+*/
