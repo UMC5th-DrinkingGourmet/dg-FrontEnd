@@ -10,7 +10,6 @@ import UIKit
 class CombinationSearchVC: UIViewController {
     
     // MARK: - Properties
-    
     private let searchResultView = SearchResultView()
     
     // MARK: - View 설정
@@ -45,13 +44,7 @@ class CombinationSearchVC: UIViewController {
         
         tf.delegate = self
         tf.becomeFirstResponder() // 키보드 자동 띄우기
-        tf.attributedPlaceholder = NSAttributedString(
-            string: "오늘의 조합 검색",
-            attributes: [
-                .foregroundColor: UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1),
-                .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
-            ]
-        )
+        tf.placeholder = "오늘의 조합 검색"
     }
     
     // MARK: - 버튼 설정
@@ -70,25 +63,14 @@ extension CombinationSearchVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder() // 키보드 숨기기
         
-        let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: 0, keyword: searchResultView.searchBar.textField.text)
-        
-        CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
-            guard let self = self else { return }
-            if let model = model {
-                self.updateCombinationHomeVC(with: model.result.combinationList)
-            }
+        if let todayCombinationViewController = navigationController?.viewControllers.first(where: { $0 is TodayCombinationViewController }) as? TodayCombinationViewController {
+            
+            todayCombinationViewController.isReturningFromSearch = true
+            todayCombinationViewController.searchKeyword = searchResultView.searchBar.textField.text ?? ""
+            todayCombinationViewController.fetchData()
+            todayCombinationViewController.todayCombinationView.tableView.setContentOffset(CGPoint.zero, animated: true)
+            navigationController?.popViewController(animated: true)
         }
         return true
-    }
-    
-    private func updateCombinationHomeVC(with data: [CombinationHomeModel.CombinationHomeList]) {
-        guard let todayCombinationViewController = navigationController?.viewControllers.first(where: { $0 is TodayCombinationViewController }) as? TodayCombinationViewController else {
-            return
-        }
-        
-//        todayCombinationViewController.isReturningFromSearch = true
-//        todayCombinationViewController.arrayCombinationHome = data
-//        todayCombinationViewController.todayCombinationView.tableView.reloadData()
-        navigationController?.popViewController(animated: true)
     }
 }

@@ -47,7 +47,7 @@ class RecipeBookHomeDataManager {
     
     // MARK: - 레시피북 검색
     func fetchRecipeBookDataForSearch(_ parameters: RecipeBookHomeInput.fetchRecipeBookDataForSearchInput,
-                                       _ viewController: RecipeBookSearchVC,
+                                       _ viewController: RecipeBookHomeVC,
                                        completion: @escaping (RecipeBookHomeModel?) -> Void) {
         do {
             // Keychain에서 액세스 토큰 가져오기

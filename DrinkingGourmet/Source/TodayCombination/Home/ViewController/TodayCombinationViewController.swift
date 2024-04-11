@@ -8,8 +8,10 @@
 import UIKit
 
 final class TodayCombinationViewController: UIViewController {
-    
     // MARK: - Properties
+    var isReturningFromSearch = false
+    var searchKeyword = ""
+    
     var arrayCombinationHome: [CombinationHomeModel.CombinationHomeList] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
@@ -35,19 +37,37 @@ final class TodayCombinationViewController: UIViewController {
     }
     
     // MARK: - 데이터 가져오기
-    private func fetchData() {
-        let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
-        pageNum = 0
-        
-        CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-            guard let self = self else { return }
+    func fetchData() {
+        if isReturningFromSearch { // 검색일 때
+            let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: 0, keyword: searchKeyword)
+            pageNum = 0
             
-            if let model = model {
-                self.totalPageNum = model.result.totalPage
-                self.isLastPage = model.result.isLast
-                self.arrayCombinationHome = model.result.combinationList
-                DispatchQueue.main.async {
-                    self.todayCombinationView.tableView.reloadData()
+            CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.isLastPage = model.result.isLast
+                    self.arrayCombinationHome = model.result.combinationList
+                    DispatchQueue.main.async {
+                        self.todayCombinationView.tableView.reloadData()
+                    }
+                }
+            }
+        } else {
+            let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
+            pageNum = 0
+            
+            CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.isLastPage = model.result.isLast
+                    self.arrayCombinationHome = model.result.combinationList
+                    DispatchQueue.main.async {
+                        self.todayCombinationView.tableView.reloadData()
+                    }
                 }
             }
         }
@@ -55,6 +75,8 @@ final class TodayCombinationViewController: UIViewController {
     
     // MARK: - 새로고침
     private func setupRefresh() {
+        isReturningFromSearch = false
+        
         let rc = todayCombinationView.refreshControl
         rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
         rc.tintColor = .customOrange
@@ -95,15 +117,23 @@ final class TodayCombinationViewController: UIViewController {
     
     // MARK: - 버튼 설정
     private func setupButton() {
-        todayCombinationView.customSearchBar.searchBarButton.addTarget(self, action: #selector(searchBarButtonTapped), for: .touchUpInside)
-        todayCombinationView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
+        todayCombinationView.customSearchBar.searchBarButton.addTarget(
+            self,
+            action: #selector(searchBarButtonTapped),
+            for: .touchUpInside
+        )
+        todayCombinationView.floatingButton.addTarget(
+            self,
+            action: #selector(floatingButtonTapped),
+            for: .touchUpInside
+        )
     }
-    
 }
 
 // MARK: - @objc
 extension TodayCombinationViewController {
     @objc func refreshTable(refresh: UIRefreshControl) {
+        isReturningFromSearch = false
         print("새로고침 시작")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -175,19 +205,39 @@ extension TodayCombinationViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             
-            if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum &&  !isLastPage {
-                
-                pageNum += 1
-                
-                let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: pageNum)
-                
-                CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-                    if let model = model {
-                        guard let self = self else { return }
-                        self.arrayCombinationHome += model.result.combinationList
-                        self.isLastPage = model.result.isLast
-                        DispatchQueue.main.async {
-                            self.todayCombinationView.tableView.reloadData()
+            if isReturningFromSearch { // 검색일 때
+                if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                    
+                    pageNum += 1
+                    
+                    let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: pageNum, keyword: searchKeyword)
+                    
+                    CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayCombinationHome += model.result.combinationList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.todayCombinationView.tableView.reloadData()
+                            }
+                        }
+                    }
+                }
+            } else {
+                if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                    
+                    pageNum += 1
+                    
+                    let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: pageNum)
+                    
+                    CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayCombinationHome += model.result.combinationList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.todayCombinationView.tableView.reloadData()
+                            }
                         }
                     }
                 }

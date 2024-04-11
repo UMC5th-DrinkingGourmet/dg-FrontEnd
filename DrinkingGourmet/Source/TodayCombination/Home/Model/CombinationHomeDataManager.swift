@@ -48,7 +48,7 @@ class CombinationHomeDataManager {
     
     // MARK: - 오늘의 조합 검색
     func fetchCombinationSearchData (_ parameters: CombinationHomeInput.fetchCombinationSearchDataInput,
-                                       _ viewController: CombinationSearchVC,
+                                       _ viewController: TodayCombinationViewController,
                                        completion: @escaping (CombinationHomeModel?) -> Void) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)

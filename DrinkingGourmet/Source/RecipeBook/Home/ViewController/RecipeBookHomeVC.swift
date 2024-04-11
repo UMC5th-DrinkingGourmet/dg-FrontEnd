@@ -8,8 +8,10 @@
 import UIKit
 
 final class RecipeBookHomeVC: UIViewController {
-    
     // MARK: - Properties
+    var isReturningFromSearch = false
+    var searchKeyword = ""
+    
     var arrayRecipeBookHome: [RecipeBookHomeModel.RecipeList] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
@@ -35,19 +37,37 @@ final class RecipeBookHomeVC: UIViewController {
     }
     
     // MARK: - 데이터 가져오기
-    private func fetchData() {
-        let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: 0)
-        pageNum = 0
-        
-        RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
-            guard let self = self else { return }
+    func fetchData() {
+        if isReturningFromSearch { // 검색일 때
+            let input = RecipeBookHomeInput.fetchRecipeBookDataForSearchInput(page: 0, keyword: searchKeyword)
+            pageNum = 0
             
-            if let model = model {
-                self.totalPageNum = model.result.totalPage
-                self.isLastPage = model.result.isLast
-                self.arrayRecipeBookHome = model.result.recipeList
-                DispatchQueue.main.async {
-                    self.recipeBookHomeView.tableView.reloadData()
+            RecipeBookHomeDataManager().fetchRecipeBookDataForSearch(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.isLastPage = model.result.isLast
+                    self.arrayRecipeBookHome = model.result.recipeList
+                    DispatchQueue.main.async {
+                        self.recipeBookHomeView.tableView.reloadData()
+                    }
+                }
+            }
+        } else {
+            let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: 0)
+            pageNum = 0
+            
+            RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
+                guard let self = self else { return }
+                
+                if let model = model {
+                    self.totalPageNum = model.result.totalPage
+                    self.isLastPage = model.result.isLast
+                    self.arrayRecipeBookHome = model.result.recipeList
+                    DispatchQueue.main.async {
+                        self.recipeBookHomeView.tableView.reloadData()
+                    }
                 }
             }
         }
@@ -55,6 +75,8 @@ final class RecipeBookHomeVC: UIViewController {
     
     // MARK: - 새로고침
     private func setupRefresh() {
+        isReturningFromSearch = false
+        
         let rc = recipeBookHomeView.refreshControl
         rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
         rc.tintColor = .customOrange
@@ -95,14 +117,23 @@ final class RecipeBookHomeVC: UIViewController {
     
     // MARK: - 버튼 설정
     private func setupButton() {
-        recipeBookHomeView.customSearchBar.searchBarButton.addTarget(self, action: #selector(searchBarButtonTapped), for: .touchUpInside)
-        recipeBookHomeView.floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
+        recipeBookHomeView.customSearchBar.searchBarButton.addTarget(
+            self,
+            action: #selector(searchBarButtonTapped),
+            for: .touchUpInside
+        )
+        recipeBookHomeView.floatingButton.addTarget(
+            self,
+            action: #selector(floatingButtonTapped),
+            for: .touchUpInside
+        )
     }
 }
 
 // MARK: - @objc
 extension RecipeBookHomeVC {
     @objc func refreshTable(refresh: UIRefreshControl) {
+        isReturningFromSearch = false
         print("새로고침 시작")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -147,7 +178,7 @@ extension RecipeBookHomeVC: UITableViewDataSource {
             // 예: 기본 이미지 설정 또는 이미지 뷰 숨기기
             cell.thumnailImage.image = UIImage(named: "defaultImage") // "defaultImage"는 기본 이미지의 이름
         }
-
+        
         
         cell.titleLabel.text = recipeBook.title
         
@@ -183,19 +214,39 @@ extension RecipeBookHomeVC: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             
-            if arrayRecipeBookHome.count - 1 == indexPath.row && pageNum < totalPageNum &&  !isLastPage {
-                
-                pageNum += 1
-                
-                let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: pageNum)
-                
-                RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
-                    if let model = model {
-                        guard let self = self else { return }
-                        self.arrayRecipeBookHome += model.result.recipeList
-                        self.isLastPage = model.result.isLast
-                        DispatchQueue.main.async {
-                            self.recipeBookHomeView.tableView.reloadData()
+            if isReturningFromSearch { // 검색일 때
+                if arrayRecipeBookHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                    
+                    pageNum += 1
+                    
+                    let input = RecipeBookHomeInput.fetchRecipeBookDataForSearchInput(page: pageNum, keyword: searchKeyword)
+                    
+                    RecipeBookHomeDataManager().fetchRecipeBookDataForSearch(input, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayRecipeBookHome += model.result.recipeList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.recipeBookHomeView.tableView.reloadData()
+                            }
+                        }
+                    }
+                }
+            } else {
+                if arrayRecipeBookHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                    
+                    pageNum += 1
+                    
+                    let input = RecipeBookHomeInput.fetchRecipeBookHomeDataInput(page: pageNum)
+                    
+                    RecipeBookHomeDataManager().fetchRecipeBookHomeData(input, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayRecipeBookHome += model.result.recipeList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.recipeBookHomeView.tableView.reloadData()
+                            }
                         }
                     }
                 }
