@@ -7,7 +7,9 @@
 
 import UIKit
 
-class TodayCombinationDetailViewController: UIViewController {
+final class TodayCombinationDetailViewController: UIViewController, UIScrollViewDelegate {
+    
+    var combinationDataSourceArray = ["1","2","3"]
     
     // MARK: - Properties
     var isWeeklyBest = false
@@ -22,28 +24,36 @@ class TodayCombinationDetailViewController: UIViewController {
     var combinationDetailData: CombinationDetailModel?
     var arrayCombinationComment: [CombinationCommentModel.CombinationCommentList] = []
     
-    private let todayCombinationDetailView = TodayCombinationDetailView()
+    private let combinationDetailView = CombinationDetailView()
+    
+    private var headerView: CombinationDetailHeaderView?
     
     // MARK: - View 설정
     override func loadView() {
-        view = todayCombinationDetailView
+        view = combinationDetailView
     }
     
     // MARK: - LifeCycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        prepare()
-        setupImageCollectionView()
-        configureLikeIconButton()
-        configureMoreButton()
-        configureCommentMoreButton()
-        setupCommentsInputView()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardUp),
+            name: UIResponder.keyboardWillShowNotification, object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardDown),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
-    // 뒤로가기 할 때
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+        
         if isMovingFromParent {
             if isWeeklyBest { // 주간 베스트 조합에서 PUSH 했을 때
                 guard let navigationController = navigationController,
@@ -65,12 +75,21 @@ class TodayCombinationDetailViewController: UIViewController {
         }
     }
     
-    func prepare() {
-        view.backgroundColor = .white
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        todayCombinationDetailView.scrollView.delegate = self
-        
+        setupNaviBar()
+        fetchData()
+        addTapGesture()
+        setupTableView()
+        setupButton()
+    }
+    
+    func setupNaviBar() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
+    func fetchData() {
         if let combinationID = self.combinationId {
             CombinationDetailDataManager().fetchCombinationDetailData(combinationID, self) { [weak self] detailModel in
                 guard let self = self else { return }
@@ -82,164 +101,200 @@ class TodayCombinationDetailViewController: UIViewController {
                         self.totalPageNum = commentModel.result.totalPage
                         self.arrayCombinationComment = commentModel.result.combinationCommentList
                         DispatchQueue.main.async {
-                            self.updateUIWithData()
+                            self.combinationDetailView.tabelView.reloadData()
                         }
                     }
                 }
             }
         }
     }
-    
-    // MARK: - 네트워킹 후 UI 업데이트
-    func updateUIWithData() {
-        self.todayCombinationDetailView.imageCollectionView.reloadData()
-        
-        guard let combinationDetailData = combinationDetailData else { return }
-        
-        if combinationDetailData.result.memberResult.nickName == UserDefaultManager.shared.userNickname {
-            self.todayCombinationDetailView.moreButton.isHidden = false
-        }
-        
-        if let urlString = combinationDetailData.result.memberResult.profileImageUrl {
-            let url = URL(string: urlString)
-            self.todayCombinationDetailView.profileImage.kf.setImage(with: url)
-        }
-        
-        self.todayCombinationDetailView.pageControl.numberOfPages =  combinationDetailData.result.combinationResult.combinationImageList.count
-        
-        self.todayCombinationDetailView.userNameLabel.text = "\(combinationDetailData.result.memberResult.nickName) 님의 레시피"
-        
-        if combinationDetailData.result.combinationResult.isCombinationLike == true {
-            self.isLiked = true
-            self.todayCombinationDetailView.likeIconButton.setImage(UIImage(named: "ic_like_selected"), for: .normal)
-        }
-        
-        self.todayCombinationDetailView.hashtagLabel.text = combinationDetailData.result.combinationResult.hashTagList.map { "\($0)" }.joined(separator: " ")
-        
-        self.todayCombinationDetailView.titleLabel.text = combinationDetailData.result.combinationResult.title
-        
-        self.todayCombinationDetailView.descriptionLabel.text = combinationDetailData.result.combinationResult.content
-        
-        self.todayCombinationDetailView.commentAreaView.titleLabel.text = "댓글 \(combinationDetailData.result.combinationCommentResult.totalElements)"
-        
-        if !arrayCombinationComment.isEmpty {
-            todayCombinationDetailView.commentAreaView.commentsView.configureComments(arrayCombinationComment)
-        }
-        
+
+    private func addTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard(_:)))
+        view.addGestureRecognizer(tapGesture)
     }
     
-    @objc func endEditing(){
-        view.endEditing(true)
-    }
-    
-    // MARK: - 이미지 컬렉션뷰 설정
-    func setupImageCollectionView() {
-        let imageCV = todayCombinationDetailView.imageCollectionView
-        imageCV.delegate = self
-        imageCV.dataSource = self
-        imageCV.register(TodayCombinationDetailCell.self, forCellWithReuseIdentifier: "TodayCombinationDetailCell")
+    private func setupTableView() {
+        let tb = combinationDetailView.tabelView
+        tb.dataSource = self
+        tb.delegate = self
+        tb.rowHeight = 68
+        tb.register(CombinationDetailCommentCell.self, forCellReuseIdentifier: "CombinationDetailCommentCell")
         
-        // 이미지 컬렌션뷰 터치 시 키보드 내림
-        imageCV.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
+        tb.sectionHeaderHeight = UITableView.automaticDimension
+        tb.register(CombinationDetailHeaderView.self, forHeaderFooterViewReuseIdentifier: "CombinationDetailHeaderView")
+        tb.sectionFooterHeight = .leastNonzeroMagnitude
     }
     
-    // MARK: - 좋아요 아이콘 버튼 설정
-    func configureLikeIconButton() {
-        let bt = todayCombinationDetailView.likeIconButton
-        bt.addTarget(self, action: #selector(likeIconButtonTapped), for: .touchUpInside)
+    private func setupButton() {
+        headerView?.likeButton.addTarget(
+            self,
+            action: #selector(likeButtonTapped),
+            for: .touchUpInside)
+        headerView?.moreButton.addTarget(
+            self,
+            action: #selector(moreButtonTapped),
+            for: .touchUpInside
+        )
+        combinationDetailView.commentInputView.button.addTarget(
+            self,
+            action: #selector(testButtonTapped),
+            for: .touchUpInside
+        )
     }
-    
-    @objc func likeIconButtonTapped() {
+}
+
+// MARK: - @objc
+extension TodayCombinationDetailViewController {
+    @objc func likeButtonTapped() { // 좋아요
         isLiked.toggle()
         let imageName = isLiked ? "ic_like_selected" : "ic_like"
-        todayCombinationDetailView.likeIconButton.setImage(UIImage(named: imageName), for: .normal)
+        headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)
         if let combinationId = combinationId {
             CombinationDetailDataManager().postLike(combinationId)
         }
     }
     
-    // MARK: - 게시글 삭제/수정 버튼 설정
-    func configureMoreButton() {
-        let bt = todayCombinationDetailView.moreButton
-        bt.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
-    }
-    
     @objc func moreButtonTapped() {
+        // 내가 작성한 글인지 확인 ** memberId로 수정 필요 **
+        let isCurrentUser = combinationDetailData?.result.memberResult.nickName == UserDefaultManager.shared.userNickname
+        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
-            guard let self = self, let combinationId = self.combinationId else { return }
-            DispatchQueue.main.async {
-                self.navigationController?.popViewController(animated: true)
-                let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
-                self.present(alert, animated: true, completion: nil)
-                
-                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+        if isCurrentUser { // 내가 작성한 글 일 때
+            let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
+                guard let self = self, let combinationId = self.combinationId else { return }
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                    let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+                }
+                CombinationDetailDataManager().deleteCombination(combinationId)
             }
-            CombinationDetailDataManager().deleteCombination(combinationId){
-                
+            
+            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            [removeAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            
+        } else { // 내가 작성한 글 아닐 때
+            let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
+                let VC = ReportViewController()
+                navigationController?.pushViewController(VC, animated: true)
             }
+            
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }
         }
-        
-        let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(removeAction)
-        alert.addAction(modifyAction)
-        alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
     }
     
-    // MARK: - 댓글 삭제/수정 버튼 설정
-    func configureCommentMoreButton() {
-        for commentView in todayCombinationDetailView.commentAreaView.commentsView.arrangedSubviews.compactMap({ $0 as? CommentView }) {
-            commentView.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
-        }
+    @objc func testButtonTapped() {
+        print("버튼눌림")
+        view.endEditing(true) // 키보드 내리기
+        combinationDataSourceArray.append("새로운 셀") // 배열에 새로운 요소 추가
+        let newCellCount = combinationDataSourceArray.count // 새로운 셀의 개수 계산
+        let indexPath = IndexPath(row: newCellCount - 1, section: 0)
+        combinationDetailView.tabelView.insertRows(at: [indexPath], with: .automatic) // 새로운 셀 삽입
+        combinationDetailView.tabelView.scrollToRow(at: indexPath, at: .bottom, animated: true) // 새로운 셀이 추가된 위치로 스크롤
     }
     
-    // MARK: - 댓글입력창 설정
-    func setupCommentsInputView() {
-        let cv = todayCombinationDetailView.commentsInputView
-        cv.textField.delegate = self
-        cv.button.addTarget(self, action: #selector(commentsInputButtonTapped), for: .touchUpInside)
+    @objc private func hideKeyboard(_ sender: Any) {
+        view.endEditing(true)
     }
     
-    // MARK: - 댓글 입력 버튼 클릭
-    @objc func commentsInputButtonTapped() {
-        guard let text = todayCombinationDetailView.commentsInputView.textField.text, !text.isEmpty else { return }
-        
-        todayCombinationDetailView.commentsInputView.textField.resignFirstResponder() // 키보드 숨기기
-        
-        let input = CombinationCommentInput.postCommentInput(content: text, parentId: "0")
-        
-        if let combinationId = self.combinationId {
-            CombinationDetailDataManager().postComment(combinationId, input)
-            prepare()
+    @objc func keyboardUp(notification: NSNotification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            let keyboardHeight = keyboardFrame.height
+            let safeAreaBottomInset = view.safeAreaInsets.bottom
+            let distanceToMove = keyboardHeight - safeAreaBottomInset // 키보드가 뷰를 가리는 거리
             
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
-                self.present(alert, animated: true, completion: nil)
-                
-                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
-                
-                // 스크롤뷰를 맨 위로 이동
-                self.todayCombinationDetailView.scrollView.contentOffset = .zero
+            UIView.animate(withDuration: 0.3) {
+                // Safe Area를 고려하여 뷰의 위치를 조정
+                self.view.transform = CGAffineTransform(translationX: 0, y: -distanceToMove)
+                // 텍스트 필드가 있는 테이블 뷰의 contentInset을 조정
+                self.combinationDetailView.tabelView.contentInset.bottom = keyboardHeight
             }
-            
-            fetchingMore = false
-            totalPageNum = 0
-            nowPageNum = 0
-            
-            todayCombinationDetailView.commentsInputView.textField.text = "" // 텍스트필드 초기화
         }
     }
     
-    // MARK: - 답글쓰기
-    func setupReplyButton() {
-        
+    @objc func keyboardDown() {
+        UIView.animate(withDuration: 0.3) {
+            // 키보드가 사라질 때는 다시 원래 위치로 복원
+            self.view.transform = .identity
+            // 텍스트 필드가 있는 테이블 뷰의 contentInset을 초기화
+            self.combinationDetailView.tabelView.contentInset.bottom = 0
+        }
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension TodayCombinationDetailViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return arrayCombinationComment.count
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CombinationDetailCommentCell", for: indexPath) as! CombinationDetailCommentCell
+        
+        let data = arrayCombinationComment[indexPath.row]
+        
+        if let imageUrlString = data.memberProfile {
+            if let imageUrl = URL(string: imageUrlString) {
+                cell.profileImage.kf.setImage(with: imageUrl)
+            }
+        }
+        
+        cell.nicknameLabel.text = data.memberNickName
+        cell.dateLabel.text = data.createdAt
+        cell.commentLabel.text = data.content
+        
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension TodayCombinationDetailViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CombinationDetailHeaderView") as! CombinationDetailHeaderView
+        
+        self.headerView = header
+        setupButton()
+        
+        guard let data = combinationDetailData else { return UIView() }
+        
+        header.imageCollectionView.delegate = self
+        header.imageCollectionView.dataSource = self
+        header.imageCollectionView.register(CombinationDetailImageCell.self, forCellWithReuseIdentifier: "CombinationDetailImageCell")
+        
+        // 헤더뷰 UI 세팅
+        header.pageControl.numberOfPages = data.result.combinationResult.combinationImageList.count
+        
+        if let imageUrlString = data.result.memberResult.profileImageUrl {
+            if let imageUrl = URL(string: imageUrlString) {
+                header.profileImage.kf.setImage(with: imageUrl)
+            }
+        }
+        
+        header.nicknameLabel.text = data.result.memberResult.nickName
+        
+        if data.result.combinationResult.isCombinationLike == true {
+            self.isLiked = true
+            header.likeButton.setImage(UIImage(named: "ic_like_selected"), for: .normal)
+        }
+        
+        header.hashtagLabel.text = data.result.combinationResult.hashTagList.map { "\($0)" }.joined(separator: " ")
+        header.titleLabel.text = data.result.combinationResult.title
+        header.descriptionLabel.text = data.result.combinationResult.content
+        header.commentNumLabel.text = "댓글 \(data.result.combinationCommentResult.totalElements)"
+        
+        return header
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -249,14 +304,13 @@ extension TodayCombinationDetailViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TodayCombinationDetailCell", for: indexPath) as! TodayCombinationDetailCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CombinationDetailImageCell", for: indexPath) as! CombinationDetailImageCell
         
         if let imageUrlString = combinationDetailData?.result.combinationResult.combinationImageList[indexPath.item] {
             if let imageUrl = URL(string: imageUrlString) {
                 cell.mainImage.kf.setImage(with: imageUrl)
             }
         }
-        
         return cell
     }
 }
@@ -275,98 +329,10 @@ extension TodayCombinationDetailViewController: UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return .zero
     }
-}
-
-// MARK: - UICollectionViewDelegate
-extension TodayCombinationDetailViewController: UICollectionViewDelegate {
     
-}
-
-// MARK: - UIScrollViewDelegate
-extension TodayCombinationDetailViewController: UIScrollViewDelegate {
-    
-    // 이미지 컬렉션뷰 스크롤 시 키보드 내림
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        view.endEditing(true)
-    }
-    
-    // 페이징
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView == todayCombinationDetailView.imageCollectionView {
-            // 페이지 컨트롤 업데이트
-            let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
-            todayCombinationDetailView.pageControl.currentPage = index
-        } else if scrollView == todayCombinationDetailView.scrollView {
-            // 페이징 처리
-            let offsetY = scrollView.contentOffset.y
-            let contentHeight = scrollView.contentSize.height
-            let height = scrollView.bounds.size.height
-            
-            if offsetY > contentHeight - height {
-                if !fetchingMore && totalPageNum > 1 && nowPageNum != totalPageNum {
-                    //                    print("if문통과")
-                    fetchingMore = true
-                    fetchNextPage()
-                }
-            }
-        }
+        guard let header = headerView else { return }
+        let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
+        header.pageControl.currentPage = index
     }
-    
-    func fetchNextPage() {
-        nowPageNum = nowPageNum + 1
-        let nextPage = nowPageNum
-        //        print("nextPage - \(nextPage)")
-        let input = CombinationCommentInput.fetchCombinatiCommentDataInput(page: nextPage)
-        
-        if let combinationID = self.combinationId {
-            CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, input, self) { [weak self] commentModel in
-                if let commentModel = commentModel{
-                    self?.arrayCombinationComment += commentModel.result.combinationCommentList
-                    self?.fetchingMore = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        self?.todayCombinationDetailView.commentAreaView.commentsView.configureComments(self?.arrayCombinationComment ?? [])
-                    }
-                }
-            }
-        }
-    }
-}
-
-// MARK: - UITextFieldDelegate
-extension TodayCombinationDetailViewController: UITextFieldDelegate {
-    
-    // 리턴 클릭 시 키보드 내림
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-}
-
-// MARK: - 댓글입력창 눌렀을 때 텍스트필드 가려짐 해결
-extension TodayCombinationDetailViewController {
-    override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardUp(notification: NSNotification) {
-        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            let keyboardHeight = keyboardFrame.height
-            let safeAreaBottomInset = view.safeAreaInsets.bottom
-            let distanceToMove = keyboardHeight - safeAreaBottomInset // 키보드가 뷰를 가리는 거리
-            
-            UIView.animate(withDuration: 0.3) {
-                // Safe Area를 고려하여 뷰의 위치를 조정
-                self.view.transform = CGAffineTransform(translationX: 0, y: -distanceToMove)
-            }
-        }
-    }
-    
-    @objc func keyboardDown() {
-        UIView.animate(withDuration: 0.3) {
-            // 키보드가 사라질 때는 다시 원래 위치로 복원
-            self.view.transform = .identity
-        }
-    }
-    
 }

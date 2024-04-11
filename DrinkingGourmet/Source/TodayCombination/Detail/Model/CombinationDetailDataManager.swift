@@ -92,8 +92,7 @@ class CombinationDetailDataManager {
     
     
     // MARK: - 오늘의 조합 삭제
-    func deleteCombination (_ combinationID: Int,
-                            completion: @escaping () -> Void) {
+    func deleteCombination (_ combinationID: Int) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             
