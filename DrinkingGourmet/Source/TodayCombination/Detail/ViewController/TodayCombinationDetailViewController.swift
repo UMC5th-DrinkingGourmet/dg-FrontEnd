@@ -259,7 +259,12 @@ extension TodayCombinationDetailViewController: UITableViewDataSource {
         
         cell.nicknameLabel.text = data.memberNickName
         cell.dateLabel.text = data.createdAt
-        cell.commentLabel.text = data.content
+        
+        if data.state == "REPORTED" { // 신고된 댓글 처리
+            cell.commentLabel.text = "해당 댓글은 신고 되었습니다."
+        } else {
+            cell.commentLabel.text = data.content
+        }
         
         return cell
     }
