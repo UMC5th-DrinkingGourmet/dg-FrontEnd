@@ -12,14 +12,15 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
     var combinationDataSourceArray = ["1","2","3"]
     
     // MARK: - Properties
+    var combinationId: Int?
+    
     var isWeeklyBest = false
     var selectedIndex: Int?
     var isLiked = false
     
-    var combinationId: Int?
-    var fetchingMore: Bool = false
-    var totalPageNum: Int = 0
-    var nowPageNum: Int = 0
+    private var totalPageNum: Int = 0
+    private var pageNum: Int = 0
+    private var isLastPage: Bool = false
     
     var combinationDetailData: CombinationDetailModel?
     var arrayCombinationComment: [CombinationCommentModel.CombinationCommentList] = []
@@ -85,23 +86,28 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         setupButton()
     }
     
-    func setupNaviBar() {
+    private func setupNaviBar() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    func fetchData() {
+    private func fetchData() {
         if let combinationID = self.combinationId {
             CombinationDetailDataManager().fetchCombinationDetailData(combinationID, self) { [weak self] detailModel in
                 guard let self = self else { return }
                 self.combinationDetailData = detailModel
                 
                 let combinationCommentInput = CombinationCommentInput.fetchCombinatiCommentDataInput(page: 0)
+                pageNum = 0
+                
                 CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, combinationCommentInput, self) { commentModel in
                     if let commentModel = commentModel {
                         self.totalPageNum = commentModel.result.totalPage
+                        self.isLastPage = commentModel.result.isLast
                         self.arrayCombinationComment = commentModel.result.combinationCommentList
                         DispatchQueue.main.async {
                             self.combinationDetailView.tabelView.reloadData()
+                            print("totalPageNum: \(self.totalPageNum)")
+                            print("isLastPage: \(self.isLastPage)")
                         }
                     }
                 }
@@ -118,6 +124,7 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         let tb = combinationDetailView.tabelView
         tb.dataSource = self
         tb.delegate = self
+        tb.prefetchDataSource = self
         tb.rowHeight = 68
         tb.register(CombinationDetailCommentCell.self, forCellReuseIdentifier: "CombinationDetailCommentCell")
         
@@ -294,6 +301,32 @@ extension TodayCombinationDetailViewController: UITableViewDelegate {
         header.commentNumLabel.text = "댓글 \(data.result.combinationCommentResult.totalElements)"
         
         return header
+    }
+}
+
+// MARK: - UITableViewDataSourcePrefetching
+extension TodayCombinationDetailViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            if let combinationID = self.combinationId {
+                if arrayCombinationComment.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                    pageNum += 1
+                    
+                    let input = CombinationCommentInput.fetchCombinatiCommentDataInput(page: pageNum)
+                    
+                    CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, input, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayCombinationComment += model.result.combinationCommentList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.combinationDetailView.tabelView.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

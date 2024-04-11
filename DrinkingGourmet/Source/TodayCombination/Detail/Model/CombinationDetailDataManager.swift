@@ -46,20 +46,30 @@ class CombinationDetailDataManager {
                                     _ parameters: CombinationCommentInput.fetchCombinatiCommentDataInput,
                                     _ viewController: TodayCombinationDetailViewController,
                                     completion: @escaping (CombinationCommentModel?) -> Void) {
-        
-        AF.request("\(baseURL)/combination-comments/\(combinationID)",
-                   method: .get,
-                   parameters: parameters)
-        .validate()
-        .responseDecodable(of: CombinationCommentModel.self) { response in
-            switch response.result {
-            case .success(let result):
-                print("오늘의 조합 댓글 페이징 조회 - 네트워킹 성공")
-                completion(result)
-            case .failure(let error):
-                print("오늘의 조합 댓글 페이징 조회 - \(error)")
-                completion(nil)
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/combination-comments/\(combinationID)",
+                       method: .get,
+                       parameters: parameters,
+                       headers: headers)
+            .validate()
+            .responseDecodable(of: CombinationCommentModel.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print("오늘의 조합 댓글 페이징 조회 - 네트워킹 성공")
+                    completion(result)
+                case .failure(let error):
+                    print("오늘의 조합 댓글 페이징 조회 - \(error)")
+                    completion(nil)
+                }
             }
+        } catch {
+            print("Failed to get access token")
         }
     }
     
