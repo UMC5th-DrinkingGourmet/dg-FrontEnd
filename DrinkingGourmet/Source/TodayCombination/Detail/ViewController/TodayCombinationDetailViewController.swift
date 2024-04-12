@@ -106,15 +106,13 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
                         self.arrayCombinationComment = commentModel.result.combinationCommentList
                         DispatchQueue.main.async {
                             self.combinationDetailView.tabelView.reloadData()
-                            print("totalPageNum: \(self.totalPageNum)")
-                            print("isLastPage: \(self.isLastPage)")
                         }
                     }
                 }
             }
         }
     }
-
+    
     private func addTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard(_:)))
         view.addGestureRecognizer(tapGesture)
@@ -125,7 +123,7 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         tb.dataSource = self
         tb.delegate = self
         tb.prefetchDataSource = self
-        tb.rowHeight = 68
+        tb.rowHeight = 69
         tb.register(CombinationDetailCommentCell.self, forCellReuseIdentifier: "CombinationDetailCommentCell")
         
         tb.sectionHeaderHeight = UITableView.automaticDimension
@@ -249,7 +247,11 @@ extension TodayCombinationDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CombinationDetailCommentCell", for: indexPath) as! CombinationDetailCommentCell
         
+        cell.delegate = self
+        
         let data = arrayCombinationComment[indexPath.row]
+        
+        cell.combinationCommentList = data
         
         if let imageUrlString = data.memberProfile {
             if let imageUrl = URL(string: imageUrlString) {
@@ -372,5 +374,53 @@ extension TodayCombinationDetailViewController: UICollectionViewDelegateFlowLayo
         guard let header = headerView else { return }
         let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
         header.pageControl.currentPage = index
+    }
+}
+
+// MARK: - ComponentProductCellDelegate
+extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
+    func selectedInfoBtn(data: CombinationCommentModel.CombinationCommentList) {
+        
+        // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
+        let isCurrentUser = data.memberNickName != UserDefaultManager.shared.userNickname
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        if isCurrentUser { // 내가 작성한 댓글 일 때
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                
+                CombinationDetailDataManager().deleteComment(commentId: data.id)
+                
+                DispatchQueue.main.async {
+                    self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                    
+                    let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
+                    self.present(alert, animated: true, completion: nil)
+                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                        alert.dismiss(animated: true, completion: nil)
+                    }
+                }
+                fetchData()
+            }
+            
+            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            
+        } else { // 내가 작성한 댓글 아닐 때
+            let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
+                let VC = ReportViewController()
+                navigationController?.pushViewController(VC, animated: true)
+            }
+            
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }
+        }
+        
+        present(alert, animated: true, completion: nil)
     }
 }
