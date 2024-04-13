@@ -39,7 +39,7 @@ class CommentInputView: UIView {
         )
     }
     
-    let button = UIButton().then {
+    let postButton = UIButton().then {
         $0.backgroundColor = .customOrange
         $0.layer.cornerRadius = 15
     }
@@ -59,7 +59,7 @@ class CommentInputView: UIView {
     }
     
     func addViews() {
-        self.addSubviews([backgroudView ,textFieldView, textField, button, arrow])
+        self.addSubviews([backgroudView ,textFieldView, textField, postButton, arrow])
     }
     
     override func updateConstraints() {
@@ -85,11 +85,11 @@ class CommentInputView: UIView {
         textField.snp.makeConstraints { make in
             make.top.equalTo(textFieldView).inset(11)
             make.leading.equalTo(textFieldView).inset(26)
-            make.trailing.equalTo(button.snp.leading).offset(-10)
+            make.trailing.equalTo(postButton.snp.leading).offset(-10)
             make.bottom.equalTo(textFieldView).inset(10)
         }
         
-        button.snp.makeConstraints { make in
+        postButton.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(30)
             make.top.equalTo(textFieldView).inset(6)
@@ -99,8 +99,8 @@ class CommentInputView: UIView {
         
         arrow.snp.makeConstraints { make in
             make.width.height.equalTo(16)
-            make.top.bottom.equalTo(button).inset(7)
-            make.leading.trailing.equalTo(button).inset(16)
+            make.top.bottom.equalTo(postButton).inset(7)
+            make.leading.trailing.equalTo(postButton).inset(16)
         }
         
     }

@@ -87,12 +87,13 @@ class CombinationDetailDataManager {
                        method: .post,
                        parameters: parameters,
                        encoder: JSONParameterEncoder.default,
-                       headers: headers).responseJSON { response in
+                       headers: headers)
+            .response { response in
                 switch response.result {
                 case .success(_):
-                    print("댓글 작성 성공")
+                    print("댓글 작성 - 네트워킹 성공")
                 case .failure(let error):
-                    print("Error: \(error)")
+                    print("댓글 작성 - \(error)")
                 }
             }
         } catch {

@@ -68,7 +68,6 @@
 		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
 		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
-		5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */; };
 		5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EA2B6EDB340009FCD6 /* SearchResultCell.swift */; };
 		5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EC2B6EDB400009FCD6 /* SearchResultView.swift */; };
 		5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */; };
@@ -93,11 +92,7 @@
 		567B9C372BC6741200D275A1 /* CombinationDetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C362BC6741200D275A1 /* CombinationDetailCommentCell.swift */; };
 		567B9C392BC6744600D275A1 /* CombinationDetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */; };
 		567B9C3B2BC6747C00D275A1 /* CombinationDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C3A2BC6747C00D275A1 /* CombinationDetailHeaderView.swift */; };
-		56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */; };
 		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
-		56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */; };
-		56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */; };
-		56A9A9402B6B530400EF7CA6 /* CommentAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */; };
 		56A9EC3B2B857388004BD199 /* RecommendDetailResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9EC3A2B857388004BD199 /* RecommendDetailResponseModel.swift */; };
 		56AE28452B83D57B009CE0A1 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28442B83D57B009CE0A1 /* MyPageView.swift */; };
 		56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */; };
@@ -234,7 +229,6 @@
 		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
 		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
-		5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailView.swift; sourceTree = "<group>"; };
 		5668A2EA2B6EDB340009FCD6 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		5668A2EC2B6EDB400009FCD6 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomResultSearchBar.swift; sourceTree = "<group>"; };
@@ -259,11 +253,7 @@
 		567B9C362BC6741200D275A1 /* CombinationDetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailCommentCell.swift; sourceTree = "<group>"; };
 		567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailImageCell.swift; sourceTree = "<group>"; };
 		567B9C3A2BC6747C00D275A1 /* CombinationDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailHeaderView.swift; sourceTree = "<group>"; };
-		56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailCell.swift; sourceTree = "<group>"; };
 		56A405662B5F776200BF85A8 /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
-		56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
-		56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
-		56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAreaView.swift; sourceTree = "<group>"; };
 		56A9EC3A2B857388004BD199 /* RecommendDetailResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendDetailResponseModel.swift; sourceTree = "<group>"; };
 		56AE28442B83D57B009CE0A1 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -699,9 +689,6 @@
 		560548662B663A66006026E0 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				56A9A93F2B6B530400EF7CA6 /* CommentAreaView.swift */,
-				56A9A93D2B6B52FE00EF7CA6 /* CommentsView.swift */,
-				56A9A93B2B6B52DC00EF7CA6 /* CommentView.swift */,
 				56A405662B5F776200BF85A8 /* CommentInputView.swift */,
 			);
 			path = Comments;
@@ -855,8 +842,6 @@
 			isa = PBXGroup;
 			children = (
 				560548662B663A66006026E0 /* Comments */,
-				5658DE012B582AC200F72F42 /* TodayCombinationDetailView.swift */,
-				56A405532B5B250D00BF85A8 /* TodayCombinationDetailCell.swift */,
 				567B9C342BC6711E00D275A1 /* CombinationDetailView.swift */,
 				567B9C3A2BC6747C00D275A1 /* CombinationDetailHeaderView.swift */,
 				567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */,
@@ -1326,7 +1311,6 @@
 				97EB4AED2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift in Sources */,
 				2EFA32F72B7156EF00059188 /* RecipeBookCollectionViewCell.swift in Sources */,
 				5625E37F2BBAC25E00269BBF /* SettingCell.swift in Sources */,
-				56A405542B5B250D00BF85A8 /* TodayCombinationDetailCell.swift in Sources */,
 				975F09202B827267009C6F0E /* MyRecommendModelData.swift in Sources */,
 				2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */,
 				56AE284F2B83ED5A009CE0A1 /* MyPageDataManager.swift in Sources */,
@@ -1384,7 +1368,6 @@
 				56543EC92B7EF1190099E648 /* CombinationUploadInput.swift in Sources */,
 				2E56A0DD2B78861B007747ED /* KeyChain.swift in Sources */,
 				5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */,
-				56A9A93E2B6B52FE00EF7CA6 /* CommentsView.swift in Sources */,
 				5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */,
 				2E5407982B84BE7200724513 /* RecipeBookUpoadModel.swift in Sources */,
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
@@ -1433,12 +1416,10 @@
 				2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */,
 				56AE28512B83F594009CE0A1 /* MyPageInput.swift in Sources */,
 				56F8A7212B80114C000F6CA4 /* LikeAllRecipeBookModel.swift in Sources */,
-				5658DE022B582AC200F72F42 /* TodayCombinationDetailView.swift in Sources */,
 				56BB93512B8367A400A0A989 /* RecipeBookCommentModel.swift in Sources */,
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */,
 				5668A3472B6FBAB20009FCD6 /* RecipeBookDetailView.swift in Sources */,
-				56A9A93C2B6B52DC00EF7CA6 /* CommentView.swift in Sources */,
 				56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */,
 				5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */,
 				97EB4ACC2B70F63B009A62EB /* SelectWeatherResource.swift in Sources */,
@@ -1455,7 +1436,6 @@
 				97EB4AD52B70F668009A62EB /* SelectDrinkCapacityViewController.swift in Sources */,
 				2E54079A2B84C51E00724513 /* RecipeBookUploadDataManager.swift in Sources */,
 				5601EBB52B7BEE570043CCD4 /* CombinationDetailModel.swift in Sources */,
-				56A9A9402B6B530400EF7CA6 /* CommentAreaView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

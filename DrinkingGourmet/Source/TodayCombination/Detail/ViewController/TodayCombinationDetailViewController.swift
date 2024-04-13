@@ -8,9 +8,6 @@
 import UIKit
 
 final class TodayCombinationDetailViewController: UIViewController, UIScrollViewDelegate {
-    
-    var combinationDataSourceArray = ["1","2","3"]
-    
     // MARK: - Properties
     var combinationId: Int?
     
@@ -83,6 +80,7 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         fetchData()
         addTapGesture()
         setupTableView()
+        setupTextField()
         setupButton()
     }
     
@@ -131,6 +129,10 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         tb.sectionFooterHeight = .leastNonzeroMagnitude
     }
     
+    private func setupTextField() {
+        combinationDetailView.commentInputView.textField.delegate = self
+    }
+    
     private func setupButton() {
         headerView?.likeButton.addTarget(
             self,
@@ -141,9 +143,9 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
             action: #selector(moreButtonTapped),
             for: .touchUpInside
         )
-        combinationDetailView.commentInputView.button.addTarget(
+        combinationDetailView.commentInputView.postButton.addTarget(
             self,
-            action: #selector(testButtonTapped),
+            action: #selector(postButtonTapped),
             for: .touchUpInside
         )
     }
@@ -199,14 +201,23 @@ extension TodayCombinationDetailViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func testButtonTapped() {
-        print("버튼눌림")
-        view.endEditing(true) // 키보드 내리기
-        combinationDataSourceArray.append("새로운 셀") // 배열에 새로운 요소 추가
-        let newCellCount = combinationDataSourceArray.count // 새로운 셀의 개수 계산
-        let indexPath = IndexPath(row: newCellCount - 1, section: 0)
-        combinationDetailView.tabelView.insertRows(at: [indexPath], with: .automatic) // 새로운 셀 삽입
-        combinationDetailView.tabelView.scrollToRow(at: indexPath, at: .bottom, animated: true) // 새로운 셀이 추가된 위치로 스크롤
+    @objc func postButtonTapped() {
+        guard let inputText = self.combinationDetailView.commentInputView.textField.text, !inputText.isEmpty else { return }
+        guard let combinationId = self.combinationId else { return }
+        view.endEditing(true)
+        self.combinationDetailView.commentInputView.textField.text = ""
+        
+        let input = CombinationCommentInput.postCommentInput(content: inputText, parentId: "0")
+        CombinationDetailDataManager().postComment(combinationId, input)
+        
+        self.fetchData()
+        
+        self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+        let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+            alert.dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc private func hideKeyboard(_ sender: Any) {
@@ -305,14 +316,16 @@ extension TodayCombinationDetailViewController: UITableViewDelegate {
         header.hashtagLabel.text = data.result.combinationResult.hashTagList.map { "\($0)" }.joined(separator: " ")
         header.titleLabel.text = data.result.combinationResult.title
         header.descriptionLabel.text = data.result.combinationResult.content
-        header.commentNumLabel.text = "댓글 \(data.result.combinationCommentResult.totalElements)"
+        DispatchQueue.main.async {
+            header.commentNumLabel.text = "댓글 \(data.result.combinationCommentResult.totalElements)"
+        }
         
         return header
     }
 }
 
 // MARK: - UITableViewDataSourcePrefetching
-extension TodayCombinationDetailViewController: UITableViewDataSourcePrefetching {
+extension TodayCombinationDetailViewController: UITableViewDataSourcePrefetching { // 댓글 페이징
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             if let combinationID = self.combinationId {
@@ -392,16 +405,14 @@ extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
                 
                 CombinationDetailDataManager().deleteComment(commentId: data.id)
                 
-                DispatchQueue.main.async {
-                    self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-                    
-                    let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
-                    self.present(alert, animated: true, completion: nil)
-                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                        alert.dismiss(animated: true, completion: nil)
-                    }
-                }
-                fetchData()
+                self.fetchData()
+                
+                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                }   
             }
             
             let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
@@ -422,5 +433,14 @@ extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
         }
         
         present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension TodayCombinationDetailViewController: UITextFieldDelegate {
+    // 리턴 클릭 시 키보드 내림
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
