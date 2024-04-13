@@ -395,7 +395,7 @@ extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
     func selectedInfoBtn(data: CombinationCommentModel.CombinationCommentList) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.memberNickName != UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.memberNickName == UserDefaultManager.shared.userNickname
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
