@@ -103,6 +103,9 @@ final class ReportView: UIView {
         $0.attributedText = NSMutableAttributedString(string: "신고하기", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
+    let reportCompletePopUpView = ReportCompletePopUpView().then {
+        $0.isHidden = true
+    }
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -119,7 +122,7 @@ final class ReportView: UIView {
     
     // MARK: - UI
     private func addViews() {
-        self.addSubviews([scrollView, completeView])
+        self.addSubviews([scrollView, completeView, reportCompletePopUpView])
         
         scrollView.addSubview(contentView)
         
@@ -205,6 +208,13 @@ final class ReportView: UIView {
         completeLabel.snp.makeConstraints { make in
             make.centerX.equalTo(completeView)
             make.top.equalTo(completeView).offset(18)
+        }
+        
+        // 신고 접수
+        reportCompletePopUpView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(34)
+            make.height.equalTo(64)
         }
     }
     

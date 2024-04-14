@@ -51,6 +51,21 @@ final class ReportViewController: UIViewController {
     
     private func setupTextView() {
         reportView.reportDetailsTextView.delegate = self
+        
+        let toolBarKeyboard = UIToolbar()
+        toolBarKeyboard.sizeToFit()
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, 
+                                            target: nil,
+                                            action: nil)
+        
+        let btnDoneBar = UIBarButtonItem(title: "완료",
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(doneBtnClicked))
+        
+        toolBarKeyboard.items = [flexibleSpace, btnDoneBar]
+        reportView.reportDetailsTextView.inputAccessoryView = toolBarKeyboard
     }
     
     private func setupButton() {
@@ -89,7 +104,7 @@ final class ReportViewController: UIViewController {
             title: "완료",
             style: .plain,
             target: self, 
-            action: #selector(dismissPickerView)
+            action: #selector(doneBtnClicked)
         )
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
@@ -100,12 +115,16 @@ final class ReportViewController: UIViewController {
 
 // MARK: - @objc
 extension ReportViewController {
-    @objc func dismissPickerView() {
+    @objc func doneBtnClicked() {
         view.endEditing(true)
     }
     
     @objc func completeButtonTapped() {
-        print("신고하기 버튼 눌림")
+        self.reportView.isUserInteractionEnabled = false // 터치 비활성화
+        
+        self.reportView.completeView.isHidden = true
+        self.reportView.reportCompletePopUpView.isHidden = false
+        
         guard let resourceId = self.resourceId,
               let reportTarget = self.reportTarget,
               let reportContent = self.reportContent else { return }
@@ -114,7 +133,19 @@ extension ReportViewController {
                                        reportTarget: reportTarget,
                                        reportReason: self.reportReason,
                                        content: self.content,
-                                       reportContent: reportContent)
+                                       reportContent: reportContent) { [weak self] success in
+            guard let self = self else { return }
+            
+            if success {
+                if reportTarget == "COMBINATION_COMMENT" { // 오늘의 조합 댓글 신고일 때
+                    self.navigationController?.popViewController(animated: true)
+                    if let todayCombinationDetailViewController = self.navigationController?.viewControllers.last as? TodayCombinationDetailViewController {
+                        todayCombinationDetailViewController.combinationDetailView.tabelView.setContentOffset(.zero, animated: true)
+                        todayCombinationDetailViewController.fetchData()
+                    }
+                }
+            }
+        }
     }
 }
 

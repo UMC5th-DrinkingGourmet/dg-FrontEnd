@@ -15,7 +15,8 @@ final class ReportDataManager {
                     reportTarget: String,
                     reportReason: String,
                     content: String,
-                    reportContent: String) {
+                    reportContent: String,
+                    completion: @escaping (Bool) -> Void) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             
@@ -39,8 +40,10 @@ final class ReportDataManager {
                        headers: headers).response { response in
                 if let statusCode = response.response?.statusCode, 200..<300 ~= statusCode {
                     print("\(reportTarget) \(resourceId) 신고하기 - 네트워킹 성공")
+                    completion(true)
                 } else {
                     print("\(reportTarget) \(resourceId) 신고하기 - 실패: 상태 코드 \(response.response?.statusCode ?? -1)")
+                    completion(false)
                 }
             }
         } catch {
