@@ -189,6 +189,9 @@ extension TodayCombinationDetailViewController {
         } else { // 내가 작성한 글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
                 let VC = ReportViewController()
+                VC.resourceId = combinationDetailData?.result.combinationResult.combinationId
+                VC.reportTarget = "COMBINATION"
+                VC.reportContent = combinationDetailData?.result.combinationResult.content
                 navigationController?.pushViewController(VC, animated: true)
             }
             

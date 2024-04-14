@@ -9,10 +9,16 @@ import UIKit
 
 final class ReportViewController: UIViewController {
     // MARK: - Properties
+    var resourceId: Int? = nil
+    var reportTarget: String? = nil
+    private var reportReason: String = "" // 신고유형
+    private var content: String = "" // 신고내용
+    var reportContent: String? = nil
+    
     private let arrayReportType = ["-- 신고 유형을 선택해주세요 --",
                                    "욕설, 비속어, 혐오 발언 등 타인에게 불쾌감을 주는 내용",
-                                   "타인을 모욕하거나 명예를 훼손하는 내용을 게시",
-                                   "음란물, 불법적인 내용을 게시",
+                                   "타인을 모욕하거나 명예를 훼손하는 내용",
+                                   "음란물, 불법적인 내용",
                                    "타인의 개인정보를 무단으로 수집하거나 공개",
                                    "타인의 저작권을 침해",
                                    "기타"]
@@ -100,15 +106,40 @@ extension ReportViewController {
     
     @objc func completeButtonTapped() {
         print("신고하기 버튼 눌림")
+        guard let resourceId = self.resourceId,
+              let reportTarget = self.reportTarget,
+              let reportContent = self.reportContent else { return }
+        
+        ReportDataManager().postReport(resourceId: resourceId,
+                                       reportTarget: reportTarget,
+                                       reportReason: self.reportReason,
+                                       content: self.content,
+                                       reportContent: reportContent)
     }
 }
 
 // MARK: - UITextFieldDelegate
 extension ReportViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) { // 신고 유형
         guard let text = textField.text else { return }
         
         if !text.isEmpty, text != "-- 신고 유형을 선택해주세요 --" {
+            switch text {
+            case arrayReportType[1]:
+                self.reportReason = "ABUSIVE_LANGUAGE"
+            case arrayReportType[2]:
+                self.reportReason = "DEFAMATION"
+            case arrayReportType[3]:
+                self.reportReason = "PORNOGRAPHY_ILLEGAL_CONTENT"
+            case arrayReportType[4]:
+                self.reportReason = "UNAUTHORIZED_PERSONAL_INFO"
+            case arrayReportType[5]:
+                self.reportReason = "COPYRIGHT_INFRINGEMENT"
+            case arrayReportType[6]:
+                self.reportReason = "TERMS_VIOLATION"
+            default:
+                return
+            }
             reportView.reportTypeView.layer.borderColor = UIColor.customOrange.cgColor
         } else {
             reportView.reportTypeView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
@@ -119,10 +150,11 @@ extension ReportViewController: UITextFieldDelegate {
 
 // MARK: - UITextViewDelegate
 extension ReportViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) { // 신고 내용
         guard let text = textView.text else { return }
         
         if !text.isEmpty {
+            self.content = text
             reportView.reportDetailsTextView.layer.borderColor = UIColor.customOrange.cgColor
         } else {
             reportView.reportDetailsTextView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
@@ -143,8 +175,24 @@ extension ReportViewController: UIPickerViewDataSource {
 }
 
 extension ReportViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(arrayReportType[row])"
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        return "\(arrayReportType[row])"
+//    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var label: UILabel
+        if let view = view as? UILabel {
+            label = view
+        } else {
+            label = UILabel()
+            label.numberOfLines = 0
+        }
+        
+        label.text = "\(arrayReportType[row])"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16)
+        
+        return label
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

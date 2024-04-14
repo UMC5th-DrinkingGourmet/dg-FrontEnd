@@ -7,31 +7,40 @@
 
 import Alamofire
 
-class ReportDataManager {
+final class ReportDataManager {
     private let baseURL = "https://drink-gourmet.kro.kr"
     
-    // MARK: - 신고하기
-    func postReport (resourceId: Int,
-                     reportTarget: String,
-                     reportReason: String,
-                     content: String, // 신고 내용
-                     reportContent: String) {
+    // 신고하기
+    func postReport(resourceId: Int,
+                    reportTarget: String,
+                    reportReason: String,
+                    content: String,
+                    reportContent: String) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             
             let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(accessToken)"
+                "Authorization": "Bearer \(accessToken)",
+                "Content-Type": "application/json"
             ]
             
-            AF.request("\(baseURL)/member/reports)",
+            let parameters: [String: Any] = [
+                "resourceId": resourceId,
+                "reportTarget": reportTarget,
+                "reportReason": reportReason,
+                "content": content,
+                "reportContent": reportContent
+            ]
+            
+            AF.request("\(baseURL)/member/reports",
                        method: .post,
-                       headers: headers)
-            .response { response in
-                switch response.result {
-                case .success(_):
-                    print("신고하기 - 네트워킹 성공")
-                case .failure(let error):
-                    print("신고하기 - \(error)")
+                       parameters: parameters,
+                       encoding: JSONEncoding.default,
+                       headers: headers).response { response in
+                if let statusCode = response.response?.statusCode, 200..<300 ~= statusCode {
+                    print("\(reportTarget) \(resourceId) 신고하기 - 네트워킹 성공")
+                } else {
+                    print("\(reportTarget) \(resourceId) 신고하기 - 실패: 상태 코드 \(response.response?.statusCode ?? -1)")
                 }
             }
         } catch {
