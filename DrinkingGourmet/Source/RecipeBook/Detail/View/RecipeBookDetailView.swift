@@ -107,7 +107,7 @@ final class RecipeBookDetailView: UIView {
         $0.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
     }
     
-    let commentAreaView = CommentAreaView()
+//    let commentAreaView = CommentAreaView()
     
     let commentsInputView = CommentInputView()
     
@@ -133,7 +133,7 @@ final class RecipeBookDetailView: UIView {
         self.addSubview(commentsInputView)
         
         scrollView.addSubview(contentView)
-        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel,  likeIconButton, grayLine, hashtagLabel, moreButton, titleLabel, recipeBookDetailInfoView, ingredientLabel, ingredientListLabel, cookLabel, descriptionLabel, dividerView, commentAreaView])
+        contentView.addSubviews([imageCollectionView, pageControl, profileImage, userNameLabel,  likeIconButton, grayLine, hashtagLabel, moreButton, titleLabel, recipeBookDetailInfoView, ingredientLabel, ingredientListLabel, cookLabel, descriptionLabel, dividerView/*, commentAreaView*/])
     }
     
     func configureConstraints() {
@@ -237,9 +237,9 @@ final class RecipeBookDetailView: UIView {
             make.height.equalTo(8)
         }
         
-        commentAreaView.snp.makeConstraints { make in
-            make.top.equalTo(dividerView.snp.bottom).offset(16)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
+//        commentAreaView.snp.makeConstraints { make in
+//            make.top.equalTo(dividerView.snp.bottom).offset(16)
+//            make.leading.trailing.bottom.equalToSuperview()
+//        }
     }
 }

@@ -18,10 +18,13 @@ struct CombinationCommentModel: Codable {
     
     struct CombinationCommentList: Codable {
         let id: Int
-        let content, memberNickName: String
+        let content: String
+        let memberId: Int
+        let memberNickName: String
         let memberProfile: String?
         let createdAt: String
         let childCount: Int
         let childComments: [CombinationCommentList]
+        let state: String
     }
 }

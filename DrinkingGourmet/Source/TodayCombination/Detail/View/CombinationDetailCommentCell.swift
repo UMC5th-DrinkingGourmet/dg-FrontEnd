@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol ComponentProductCellDelegate {
+    func selectedInfoBtn(data : CombinationCommentModel.CombinationCommentList)
+}
+
 final class CombinationDetailCommentCell: UITableViewCell {
+
+    var delegate: ComponentProductCellDelegate?
+    var combinationCommentList: CombinationCommentModel.CombinationCommentList? = nil
+    
     // MARK: - View
     let profileImage = UIImageView().then {
         $0.backgroundColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1)
@@ -35,6 +43,7 @@ final class CombinationDetailCommentCell: UITableViewCell {
     
     let moreButton = UIButton().then {
         $0.setImage(UIImage(named: "ic_comment_more"), for: .normal)
+        $0.addTarget(self, action: #selector(selectedInfoBtn(_:)), for: .touchUpInside)
     }
     
     let commentLabel = UILabel().then {
@@ -110,5 +119,9 @@ final class CombinationDetailCommentCell: UITableViewCell {
             make.height.equalTo(1)
         }
     }
+    
+    @objc func selectedInfoBtn(_ sender: UIButton) {
+        guard let combinationCommentList = self.combinationCommentList else { return }
+        self.delegate?.selectedInfoBtn(data: combinationCommentList)
+    }
 }
-

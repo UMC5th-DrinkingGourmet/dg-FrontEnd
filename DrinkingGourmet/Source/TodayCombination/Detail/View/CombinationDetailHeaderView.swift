@@ -85,7 +85,7 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "댓글 4", attributes: [NSAttributedString.Key.kern: -0.42, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "댓글 ", attributes: [NSAttributedString.Key.kern: -0.42, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     // MARK: - Init

@@ -8,18 +8,16 @@
 import UIKit
 
 final class TodayCombinationDetailViewController: UIViewController, UIScrollViewDelegate {
-    
-    var combinationDataSourceArray = ["1","2","3"]
-    
     // MARK: - Properties
+    var combinationId: Int?
+    
     var isWeeklyBest = false
     var selectedIndex: Int?
     var isLiked = false
     
-    var combinationId: Int?
-    var fetchingMore: Bool = false
-    var totalPageNum: Int = 0
-    var nowPageNum: Int = 0
+    private var totalPageNum: Int = 0
+    private var pageNum: Int = 0
+    private var isLastPage: Bool = false
     
     var combinationDetailData: CombinationDetailModel?
     var arrayCombinationComment: [CombinationCommentModel.CombinationCommentList] = []
@@ -82,23 +80,27 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         fetchData()
         addTapGesture()
         setupTableView()
+        setupTextField()
         setupButton()
     }
     
-    func setupNaviBar() {
+    private func setupNaviBar() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    func fetchData() {
+    private func fetchData() {
         if let combinationID = self.combinationId {
             CombinationDetailDataManager().fetchCombinationDetailData(combinationID, self) { [weak self] detailModel in
                 guard let self = self else { return }
                 self.combinationDetailData = detailModel
                 
                 let combinationCommentInput = CombinationCommentInput.fetchCombinatiCommentDataInput(page: 0)
+                pageNum = 0
+                
                 CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, combinationCommentInput, self) { commentModel in
                     if let commentModel = commentModel {
                         self.totalPageNum = commentModel.result.totalPage
+                        self.isLastPage = commentModel.result.isLast
                         self.arrayCombinationComment = commentModel.result.combinationCommentList
                         DispatchQueue.main.async {
                             self.combinationDetailView.tabelView.reloadData()
@@ -108,7 +110,7 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
             }
         }
     }
-
+    
     private func addTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard(_:)))
         view.addGestureRecognizer(tapGesture)
@@ -118,12 +120,17 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         let tb = combinationDetailView.tabelView
         tb.dataSource = self
         tb.delegate = self
-        tb.rowHeight = 68
+        tb.prefetchDataSource = self
+        tb.rowHeight = 69
         tb.register(CombinationDetailCommentCell.self, forCellReuseIdentifier: "CombinationDetailCommentCell")
         
         tb.sectionHeaderHeight = UITableView.automaticDimension
         tb.register(CombinationDetailHeaderView.self, forHeaderFooterViewReuseIdentifier: "CombinationDetailHeaderView")
         tb.sectionFooterHeight = .leastNonzeroMagnitude
+    }
+    
+    private func setupTextField() {
+        combinationDetailView.commentInputView.textField.delegate = self
     }
     
     private func setupButton() {
@@ -136,9 +143,9 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
             action: #selector(moreButtonTapped),
             for: .touchUpInside
         )
-        combinationDetailView.commentInputView.button.addTarget(
+        combinationDetailView.commentInputView.postButton.addTarget(
             self,
-            action: #selector(testButtonTapped),
+            action: #selector(postButtonTapped),
             for: .touchUpInside
         )
     }
@@ -194,14 +201,23 @@ extension TodayCombinationDetailViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func testButtonTapped() {
-        print("버튼눌림")
-        view.endEditing(true) // 키보드 내리기
-        combinationDataSourceArray.append("새로운 셀") // 배열에 새로운 요소 추가
-        let newCellCount = combinationDataSourceArray.count // 새로운 셀의 개수 계산
-        let indexPath = IndexPath(row: newCellCount - 1, section: 0)
-        combinationDetailView.tabelView.insertRows(at: [indexPath], with: .automatic) // 새로운 셀 삽입
-        combinationDetailView.tabelView.scrollToRow(at: indexPath, at: .bottom, animated: true) // 새로운 셀이 추가된 위치로 스크롤
+    @objc func postButtonTapped() {
+        guard let inputText = self.combinationDetailView.commentInputView.textField.text, !inputText.isEmpty else { return }
+        guard let combinationId = self.combinationId else { return }
+        view.endEditing(true)
+        self.combinationDetailView.commentInputView.textField.text = ""
+        
+        let input = CombinationCommentInput.postCommentInput(content: inputText, parentId: "0")
+        CombinationDetailDataManager().postComment(combinationId, input)
+        
+        self.fetchData()
+        
+        self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+        let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+            alert.dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc private func hideKeyboard(_ sender: Any) {
@@ -242,7 +258,11 @@ extension TodayCombinationDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CombinationDetailCommentCell", for: indexPath) as! CombinationDetailCommentCell
         
+        cell.delegate = self
+        
         let data = arrayCombinationComment[indexPath.row]
+        
+        cell.combinationCommentList = data
         
         if let imageUrlString = data.memberProfile {
             if let imageUrl = URL(string: imageUrlString) {
@@ -252,7 +272,12 @@ extension TodayCombinationDetailViewController: UITableViewDataSource {
         
         cell.nicknameLabel.text = data.memberNickName
         cell.dateLabel.text = data.createdAt
-        cell.commentLabel.text = data.content
+        
+        if data.state == "REPORTED" { // 신고된 댓글 처리
+            cell.commentLabel.text = "해당 댓글은 신고 되었습니다."
+        } else {
+            cell.commentLabel.text = data.content
+        }
         
         return cell
     }
@@ -291,9 +316,37 @@ extension TodayCombinationDetailViewController: UITableViewDelegate {
         header.hashtagLabel.text = data.result.combinationResult.hashTagList.map { "\($0)" }.joined(separator: " ")
         header.titleLabel.text = data.result.combinationResult.title
         header.descriptionLabel.text = data.result.combinationResult.content
-        header.commentNumLabel.text = "댓글 \(data.result.combinationCommentResult.totalElements)"
+        DispatchQueue.main.async {
+            header.commentNumLabel.text = "댓글 \(data.result.combinationCommentResult.totalElements)"
+        }
         
         return header
+    }
+}
+
+// MARK: - UITableViewDataSourcePrefetching
+extension TodayCombinationDetailViewController: UITableViewDataSourcePrefetching { // 댓글 페이징
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            if let combinationID = self.combinationId {
+                if arrayCombinationComment.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                    pageNum += 1
+                    
+                    let input = CombinationCommentInput.fetchCombinatiCommentDataInput(page: pageNum)
+                    
+                    CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, input, self) { [weak self] model in
+                        if let model = model {
+                            guard let self = self else { return }
+                            self.arrayCombinationComment += model.result.combinationCommentList
+                            self.isLastPage = model.result.isLast
+                            DispatchQueue.main.async {
+                                self.combinationDetailView.tabelView.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -334,5 +387,60 @@ extension TodayCombinationDetailViewController: UICollectionViewDelegateFlowLayo
         guard let header = headerView else { return }
         let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
         header.pageControl.currentPage = index
+    }
+}
+
+// MARK: - ComponentProductCellDelegate
+extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
+    func selectedInfoBtn(data: CombinationCommentModel.CombinationCommentList) {
+        
+        // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
+        let isCurrentUser = data.memberNickName == UserDefaultManager.shared.userNickname
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        if isCurrentUser { // 내가 작성한 댓글 일 때
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                
+                CombinationDetailDataManager().deleteComment(commentId: data.id)
+                
+                self.fetchData()
+                
+                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                }   
+            }
+            
+            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            
+        } else { // 내가 작성한 댓글 아닐 때
+            let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
+                let VC = ReportViewController()
+                navigationController?.pushViewController(VC, animated: true)
+            }
+            
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension TodayCombinationDetailViewController: UITextFieldDelegate {
+    // 리턴 클릭 시 키보드 내림
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

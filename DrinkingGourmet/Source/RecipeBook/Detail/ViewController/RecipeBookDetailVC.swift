@@ -124,11 +124,11 @@ final class RecipeBookDetailVC: UIViewController {
         
         self.recipeBookDetailView.descriptionLabel.text = recipeBookDetailData.result.recipeInstruction
         
-        self.recipeBookDetailView.commentAreaView.titleLabel.text = "댓글 \(commentsNum)"
-        
-        if !arrayRecipeBookComment.isEmpty {
-            recipeBookDetailView.commentAreaView.commentsView.configureRecipeBookComments(arrayRecipeBookComment)
-        }
+//        self.recipeBookDetailView.commentAreaView.titleLabel.text = "댓글 \(commentsNum)"
+//        
+//        if !arrayRecipeBookComment.isEmpty {
+//            recipeBookDetailView.commentAreaView.commentsView.configureRecipeBookComments(arrayRecipeBookComment)
+//        }
     }
     
     // MARK: - 이미지 컬렉션뷰 설정
@@ -205,16 +205,16 @@ final class RecipeBookDetailVC: UIViewController {
     
     // MARK: - 댓글 삭제/수정 버튼 설정
     func configureCommentMoreButton() {
-        for commentView in recipeBookDetailView.commentAreaView.commentsView.arrangedSubviews.compactMap({ $0 as? CommentView }) {
-            commentView.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
-        }
+//        for commentView in recipeBookDetailView.commentAreaView.commentsView.arrangedSubviews.compactMap({ $0 as? CommentView }) {
+//            commentView.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+//        }
     }
     
     // MARK: - 댓글입력창 설정
     func setupCommentsInputView() {
         let cv = recipeBookDetailView.commentsInputView
         cv.textField.delegate = self
-        cv.button.addTarget(self, action: #selector(commentsInputButtonTapped), for: .touchUpInside)
+        cv.postButton.addTarget(self, action: #selector(commentsInputButtonTapped), for: .touchUpInside)
     }
     
     @objc func commentsInputButtonTapped() {
@@ -330,7 +330,7 @@ extension RecipeBookDetailVC: UIScrollViewDelegate {
                     self.arrayRecipeBookComment += commentModel.result.commentList
                     self.fetchingMore = false
                     DispatchQueue.main.async {
-                        self.recipeBookDetailView.commentAreaView.commentsView.configureRecipeBookComments(self.arrayRecipeBookComment)
+//                        self.recipeBookDetailView.commentAreaView.commentsView.configureRecipeBookComments(self.arrayRecipeBookComment)
                     }
                 }
             }
