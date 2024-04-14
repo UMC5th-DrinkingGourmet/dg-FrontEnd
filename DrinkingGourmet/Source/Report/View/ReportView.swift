@@ -36,6 +36,7 @@ final class ReportView: UIView {
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
         $0.tintColor = .clear
+        $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
         
         let textColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
         let font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
@@ -51,7 +52,7 @@ final class ReportView: UIView {
         $0.attributedPlaceholder = attributedText
     }
     
-    let reportTypeArrowIcon = UIImageView().then {
+    private let reportTypeArrowIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_upload_more_false")
     }
     
@@ -85,7 +86,7 @@ final class ReportView: UIView {
     }
     
     // 신고하기
-    private let completeView = UIView().then {
+    let completeView = UIView().then {
         $0.backgroundColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
     }
     
@@ -160,7 +161,7 @@ final class ReportView: UIView {
         reportTypeTextField.snp.makeConstraints { make in
             make.top.equalTo(reportTypeView).inset(13)
             make.leading.equalTo(reportTypeView).inset(16)
-            make.trailing.equalTo(reportTypeView).inset(16)
+            make.trailing.equalTo(reportTypeArrowIcon).inset(16)
             make.bottom.equalTo(reportTypeView).inset(12)
         }
         
