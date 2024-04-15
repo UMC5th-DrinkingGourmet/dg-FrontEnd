@@ -137,11 +137,19 @@ extension ReportViewController {
             guard let self = self else { return }
             
             if success {
+                if reportTarget == "COMBINATION" { // 오늘의 조합 게시물 신고일 때
+                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is TodayCombinationViewController }) as? TodayCombinationViewController {
+                        VC.fetchData()
+                        VC.todayCombinationView.tableView.setContentOffset(.zero, animated: true)
+                        self.navigationController?.popToViewController(VC, animated: true)
+                    }
+                }
+                
                 if reportTarget == "COMBINATION_COMMENT" { // 오늘의 조합 댓글 신고일 때
                     self.navigationController?.popViewController(animated: true)
-                    if let todayCombinationDetailViewController = self.navigationController?.viewControllers.last as? TodayCombinationDetailViewController {
-                        todayCombinationDetailViewController.combinationDetailView.tabelView.setContentOffset(.zero, animated: true)
-                        todayCombinationDetailViewController.fetchData()
+                    if let VC = self.navigationController?.viewControllers.last as? TodayCombinationDetailViewController {
+                        VC.combinationDetailView.tabelView.setContentOffset(.zero, animated: true)
+                        VC.fetchData()
                     }
                 }
             }
