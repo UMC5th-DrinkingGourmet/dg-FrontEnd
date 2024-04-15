@@ -22,7 +22,7 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
     var combinationDetailData: CombinationDetailModel?
     var arrayCombinationComment: [CombinationCommentModel.CombinationCommentList] = []
     
-    private let combinationDetailView = CombinationDetailView()
+    let combinationDetailView = CombinationDetailView()
     
     private var headerView: CombinationDetailHeaderView?
     
@@ -88,7 +88,7 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    private func fetchData() {
+    func fetchData() {
         if let combinationID = self.combinationId {
             CombinationDetailDataManager().fetchCombinationDetailData(combinationID, self) { [weak self] detailModel in
                 guard let self = self else { return }
@@ -189,6 +189,9 @@ extension TodayCombinationDetailViewController {
         } else { // 내가 작성한 글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
                 let VC = ReportViewController()
+                VC.resourceId = combinationDetailData?.result.combinationResult.combinationId
+                VC.reportTarget = "COMBINATION"
+                VC.reportContent = combinationDetailData?.result.combinationResult.content
                 navigationController?.pushViewController(VC, animated: true)
             }
             
@@ -423,6 +426,9 @@ extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
         } else { // 내가 작성한 댓글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
                 let VC = ReportViewController()
+                VC.resourceId = data.id
+                VC.reportTarget = "COMBINATION_COMMENT"
+                VC.reportContent = data.content
                 navigationController?.pushViewController(VC, animated: true)
             }
             
