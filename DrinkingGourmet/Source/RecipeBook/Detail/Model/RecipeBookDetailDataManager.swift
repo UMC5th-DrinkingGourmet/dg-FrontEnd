@@ -100,9 +100,38 @@ class RecipeBookDetailDataManager {
         }
     }
     
+    // MARK: - 레시피북 댓글 삭제
+    func deleteComment (recipeCommentId: Int) {
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            let parameters = RecipeBookCommentInput.deleteCommentInput(recipeCommentId: recipeCommentId)
+            
+            AF.request("\(baseURL)/recipes-comments",
+                       method: .delete,
+                       parameters: parameters,
+                       encoder: JSONParameterEncoder.default,
+                       headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success(_):
+                    print("레시피북 댓글 삭제 - 네트워킹 성공")
+                case .failure(let error):
+                    print("레시피북 댓글 삭제 - \(error)")
+                }
+            }
+        } catch {
+            print("Failed to get access token")
+        }
+    }
+    
     // MARK: - 레시피북 삭제
-    func deleteRecipeBook (_ recipeBookId: Int,
-                           completion: @escaping () -> Void) {
+    func deleteRecipeBook (_ recipeBookId: Int) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             
@@ -113,12 +142,13 @@ class RecipeBookDetailDataManager {
             AF.request("\(baseURL)/recipes/\(recipeBookId)",
                        method: .delete,
                        headers: headers)
-            .responseJSON { response in
+            .validate()
+            .response { response in
                 switch response.result {
                 case .success(_):
-                    print("레시피북 삭제 - 네트워킹 성공")
+                    print("레시피북 조합 삭제 - 네트워킹 성공")
                 case .failure(let error):
-                    print("레시피북 삭제 - \(error)")
+                    print("레시피북 조합 삭제 - \(error)")
                 }
             }
         } catch {
