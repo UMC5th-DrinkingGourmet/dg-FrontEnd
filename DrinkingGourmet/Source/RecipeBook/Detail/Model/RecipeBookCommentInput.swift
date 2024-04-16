@@ -16,8 +16,4 @@ struct RecipeBookCommentInput {
         let parentId: String
     }
     
-    struct deleteCommentInput: Codable {
-        let recipeCommentId: Int
-    }
-    
 }

@@ -101,7 +101,7 @@ class RecipeBookDetailDataManager {
     }
     
     // MARK: - 레시피북 댓글 삭제
-    func deleteComment (recipeCommentId: Int) {
+    func deleteComment(recipeCommentId: Int) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             
@@ -109,12 +109,13 @@ class RecipeBookDetailDataManager {
                 "Authorization": "Bearer \(accessToken)"
             ]
             
-            let parameters = RecipeBookCommentInput.deleteCommentInput(recipeCommentId: recipeCommentId)
+            let parameters: Parameters = [
+                "recipeCommentId": recipeCommentId
+            ]
             
-            AF.request("\(baseURL)/recipes-comments",
+            AF.request("\(baseURL)/recipe-comments",
                        method: .delete,
                        parameters: parameters,
-                       encoder: JSONParameterEncoder.default,
                        headers: headers)
             .validate()
             .response { response in
@@ -130,7 +131,7 @@ class RecipeBookDetailDataManager {
         }
     }
     
-    // MARK: - 레시피북 삭제
+    // MARK: - 레시피북 게시물 삭제
     func deleteRecipeBook (_ recipeBookId: Int) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -146,9 +147,9 @@ class RecipeBookDetailDataManager {
             .response { response in
                 switch response.result {
                 case .success(_):
-                    print("레시피북 조합 삭제 - 네트워킹 성공")
+                    print("레시피북 게시물 삭제 - 네트워킹 성공")
                 case .failure(let error):
-                    print("레시피북 조합 삭제 - \(error)")
+                    print("레시피북 게시물 삭제 - \(error)")
                 }
             }
         } catch {
