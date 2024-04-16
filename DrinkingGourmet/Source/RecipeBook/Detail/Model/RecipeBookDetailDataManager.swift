@@ -42,23 +42,34 @@ class RecipeBookDetailDataManager {
     
     // MARK: - 레시피북 댓글 페이징 조회
     func fetchRecipeBookCommentData (_ recipeBookId: Int,
-                                    _ parameters: RecipeBookCommentInput.fetchRecipeBookCommentDataInput,
-                                    _ viewController: RecipeBookDetailVC,
-                                    completion: @escaping (RecipeBookCommentModel?) -> Void) {
+                                     _ parameters: RecipeBookCommentInput.fetchRecipeBookCommentDataInput,
+                                     _ viewController: RecipeBookDetailVC,
+                                     completion: @escaping (RecipeBookCommentModel?) -> Void) {
         
-        AF.request("\(baseURL)/recipe-comments/\(recipeBookId)",
-                   method: .get,
-                   parameters: parameters)
-        .validate()
-        .responseDecodable(of: RecipeBookCommentModel.self) { response in
-            switch response.result {
-            case .success(let result):
-                print("레시피북 페이징 조회 - 네트워킹 성공")
-                completion(result)
-            case .failure(let error):
-                print("레시피북 댓글 페이징 조회 - \(error)")
-                completion(nil)
+        do {
+            let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request("\(baseURL)/recipe-comments/\(recipeBookId)",
+                       method: .get,
+                       parameters: parameters,
+                       headers: headers)
+            .validate()
+            .responseDecodable(of: RecipeBookCommentModel.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print("레시피북 페이징 조회 - 네트워킹 성공")
+                    completion(result)
+                case .failure(let error):
+                    print("레시피북 댓글 페이징 조회 - \(error)")
+                    completion(nil)
+                }
             }
+        } catch {
+            print("Failed to get access token")
         }
     }
     
@@ -91,7 +102,7 @@ class RecipeBookDetailDataManager {
     
     // MARK: - 레시피북 삭제
     func deleteRecipeBook (_ recipeBookId: Int,
-                            completion: @escaping () -> Void) {
+                           completion: @escaping () -> Void) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             

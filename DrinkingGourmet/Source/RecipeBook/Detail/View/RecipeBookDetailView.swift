@@ -208,6 +208,7 @@ final class RecipeBookDetailView: UIView {
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.leading.equalTo(contentView).offset(20)
             make.trailing.equalTo(contentView).offset(-20)
+            make.height.equalTo(82)
         }
         
         ingredientLabel.snp.makeConstraints { make in
