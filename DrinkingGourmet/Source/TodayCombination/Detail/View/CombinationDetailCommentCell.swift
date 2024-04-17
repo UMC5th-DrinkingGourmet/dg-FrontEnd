@@ -11,10 +11,17 @@ protocol ComponentProductCellDelegate {
     func selectedInfoBtn(data : CombinationCommentModel.CombinationCommentList)
 }
 
+protocol RecipeBookCommentCellDelegate {
+    func selectedInfoBtn(data : RecipeBookCommentModel.CommentList)
+}
+
 final class CombinationDetailCommentCell: UITableViewCell {
 
     var delegate: ComponentProductCellDelegate?
     var combinationCommentList: CombinationCommentModel.CombinationCommentList? = nil
+    
+    var recipeBookCommentDelegate: RecipeBookCommentCellDelegate?
+    var recipeBookCommentList: RecipeBookCommentModel.CommentList? = nil
     
     // MARK: - View
     let profileImage = UIImageView().then {
@@ -44,6 +51,7 @@ final class CombinationDetailCommentCell: UITableViewCell {
     let moreButton = UIButton().then {
         $0.setImage(UIImage(named: "ic_comment_more"), for: .normal)
         $0.addTarget(self, action: #selector(selectedInfoBtn(_:)), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(selectedRecipeBookCommentBtn(_:)), for: .touchUpInside)
     }
     
     let commentLabel = UILabel().then {
@@ -123,5 +131,10 @@ final class CombinationDetailCommentCell: UITableViewCell {
     @objc func selectedInfoBtn(_ sender: UIButton) {
         guard let combinationCommentList = self.combinationCommentList else { return }
         self.delegate?.selectedInfoBtn(data: combinationCommentList)
+    }
+    
+    @objc func selectedRecipeBookCommentBtn(_ sender: UIButton) {
+        guard let recipeBookCommentList = self.recipeBookCommentList else { return }
+        self.recipeBookCommentDelegate?.selectedInfoBtn(data: recipeBookCommentList)
     }
 }

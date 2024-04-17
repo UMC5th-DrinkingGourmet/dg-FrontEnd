@@ -152,6 +152,14 @@ extension ReportViewController {
                         VC.fetchData()
                     }
                 }
+                
+                if reportTarget == "RECIPE" { // 레시피북 게시물 신고일 때
+                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeVC }) as? RecipeBookHomeVC {
+                        VC.fetchData()
+                        VC.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
+                        self.navigationController?.popToViewController(VC, animated: true)
+                    }
+                }
             }
         }
     }

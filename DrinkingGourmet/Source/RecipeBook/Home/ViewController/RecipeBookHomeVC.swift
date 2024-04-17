@@ -74,7 +74,7 @@ final class RecipeBookHomeVC: UIViewController {
     }
     
     // MARK: - 새로고침
-    private func setupRefresh() {
+    func setupRefresh() {
         isReturningFromSearch = false
         
         let rc = recipeBookHomeView.refreshControl

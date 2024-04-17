@@ -23,6 +23,7 @@ struct RecipeBookCommentModel: Codable {
         let createdDate, updatedDate: String
         let childCommentList: [CommentList]
         let childCommentCount: Int
+        let state: String
     }
     
     struct Member: Codable {
