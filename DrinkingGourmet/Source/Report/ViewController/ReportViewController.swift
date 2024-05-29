@@ -160,6 +160,14 @@ extension ReportViewController {
                         self.navigationController?.popToViewController(VC, animated: true)
                     }
                 }
+                
+                if reportTarget == "RECIPE_COMMENT" { // 레시피북 댓글 신고일 때
+                    self.navigationController?.popViewController(animated: true)
+                    if let VC = self.navigationController?.viewControllers.last as? RecipeBookDetailVC {
+                        VC.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true)
+                        VC.fetchData()
+                    }
+                }
             }
         }
     }
