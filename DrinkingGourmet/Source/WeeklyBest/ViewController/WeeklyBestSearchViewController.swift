@@ -1,5 +1,5 @@
 //
-//  WeeklyBestSearchVC.swift
+//  WeeklyBestSearchViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 2/14/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeeklyBestSearchVC: UIViewController {
+class WeeklyBestSearchViewController: UIViewController {
     // MARK: - Properties
     private let searchResultView = SearchResultView()
 
@@ -43,7 +43,7 @@ class WeeklyBestSearchVC: UIViewController {
         
         tf.delegate = self
         tf.becomeFirstResponder() // 키보드 자동 띄우기
-        tf.placeholder = "레시피북 검색"
+        tf.placeholder = "주간 베스트 조합 검색"
     }
 
     // MARK: - 버튼 설정
@@ -57,21 +57,21 @@ class WeeklyBestSearchVC: UIViewController {
 }
 
 // MARK: - @objc
-extension WeeklyBestSearchVC {
+extension WeeklyBestSearchViewController {
     @objc func cancelButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
 }
 
 // MARK: - UITextFieldDelegate
-extension WeeklyBestSearchVC: UITextFieldDelegate {
+extension WeeklyBestSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder() // 키보드 숨기기
         
-        if let weeklyBestVC = navigationController?.viewControllers.first(where: { $0 is WeeklyBestVC }) as? WeeklyBestVC {
+        if let weeklyBestVC = navigationController?.viewControllers.first(where: { $0 is WeeklyBestViewController }) as? WeeklyBestViewController {
             
-            weeklyBestVC.isReturningFromSearch = true
-            weeklyBestVC.searchKeyword = searchResultView.searchBar.textField.text ?? ""
+            weeklyBestVC.isSearch = true
+            weeklyBestVC.keyword = searchResultView.searchBar.textField.text ?? ""
             weeklyBestVC.fetchData()
             weeklyBestVC.weeklyBestView.tableView.setContentOffset(CGPoint.zero, animated: true)
             navigationController?.popViewController(animated: true)

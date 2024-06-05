@@ -1,5 +1,5 @@
 //
-//  CombiationViewController.swift
+//  CombiationHomeViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 1/17/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CombiationViewController: UIViewController {
+final class CombiationHomeViewController: UIViewController {
     // MARK: - Properties
     var isSearch = false
     var keyword = ""
@@ -17,14 +17,14 @@ final class CombiationViewController: UIViewController {
     var pageNum: Int = 0
     var isLastPage: Bool = false
     
-    let todayCombinationView = TodayCombinationView()
+    let combinationHomeView = CombinationHomeView()
     
     // MARK: - View 설정
     override func loadView() {
-        view = todayCombinationView
+        view = combinationHomeView
     }
     
-    // MARK: - viewDidLoad()
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -38,8 +38,9 @@ final class CombiationViewController: UIViewController {
     
     // MARK: - 데이터 가져오기
     func fetchData() {
+        self.pageNum = 0
+        
         if isSearch { // 검색일 때
-            self.pageNum = 0
             CombinationService.shared.getSearch(page: 0, 
                                                 keyword: self.keyword) { result in
                 switch result {
@@ -49,14 +50,13 @@ final class CombiationViewController: UIViewController {
                     self.isLastPage = data.result.isLast
                     self.combinations = data.result.combinationList
                     DispatchQueue.main.async {
-                        self.todayCombinationView.tableView.reloadData()
+                        self.combinationHomeView.tableView.reloadData()
                     }
                 case .failure(let error):
                     print("오늘의 조합 검색 실패 - \(error.localizedDescription)")
                 }
             }
         } else {
-            self.pageNum = 0
             CombinationService.shared.getAll(page: 0) { result in
                 switch result {
                 case .success(let data):
@@ -65,9 +65,9 @@ final class CombiationViewController: UIViewController {
                     self.isLastPage = data.result.isLast
                     self.combinations = data.result.combinationList
                     DispatchQueue.main.async {
-                        self.todayCombinationView.tableView.reloadData()
+                        self.combinationHomeView.tableView.reloadData()
                     }
-                    
+
                 case .failure(let error):
                     print("오늘의 조합 홈 조회 실패 - \(error.localizedDescription)")
                 }
@@ -77,14 +77,11 @@ final class CombiationViewController: UIViewController {
 
     // MARK: - 새로고침
     private func setupRefresh() {
-        self.isSearch = false
-        self.pageNum = 0
-        
-        let rc = todayCombinationView.refreshControl
+        let rc = combinationHomeView.refreshControl
         rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
         rc.tintColor = .customOrange
         
-        todayCombinationView.tableView.refreshControl = rc
+        combinationHomeView.tableView.refreshControl = rc
     }
     
     // MARK: - 네비게이션바 설정
@@ -108,25 +105,25 @@ final class CombiationViewController: UIViewController {
     
     // MARK: - 테이블뷰 설정
     private func setupTableView() {
-        let tb = todayCombinationView.tableView
+        let tb = combinationHomeView.tableView
         
         tb.dataSource = self
         tb.delegate = self
         tb.prefetchDataSource = self
         
         tb.rowHeight = 232 // 셀 높이 고정
-        tb.register(TodayCombinationCell.self, forCellReuseIdentifier: "TodayCombinationCell")
+        tb.register(CombinationHomeCell.self, forCellReuseIdentifier: "CombinationHomeCell")
     }
     
     // MARK: - 버튼 설정
     private func setupButton() {
-        todayCombinationView.customSearchBar.searchBarButton.addTarget(
+        combinationHomeView.customSearchBar.searchBarButton.addTarget(
             self,
             action: #selector(searchBarButtonTapped),
             for: .touchUpInside
         )
         
-        todayCombinationView.uploadButton.addTarget(
+        combinationHomeView.uploadButton.addTarget(
             self,
             action: #selector(uploadButtonTapped),
             for: .touchUpInside
@@ -135,9 +132,11 @@ final class CombiationViewController: UIViewController {
 }
 
 // MARK: - Actions
-extension CombiationViewController {
+extension CombiationHomeViewController {
     // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
+        self.isSearch = false
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.fetchData()
             refresh.endRefreshing()
@@ -146,7 +145,7 @@ extension CombiationViewController {
     
     // 검색
     @objc func searchBarButtonTapped() {
-        let VC = CombinationSearchVC()
+        let VC = CombinationSearchViewController()
         VC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
         navigationController?.pushViewController(VC, animated: true)
     }
@@ -159,7 +158,7 @@ extension CombiationViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension CombiationViewController: UITableViewDataSource {
+extension CombiationHomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return combinations.count
@@ -167,7 +166,7 @@ extension CombiationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodayCombinationCell", for: indexPath) as! TodayCombinationCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CombinationHomeCell", for: indexPath) as! CombinationHomeCell
         
         let combination = combinations[indexPath.row]
         
@@ -190,7 +189,7 @@ extension CombiationViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension CombiationViewController: UITableViewDelegate {
+extension CombiationHomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = combinations[indexPath.row].combinationId
         
@@ -203,7 +202,7 @@ extension CombiationViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSourcePrefetching
-extension CombiationViewController: UITableViewDataSourcePrefetching {
+extension CombiationHomeViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             
@@ -220,7 +219,7 @@ extension CombiationViewController: UITableViewDataSourcePrefetching {
                             self.isLastPage = data.result.isLast
                             self.combinations += data.result.combinationList
                             DispatchQueue.main.async {
-                                self.todayCombinationView.tableView.reloadData()
+                                self.combinationHomeView.tableView.reloadData()
                             }
                         case .failure(let error):
                             print("오늘의 조합 검색 페이징 실패 - \(error.localizedDescription)")
@@ -235,15 +234,15 @@ extension CombiationViewController: UITableViewDataSourcePrefetching {
                     CombinationService.shared.getAll(page: self.pageNum) { result in
                         switch result {
                         case .success(let data):
-                            print("오늘의 조합 홈 페이징 성공")
+                            print("오늘의 조합 홈 조회 페이징 성공")
                             self.isLastPage = data.result.isLast
                             self.combinations += data.result.combinationList
                             DispatchQueue.main.async {
-                                self.todayCombinationView.tableView.reloadData()
+                                self.combinationHomeView.tableView.reloadData()
                             }
                             
                         case .failure(let error):
-                            print("오늘의 조합 홈 페이징 실패 - \(error.localizedDescription)")
+                            print("오늘의 조합 홈 조회 페이징 실패 - \(error.localizedDescription)")
                         }
                     }
                 }

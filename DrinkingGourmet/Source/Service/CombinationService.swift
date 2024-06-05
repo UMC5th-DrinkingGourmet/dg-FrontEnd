@@ -230,4 +230,65 @@ final class CombinationService {
         }
     }
     
+    // MARK: - 주간 베스트 조합 홈 페이징 조회
+    func getAllWeeklyBest(page: Int,
+                          completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+        
+        do {
+            let headers = try getHeaders()
+            
+            let parameters : [String: Any] = [
+                "page" : page
+            ]
+            
+            AF.request("\(baseURL)/combinations/weekly-best",
+                       method: .get,
+                       parameters: parameters,
+                       headers: headers)
+            .validate()
+            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+                switch response.result {
+                case .success(let result):
+                    completion(.success(result))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    // MARK: - 주간 베스트 조합 검색
+    func getSearchWeeklyBest(page: Int,
+                             keyword: String,
+                             completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+        
+        do {
+            let headers = try getHeaders()
+            
+            let parameters : [String: Any] = [
+                "page" : page,
+                "keyword": keyword
+            ]
+            
+            AF.request("\(baseURL)/combinations/weekly-best/search",
+                       method: .get,
+                       parameters: parameters,
+                       headers: headers)
+            .validate()
+            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+                switch response.result {
+                case .success(let result):
+                    completion(.success(result))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
 }

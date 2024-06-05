@@ -55,21 +55,21 @@ final class CombinationDetailViewController: UIViewController, UIScrollViewDeleg
         if isMovingFromParent {
             if isWeeklyBest { // 주간 베스트 조합에서 PUSH 했을 때
                 guard let navigationController = navigationController,
-                      let WeeklyBestVC = navigationController.viewControllers.last as? WeeklyBestVC,
+                      let WeeklyBestVC = navigationController.viewControllers.last as? WeeklyBestViewController,
                       let selectedIndex = selectedIndex else {
                     return
                 }
-                WeeklyBestVC.arrayWeeklyBest[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
+                WeeklyBestVC.combinations[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
                 WeeklyBestVC.weeklyBestView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
             }
             
             guard let navigationController = navigationController,
-                  let todayCombinationViewController = navigationController.viewControllers.last as? CombiationViewController,
+                  let todayCombinationViewController = navigationController.viewControllers.last as? CombiationHomeViewController,
                   let selectedIndex = selectedIndex else {
                 return
             }
             todayCombinationViewController.combinations[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
-            todayCombinationViewController.todayCombinationView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
+            todayCombinationViewController.combinationHomeView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
         }
     }
     
