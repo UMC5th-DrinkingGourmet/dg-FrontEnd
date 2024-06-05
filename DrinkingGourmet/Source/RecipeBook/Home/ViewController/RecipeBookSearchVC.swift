@@ -70,8 +70,8 @@ extension RecipeBookSearchVC: UITextFieldDelegate {
         
         if let recipeBookHomeVC = navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeVC }) as? RecipeBookHomeVC {
             
-            recipeBookHomeVC.isReturningFromSearch = true
-            recipeBookHomeVC.searchKeyword = searchResultView.searchBar.textField.text ?? ""
+            recipeBookHomeVC.isSearch = true
+            recipeBookHomeVC.keyword = searchResultView.searchBar.textField.text ?? ""
             recipeBookHomeVC.fetchData()
             recipeBookHomeVC.recipeBookHomeView.tableView.setContentOffset(CGPoint.zero, animated: true)
             navigationController?.popViewController(animated: true)

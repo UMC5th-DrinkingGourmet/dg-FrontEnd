@@ -1,15 +1,15 @@
 //
-//  CombinationService.swift
+//  RecipeBookService.swift
 //  DrinkingGourmet
 //
-//  Created by 이승민 on 6/4/24.
+//  Created by 이승민 on 6/6/24.
 //
 
 import Alamofire
 
-final class CombinationService {
+final class RecipeBookService {
     
-    static let shared = CombinationService()
+    static let shared = RecipeBookService()
     private init() {}
     
     private let baseURL = "https://drink-gourmet.kro.kr"
@@ -19,9 +19,9 @@ final class CombinationService {
         return ["Authorization": "Bearer \(accessToken)"]
     }
     
-    // MARK: - 오늘의 조합 홈 페이징 조회
+    // MARK: - 레시피북 홈 페이징 조회
     func getAll(page: Int,
-                completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+                completion: @escaping (Swift.Result<RecipeBookHomeResponseDTO, Error>) -> Void) {
         do {
             let headers = try getHeaders()
             
@@ -29,12 +29,12 @@ final class CombinationService {
                 "page" : page
             ]
             
-            AF.request("\(baseURL)/combinations",
+            AF.request("\(baseURL)/recipes",
                        method: .get,
                        parameters: parameters,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+            .responseDecodable(of: RecipeBookHomeResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))
@@ -47,10 +47,10 @@ final class CombinationService {
         }
     }
     
-    // MARK: - 오늘의 조합 검색 페이징 조회
+    // MARK: - 레시피북 검색 페이징 조회
     func getSearch(page: Int,
                    keyword: String,
-                   completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+                   completion: @escaping (Swift.Result<RecipeBookHomeResponseDTO, Error>) -> Void) {
         do {
             let headers = try getHeaders()
             
@@ -59,12 +59,12 @@ final class CombinationService {
                 "keyword": keyword
             ]
             
-            AF.request("\(baseURL)/combinations/search",
+            AF.request("\(baseURL)/recipes/search",
                        method: .get,
                        parameters: parameters,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+            .responseDecodable(of: RecipeBookHomeResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))
@@ -292,3 +292,4 @@ final class CombinationService {
     }
     
 }
+

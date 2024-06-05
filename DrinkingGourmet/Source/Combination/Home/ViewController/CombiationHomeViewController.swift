@@ -27,7 +27,6 @@ final class CombiationHomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
         fetchData()
         setupRefresh()
@@ -67,7 +66,6 @@ final class CombiationHomeViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.combinationHomeView.tableView.reloadData()
                     }
-
                 case .failure(let error):
                     print("오늘의 조합 홈 조회 실패 - \(error.localizedDescription)")
                 }
@@ -117,17 +115,13 @@ final class CombiationHomeViewController: UIViewController {
     
     // MARK: - 버튼 설정
     private func setupButton() {
-        combinationHomeView.customSearchBar.searchBarButton.addTarget(
-            self,
-            action: #selector(searchBarButtonTapped),
-            for: .touchUpInside
-        )
+        combinationHomeView.customSearchBar.searchBarButton.addTarget(self,
+                                                                      action: #selector(searchBarButtonTapped),
+                                                                      for: .touchUpInside)
         
-        combinationHomeView.uploadButton.addTarget(
-            self,
-            action: #selector(uploadButtonTapped),
-            for: .touchUpInside
-        )
+        combinationHomeView.uploadButton.addTarget(self,
+                                                   action: #selector(uploadButtonTapped),
+                                                   for: .touchUpInside)
     }
 }
 
