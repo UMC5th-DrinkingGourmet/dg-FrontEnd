@@ -157,6 +157,7 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
             make.top.equalTo(dividerView1.snp.bottom).offset(24)
             make.leading.equalTo(contentView).offset(21)
             make.trailing.equalTo(contentView).offset(-21)
+            make.height.equalTo(20)
         }
         
         moreButton.snp.makeConstraints { make in

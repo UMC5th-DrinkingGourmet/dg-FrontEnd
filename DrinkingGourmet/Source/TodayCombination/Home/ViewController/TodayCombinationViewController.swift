@@ -12,7 +12,7 @@ final class TodayCombinationViewController: UIViewController {
     var isReturningFromSearch = false
     var searchKeyword = ""
     
-    var arrayCombinationHome: [CombinationHomeModel.CombinationHomeList] = []
+    var arrayCombinationHome: [CombinationHomeDto] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
     var isLastPage: Bool = false
@@ -39,40 +39,42 @@ final class TodayCombinationViewController: UIViewController {
     // MARK: - 데이터 가져오기
     func fetchData() {
         if isReturningFromSearch { // 검색일 때
-            let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: 0, keyword: searchKeyword)
-            pageNum = 0
-            
-            CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
-                guard let self = self else { return }
-                
-                if let model = model {
-                    self.totalPageNum = model.result.totalPage
-                    self.isLastPage = model.result.isLast
-                    self.arrayCombinationHome = model.result.combinationList
+            self.pageNum = 0
+            CombinationService.shared.getSearch(page: 0, 
+                                                keyword: self.searchKeyword) { result in
+                switch result {
+                case .success(let data):
+                    print("오늘의 조합 검색 성공")
+                    self.totalPageNum = data.result.totalPage
+                    self.isLastPage = data.result.isLast
+                    self.arrayCombinationHome = data.result.combinationList
                     DispatchQueue.main.async {
                         self.todayCombinationView.tableView.reloadData()
                     }
+                case .failure(let error):
+                    print("오늘의 조합 검색 실패 - \(error.localizedDescription)")
                 }
             }
         } else {
-            let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
-            pageNum = 0
-            
-            CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-                guard let self = self else { return }
-                
-                if let model = model {
-                    self.totalPageNum = model.result.totalPage
-                    self.isLastPage = model.result.isLast
-                    self.arrayCombinationHome = model.result.combinationList
+            self.pageNum = 0
+            CombinationService.shared.getAll(page: 0) { result in
+                switch result {
+                case .success(let data):
+                    print("오늘의 조합 홈 조회 성공")
+                    self.totalPageNum = data.result.totalPage
+                    self.isLastPage = data.result.isLast
+                    self.arrayCombinationHome = data.result.combinationList
                     DispatchQueue.main.async {
                         self.todayCombinationView.tableView.reloadData()
                     }
+                    
+                case .failure(let error):
+                    print("오늘의 조합 홈 조회 실패 - \(error.localizedDescription)")
                 }
             }
         }
     }
-    
+
     // MARK: - 새로고침
     private func setupRefresh() {
         isReturningFromSearch = false
@@ -208,36 +210,40 @@ extension TodayCombinationViewController: UITableViewDataSourcePrefetching {
             if isReturningFromSearch { // 검색일 때
                 if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
                     
-                    pageNum += 1
+                    self.pageNum += 1
                     
-                    let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: pageNum, keyword: searchKeyword)
-                    
-                    CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
-                        if let model = model {
-                            guard let self = self else { return }
-                            self.arrayCombinationHome += model.result.combinationList
-                            self.isLastPage = model.result.isLast
+                    CombinationService.shared.getSearch(page: self.pageNum, 
+                                                        keyword: self.searchKeyword) { result in
+                        switch result {
+                        case .success(let data):
+                            print("오늘의 조합 검색 페이징 성공")
+                            self.isLastPage = data.result.isLast
+                            self.arrayCombinationHome += data.result.combinationList
                             DispatchQueue.main.async {
                                 self.todayCombinationView.tableView.reloadData()
                             }
+                        case .failure(let error):
+                            print("오늘의 조합 검색 페이징 실패 - \(error.localizedDescription)")
                         }
                     }
                 }
             } else {
                 if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
                     
-                    pageNum += 1
+                    self.pageNum += 1
                     
-                    let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: pageNum)
-                    
-                    CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-                        if let model = model {
-                            guard let self = self else { return }
-                            self.arrayCombinationHome += model.result.combinationList
-                            self.isLastPage = model.result.isLast
+                    CombinationService.shared.getAll(page: self.pageNum) { result in
+                        switch result {
+                        case .success(let data):
+                            print("오늘의 조합 홈 페이징 성공")
+                            self.isLastPage = data.result.isLast
+                            self.arrayCombinationHome += data.result.combinationList
                             DispatchQueue.main.async {
                                 self.todayCombinationView.tableView.reloadData()
                             }
+                            
+                        case .failure(let error):
+                            print("오늘의 조합 홈 페이징 실패 - \(error.localizedDescription)")
                         }
                     }
                 }
