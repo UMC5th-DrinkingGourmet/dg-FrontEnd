@@ -7,10 +7,6 @@
 
 struct CombinationCommentInput {
     
-    struct fetchCombinatiCommentDataInput: Codable {
-        let page: Int?
-    }
-    
     struct postCommentInput: Codable {
         let content: String
         let parentId: String

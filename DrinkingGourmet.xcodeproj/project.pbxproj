@@ -44,8 +44,6 @@
 		2EFA32FA2B71629100059188 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32F92B71629100059188 /* GradientView.swift */; };
 		2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */; };
 		2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */; };
-		5601EBB52B7BEE570043CCD4 /* CombinationDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */; };
-		5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */; };
 		5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */; };
 		5601EBBB2B7BEED30043CCD4 /* CombinationCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */; };
 		5601EBC02B7C10F90043CCD4 /* RecipeBookHomeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBBF2B7C10F90043CCD4 /* RecipeBookHomeInput.swift */; };
@@ -65,9 +63,9 @@
 		56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */; };
 		56543EC92B7EF1190099E648 /* CombinationUploadInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */; };
 		56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543ECA2B7EF1500099E648 /* CombinationUploadDataManager.swift */; };
-		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
+		5658DDF72B57498600F72F42 /* CombiationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* CombiationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
-		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
+		5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */; };
 		5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EA2B6EDB340009FCD6 /* SearchResultCell.swift */; };
 		5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EC2B6EDB400009FCD6 /* SearchResultView.swift */; };
 		5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */; };
@@ -207,8 +205,6 @@
 		2EFA32F92B71629100059188 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombiCollectionViewCell.swift; sourceTree = "<group>"; };
 		2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoModel.swift; sourceTree = "<group>"; };
-		5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailModel.swift; sourceTree = "<group>"; };
-		5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationCommentModel.swift; sourceTree = "<group>"; };
 		5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailDataManager.swift; sourceTree = "<group>"; };
 		5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationCommentInput.swift; sourceTree = "<group>"; };
 		5601EBBF2B7C10F90043CCD4 /* RecipeBookHomeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookHomeInput.swift; sourceTree = "<group>"; };
@@ -228,9 +224,9 @@
 		56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadModel.swift; sourceTree = "<group>"; };
 		56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadInput.swift; sourceTree = "<group>"; };
 		56543ECA2B7EF1500099E648 /* CombinationUploadDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadDataManager.swift; sourceTree = "<group>"; };
-		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
+		5658DDF62B57498600F72F42 /* CombiationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombiationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
-		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
+		5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailViewController.swift; sourceTree = "<group>"; };
 		5668A2EA2B6EDB340009FCD6 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		5668A2EC2B6EDB400009FCD6 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomResultSearchBar.swift; sourceTree = "<group>"; };
@@ -652,9 +648,7 @@
 		5601EBB32B7BEE400043CCD4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */,
 				5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */,
-				5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */,
 				5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */,
 			);
 			path = Model;
@@ -790,7 +784,7 @@
 		5658DDF32B57495F00F72F42 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */,
+				5658DDF62B57498600F72F42 /* CombiationViewController.swift */,
 				5668A3D02B78F69C0009FCD6 /* CombinationSearchVC.swift */,
 			);
 			path = ViewController;
@@ -827,7 +821,7 @@
 		5658DDFC2B582A3900F72F42 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */,
+				5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1347,7 +1341,6 @@
 				5625E3842BBB3A8400269BBF /* SettingSectionHeaderView.swift in Sources */,
 				56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchVC.swift in Sources */,
 				56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */,
-				5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */,
 				2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */,
 				97599C122B84F577009B9CF9 /* NewDrinkDetailView.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
@@ -1361,7 +1354,7 @@
 				56C9B2962B7CE6D200C59D60 /* WeeklyBestInput.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
 				56AE284B2B83E51D009CE0A1 /* MyPageCell.swift in Sources */,
-				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
+				5658DDF72B57498600F72F42 /* CombiationViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */,
@@ -1449,7 +1442,7 @@
 				56B9DCCA2BCB9CE000D08D22 /* ReportDataManager.swift in Sources */,
 				97EB4ACC2B70F63B009A62EB /* SelectWeatherResource.swift in Sources */,
 				975F09262B8282D7009C6F0E /* MyRecommendInput.swift in Sources */,
-				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
+				5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */,
 				97EB4AC72B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift in Sources */,
 				56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */,
 				5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */,
@@ -1459,7 +1452,6 @@
 				2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */,
 				97EB4AD52B70F668009A62EB /* SelectDrinkCapacityViewController.swift in Sources */,
 				2E54079A2B84C51E00724513 /* RecipeBookUploadDataManager.swift in Sources */,
-				5601EBB52B7BEE570043CCD4 /* CombinationDetailModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

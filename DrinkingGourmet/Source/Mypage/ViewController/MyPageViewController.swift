@@ -288,7 +288,7 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
         
         if currentTab == .combination { // 오늘의 조합
             let selectedItem = arrayCombinationData[indexPath.row].combinationId
-            let todayCombinationDetailVC = TodayCombinationDetailViewController()
+            let todayCombinationDetailVC = CombinationDetailViewController()
             todayCombinationDetailVC.combinationId = selectedItem
             todayCombinationDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(todayCombinationDetailVC, animated: true)

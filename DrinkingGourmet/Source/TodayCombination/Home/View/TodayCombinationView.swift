@@ -11,7 +11,6 @@ final class TodayCombinationView: UIView {
     
     // MARK: - View
     let tableView = UITableView().then {
-        $0.showsVerticalScrollIndicator = false // 스크롤바 숨기기
         $0.keyboardDismissMode = .onDrag // 스크롤 할 때 키보드 내리기
         $0.separatorStyle = .none // 테이블뷰 구분선 없애기
     }
@@ -20,7 +19,7 @@ final class TodayCombinationView: UIView {
     
     let customSearchBar = CustomSearchBar()
     
-    let floatingButton = UIButton().then {
+    let uploadButton = UIButton().then {
         $0.backgroundColor = .customOrange
         $0.setImage(UIImage(named: "ic_floating_show"), for: .normal)
         $0.tintColor = .white
@@ -45,7 +44,7 @@ final class TodayCombinationView: UIView {
         self.addSubviews([
             tableView,
             customSearchBar,
-            floatingButton
+            uploadButton
         ])
     }
     
@@ -57,11 +56,10 @@ final class TodayCombinationView: UIView {
         
         tableView.snp.makeConstraints { make in
             make.top.equalTo(customSearchBar.snp.bottom).offset(15)
-            make.leading.trailing.equalTo(customSearchBar)
-            make.bottom.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
-        floatingButton.snp.makeConstraints { make in
+        uploadButton.snp.makeConstraints { make in
             make.size.equalTo(50)
             make.trailing.equalToSuperview().inset(18)
             make.bottom.equalToSuperview().inset(58)
