@@ -9,13 +9,13 @@ import UIKit
 import SnapKit
 import Then
 
-class CommentInputView: UIView {
+final class CommentInputView: UIView {
     
-    let backgroudView = UIView().then {
+    private let backgroudView = UIView().then {
         $0.backgroundColor = .white
     }
     
-    let textFieldView = UIView().then {
+    private let textFieldView = UIView().then {
         $0.layer.backgroundColor = UIColor(red: 0.961, green: 0.961, blue: 0.961, alpha: 1).cgColor
         $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
@@ -39,12 +39,12 @@ class CommentInputView: UIView {
         )
     }
     
-    let postButton = UIButton().then {
+    let uploadCommentButton = UIButton().then {
         $0.backgroundColor = .customOrange
         $0.layer.cornerRadius = 15
     }
     
-    let arrow = UIImageView().then {
+    private let arrow = UIImageView().then {
         $0.image = UIImage(named: "ic_arrow_up")
         $0.tintColor = .white
     }
@@ -59,14 +59,19 @@ class CommentInputView: UIView {
     }
     
     func addViews() {
-        self.addSubviews([backgroudView ,textFieldView, textField, postButton, arrow])
+        self.addSubviews([
+            backgroudView,
+            textFieldView,
+            textField,
+            uploadCommentButton,
+            arrow
+        ])
     }
     
     override func updateConstraints() {
         super.updateConstraints()
         configureConstraints()
     }
-    
     
     func configureConstraints() {
         
@@ -85,11 +90,11 @@ class CommentInputView: UIView {
         textField.snp.makeConstraints { make in
             make.top.equalTo(textFieldView).inset(11)
             make.leading.equalTo(textFieldView).inset(26)
-            make.trailing.equalTo(postButton.snp.leading).offset(-10)
+            make.trailing.equalTo(uploadCommentButton.snp.leading).offset(-10)
             make.bottom.equalTo(textFieldView).inset(10)
         }
         
-        postButton.snp.makeConstraints { make in
+        uploadCommentButton.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(30)
             make.top.equalTo(textFieldView).inset(6)
@@ -99,8 +104,8 @@ class CommentInputView: UIView {
         
         arrow.snp.makeConstraints { make in
             make.width.height.equalTo(16)
-            make.top.bottom.equalTo(postButton).inset(7)
-            make.leading.trailing.equalTo(postButton).inset(16)
+            make.top.bottom.equalTo(uploadCommentButton).inset(7)
+            make.leading.trailing.equalTo(uploadCommentButton).inset(16)
         }
         
     }

@@ -135,7 +135,7 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
             action: #selector(moreButtonTapped),
             for: .touchUpInside
         )
-        recipeBookDetailView.commentInputView.postButton.addTarget(
+        recipeBookDetailView.commentInputView.uploadCommentButton.addTarget(
             self,
             action: #selector(postButtonTapped),
             for: .touchUpInside
@@ -145,7 +145,8 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
 
 // MARK: - @objc
 extension RecipeBookDetailVC {
-    @objc func likeButtonTapped() { // 좋아요
+    // 좋아요
+    @objc func likeButtonTapped() {
         isLiked.toggle()
         let imageName = isLiked ? "ic_like_selected" : "ic_like"
         headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)

@@ -44,8 +44,6 @@
 		2EFA32FA2B71629100059188 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32F92B71629100059188 /* GradientView.swift */; };
 		2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */; };
 		2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */; };
-		5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */; };
-		5601EBBB2B7BEED30043CCD4 /* CombinationCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */; };
 		5601EBC02B7C10F90043CCD4 /* RecipeBookHomeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBBF2B7C10F90043CCD4 /* RecipeBookHomeInput.swift */; };
 		5601EBC22B7C110C0043CCD4 /* RecipeBookHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBC12B7C110C0043CCD4 /* RecipeBookHomeModel.swift */; };
 		5601EBC62B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBC52B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift */; };
@@ -205,8 +203,6 @@
 		2EFA32F92B71629100059188 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombiCollectionViewCell.swift; sourceTree = "<group>"; };
 		2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoModel.swift; sourceTree = "<group>"; };
-		5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailDataManager.swift; sourceTree = "<group>"; };
-		5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationCommentInput.swift; sourceTree = "<group>"; };
 		5601EBBF2B7C10F90043CCD4 /* RecipeBookHomeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookHomeInput.swift; sourceTree = "<group>"; };
 		5601EBC12B7C110C0043CCD4 /* RecipeBookHomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookHomeModel.swift; sourceTree = "<group>"; };
 		5601EBC52B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookHomeDataManager.swift; sourceTree = "<group>"; };
@@ -645,15 +641,6 @@
 			path = Gradient;
 			sourceTree = "<group>";
 		};
-		5601EBB32B7BEE400043CCD4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */,
-				5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		5601EBBE2B7C10B10043CCD4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -802,7 +789,6 @@
 		5658DDFA2B58296B00F72F42 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				5601EBB32B7BEE400043CCD4 /* Model */,
 				5658DDFD2B582A4200F72F42 /* View */,
 				5658DDFC2B582A3900F72F42 /* ViewController */,
 			);
@@ -1358,7 +1344,6 @@
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */,
-				5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */,
 				566B83392C0EE937008C0773 /* CombinationDto.swift in Sources */,
 				5601EBC22B7C110C0043CCD4 /* RecipeBookHomeModel.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
@@ -1401,7 +1386,6 @@
 				5601EBC62B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift in Sources */,
 				97EB4AFC2B720D42009A62EB /* LoadingRecommendDrinkViewController.swift in Sources */,
 				5668A3432B6F68610009FCD6 /* RecipeBookHomeView.swift in Sources */,
-				5601EBBB2B7BEED30043CCD4 /* CombinationCommentInput.swift in Sources */,
 				97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */,
 				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
 				56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */,

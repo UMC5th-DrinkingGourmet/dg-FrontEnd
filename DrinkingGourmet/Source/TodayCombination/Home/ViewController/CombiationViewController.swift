@@ -77,7 +77,8 @@ final class CombiationViewController: UIViewController {
 
     // MARK: - 새로고침
     private func setupRefresh() {
-        isSearch = false
+        self.isSearch = false
+        self.pageNum = 0
         
         let rc = todayCombinationView.refreshControl
         rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
@@ -137,8 +138,6 @@ final class CombiationViewController: UIViewController {
 extension CombiationViewController {
     // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
-        isSearch = false
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.fetchData()
             refresh.endRefreshing()

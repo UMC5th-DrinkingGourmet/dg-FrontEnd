@@ -147,27 +147,43 @@ final class CombinationDetailViewController: UIViewController, UIScrollViewDeleg
             self,
             action: #selector(likeButtonTapped),
             for: .touchUpInside)
+        
         headerView?.moreButton.addTarget(
             self,
             action: #selector(moreButtonTapped),
             for: .touchUpInside
         )
-        combinationDetailView.commentInputView.postButton.addTarget(
+        
+        combinationDetailView.commentInputView.uploadCommentButton.addTarget(
             self,
-            action: #selector(postButtonTapped),
+            action: #selector(uploadCommentButtonTapped),
             for: .touchUpInside
         )
     }
 }
 
-// MARK: - @objc
+// MARK: - Actions
 extension CombinationDetailViewController {
-    @objc func likeButtonTapped() { // 좋아요
-        isLiked.toggle()
-        let imageName = isLiked ? "ic_like_selected" : "ic_like"
-        headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)
-        if let combinationId = combinationId {
-            CombinationDetailDataManager().postLike(combinationId)
+    // 좋아요
+    @objc func likeButtonTapped() {
+        guard let combinationId = self.combinationId else { return }
+        
+        self.isLiked.toggle()
+        let imageName = self.isLiked ? "ic_like_selected" : "ic_like"
+        
+        CombinationService.shared.postLike(combinationId: combinationId) { error in
+            if let error = error {
+                print("오늘의 조합 좋아요 실패 - \(error.localizedDescription)")
+            } else {
+                DispatchQueue.main.async {
+                    self.headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)
+                }
+                if self.isLiked {
+                    print("오늘의 조합 좋아요 성공")
+                } else {
+                    print("오늘의 조합 좋아요 취소 성공")
+                }
+            }
         }
     }
     
@@ -178,22 +194,28 @@ extension CombinationDetailViewController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if isCurrentUser { // 내가 작성한 글 일 때
-            let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
-                guard let self = self, let combinationId = self.combinationId else { return }
-                DispatchQueue.main.async {
-                    self.navigationController?.popViewController(animated: true)
-                    let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
+                guard let combinationId = self.combinationId else { return }
+                CombinationService.shared.deleteCombination(combinationId: combinationId) { error in
+                    if let error = error {
+                        print("오늘의 조합 삭제 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("오늘의 조합 삭제 성공")
+                        self.navigationController?.popViewController(animated: true)
+                        
+                        let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    }
                 }
-                CombinationDetailDataManager().deleteCombination(combinationId)
             }
             
             let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
-            [removeAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
@@ -213,22 +235,31 @@ extension CombinationDetailViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func postButtonTapped() {
-        guard let inputText = self.combinationDetailView.commentInputView.textField.text, !inputText.isEmpty else { return }
-        guard let combinationId = self.combinationId else { return }
-        view.endEditing(true)
+    // 댓글 작성
+    @objc func uploadCommentButtonTapped() {
+        guard let combinationId = self.combinationId,
+              let content = self.combinationDetailView.commentInputView.textField.text, !content.isEmpty else { return }
+        
+        view.endEditing(true) // 키보드 내리기
         self.combinationDetailView.commentInputView.textField.text = ""
         
-        let input = CombinationCommentInput.postCommentInput(content: inputText, parentId: "0")
-        CombinationDetailDataManager().postComment(combinationId, input)
         
-        self.fetchData()
-        
-        self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-        let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-            alert.dismiss(animated: true, completion: nil)
+        CombinationService.shared.postComment(combinationId: combinationId, 
+                                              content: content,
+                                              parentId: "0") { error in
+            if let error = error {
+                print("오늘의 조합 댓글 작성 실패 - \(error.localizedDescription)")
+            } else {
+                print("오늘의 조합 댓글 작성 성공")
+                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                self.fetchData()
+                
+                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                }
+            }
         }
     }
     
@@ -273,8 +304,6 @@ extension CombinationDetailViewController: UITableViewDataSource {
         cell.delegate = self
         
         let data = arrayCombinationComment[indexPath.row]
-        
-        let a = arrayCombinationComment[indexPath.row]
         
         cell.combinationCommentList = data
         
@@ -411,24 +440,28 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
     func selectedInfoBtn(data: CombinationCommentDto) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.memberNickName == UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.memberNickName != UserDefaultManager.shared.userNickname
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if isCurrentUser { // 내가 작성한 댓글 일 때
-            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
-                guard let self = self else { return }
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
                 
-                CombinationDetailDataManager().deleteComment(commentId: data.id)
-                
-                self.fetchData()
-                
-                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-                let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
-                self.present(alert, animated: true, completion: nil)
-                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                    alert.dismiss(animated: true, completion: nil)
-                }   
+                CombinationService.shared.deleteComment(commentId: data.id) { error in
+                    if let error = error {
+                        print("오늘의 조합 댓글 삭제 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("오늘의 조합 댓글 삭제 성공")
+                        self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                        self.fetchData()
+                        
+                        let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                }
             }
             
             let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)

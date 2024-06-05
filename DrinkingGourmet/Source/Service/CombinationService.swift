@@ -8,7 +8,7 @@
 import Alamofire
 
 final class CombinationService {
-
+    
     static let shared = CombinationService()
     private init() {}
     
@@ -19,7 +19,7 @@ final class CombinationService {
         return ["Authorization": "Bearer \(accessToken)"]
     }
     
-    // MARK: - 오늘의 조합 홈 조회
+    // MARK: - 오늘의 조합 홈 페이징 조회
     func getAll(page: Int,
                 completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
         do {
@@ -100,7 +100,53 @@ final class CombinationService {
         }
     }
     
-    // MARK: - 오늘의 조합 댓글 조회
+    // MARK: - 오늘의 조합 좋아요 누르기
+    func postLike(combinationId: Int,
+                  completion: @escaping (Error?) -> Void) {
+        do {
+            let headers = try getHeaders()
+            
+            AF.request("\(baseURL)/combination-likes/\(combinationId)",
+                       method: .post,
+                       headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - 오늘의 조합 삭제
+    func deleteCombination(combinationId: Int,
+                           completion: @escaping (Error?) -> Void) {
+        do {
+            let headers = try getHeaders()
+            
+            AF.request("\(baseURL)/combinations/\(combinationId)",
+                       method: .delete,
+                       headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - 오늘의 조합 댓글 페이징 조회
     func getAllComment(combinationId: Int,
                        page: Int,
                        completion: @escaping (Swift.Result<CombinationCommentResponseDto, Error>) -> Void) {
@@ -130,7 +176,7 @@ final class CombinationService {
     }
     
     // MARK: - 오늘의 조합 댓글 작성
-    func postComment(combinationId: Int, 
+    func postComment(combinationId: Int,
                      content: String,
                      parentId: String,
                      completion: @escaping (Error?) -> Void) {
@@ -149,7 +195,6 @@ final class CombinationService {
                        headers: headers)
             .validate()
             .response { response in
-                print(parameters)
                 switch response.result {
                 case .success:
                     completion(nil)
@@ -161,4 +206,28 @@ final class CombinationService {
             print("Failed to get access token: \(error.localizedDescription)")
         }
     }
+    
+    // MARK: - 오늘의 조합 댓글 삭제
+    func deleteComment(commentId: Int,
+                       completion: @escaping (Error?) -> Void) {
+        do {
+            let headers = try getHeaders()
+            
+            AF.request("\(baseURL)/combination-comments/\(commentId)",
+                       method: .delete,
+                       headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
 }
