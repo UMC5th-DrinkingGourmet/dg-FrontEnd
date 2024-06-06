@@ -166,8 +166,8 @@ extension CombiationHomeViewController: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
-        if let url = URL(string: combination.combinationImageUrl ?? "defaultImage") {
-                    cell.thumnailImage.kf.setImage(with: url)
+        if let url = URL(string: combination.combinationImageUrl) {
+            cell.thumnailImage.kf.setImage(with: url)
         }
         
         cell.titleLabel.text = combination.title

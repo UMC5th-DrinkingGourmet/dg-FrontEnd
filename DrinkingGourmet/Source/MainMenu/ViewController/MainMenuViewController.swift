@@ -173,7 +173,7 @@ class MainMenuViewController: UIViewController {
     }
 
     @objc func recipeBookBtnTapped() {
-        let recipeBookHomeVC = RecipeBookHomeVC()
+        let recipeBookHomeVC = RecipeBookHomeViewController()
         recipeBookHomeVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(recipeBookHomeVC, animated: true)
     }

@@ -1,5 +1,5 @@
 //
-//  RecipeBookHomeVC.swift
+//  RecipeBookHomeViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 2/4/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class RecipeBookHomeVC: UIViewController {
+final class RecipeBookHomeViewController: UIViewController {
     // MARK: - Properties
     var isSearch = false
     var keyword = ""
@@ -126,7 +126,7 @@ final class RecipeBookHomeVC: UIViewController {
 }
 
 // MARK: - Actions
-extension RecipeBookHomeVC {
+extension RecipeBookHomeViewController {
     // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
         self.isSearch = false
@@ -139,7 +139,7 @@ extension RecipeBookHomeVC {
     
     // 검색
     @objc func searchBarButtonTapped() {
-        let recipeBookSearchVC = RecipeBookSearchVC()
+        let recipeBookSearchVC = RecipeBookSearchViewController()
         recipeBookSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
         navigationController?.pushViewController(recipeBookSearchVC, animated: true)
     }
@@ -152,7 +152,7 @@ extension RecipeBookHomeVC {
 }
 
 // MARK: - UITableViewDataSource
-extension RecipeBookHomeVC: UITableViewDataSource {
+extension RecipeBookHomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipeBooks.count
@@ -166,14 +166,8 @@ extension RecipeBookHomeVC: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !recipeBook.like
         
-        if !recipeBook.recipeImageList.isEmpty {
-            if let url = URL(string: recipeBook.recipeImageList[0]) {
-                cell.thumnailImage.kf.setImage(with: url)
-            }
-        } else {
-            // 이미지 리스트가 비어 있을 경우의 처리
-            // 예: 기본 이미지 설정 또는 이미지 뷰 숨기기
-            cell.thumnailImage.image = UIImage(named: "defaultImage") // "defaultImage"는 기본 이미지의 이름
+        if let url = URL(string: recipeBook.recipeImageList[0]) {
+            cell.thumnailImage.kf.setImage(with: url)
         }
         
         cell.titleLabel.text = recipeBook.title
@@ -189,12 +183,11 @@ extension RecipeBookHomeVC: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension RecipeBookHomeVC: UITableViewDelegate {
-    // 셀 선택시 Detail 화면으로
+extension RecipeBookHomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = recipeBooks[indexPath.row].id
         
-        let recipeBookDetailVC = RecipeBookDetailVC()
+        let recipeBookDetailVC = RecipeBookDetailViewController()
         recipeBookDetailVC.recipeBookId = selectedItem
         recipeBookDetailVC.selectedIndex = indexPath.row
         recipeBookDetailVC.isLiked = recipeBooks[indexPath.row].like
@@ -203,7 +196,7 @@ extension RecipeBookHomeVC: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSourcePrefetching
-extension RecipeBookHomeVC: UITableViewDataSourcePrefetching {
+extension RecipeBookHomeViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             
@@ -241,7 +234,6 @@ extension RecipeBookHomeVC: UITableViewDataSourcePrefetching {
                             DispatchQueue.main.async {
                                 self.recipeBookHomeView.tableView.reloadData()
                             }
-                            
                         case .failure(let error):
                             print("레시피북 홈 조회 페이징 실패 - \(error.localizedDescription)")
                         }

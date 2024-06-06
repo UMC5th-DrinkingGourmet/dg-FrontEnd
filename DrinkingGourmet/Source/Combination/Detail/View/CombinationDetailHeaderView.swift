@@ -130,21 +130,20 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
         }
         
         profileImage.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
+            make.size.equalTo(42)
             make.top.equalTo(imageCollectionView.snp.bottom).offset(10)
-            make.leading.equalTo(contentView).offset(16)
+            make.leading.equalTo(contentView).inset(16)
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileImage.snp.top).inset(13)
             make.leading.equalTo(profileImage.snp.trailing).offset(12)
-            make.bottom.equalTo(profileImage.snp.bottom).inset(12)
+            make.centerY.equalTo(profileImage)
         }
         
         likeButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.trailing.equalTo(contentView).offset(-20)
-            make.centerY.equalTo(nicknameLabel)
+            make.size.equalTo(24)
+            make.trailing.equalTo(contentView).inset(20)
+            make.centerY.equalTo(profileImage)
         }
         
         dividerView1.snp.makeConstraints { make in
@@ -155,15 +154,13 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
         
         hashtagLabel.snp.makeConstraints { make in
             make.top.equalTo(dividerView1.snp.bottom).offset(24)
-            make.leading.equalTo(contentView).offset(21)
-            make.trailing.equalTo(contentView).offset(-21)
-            make.height.equalTo(20)
+            make.leading.trailing.equalTo(contentView).inset(21)
         }
         
         moreButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
+            make.size.equalTo(24)
             make.centerX.equalTo(likeButton)
-            make.top.equalTo(likeButton.snp.bottom).offset(40)
+            make.top.equalTo(dividerView1.snp.bottom).offset(21)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -178,15 +175,14 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
         
         dividerView2.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalTo(contentView)
             make.height.equalTo(8)
         }
         
         commentNumLabel.snp.makeConstraints { make in
             make.top.equalTo(dividerView2.snp.bottom).offset(16)
-            make.leading.equalTo(contentView).inset(21)
+            make.leading.equalTo(hashtagLabel)
             make.bottom.equalTo(contentView)
         }
     }
 }
-

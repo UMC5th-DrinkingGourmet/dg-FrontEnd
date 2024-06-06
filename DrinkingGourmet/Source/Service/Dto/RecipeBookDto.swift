@@ -44,3 +44,33 @@ struct RecipeBookMemberDTO: Codable {
     let nickName: String
     let profileImageUrl: String?
 }
+
+// MARK: - 레시피북 상세
+struct RecipeBookDetailResponseDTO: Codable {
+    let isSuccess: Bool
+    let code, message: String
+    let result: RecipeBookHomeDTO
+}
+
+// MARK: - 레시피북 댓글
+struct RecipeBookCommentResponseDTO: Codable {
+    let isSuccess: Bool
+    let code, message: String
+    let result: RecipeBookCommentResultDTO
+}
+
+struct RecipeBookCommentResultDTO: Codable {
+    let commentList: [RecipeBookCommentDTO]
+    let listSize, totalPage, totalElements: Int
+    let isFirst, isLast: Bool
+}
+
+struct RecipeBookCommentDTO: Codable {
+    let id: Int
+    let content: String
+    let member: RecipeBookMemberDTO
+    let createdDate, updatedDate: String
+    let childCommentList: [RecipeBookCommentDTO]
+    let childCommentCount: Int
+    let state: String
+}

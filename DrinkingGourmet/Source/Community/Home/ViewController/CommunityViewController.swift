@@ -53,7 +53,7 @@ extension CommunityViewController {
         case communityView.weeklyBestButton:
             destinationVC = WeeklyBestViewController()
         case communityView.recipeBookButton:
-            destinationVC = RecipeBookHomeVC()
+            destinationVC = RecipeBookHomeViewController()
         default:
             return
         }

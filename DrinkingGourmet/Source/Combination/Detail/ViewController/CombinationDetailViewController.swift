@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CombinationDetailViewController: UIViewController, UIScrollViewDelegate {
+final class CombinationDetailViewController: UIViewController {
     // MARK: - Properties
     var combinationId: Int?
     
@@ -35,17 +35,14 @@ final class CombinationDetailViewController: UIViewController, UIScrollViewDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardUp),
-            name: UIResponder.keyboardWillShowNotification, object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardDown),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardUp),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDown),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -143,22 +140,17 @@ final class CombinationDetailViewController: UIViewController, UIScrollViewDeleg
     }
     
     private func setupButton() {
-        headerView?.likeButton.addTarget(
-            self,
-            action: #selector(likeButtonTapped),
-            for: .touchUpInside)
+        headerView?.likeButton.addTarget(self,
+                                         action: #selector(likeButtonTapped),
+                                         for: .touchUpInside)
         
-        headerView?.moreButton.addTarget(
-            self,
-            action: #selector(moreButtonTapped),
-            for: .touchUpInside
-        )
+        headerView?.moreButton.addTarget(self,
+                                         action: #selector(moreButtonTapped),
+                                         for: .touchUpInside)
         
-        combinationDetailView.commentInputView.uploadCommentButton.addTarget(
-            self,
-            action: #selector(uploadCommentButtonTapped),
-            for: .touchUpInside
-        )
+        combinationDetailView.commentInputView.uploadCommentButton.addTarget(self,
+                                                                             action: #selector(uploadCommentButtonTapped),
+                                                                             for: .touchUpInside)
     }
 }
 
@@ -238,11 +230,14 @@ extension CombinationDetailViewController {
     // 댓글 작성
     @objc func uploadCommentButtonTapped() {
         guard let combinationId = self.combinationId,
-              let content = self.combinationDetailView.commentInputView.textField.text, !content.isEmpty else { return }
-        
-        view.endEditing(true) // 키보드 내리기
-        self.combinationDetailView.commentInputView.textField.text = ""
-        
+              let content = self.combinationDetailView.commentInputView.textField.text?.trimmingCharacters(in: .whitespacesAndNewlines), !content.isEmpty else {
+            let alert = UIAlertController(title: nil, message: "댓글 내용을 입력해주세요.", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                alert.dismiss(animated: true, completion: nil)
+            }
+            return
+        }
         
         CombinationService.shared.postComment(combinationId: combinationId, 
                                               content: content,
@@ -251,6 +246,9 @@ extension CombinationDetailViewController {
                 print("오늘의 조합 댓글 작성 실패 - \(error.localizedDescription)")
             } else {
                 print("오늘의 조합 댓글 작성 성공")
+                self.view.endEditing(true) // 키보드 내리기
+                self.combinationDetailView.commentInputView.textField.text = ""
+                
                 self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
                 self.fetchData()
                 
@@ -301,7 +299,7 @@ extension CombinationDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CombinationDetailCommentCell", for: indexPath) as! CombinationDetailCommentCell
         
-        cell.delegate = self
+        cell.combinationCommentDelegate = self
         
         let data = arrayCombinationComment[indexPath.row]
         
@@ -318,8 +316,10 @@ extension CombinationDetailViewController: UITableViewDataSource {
         
         if data.state == "REPORTED" { // 신고된 댓글 처리
             cell.commentLabel.text = "해당 댓글은 신고 되었습니다."
+            cell.moreButton.isHidden = true
         } else {
             cell.commentLabel.text = data.content
+            cell.moreButton.isHidden = false
         }
         
         return cell

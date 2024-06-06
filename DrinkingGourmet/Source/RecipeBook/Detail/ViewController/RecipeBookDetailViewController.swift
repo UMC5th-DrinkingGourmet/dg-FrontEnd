@@ -1,5 +1,5 @@
 //
-//  RecipeBookDetailVC.swift
+//  RecipeBookDetailViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 2/4/24.
@@ -7,11 +7,10 @@
 
 import UIKit
 
-final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
+final class RecipeBookDetailViewController: UIViewController {
     // MARK: - Properties
     var recipeBookId: Int?
     
-    var isWeeklyBest = false
     var selectedIndex: Int?
     var isLiked = false
     
@@ -19,8 +18,8 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
     private var pageNum: Int = 0
     private var isLastPage: Bool = false
     
-    var recipeBookDetailData: RecipeBookDetailModel?
-    var arrayRecipeBookComment: [RecipeBookCommentModel.CommentList] = []
+    var recipeBookDetailData: RecipeBookDetailResponseDTO?
+    var arrayRecipeBookComment: [RecipeBookCommentDTO] = []
     
     let recipeBookDetailView = CombinationDetailView()
     
@@ -35,17 +34,15 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardUp),
-            name: UIResponder.keyboardWillShowNotification, object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardDown),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardUp),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDown),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
     
     // 뒤로가기 할 때
@@ -53,7 +50,7 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
         super.viewWillDisappear(animated)
         if isMovingFromParent {
             guard let navigationController = navigationController,
-                  let RecipeBookHomeVC = navigationController.viewControllers.last as? RecipeBookHomeVC,
+                  let RecipeBookHomeVC = navigationController.viewControllers.last as? RecipeBookHomeViewController,
                   let selectedIndex = selectedIndex else {
                 return
             }
@@ -62,7 +59,6 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,30 +71,37 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupNaviBar() {
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "",
-                                                           style: .plain,
-                                                           target: nil,
-                                                           action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     func fetchData() {
-        if let recipeBookId = self.recipeBookId {
-            RecipeBookDetailDataManager().fetchRecipeBookDetailData(recipeBookId, self) { [weak self] detailModel in
-                guard let self = self else { return }
-                self.recipeBookDetailData = detailModel
-                print("좋아요 : \(isLiked)")
+        guard let recipeBookId = self.recipeBookId else { return }
+        
+        self.pageNum = 0
+        
+        RecipeBookService.shared.getDetail(recipeBookId: recipeBookId) { result in
+            switch result {
+            case .success(let data):
+                print("레시피북 상세 조회 성공")
+                self.recipeBookDetailData = data
                 
-                let recipeBookCommentInput = RecipeBookCommentInput.fetchRecipeBookCommentDataInput(page: 0)
-                RecipeBookDetailDataManager().fetchRecipeBookCommentData(recipeBookId, recipeBookCommentInput, self) { commentModel in
-                    if let commentModel = commentModel {
-                        self.totalPageNum = commentModel.result.totalPage
-                        self.isLastPage = commentModel.result.isLast
-                        self.arrayRecipeBookComment = commentModel.result.commentList
+                RecipeBookService.shared.getAllComment(recipeBookId: recipeBookId, 
+                                                       page: 0) { result in
+                    switch result {
+                    case .success(let data):
+                        print("레시피북 댓글 조회 성공")
+                        self.totalPageNum = data.result.totalPage
+                        self.isLastPage = data.result.isLast
+                        self.arrayRecipeBookComment = data.result.commentList
                         DispatchQueue.main.async {
                             self.recipeBookDetailView.tabelView.reloadData()
                         }
+                    case .failure(let error):
+                        print("레시피북 조합 댓글 조회 실패 - \(error.localizedDescription)")
                     }
                 }
+            case .failure(let error):
+                print("레시피북 상세 조회 실패 - \(error.localizedDescription)")
             }
         }
     }
@@ -126,34 +129,44 @@ final class RecipeBookDetailVC: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupButton() {
-        headerView?.likeButton.addTarget(
-            self,
-            action: #selector(likeButtonTapped),
-            for: .touchUpInside)
-        headerView?.moreButton.addTarget(
-            self,
-            action: #selector(moreButtonTapped),
-            for: .touchUpInside
-        )
-        recipeBookDetailView.commentInputView.uploadCommentButton.addTarget(
-            self,
-            action: #selector(postButtonTapped),
-            for: .touchUpInside
-        )
+        headerView?.likeButton.addTarget(self,
+                                         action: #selector(likeButtonTapped),
+                                         for: .touchUpInside)
+        
+        headerView?.moreButton.addTarget(self, 
+                                         action: #selector(moreButtonTapped),
+                                         for: .touchUpInside)
+        
+        recipeBookDetailView.commentInputView.uploadCommentButton.addTarget(self,
+                                                                            action: #selector(postButtonTapped),
+                                                                            for: .touchUpInside)
     }
 }
 
-// MARK: - @objc
-extension RecipeBookDetailVC {
+// MARK: - Actions
+extension RecipeBookDetailViewController {
     // 좋아요
     @objc func likeButtonTapped() {
+        guard let recipeBookId = self.recipeBookId else { return }
+        
         isLiked.toggle()
         let imageName = isLiked ? "ic_like_selected" : "ic_like"
-        headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)
-        if let recipeBookId = self.recipeBookId {
-            RecipeBookDetailDataManager().postLike(recipeBookId)
+        
+        RecipeBookService.shared.postLike(recipeBookId: recipeBookId) { error in
+            if let error = error {
+                print("레시피북 좋아요 실패 - \(error.localizedDescription)")
+            } else {
+                DispatchQueue.main.async {
+                    self.headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)
+                    self.fetchData()
+                }
+                if self.isLiked {
+                    print("레시피북 좋아요 성공")
+                } else {
+                    print("레시피북 좋아요 취소 성공")
+                }
+            }
         }
-        fetchData()
     }
     
     @objc func moreButtonTapped() {
@@ -163,29 +176,28 @@ extension RecipeBookDetailVC {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if isCurrentUser { // 내가 작성한 글 일 때
-            let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
-                guard let self = self, let recipeBookId = self.recipeBookId else { return }
-                DispatchQueue.main.async {
-                    self.navigationController?.popViewController(animated: true)
-                    
-                    if let navigationController = self.navigationController,
-                       let recipeBookHomeVC = navigationController.viewControllers.last as? RecipeBookHomeVC {
-                        recipeBookHomeVC.recipeBookHomeView.tableView.setContentOffset(CGPoint.zero, animated: true)
-                        recipeBookHomeVC.fetchData()
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
+                guard let recipeBookId = self.recipeBookId else { return }
+                RecipeBookService.shared.deleteRecipeBook(recipeBookId: recipeBookId) { error in
+                    if let error = error {
+                        print("레시피북 삭제 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("레시피북 삭제 성공")
+                        self.navigationController?.popViewController(animated: true)
+                        
+                        let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                            alert.dismiss(animated: true, completion: nil)
+                        }
                     }
-                    
-                    let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
                 }
-                RecipeBookDetailDataManager().deleteRecipeBook(recipeBookId)
             }
             
             let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
-            [removeAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
@@ -205,25 +217,40 @@ extension RecipeBookDetailVC {
         present(alert, animated: true, completion: nil)
     }
     
+    // 댓글 작성
     @objc func postButtonTapped() {
-        guard let inputText = self.recipeBookDetailView.commentInputView.textField.text, !inputText.isEmpty else { return }
-        guard let recipeBookId = self.recipeBookId else { return }
-        view.endEditing(true)
-        self.recipeBookDetailView.commentInputView.textField.text = ""
+        guard let recipeBookId = self.recipeBookId,
+              let content = self.recipeBookDetailView.commentInputView.textField.text?.trimmingCharacters(in: .whitespacesAndNewlines), !content.isEmpty else {
+            let alert = UIAlertController(title: nil, message: "댓글 내용을 입력해주세요.", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                alert.dismiss(animated: true, completion: nil)
+            }
+            return
+        }
         
-        let input = RecipeBookCommentInput.postCommentInput(content: inputText, parentId: "0")
-        RecipeBookDetailDataManager().postComment(recipeBookId, input)
-        
-        self.fetchData()
-        
-        self.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-        let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-            alert.dismiss(animated: true, completion: nil)
+        RecipeBookService.shared.postComment(recipeBookId: recipeBookId,
+                                             content: content,
+                                             parentId: 0) { error in
+            if let error = error {
+                print("레시피북 댓글 작성 실패 - \(error.localizedDescription)")
+            } else {
+                print("레시피북 댓글 작성 성공")
+                self.view.endEditing(true) // 키보드 내리기
+                self.recipeBookDetailView.commentInputView.textField.text = ""
+                
+                self.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                self.fetchData()
+                
+                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                }
+            }
         }
     }
-    
+
     @objc private func hideKeyboard(_ sender: Any) {
         view.endEditing(true)
     }
@@ -254,7 +281,7 @@ extension RecipeBookDetailVC {
 }
 
 // MARK: - UITableViewDataSource
-extension RecipeBookDetailVC: UITableViewDataSource {
+extension RecipeBookDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrayRecipeBookComment.count
     }
@@ -288,8 +315,10 @@ extension RecipeBookDetailVC: UITableViewDataSource {
         
         if data.state == "REPORTED" { // 신고된 댓글 처리
             cell.commentLabel.text = "해당 댓글은 신고 되었습니다."
+            cell.moreButton.isHidden = true
         } else {
             cell.commentLabel.text = data.content
+            cell.moreButton.isHidden = false
         }
         
         return cell
@@ -297,7 +326,7 @@ extension RecipeBookDetailVC: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension RecipeBookDetailVC: UITableViewDelegate {
+extension RecipeBookDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "RecipeBookDetailHeaderView") as! RecipeBookDetailHeaderView
         
@@ -342,23 +371,26 @@ extension RecipeBookDetailVC: UITableViewDelegate {
 }
     
 // MARK: - UITableViewDataSourcePrefetching
-extension RecipeBookDetailVC: UITableViewDataSourcePrefetching { // 댓글 페이징
+extension RecipeBookDetailViewController: UITableViewDataSourcePrefetching { // 댓글 페이징
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            if let recipeBookId = self.recipeBookId {
-                if arrayRecipeBookComment.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
-                    pageNum += 1
-                    let input = RecipeBookCommentInput.fetchRecipeBookCommentDataInput(page: pageNum)
-                    
-                    RecipeBookDetailDataManager().fetchRecipeBookCommentData(recipeBookId, input, self) { [weak self] model in
-                        if let model = model {
-                            guard let self = self else { return }
-                            self.arrayRecipeBookComment += model.result.commentList
-                            self.isLastPage = model.result.isLast
-                            DispatchQueue.main.async {
-                                self.recipeBookDetailView.tabelView.reloadData()
-                            }
+            guard let recipeBookId = self.recipeBookId else { return }
+            if arrayRecipeBookComment.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                
+                self.pageNum += 1
+                
+                RecipeBookService.shared.getAllComment(recipeBookId: recipeBookId,
+                                                       page: self.pageNum) { result in
+                    switch result {
+                    case .success(let data):
+                        print("레시피북 댓글 페이징 조회 성공")
+                        self.isLastPage = data.result.isLast
+                        self.arrayRecipeBookComment += data.result.commentList
+                        DispatchQueue.main.async {
+                            self.recipeBookDetailView.tabelView.reloadData()
                         }
+                    case .failure(let error):
+                        print("레시피북 조합 댓글 페이징 조회 실패 - \(error.localizedDescription)")
                     }
                 }
             }
@@ -367,7 +399,7 @@ extension RecipeBookDetailVC: UITableViewDataSourcePrefetching { // 댓글 페�
 }
     
 // MARK: - UICollectionViewDataSource
-extension RecipeBookDetailVC: UICollectionViewDataSource {
+extension RecipeBookDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return recipeBookDetailData?.result.recipeImageList.count ?? 0
     }
@@ -385,7 +417,7 @@ extension RecipeBookDetailVC: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension RecipeBookDetailVC: UICollectionViewDelegateFlowLayout {
+extension RecipeBookDetailViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.bounds.size
@@ -405,28 +437,33 @@ extension RecipeBookDetailVC: UICollectionViewDelegateFlowLayout {
         header.pageControl.currentPage = index
     }
 }
-    
-extension RecipeBookDetailVC: RecipeBookCommentCellDelegate { // 댓글
-    func selectedInfoBtn(data: RecipeBookCommentModel.CommentList) {
+
+// MARK: - RecipeBookCommentCellDelegate
+extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓글
+    func selectedInfoBtn(data: RecipeBookCommentDTO) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.member.nickName == UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.member.nickName != UserDefaultManager.shared.userNickname
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if isCurrentUser { // 내가 작성한 댓글 일 때
-            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
-                guard let self = self else { return }
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
                 
-                RecipeBookDetailDataManager().deleteComment(recipeCommentId: data.id)
-                
-                self.fetchData()
-                
-                self.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-                let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
-                self.present(alert, animated: true, completion: nil)
-                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                    alert.dismiss(animated: true, completion: nil)
+                RecipeBookService.shared.deleteComment(recipeCommentId: data.id) { error in
+                    if let error = error {
+                        print("레시피북 댓글 삭제 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("레시피북 댓글 삭제 성공")
+                        self.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                        self.fetchData()
+                        
+                        let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    }
                 }
             }
             
@@ -455,7 +492,7 @@ extension RecipeBookDetailVC: RecipeBookCommentCellDelegate { // 댓글
 }
 
 // MARK: - UITextFieldDelegate
-extension RecipeBookDetailVC: UITextFieldDelegate {
+extension RecipeBookDetailViewController: UITextFieldDelegate {
     // 리턴 클릭 시 키보드 내림
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

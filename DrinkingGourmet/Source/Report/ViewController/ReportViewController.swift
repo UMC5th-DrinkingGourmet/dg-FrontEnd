@@ -154,7 +154,7 @@ extension ReportViewController {
                 }
                 
                 if reportTarget == "RECIPE" { // 레시피북 게시물 신고일 때
-                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeVC }) as? RecipeBookHomeVC {
+                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeViewController }) as? RecipeBookHomeViewController {
                         VC.fetchData()
                         VC.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(VC, animated: true)
@@ -163,7 +163,7 @@ extension ReportViewController {
                 
                 if reportTarget == "RECIPE_COMMENT" { // 레시피북 댓글 신고일 때
                     self.navigationController?.popViewController(animated: true)
-                    if let VC = self.navigationController?.viewControllers.last as? RecipeBookDetailVC {
+                    if let VC = self.navigationController?.viewControllers.last as? RecipeBookDetailViewController {
                         VC.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true)
                         VC.fetchData()
                     }
