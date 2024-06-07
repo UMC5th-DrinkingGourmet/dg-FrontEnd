@@ -49,7 +49,7 @@ extension CommunityViewController {
         
         switch sender {
         case communityView.combinationButton:
-            destinationVC = CombiationHomeViewController()
+            destinationVC = CombinationHomeViewController()
         case communityView.weeklyBestButton:
             destinationVC = WeeklyBestViewController()
         case communityView.recipeBookButton:

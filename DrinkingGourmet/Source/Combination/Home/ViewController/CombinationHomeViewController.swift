@@ -1,5 +1,5 @@
 //
-//  CombiationHomeViewController.swift
+//  CombinationHomeViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 1/17/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CombiationHomeViewController: UIViewController {
+final class CombinationHomeViewController: UIViewController {
     // MARK: - Properties
     var isSearch = false
     var keyword = ""
@@ -126,7 +126,7 @@ final class CombiationHomeViewController: UIViewController {
 }
 
 // MARK: - Actions
-extension CombiationHomeViewController {
+extension CombinationHomeViewController {
     // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
         self.isSearch = false
@@ -152,7 +152,7 @@ extension CombiationHomeViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension CombiationHomeViewController: UITableViewDataSource {
+extension CombinationHomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return combinations.count
@@ -183,7 +183,7 @@ extension CombiationHomeViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension CombiationHomeViewController: UITableViewDelegate {
+extension CombinationHomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = combinations[indexPath.row].combinationId
         
@@ -196,7 +196,7 @@ extension CombiationHomeViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSourcePrefetching
-extension CombiationHomeViewController: UITableViewDataSourcePrefetching {
+extension CombinationHomeViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             

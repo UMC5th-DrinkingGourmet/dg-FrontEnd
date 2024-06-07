@@ -9,11 +9,11 @@ import UIKit
 
 final class ReportViewController: UIViewController {
     // MARK: - Properties
-    var resourceId: Int? = nil
-    var reportTarget: String? = nil
+    var resourceId: Int?
+    var reportTarget: String?
     private var reportReason: String = "" // 신고유형
     private var content: String = "" // 신고내용
-    var reportContent: String? = nil
+    var reportContent: String?
     
     private let arrayReportType = ["-- 신고 유형을 선택해주세요 --",
                                    "욕설, 비속어, 혐오 발언 등 타인에게 불쾌감을 주는 내용",
@@ -51,29 +51,13 @@ final class ReportViewController: UIViewController {
     
     private func setupTextView() {
         reportView.reportDetailsTextView.delegate = self
-        
-        let toolBarKeyboard = UIToolbar()
-        toolBarKeyboard.sizeToFit()
-        
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, 
-                                            target: nil,
-                                            action: nil)
-        
-        let btnDoneBar = UIBarButtonItem(title: "완료",
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(doneBtnClicked))
-        
-        toolBarKeyboard.items = [flexibleSpace, btnDoneBar]
-        reportView.reportDetailsTextView.inputAccessoryView = toolBarKeyboard
+        reportView.reportDetailsTextView.inputAccessoryView = createToolbar()
     }
     
     private func setupButton() {
-        reportView.completeButton.addTarget(
-            self,
-            action: #selector(completeButtonTapped),
-            for: .touchUpInside
-        )
+        reportView.completeButton.addTarget(self,
+                                            action: #selector(completeButtonTapped),
+                                            for: .touchUpInside)
     }
     
     private func updateCompleteButton() {
@@ -90,26 +74,19 @@ final class ReportViewController: UIViewController {
     private func setupPickerView() {
         reportView.pickerView.dataSource = self
         reportView.pickerView.delegate = self
-
-        // 텍스트 필드의 입력 방식을 피커 뷰로 설정
         reportView.reportTypeTextField.inputView = reportView.pickerView
-
-        // 피커 뷰 위에 툴바 추가
+        reportView.reportTypeTextField.inputAccessoryView = createToolbar()
+    }
+    
+    private func createToolbar() -> UIToolbar {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-
+        
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-        let doneButton = UIBarButtonItem(
-            title: "완료",
-            style: .plain,
-            target: self, 
-            action: #selector(doneBtnClicked)
-        )
-        toolbar.setItems([flexibleSpace, doneButton], animated: false)
-        toolbar.isUserInteractionEnabled = true
-
-        reportView.reportTypeTextField.inputAccessoryView = toolbar
+        let btnDoneBar = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(doneBtnClicked))
+        
+        toolbar.setItems([flexibleSpace, btnDoneBar], animated: false)
+        return toolbar
     }
 }
 
@@ -129,16 +106,18 @@ extension ReportViewController {
               let reportTarget = self.reportTarget,
               let reportContent = self.reportContent else { return }
         
-        ReportDataManager().postReport(resourceId: resourceId,
-                                       reportTarget: reportTarget,
-                                       reportReason: self.reportReason,
-                                       content: self.content,
-                                       reportContent: reportContent) { [weak self] success in
-            guard let self = self else { return }
-            
-            if success {
+        AdministrationService.shared.postReport(resourceId: resourceId, 
+                                                reportTarget: reportTarget,
+                                                reportReason: self.reportReason,
+                                                content: self.content,
+                                                reportContent: reportContent) { error in
+            if let error = error {
+                print("\(reportTarget): \(resourceId)번 신고 실패 - \(error.localizedDescription)")
+            } else {
+                print("\(reportTarget): \(resourceId)번 신고 성공")
+                
                 if reportTarget == "COMBINATION" { // 오늘의 조합 게시물 신고일 때
-                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is CombiationHomeViewController }) as? CombiationHomeViewController {
+                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is CombinationHomeViewController }) as? CombinationHomeViewController {
                         VC.fetchData()
                         VC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(VC, animated: true)

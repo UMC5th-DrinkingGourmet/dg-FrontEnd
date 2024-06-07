@@ -61,7 +61,7 @@ final class CombinationDetailViewController: UIViewController {
             }
             
             guard let navigationController = navigationController,
-                  let todayCombinationViewController = navigationController.viewControllers.last as? CombiationHomeViewController,
+                  let todayCombinationViewController = navigationController.viewControllers.last as? CombinationHomeViewController,
                   let selectedIndex = selectedIndex else {
                 return
             }
@@ -210,15 +210,50 @@ extension CombinationDetailViewController {
             [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 글 아닐 때
-            let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
+            let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { _ in
                 let VC = ReportViewController()
-                VC.resourceId = combinationDetailData?.result.combinationResult.combinationId
                 VC.reportTarget = "COMBINATION"
-                VC.reportContent = combinationDetailData?.result.combinationResult.content
-                navigationController?.pushViewController(VC, animated: true)
+                VC.resourceId = self.combinationDetailData?.result.combinationResult.combinationId
+                VC.reportContent = self.combinationDetailData?.result.combinationResult.content
+                self.navigationController?.pushViewController(VC, animated: true)
             }
             
-            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                guard let memberId = self.combinationDetailData?.result.memberResult.memberId else { return }
+                
+                AdministrationService.shared.postBlock(blockedMemberId: memberId) { error in
+                    if let error = error {
+                        print("\(memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("\(memberId)번 멤버 차단 성공")
+                        DispatchQueue.main.async {
+                            // 차단 성공 메시지 표시
+                            let alert = UIAlertController(title: nil, message: "차단되었습니다.", preferredStyle: .alert)
+                            self.present(alert, animated: true, completion: nil)
+                            
+                            Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                                alert.dismiss(animated: true) {
+                                    // 뷰 컨트롤러를 pop하고 fetchData 호출
+                                    if let navigationController = self.navigationController {
+                                        let viewControllers = navigationController.viewControllers
+                                        for vc in viewControllers {
+                                            if let combinationHomeVC = vc as? CombinationHomeViewController {
+                                                combinationHomeVC.fetchData()
+                                                // 스크롤 맨 위로 올리기
+                                                combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
+                                                navigationController.popToViewController(combinationHomeVC, animated: true)
+                                                break
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }
@@ -440,7 +475,7 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
     func selectedInfoBtn(data: CombinationCommentDto) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.memberNickName != UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.memberNickName == UserDefaultManager.shared.userNickname
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -470,7 +505,9 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
             [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 댓글 아닐 때
-            let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
+            let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                
                 let VC = ReportViewController()
                 VC.resourceId = data.id
                 VC.reportTarget = "COMBINATION_COMMENT"
@@ -478,7 +515,56 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
                 navigationController?.pushViewController(VC, animated: true)
             }
             
-            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                
+                AdministrationService.shared.postBlock(blockedMemberId: data.memberId) { error in
+                    if let error = error {
+                        print("\(data.memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("\(data.memberId)번 멤버 차단 성공")
+                        
+                        // 내가 차단할 사람(댓글)이랑 글쓴이랑 같다면
+                        if self.combinationDetailData?.result.memberResult.memberId == data.memberId {
+                            DispatchQueue.main.async {
+                                // 차단 성공 메시지 표시
+                                let alert = UIAlertController(title: nil, message: "차단되었습니다.", preferredStyle: .alert)
+                                self.present(alert, animated: true, completion: nil)
+                                
+                                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                                    alert.dismiss(animated: true) {
+                                        // 뷰 컨트롤러를 pop하고 fetchData 호출
+                                        if let navigationController = self.navigationController {
+                                            let viewControllers = navigationController.viewControllers
+                                            for vc in viewControllers {
+                                                if let combinationHomeVC = vc as? CombinationHomeViewController {
+                                                    combinationHomeVC.fetchData()
+                                                    // 스크롤 맨 위로 올리기
+                                                    combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
+                                                    navigationController.popToViewController(combinationHomeVC, animated: true)
+                                                    break
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                                self.fetchData()
+                                
+                                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+                                self.present(alert, animated: true, completion: nil)
+                                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                                    alert.dismiss(animated: true, completion: nil)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }
