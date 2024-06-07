@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ComponentProductCellDelegate {
-    func selectedInfoBtn(data : CombinationCommentDto)
+    func selectedInfoBtn(data : CombinationCommentDTO)
 }
 
 protocol RecipeBookCommentCellDelegate {
@@ -18,7 +18,7 @@ protocol RecipeBookCommentCellDelegate {
 final class CombinationDetailCommentCell: UITableViewCell {
 
     var combinationCommentDelegate: ComponentProductCellDelegate?
-    var combinationCommentList: CombinationCommentDto? = nil
+    var combinationCommentList: CombinationCommentDTO? = nil
     
     var recipeBookCommentDelegate: RecipeBookCommentCellDelegate?
     var recipeBookCommentList: RecipeBookCommentDTO? = nil

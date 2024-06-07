@@ -12,7 +12,7 @@ final class CombinationHomeViewController: UIViewController {
     var isSearch = false
     var keyword = ""
     
-    var combinations: [CombinationHomeDto] = []
+    var combinations: [CombinationHomeDTO] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
     var isLastPage: Bool = false

@@ -19,8 +19,8 @@ final class CombinationDetailViewController: UIViewController {
     private var pageNum: Int = 0
     private var isLastPage: Bool = false
     
-    var combinationDetailData: CombinationDetailResponseDto?
-    var arrayCombinationComment: [CombinationCommentDto] = []
+    var combinationDetailData: CombinationDetailResponseDTO?
+    var arrayCombinationComment: [CombinationCommentDTO] = []
     
     let combinationDetailView = CombinationDetailView()
     
@@ -472,7 +472,7 @@ extension CombinationDetailViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - ComponentProductCellDelegate
 extension CombinationDetailViewController: ComponentProductCellDelegate {
-    func selectedInfoBtn(data: CombinationCommentDto) {
+    func selectedInfoBtn(data: CombinationCommentDTO) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
         let isCurrentUser = data.memberNickName == UserDefaultManager.shared.userNickname

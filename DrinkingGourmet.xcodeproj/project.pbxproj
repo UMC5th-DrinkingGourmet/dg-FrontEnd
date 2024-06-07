@@ -71,7 +71,7 @@
 		5668A34F2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A34E2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift */; };
 		5668A3D12B78F69C0009FCD6 /* CombinationSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3D02B78F69C0009FCD6 /* CombinationSearchViewController.swift */; };
 		566B83362C0EE311008C0773 /* CombinationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566B83352C0EE311008C0773 /* CombinationService.swift */; };
-		566B83392C0EE937008C0773 /* CombinationDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566B83382C0EE937008C0773 /* CombinationDto.swift */; };
+		566B83392C0EE937008C0773 /* CombinationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566B83382C0EE937008C0773 /* CombinationDTO.swift */; };
 		567B9C352BC6711E00D275A1 /* CombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C342BC6711E00D275A1 /* CombinationDetailView.swift */; };
 		567B9C372BC6741200D275A1 /* CombinationDetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C362BC6741200D275A1 /* CombinationDetailCommentCell.swift */; };
 		567B9C392BC6744600D275A1 /* CombinationDetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */; };
@@ -216,7 +216,7 @@
 		5668A34E2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailInfoView.swift; sourceTree = "<group>"; };
 		5668A3D02B78F69C0009FCD6 /* CombinationSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSearchViewController.swift; sourceTree = "<group>"; };
 		566B83352C0EE311008C0773 /* CombinationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationService.swift; sourceTree = "<group>"; };
-		566B83382C0EE937008C0773 /* CombinationDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDto.swift; sourceTree = "<group>"; };
+		566B83382C0EE937008C0773 /* CombinationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDTO.swift; sourceTree = "<group>"; };
 		567B9C342BC6711E00D275A1 /* CombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailView.swift; sourceTree = "<group>"; };
 		567B9C362BC6741200D275A1 /* CombinationDetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailCommentCell.swift; sourceTree = "<group>"; };
 		567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailImageCell.swift; sourceTree = "<group>"; };
@@ -893,7 +893,7 @@
 		566B83372C0EE928008C0773 /* Dto */ = {
 			isa = PBXGroup;
 			children = (
-				566B83382C0EE937008C0773 /* CombinationDto.swift */,
+				566B83382C0EE937008C0773 /* CombinationDTO.swift */,
 				56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */,
 			);
 			path = Dto;
@@ -1253,7 +1253,7 @@
 				5658DDF92B57C2A200F72F42 /* CombinationHomeCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */,
-				566B83392C0EE937008C0773 /* CombinationDto.swift in Sources */,
+				566B83392C0EE937008C0773 /* CombinationDTO.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
 				5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */,
 				5668A2FD2B6EDCD70009FCD6 /* CommunityView.swift in Sources */,

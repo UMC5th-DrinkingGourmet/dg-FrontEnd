@@ -21,7 +21,7 @@ final class CombinationService {
     
     // MARK: - 오늘의 조합 홈 페이징 조회
     func getAll(page: Int,
-                completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+                completion: @escaping (Swift.Result<CombinationHomeResponseDTO, Error>) -> Void) {
         do {
             let headers = try getHeaders()
             
@@ -34,7 +34,7 @@ final class CombinationService {
                        parameters: parameters,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+            .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))
@@ -50,7 +50,7 @@ final class CombinationService {
     // MARK: - 오늘의 조합 검색 페이징 조회
     func getSearch(page: Int,
                    keyword: String,
-                   completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+                   completion: @escaping (Swift.Result<CombinationHomeResponseDTO, Error>) -> Void) {
         do {
             let headers = try getHeaders()
             
@@ -64,7 +64,7 @@ final class CombinationService {
                        parameters: parameters,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+            .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))
@@ -79,7 +79,7 @@ final class CombinationService {
     
     // MARK: - 오늘의 조합 상세 조회
     func getDetail(combinationId: Int,
-                   completion: @escaping (Swift.Result<CombinationDetailResponseDto, Error>) -> Void) {
+                   completion: @escaping (Swift.Result<CombinationDetailResponseDTO, Error>) -> Void) {
         do {
             let headers = try getHeaders()
             
@@ -87,7 +87,7 @@ final class CombinationService {
                        method: .get,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationDetailResponseDto.self) { response in
+            .responseDecodable(of: CombinationDetailResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))
@@ -149,7 +149,7 @@ final class CombinationService {
     // MARK: - 오늘의 조합 댓글 페이징 조회
     func getAllComment(combinationId: Int,
                        page: Int,
-                       completion: @escaping (Swift.Result<CombinationCommentResponseDto, Error>) -> Void) {
+                       completion: @escaping (Swift.Result<CombinationCommentResponseDTO, Error>) -> Void) {
         do {
             let headers = try getHeaders()
             
@@ -162,7 +162,7 @@ final class CombinationService {
                        parameters: parameters,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationCommentResponseDto.self) { response in
+            .responseDecodable(of: CombinationCommentResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))
@@ -232,7 +232,7 @@ final class CombinationService {
     
     // MARK: - 주간 베스트 조합 홈 페이징 조회
     func getAllWeeklyBest(page: Int,
-                          completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+                          completion: @escaping (Swift.Result<CombinationHomeResponseDTO, Error>) -> Void) {
         
         do {
             let headers = try getHeaders()
@@ -246,7 +246,7 @@ final class CombinationService {
                        parameters: parameters,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+            .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))
@@ -263,7 +263,7 @@ final class CombinationService {
     // MARK: - 주간 베스트 조합 검색
     func getSearchWeeklyBest(page: Int,
                              keyword: String,
-                             completion: @escaping (Swift.Result<CombinationHomeResponseDto, Error>) -> Void) {
+                             completion: @escaping (Swift.Result<CombinationHomeResponseDTO, Error>) -> Void) {
         
         do {
             let headers = try getHeaders()
@@ -278,7 +278,7 @@ final class CombinationService {
                        parameters: parameters,
                        headers: headers)
             .validate()
-            .responseDecodable(of: CombinationHomeResponseDto.self) { response in
+            .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     completion(.success(result))

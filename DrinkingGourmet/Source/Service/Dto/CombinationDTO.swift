@@ -1,20 +1,20 @@
 //
-//  CombinationDto.swift
+//  CombinationDTO.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 6/4/24.
 //
 
 // MARK: - 오늘의 조합 홈
-struct CombinationHomeResponseDto: Codable {
+struct CombinationHomeResponseDTO: Codable {
     let isSuccess: Bool
     let code: String
     let message: String
-    let result: CombinationHomeResultDto
+    let result: CombinationHomeResultDTO
 }
 
-struct CombinationHomeResultDto: Codable {
-    let combinationList: [CombinationHomeDto]
+struct CombinationHomeResultDTO: Codable {
+    let combinationList: [CombinationHomeDTO]
     let listSize: Int
     let totalPage: Int
     let totalElements: Int
@@ -22,7 +22,7 @@ struct CombinationHomeResultDto: Codable {
     let isLast: Bool
 }
 
-struct CombinationHomeDto: Codable {
+struct CombinationHomeDTO: Codable {
     let combinationId: Int
     let title: String
     let combinationImageUrl: String
@@ -33,20 +33,20 @@ struct CombinationHomeDto: Codable {
 }
 
 // MARK: - 오늘의 조합 상세
-struct CombinationDetailResponseDto: Codable {
+struct CombinationDetailResponseDTO: Codable {
     let isSuccess: Bool
     let code: String
     let message: String
-    let result: CombinationDetailResultDto
+    let result: CombinationDetailResultDTO
 }
 
-struct CombinationDetailResultDto: Codable {
-    let combinationResult: CombinationDetailDto
-    let memberResult: CombinationMemberDto
-    let combinationCommentResult: CombinationCommentResultDto
+struct CombinationDetailResultDTO: Codable {
+    let combinationResult: CombinationDetailDTO
+    let memberResult: CombinationMemberDTO
+    let combinationCommentResult: CombinationCommentResultDTO
 }
 
-struct CombinationDetailDto: Codable {
+struct CombinationDetailDTO: Codable {
     let combinationId: Int
     let title: String
     let content: String
@@ -55,14 +55,14 @@ struct CombinationDetailDto: Codable {
     let isCombinationLike: Bool
 }
 
-struct CombinationMemberDto: Codable {
+struct CombinationMemberDTO: Codable {
     let memberId: Int
     let nickName: String
     let profileImageUrl: String?
 }
 
-struct CombinationCommentResultDto: Codable {
-    let combinationCommentList: [CombinationCommentDto]
+struct CombinationCommentResultDTO: Codable {
+    let combinationCommentList: [CombinationCommentDTO]
     let listSize:Int
     let totalPage: Int
     let totalElements: Int
@@ -70,7 +70,7 @@ struct CombinationCommentResultDto: Codable {
     let isLast: Bool
 }
 
-struct CombinationCommentDto: Codable {
+struct CombinationCommentDTO: Codable {
     let id: Int
     let content: String
     let memberId: Int
@@ -78,13 +78,13 @@ struct CombinationCommentDto: Codable {
     let memberProfile: String?
     let createdAt: String
     let childCount: Int
-    let childComments: [CombinationCommentDto]
+    let childComments: [CombinationCommentDTO]
     let state: String
 }
 
 // MARK: - 오늘의 조합 댓글
-struct CombinationCommentResponseDto: Codable {
+struct CombinationCommentResponseDTO: Codable {
     let isSuccess: Bool
     let code, message: String
-    let result: CombinationCommentResultDto
+    let result: CombinationCommentResultDTO
 }
