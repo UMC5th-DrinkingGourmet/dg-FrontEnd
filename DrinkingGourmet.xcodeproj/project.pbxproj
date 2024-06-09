@@ -80,6 +80,8 @@
 		56A7E8192C10CD4000CDE615 /* RecipeBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */; };
 		56A7E81F2C10CEB100CDE615 /* RecipeBookDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */; };
 		56A7E8212C117A1B00CDE615 /* AdministrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E8202C117A1B00CDE615 /* AdministrationService.swift */; };
+		56A7E82B2C15C54100CDE615 /* LikeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E82A2C15C54100CDE615 /* LikeService.swift */; };
+		56A7E82D2C15C6BA00CDE615 /* LikeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */; };
 		56A9EC3B2B857388004BD199 /* RecommendDetailResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9EC3A2B857388004BD199 /* RecommendDetailResponseModel.swift */; };
 		56AE28452B83D57B009CE0A1 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28442B83D57B009CE0A1 /* MyPageView.swift */; };
 		56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */; };
@@ -110,10 +112,6 @@
 		56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */; };
 		56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7172B8000CA000F6CA4 /* LikeView.swift */; };
 		56F8A71A2B800D6F000F6CA4 /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7192B800D6F000F6CA4 /* LikeCell.swift */; };
-		56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A71E2B80111A000F6CA4 /* LikeAllCombinationModel.swift */; };
-		56F8A7212B80114C000F6CA4 /* LikeAllRecipeBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */; };
-		56F8A7232B801153000F6CA4 /* LikeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7222B801153000F6CA4 /* LikeDataManager.swift */; };
-		56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7242B801166000F6CA4 /* LikeInput.swift */; };
 		97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */; };
 		97599BFC2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599BFB2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift */; };
 		97599C0E2B84F539009B9CF9 /* AnotherDrinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599C0D2B84F539009B9CF9 /* AnotherDrinksView.swift */; };
@@ -225,6 +223,8 @@
 		56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookService.swift; sourceTree = "<group>"; };
 		56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDTO.swift; sourceTree = "<group>"; };
 		56A7E8202C117A1B00CDE615 /* AdministrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdministrationService.swift; sourceTree = "<group>"; };
+		56A7E82A2C15C54100CDE615 /* LikeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeService.swift; sourceTree = "<group>"; };
+		56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeDTO.swift; sourceTree = "<group>"; };
 		56A9EC3A2B857388004BD199 /* RecommendDetailResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendDetailResponseModel.swift; sourceTree = "<group>"; };
 		56AE28442B83D57B009CE0A1 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -245,10 +245,6 @@
 		56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
 		56F8A7172B8000CA000F6CA4 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		56F8A7192B800D6F000F6CA4 /* LikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
-		56F8A71E2B80111A000F6CA4 /* LikeAllCombinationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeAllCombinationModel.swift; sourceTree = "<group>"; };
-		56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeAllRecipeBookModel.swift; sourceTree = "<group>"; };
-		56F8A7222B801153000F6CA4 /* LikeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeDataManager.swift; sourceTree = "<group>"; };
-		56F8A7242B801166000F6CA4 /* LikeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeInput.swift; sourceTree = "<group>"; };
 		97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDrinkingStyleDataManager.swift; sourceTree = "<group>"; };
 		97599BFB2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDrinkingStyleDataModels.swift; sourceTree = "<group>"; };
 		97599C0D2B84F539009B9CF9 /* AnotherDrinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherDrinksView.swift; sourceTree = "<group>"; };
@@ -886,6 +882,7 @@
 				566B83352C0EE311008C0773 /* CombinationService.swift */,
 				56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */,
 				56A7E8202C117A1B00CDE615 /* AdministrationService.swift */,
+				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -895,6 +892,7 @@
 			children = (
 				566B83382C0EE937008C0773 /* CombinationDTO.swift */,
 				56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */,
+				56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */,
 			);
 			path = Dto;
 			sourceTree = "<group>";
@@ -970,7 +968,6 @@
 		56F8A7112B80008B000F6CA4 /* Like */ = {
 			isa = PBXGroup;
 			children = (
-				56F8A71D2B8010B7000F6CA4 /* Model */,
 				56F8A7132B8000A6000F6CA4 /* View */,
 				56F8A7122B800099000F6CA4 /* ViewController */,
 			);
@@ -992,17 +989,6 @@
 				56F8A7192B800D6F000F6CA4 /* LikeCell.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		56F8A71D2B8010B7000F6CA4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				56F8A7242B801166000F6CA4 /* LikeInput.swift */,
-				56F8A71E2B80111A000F6CA4 /* LikeAllCombinationModel.swift */,
-				56F8A7202B80114C000F6CA4 /* LikeAllRecipeBookModel.swift */,
-				56F8A7222B801153000F6CA4 /* LikeDataManager.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		97599C092B84F4F8009B9CF9 /* NewDrinks */ = {
@@ -1244,7 +1230,6 @@
 				97EB4AE72B70F704009A62EB /* CustomizedButtons.swift in Sources */,
 				56AE284D2B83ED52009CE0A1 /* MyPageUserModel.swift in Sources */,
 				97EB4AC22B70F5E6009A62EB /* InputMyMoodViewController.swift in Sources */,
-				56F8A7232B801153000F6CA4 /* LikeDataManager.swift in Sources */,
 				97EB4AC32B70F5E6009A62EB /* InputMyFoodViewController.swift in Sources */,
 				56543EBD2B7E9A880099E648 /* CombinationUploadVC.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
@@ -1252,7 +1237,6 @@
 				5658DDF72B57498600F72F42 /* CombinationHomeViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* CombinationHomeCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
-				56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */,
 				566B83392C0EE937008C0773 /* CombinationDTO.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
 				5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */,
@@ -1265,6 +1249,7 @@
 				567B9C392BC6744600D275A1 /* CombinationDetailImageCell.swift in Sources */,
 				2E3E5A7D2B6C04590000E651 /* UploadViewController.swift in Sources */,
 				97EB4AD42B70F668009A62EB /* MyDrinkStyleViewController.swift in Sources */,
+				56A7E82B2C15C54100CDE615 /* LikeService.swift in Sources */,
 				2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */,
 				56B9DCCC2BCBF37700D08D22 /* ReportCompletePopUpView.swift in Sources */,
 				56AE28492B83DDE8009CE0A1 /* MyPageLowerView.swift in Sources */,
@@ -1286,6 +1271,7 @@
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				5668A3D12B78F69C0009FCD6 /* CombinationSearchViewController.swift in Sources */,
 				975F09032B816D18009C6F0E /* WelcomeViewController.swift in Sources */,
+				56A7E82D2C15C6BA00CDE615 /* LikeDTO.swift in Sources */,
 				97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */,
 				97EB4AFC2B720D42009A62EB /* LoadingRecommendDrinkViewController.swift in Sources */,
 				97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */,
@@ -1316,10 +1302,8 @@
 				97EB4AC42B70F5E6009A62EB /* SelectMyMoodViewController.swift in Sources */,
 				2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */,
 				56AE28512B83F594009CE0A1 /* MyPageInput.swift in Sources */,
-				56F8A7212B80114C000F6CA4 /* LikeAllRecipeBookModel.swift in Sources */,
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */,
-				56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */,
 				97EB4ACC2B70F63B009A62EB /* SelectWeatherResource.swift in Sources */,
 				975F09262B8282D7009C6F0E /* MyRecommendInput.swift in Sources */,
 				5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */,
