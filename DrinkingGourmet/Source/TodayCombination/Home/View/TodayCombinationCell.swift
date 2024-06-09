@@ -55,6 +55,7 @@ final class TodayCombinationCell: UITableViewCell {
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none // cell 선택 시 시각효과 제거
         
         setupContentView()
         addViews()
@@ -68,7 +69,7 @@ final class TodayCombinationCell: UITableViewCell {
     // MARK: - UI
     override func layoutSubviews() { // 셀 간 간격 설정
         super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 15, right: 20))
     }
     
     override func prepareForReuse() {

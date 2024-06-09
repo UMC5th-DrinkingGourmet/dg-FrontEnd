@@ -186,7 +186,7 @@ extension LikeViewController: UICollectionViewDelegateFlowLayout {
         
         if isleftButton { // 오늘의 조합
             let selectedItem = arrayLikeAllCombination[indexPath.row].combinationId
-            let todayCombinationDetailVC = TodayCombinationDetailViewController()
+            let todayCombinationDetailVC = CombinationDetailViewController()
             todayCombinationDetailVC.combinationId = selectedItem
             todayCombinationDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(todayCombinationDetailVC, animated: true)

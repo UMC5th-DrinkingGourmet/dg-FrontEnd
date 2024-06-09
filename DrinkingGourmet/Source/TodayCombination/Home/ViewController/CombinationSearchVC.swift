@@ -63,10 +63,10 @@ extension CombinationSearchVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder() // 키보드 숨기기
         
-        if let todayCombinationViewController = navigationController?.viewControllers.first(where: { $0 is TodayCombinationViewController }) as? TodayCombinationViewController {
+        if let todayCombinationViewController = navigationController?.viewControllers.first(where: { $0 is CombiationViewController }) as? CombiationViewController {
             
-            todayCombinationViewController.isReturningFromSearch = true
-            todayCombinationViewController.searchKeyword = searchResultView.searchBar.textField.text ?? ""
+            todayCombinationViewController.isSearch = true
+            todayCombinationViewController.keyword = searchResultView.searchBar.textField.text ?? ""
             todayCombinationViewController.fetchData()
             todayCombinationViewController.todayCombinationView.tableView.setContentOffset(CGPoint.zero, animated: true)
             navigationController?.popViewController(animated: true)

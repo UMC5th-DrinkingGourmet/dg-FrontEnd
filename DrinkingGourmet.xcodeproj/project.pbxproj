@@ -44,10 +44,6 @@
 		2EFA32FA2B71629100059188 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32F92B71629100059188 /* GradientView.swift */; };
 		2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */; };
 		2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */; };
-		5601EBB52B7BEE570043CCD4 /* CombinationDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */; };
-		5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */; };
-		5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */; };
-		5601EBBB2B7BEED30043CCD4 /* CombinationCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */; };
 		5601EBC02B7C10F90043CCD4 /* RecipeBookHomeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBBF2B7C10F90043CCD4 /* RecipeBookHomeInput.swift */; };
 		5601EBC22B7C110C0043CCD4 /* RecipeBookHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBC12B7C110C0043CCD4 /* RecipeBookHomeModel.swift */; };
 		5601EBC62B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBC52B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift */; };
@@ -65,9 +61,9 @@
 		56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */; };
 		56543EC92B7EF1190099E648 /* CombinationUploadInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */; };
 		56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543ECA2B7EF1500099E648 /* CombinationUploadDataManager.swift */; };
-		5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */; };
+		5658DDF72B57498600F72F42 /* CombiationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* CombiationViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */; };
-		5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */; };
+		5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */; };
 		5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EA2B6EDB340009FCD6 /* SearchResultCell.swift */; };
 		5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EC2B6EDB400009FCD6 /* SearchResultView.swift */; };
 		5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */; };
@@ -84,10 +80,9 @@
 		5668A34B2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A34A2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift */; };
 		5668A34D2B6FBAF00009FCD6 /* RecipeBookDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A34C2B6FBAF00009FCD6 /* RecipeBookDetailVC.swift */; };
 		5668A34F2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A34E2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift */; };
-		5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */; };
-		5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */; };
-		5668A3BB2B76B2120009FCD6 /* CombinationHomeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */; };
 		5668A3D12B78F69C0009FCD6 /* CombinationSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668A3D02B78F69C0009FCD6 /* CombinationSearchVC.swift */; };
+		566B83362C0EE311008C0773 /* CombinationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566B83352C0EE311008C0773 /* CombinationService.swift */; };
+		566B83392C0EE937008C0773 /* CombinationDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566B83382C0EE937008C0773 /* CombinationDto.swift */; };
 		567B9C352BC6711E00D275A1 /* CombinationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C342BC6711E00D275A1 /* CombinationDetailView.swift */; };
 		567B9C372BC6741200D275A1 /* CombinationDetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C362BC6741200D275A1 /* CombinationDetailCommentCell.swift */; };
 		567B9C392BC6744600D275A1 /* CombinationDetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */; };
@@ -208,10 +203,6 @@
 		2EFA32F92B71629100059188 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombiCollectionViewCell.swift; sourceTree = "<group>"; };
 		2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoModel.swift; sourceTree = "<group>"; };
-		5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailModel.swift; sourceTree = "<group>"; };
-		5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationCommentModel.swift; sourceTree = "<group>"; };
-		5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailDataManager.swift; sourceTree = "<group>"; };
-		5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationCommentInput.swift; sourceTree = "<group>"; };
 		5601EBBF2B7C10F90043CCD4 /* RecipeBookHomeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookHomeInput.swift; sourceTree = "<group>"; };
 		5601EBC12B7C110C0043CCD4 /* RecipeBookHomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookHomeModel.swift; sourceTree = "<group>"; };
 		5601EBC52B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookHomeDataManager.swift; sourceTree = "<group>"; };
@@ -229,9 +220,9 @@
 		56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadModel.swift; sourceTree = "<group>"; };
 		56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadInput.swift; sourceTree = "<group>"; };
 		56543ECA2B7EF1500099E648 /* CombinationUploadDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadDataManager.swift; sourceTree = "<group>"; };
-		5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationViewController.swift; sourceTree = "<group>"; };
+		5658DDF62B57498600F72F42 /* CombiationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombiationViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* TodayCombinationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationCell.swift; sourceTree = "<group>"; };
-		5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombinationDetailViewController.swift; sourceTree = "<group>"; };
+		5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailViewController.swift; sourceTree = "<group>"; };
 		5668A2EA2B6EDB340009FCD6 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		5668A2EC2B6EDB400009FCD6 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		5668A2EE2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomResultSearchBar.swift; sourceTree = "<group>"; };
@@ -248,10 +239,9 @@
 		5668A34A2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailCell.swift; sourceTree = "<group>"; };
 		5668A34C2B6FBAF00009FCD6 /* RecipeBookDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailVC.swift; sourceTree = "<group>"; };
 		5668A34E2B6FC3F00009FCD6 /* RecipeBookDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailInfoView.swift; sourceTree = "<group>"; };
-		5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeInput.swift; path = DrinkingGourmet/Source/TodayCombination/Home/Model/CombinationHomeInput.swift; sourceTree = SOURCE_ROOT; };
-		5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeModel.swift; path = DrinkingGourmet/Source/TodayCombination/Home/Model/CombinationHomeModel.swift; sourceTree = SOURCE_ROOT; };
-		5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CombinationHomeDataManager.swift; path = DrinkingGourmet/Source/TodayCombination/Home/Model/CombinationHomeDataManager.swift; sourceTree = SOURCE_ROOT; };
 		5668A3D02B78F69C0009FCD6 /* CombinationSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSearchVC.swift; sourceTree = "<group>"; };
+		566B83352C0EE311008C0773 /* CombinationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationService.swift; sourceTree = "<group>"; };
+		566B83382C0EE937008C0773 /* CombinationDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDto.swift; sourceTree = "<group>"; };
 		567B9C342BC6711E00D275A1 /* CombinationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailView.swift; sourceTree = "<group>"; };
 		567B9C362BC6741200D275A1 /* CombinationDetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailCommentCell.swift; sourceTree = "<group>"; };
 		567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailImageCell.swift; sourceTree = "<group>"; };
@@ -510,6 +500,7 @@
 		2E6C26E32B497EB900C87B4A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				566B83332C0EE2FC008C0773 /* Service */,
 				56D649932BB2BCE6002ABC93 /* Report */,
 				5644C8F62B856E470025E44F /* NewAlcohol */,
 				97599C092B84F4F8009B9CF9 /* NewDrinks */,
@@ -650,27 +641,6 @@
 			path = Gradient;
 			sourceTree = "<group>";
 		};
-		5601EBB22B7BEA960043CCD4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				5668A3B62B76B1FA0009FCD6 /* CombinationHomeInput.swift */,
-				5668A3B82B76B2070009FCD6 /* CombinationHomeModel.swift */,
-				5668A3BA2B76B2120009FCD6 /* CombinationHomeDataManager.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		5601EBB32B7BEE400043CCD4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				5601EBB42B7BEE570043CCD4 /* CombinationDetailModel.swift */,
-				5601EBBA2B7BEED30043CCD4 /* CombinationCommentInput.swift */,
-				5601EBB62B7BEE750043CCD4 /* CombinationCommentModel.swift */,
-				5601EBB82B7BEE850043CCD4 /* CombinationDetailDataManager.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		5601EBBE2B7C10B10043CCD4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,7 +771,7 @@
 		5658DDF32B57495F00F72F42 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5658DDF62B57498600F72F42 /* TodayCombinationViewController.swift */,
+				5658DDF62B57498600F72F42 /* CombiationViewController.swift */,
 				5668A3D02B78F69C0009FCD6 /* CombinationSearchVC.swift */,
 			);
 			path = ViewController;
@@ -819,7 +789,6 @@
 		5658DDFA2B58296B00F72F42 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				5601EBB32B7BEE400043CCD4 /* Model */,
 				5658DDFD2B582A4200F72F42 /* View */,
 				5658DDFC2B582A3900F72F42 /* ViewController */,
 			);
@@ -829,7 +798,6 @@
 		5658DDFB2B58297600F72F42 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				5601EBB22B7BEA960043CCD4 /* Model */,
 				5658DDF42B57496F00F72F42 /* View */,
 				5658DDF32B57495F00F72F42 /* ViewController */,
 			);
@@ -839,7 +807,7 @@
 		5658DDFC2B582A3900F72F42 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5658DDFF2B582A8D00F72F42 /* TodayCombinationDetailViewController.swift */,
+				5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -983,6 +951,23 @@
 				5668A34A2B6FBAE30009FCD6 /* RecipeBookDetailCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		566B83332C0EE2FC008C0773 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				566B83372C0EE928008C0773 /* Dto */,
+				566B83352C0EE311008C0773 /* CombinationService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		566B83372C0EE928008C0773 /* Dto */ = {
+			isa = PBXGroup;
+			children = (
+				566B83382C0EE937008C0773 /* CombinationDto.swift */,
+			);
+			path = Dto;
 			sourceTree = "<group>";
 		};
 		56AE28402B83D533009CE0A1 /* Mypage */ = {
@@ -1342,7 +1327,6 @@
 				5625E3842BBB3A8400269BBF /* SettingSectionHeaderView.swift in Sources */,
 				56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchVC.swift in Sources */,
 				56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */,
-				5601EBB72B7BEE750043CCD4 /* CombinationCommentModel.swift in Sources */,
 				2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */,
 				97599C122B84F577009B9CF9 /* NewDrinkDetailView.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
@@ -1356,12 +1340,11 @@
 				56C9B2962B7CE6D200C59D60 /* WeeklyBestInput.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
 				56AE284B2B83E51D009CE0A1 /* MyPageCell.swift in Sources */,
-				5658DDF72B57498600F72F42 /* TodayCombinationViewController.swift in Sources */,
+				5658DDF72B57498600F72F42 /* CombiationViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* TodayCombinationCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				56F8A71F2B80111A000F6CA4 /* LikeAllCombinationModel.swift in Sources */,
-				5601EBB92B7BEE850043CCD4 /* CombinationDetailDataManager.swift in Sources */,
-				5668A3B92B76B2070009FCD6 /* CombinationHomeModel.swift in Sources */,
+				566B83392C0EE937008C0773 /* CombinationDto.swift in Sources */,
 				5601EBC22B7C110C0043CCD4 /* RecipeBookHomeModel.swift in Sources */,
 				2E6C26EB2B49820100C87B4A /* RecommendViewController.swift in Sources */,
 				5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */,
@@ -1389,6 +1372,7 @@
 				56B9DCCE2BCEC77700D08D22 /* RecipeBookDetailHeaderView.swift in Sources */,
 				5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */,
 				2E5407982B84BE7200724513 /* RecipeBookUpoadModel.swift in Sources */,
+				566B83362C0EE311008C0773 /* CombinationService.swift in Sources */,
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
 				56A9EC3B2B857388004BD199 /* RecommendDetailResponseModel.swift in Sources */,
 				5601EBCD2B7C1E9B0043CCD4 /* RecipeBookDetailDataManager.swift in Sources */,
@@ -1402,7 +1386,6 @@
 				5601EBC62B7C11C10043CCD4 /* RecipeBookHomeDataManager.swift in Sources */,
 				97EB4AFC2B720D42009A62EB /* LoadingRecommendDrinkViewController.swift in Sources */,
 				5668A3432B6F68610009FCD6 /* RecipeBookHomeView.swift in Sources */,
-				5601EBBB2B7BEED30043CCD4 /* CombinationCommentInput.swift in Sources */,
 				97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */,
 				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
 				56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */,
@@ -1440,12 +1423,10 @@
 				56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */,
 				5668A3472B6FBAB20009FCD6 /* RecipeBookDetailView.swift in Sources */,
 				56F8A7252B801166000F6CA4 /* LikeInput.swift in Sources */,
-				5668A3B72B76B1FA0009FCD6 /* CombinationHomeInput.swift in Sources */,
 				56B9DCCA2BCB9CE000D08D22 /* ReportDataManager.swift in Sources */,
 				97EB4ACC2B70F63B009A62EB /* SelectWeatherResource.swift in Sources */,
 				975F09262B8282D7009C6F0E /* MyRecommendInput.swift in Sources */,
-				5668A3BB2B76B2120009FCD6 /* CombinationHomeDataManager.swift in Sources */,
-				5658DE002B582A8D00F72F42 /* TodayCombinationDetailViewController.swift in Sources */,
+				5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */,
 				97EB4AC72B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift in Sources */,
 				56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */,
 				5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */,
@@ -1455,7 +1436,6 @@
 				2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */,
 				97EB4AD52B70F668009A62EB /* SelectDrinkCapacityViewController.swift in Sources */,
 				2E54079A2B84C51E00724513 /* RecipeBookUploadDataManager.swift in Sources */,
-				5601EBB52B7BEE570043CCD4 /* CombinationDetailModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

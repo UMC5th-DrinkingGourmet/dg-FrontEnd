@@ -182,7 +182,7 @@ extension WeeklyBestVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = arrayWeeklyBest[indexPath.row].combinationId
         
-        let todayCombinationDetailVC = TodayCombinationDetailViewController()
+        let todayCombinationDetailVC = CombinationDetailViewController()
         todayCombinationDetailVC.combinationId = selectedItem
         todayCombinationDetailVC.selectedIndex = indexPath.row
         todayCombinationDetailVC.isLiked = arrayWeeklyBest[indexPath.row].isLike

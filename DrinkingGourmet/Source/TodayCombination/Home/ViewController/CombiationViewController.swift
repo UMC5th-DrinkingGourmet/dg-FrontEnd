@@ -1,5 +1,5 @@
 //
-//  TodayCombinationViewController.swift
+//  CombiationViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 1/17/24.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class TodayCombinationViewController: UIViewController {
+final class CombiationViewController: UIViewController {
     // MARK: - Properties
-    var isReturningFromSearch = false
-    var searchKeyword = ""
+    var isSearch = false
+    var keyword = ""
     
-    var arrayCombinationHome: [CombinationHomeModel.CombinationHomeList] = []
+    var combinations: [CombinationHomeDto] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
     var isLastPage: Bool = false
@@ -38,44 +38,47 @@ final class TodayCombinationViewController: UIViewController {
     
     // MARK: - 데이터 가져오기
     func fetchData() {
-        if isReturningFromSearch { // 검색일 때
-            let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: 0, keyword: searchKeyword)
-            pageNum = 0
-            
-            CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
-                guard let self = self else { return }
-                
-                if let model = model {
-                    self.totalPageNum = model.result.totalPage
-                    self.isLastPage = model.result.isLast
-                    self.arrayCombinationHome = model.result.combinationList
+        if isSearch { // 검색일 때
+            self.pageNum = 0
+            CombinationService.shared.getSearch(page: 0, 
+                                                keyword: self.keyword) { result in
+                switch result {
+                case .success(let data):
+                    print("오늘의 조합 검색 성공")
+                    self.totalPageNum = data.result.totalPage
+                    self.isLastPage = data.result.isLast
+                    self.combinations = data.result.combinationList
                     DispatchQueue.main.async {
                         self.todayCombinationView.tableView.reloadData()
                     }
+                case .failure(let error):
+                    print("오늘의 조합 검색 실패 - \(error.localizedDescription)")
                 }
             }
         } else {
-            let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: 0)
-            pageNum = 0
-            
-            CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-                guard let self = self else { return }
-                
-                if let model = model {
-                    self.totalPageNum = model.result.totalPage
-                    self.isLastPage = model.result.isLast
-                    self.arrayCombinationHome = model.result.combinationList
+            self.pageNum = 0
+            CombinationService.shared.getAll(page: 0) { result in
+                switch result {
+                case .success(let data):
+                    print("오늘의 조합 홈 조회 성공")
+                    self.totalPageNum = data.result.totalPage
+                    self.isLastPage = data.result.isLast
+                    self.combinations = data.result.combinationList
                     DispatchQueue.main.async {
                         self.todayCombinationView.tableView.reloadData()
                     }
+                    
+                case .failure(let error):
+                    print("오늘의 조합 홈 조회 실패 - \(error.localizedDescription)")
                 }
             }
         }
     }
-    
+
     // MARK: - 새로고침
     private func setupRefresh() {
-        isReturningFromSearch = false
+        self.isSearch = false
+        self.pageNum = 0
         
         let rc = todayCombinationView.refreshControl
         rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
@@ -122,50 +125,51 @@ final class TodayCombinationViewController: UIViewController {
             action: #selector(searchBarButtonTapped),
             for: .touchUpInside
         )
-        todayCombinationView.floatingButton.addTarget(
+        
+        todayCombinationView.uploadButton.addTarget(
             self,
-            action: #selector(floatingButtonTapped),
+            action: #selector(uploadButtonTapped),
             for: .touchUpInside
         )
     }
 }
 
-// MARK: - @objc
-extension TodayCombinationViewController {
+// MARK: - Actions
+extension CombiationViewController {
+    // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
-        isReturningFromSearch = false
-        print("새로고침 시작")
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.fetchData()
             refresh.endRefreshing()
         }
     }
     
+    // 검색
     @objc func searchBarButtonTapped() {
-        let combinationSearchVC = CombinationSearchVC()
-        combinationSearchVC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
-        navigationController?.pushViewController(combinationSearchVC, animated: true)
+        let VC = CombinationSearchVC()
+        VC.navigationItem.hidesBackButton = true // 검색화면 백버튼 숨기기
+        navigationController?.pushViewController(VC, animated: true)
     }
     
-    @objc func floatingButtonTapped() {
-        let vc = CombinationUploadVC()
-        navigationController?.pushViewController(vc, animated: true)
+    // 업로드
+    @objc func uploadButtonTapped() {
+        let VC = CombinationUploadVC()
+        navigationController?.pushViewController(VC, animated: true)
     }
 }
 
 // MARK: - UITableViewDataSource
-extension TodayCombinationViewController: UITableViewDataSource {
+extension CombiationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrayCombinationHome.count
+        return combinations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodayCombinationCell", for: indexPath) as! TodayCombinationCell
         
-        let combination = arrayCombinationHome[indexPath.row]
+        let combination = combinations[indexPath.row]
         
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
@@ -181,63 +185,65 @@ extension TodayCombinationViewController: UITableViewDataSource {
         
         cell.likeNumLabel.text = "\(combination.likeCount)"
         
-        cell.selectionStyle = .none // cell 선택 시 시각효과 제거
-        
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate
-extension TodayCombinationViewController: UITableViewDelegate {
+extension CombiationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedItem = arrayCombinationHome[indexPath.row].combinationId
+        let selectedItem = combinations[indexPath.row].combinationId
         
-        let todayCombinationDetailVC = TodayCombinationDetailViewController()
+        let todayCombinationDetailVC = CombinationDetailViewController()
         todayCombinationDetailVC.combinationId = selectedItem
         todayCombinationDetailVC.selectedIndex = indexPath.row
-        todayCombinationDetailVC.isLiked = arrayCombinationHome[indexPath.row].isLike
+        todayCombinationDetailVC.isLiked = combinations[indexPath.row].isLike
         navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
     }
 }
 
 // MARK: - UITableViewDataSourcePrefetching
-extension TodayCombinationViewController: UITableViewDataSourcePrefetching {
+extension CombiationViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             
-            if isReturningFromSearch { // 검색일 때
-                if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+            if isSearch { // 검색일 때
+                if combinations.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
                     
-                    pageNum += 1
+                    self.pageNum += 1
                     
-                    let input = CombinationHomeInput.fetchCombinationSearchDataInput(page: pageNum, keyword: searchKeyword)
-                    
-                    CombinationHomeDataManager().fetchCombinationSearchData(input, self) { [weak self] model in
-                        if let model = model {
-                            guard let self = self else { return }
-                            self.arrayCombinationHome += model.result.combinationList
-                            self.isLastPage = model.result.isLast
+                    CombinationService.shared.getSearch(page: self.pageNum, 
+                                                        keyword: self.keyword) { result in
+                        switch result {
+                        case .success(let data):
+                            print("오늘의 조합 검색 페이징 성공")
+                            self.isLastPage = data.result.isLast
+                            self.combinations += data.result.combinationList
                             DispatchQueue.main.async {
                                 self.todayCombinationView.tableView.reloadData()
                             }
+                        case .failure(let error):
+                            print("오늘의 조합 검색 페이징 실패 - \(error.localizedDescription)")
                         }
                     }
                 }
             } else {
-                if arrayCombinationHome.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                if combinations.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
                     
-                    pageNum += 1
+                    self.pageNum += 1
                     
-                    let input = CombinationHomeInput.fetchCombinationHomeDataInput(page: pageNum)
-                    
-                    CombinationHomeDataManager().fetchCombinationHomeData(input, self) { [weak self] model in
-                        if let model = model {
-                            guard let self = self else { return }
-                            self.arrayCombinationHome += model.result.combinationList
-                            self.isLastPage = model.result.isLast
+                    CombinationService.shared.getAll(page: self.pageNum) { result in
+                        switch result {
+                        case .success(let data):
+                            print("오늘의 조합 홈 페이징 성공")
+                            self.isLastPage = data.result.isLast
+                            self.combinations += data.result.combinationList
                             DispatchQueue.main.async {
                                 self.todayCombinationView.tableView.reloadData()
                             }
+                            
+                        case .failure(let error):
+                            print("오늘의 조합 홈 페이징 실패 - \(error.localizedDescription)")
                         }
                     }
                 }

@@ -1,5 +1,5 @@
 //
-//  TodayCombinationDetailViewController.swift
+//  CombinationDetailViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 1/18/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TodayCombinationDetailViewController: UIViewController, UIScrollViewDelegate {
+final class CombinationDetailViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Properties
     var combinationId: Int?
     
@@ -19,8 +19,8 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
     private var pageNum: Int = 0
     private var isLastPage: Bool = false
     
-    var combinationDetailData: CombinationDetailModel?
-    var arrayCombinationComment: [CombinationCommentModel.CombinationCommentList] = []
+    var combinationDetailData: CombinationDetailResponseDto?
+    var arrayCombinationComment: [CombinationCommentDto] = []
     
     let combinationDetailView = CombinationDetailView()
     
@@ -64,11 +64,11 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
             }
             
             guard let navigationController = navigationController,
-                  let todayCombinationViewController = navigationController.viewControllers.last as? TodayCombinationViewController,
+                  let todayCombinationViewController = navigationController.viewControllers.last as? CombiationViewController,
                   let selectedIndex = selectedIndex else {
                 return
             }
-            todayCombinationViewController.arrayCombinationHome[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
+            todayCombinationViewController.combinations[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
             todayCombinationViewController.todayCombinationView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
         }
     }
@@ -89,24 +89,33 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
     }
     
     func fetchData() {
-        if let combinationID = self.combinationId {
-            CombinationDetailDataManager().fetchCombinationDetailData(combinationID, self) { [weak self] detailModel in
-                guard let self = self else { return }
-                self.combinationDetailData = detailModel
+        guard let combinationId = self.combinationId else { return }
+        
+        self.pageNum = 0
+        
+        CombinationService.shared.getDetail(combinationId: combinationId) { result in
+            switch result {
+            case .success(let data):
+                print("오늘의 조합 상세 조회 성공")
+                self.combinationDetailData = data
                 
-                let combinationCommentInput = CombinationCommentInput.fetchCombinatiCommentDataInput(page: 0)
-                pageNum = 0
-                
-                CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, combinationCommentInput, self) { commentModel in
-                    if let commentModel = commentModel {
-                        self.totalPageNum = commentModel.result.totalPage
-                        self.isLastPage = commentModel.result.isLast
-                        self.arrayCombinationComment = commentModel.result.combinationCommentList
+                CombinationService.shared.getAllComment(combinationId: combinationId, 
+                                                        page: 0) { result in
+                    switch result {
+                    case .success(let data):
+                        print("오늘의 조합 댓글 조회 성공")
+                        self.totalPageNum = data.result.totalPage
+                        self.isLastPage = data.result.isLast
+                        self.arrayCombinationComment = data.result.combinationCommentList
                         DispatchQueue.main.async {
                             self.combinationDetailView.tabelView.reloadData()
                         }
+                    case .failure(let error):
+                        print("오늘의 조합 댓글 조회 실패 - \(error.localizedDescription)")
                     }
                 }
+            case .failure(let error):
+                print("오늘의 조합 상세 조회 실패 - \(error.localizedDescription)")
             }
         }
     }
@@ -138,27 +147,43 @@ final class TodayCombinationDetailViewController: UIViewController, UIScrollView
             self,
             action: #selector(likeButtonTapped),
             for: .touchUpInside)
+        
         headerView?.moreButton.addTarget(
             self,
             action: #selector(moreButtonTapped),
             for: .touchUpInside
         )
-        combinationDetailView.commentInputView.postButton.addTarget(
+        
+        combinationDetailView.commentInputView.uploadCommentButton.addTarget(
             self,
-            action: #selector(postButtonTapped),
+            action: #selector(uploadCommentButtonTapped),
             for: .touchUpInside
         )
     }
 }
 
-// MARK: - @objc
-extension TodayCombinationDetailViewController {
-    @objc func likeButtonTapped() { // 좋아요
-        isLiked.toggle()
-        let imageName = isLiked ? "ic_like_selected" : "ic_like"
-        headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)
-        if let combinationId = combinationId {
-            CombinationDetailDataManager().postLike(combinationId)
+// MARK: - Actions
+extension CombinationDetailViewController {
+    // 좋아요
+    @objc func likeButtonTapped() {
+        guard let combinationId = self.combinationId else { return }
+        
+        self.isLiked.toggle()
+        let imageName = self.isLiked ? "ic_like_selected" : "ic_like"
+        
+        CombinationService.shared.postLike(combinationId: combinationId) { error in
+            if let error = error {
+                print("오늘의 조합 좋아요 실패 - \(error.localizedDescription)")
+            } else {
+                DispatchQueue.main.async {
+                    self.headerView?.likeButton.setImage(UIImage(named: imageName), for: .normal)
+                }
+                if self.isLiked {
+                    print("오늘의 조합 좋아요 성공")
+                } else {
+                    print("오늘의 조합 좋아요 취소 성공")
+                }
+            }
         }
     }
     
@@ -169,22 +194,28 @@ extension TodayCombinationDetailViewController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if isCurrentUser { // 내가 작성한 글 일 때
-            let removeAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
-                guard let self = self, let combinationId = self.combinationId else { return }
-                DispatchQueue.main.async {
-                    self.navigationController?.popViewController(animated: true)
-                    let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
+                guard let combinationId = self.combinationId else { return }
+                CombinationService.shared.deleteCombination(combinationId: combinationId) { error in
+                    if let error = error {
+                        print("오늘의 조합 삭제 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("오늘의 조합 삭제 성공")
+                        self.navigationController?.popViewController(animated: true)
+                        
+                        let alert = UIAlertController(title: nil, message: "게시글이 삭제되었습니다.", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    }
                 }
-                CombinationDetailDataManager().deleteCombination(combinationId)
             }
             
             let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
-            [removeAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
@@ -204,22 +235,31 @@ extension TodayCombinationDetailViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func postButtonTapped() {
-        guard let inputText = self.combinationDetailView.commentInputView.textField.text, !inputText.isEmpty else { return }
-        guard let combinationId = self.combinationId else { return }
-        view.endEditing(true)
+    // 댓글 작성
+    @objc func uploadCommentButtonTapped() {
+        guard let combinationId = self.combinationId,
+              let content = self.combinationDetailView.commentInputView.textField.text, !content.isEmpty else { return }
+        
+        view.endEditing(true) // 키보드 내리기
         self.combinationDetailView.commentInputView.textField.text = ""
         
-        let input = CombinationCommentInput.postCommentInput(content: inputText, parentId: "0")
-        CombinationDetailDataManager().postComment(combinationId, input)
         
-        self.fetchData()
-        
-        self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-        let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-            alert.dismiss(animated: true, completion: nil)
+        CombinationService.shared.postComment(combinationId: combinationId, 
+                                              content: content,
+                                              parentId: "0") { error in
+            if let error = error {
+                print("오늘의 조합 댓글 작성 실패 - \(error.localizedDescription)")
+            } else {
+                print("오늘의 조합 댓글 작성 성공")
+                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                self.fetchData()
+                
+                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                }
+            }
         }
     }
     
@@ -253,7 +293,7 @@ extension TodayCombinationDetailViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension TodayCombinationDetailViewController: UITableViewDataSource {
+extension CombinationDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrayCombinationComment.count
     }
@@ -287,7 +327,7 @@ extension TodayCombinationDetailViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension TodayCombinationDetailViewController: UITableViewDelegate {
+extension CombinationDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CombinationDetailHeaderView") as! CombinationDetailHeaderView
         
@@ -328,24 +368,26 @@ extension TodayCombinationDetailViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSourcePrefetching
-extension TodayCombinationDetailViewController: UITableViewDataSourcePrefetching { // 댓글 페이징
+extension CombinationDetailViewController: UITableViewDataSourcePrefetching { // 댓글 페이징
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            if let combinationID = self.combinationId {
-                if arrayCombinationComment.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
-                    pageNum += 1
-                    
-                    let input = CombinationCommentInput.fetchCombinatiCommentDataInput(page: pageNum)
-                    
-                    CombinationDetailDataManager().fetchCombinatiCommentData(combinationID, input, self) { [weak self] model in
-                        if let model = model {
-                            guard let self = self else { return }
-                            self.arrayCombinationComment += model.result.combinationCommentList
-                            self.isLastPage = model.result.isLast
-                            DispatchQueue.main.async {
-                                self.combinationDetailView.tabelView.reloadData()
-                            }
+            guard let combinationId = self.combinationId else { return }
+            if arrayCombinationComment.count - 1 == indexPath.row && pageNum < totalPageNum && !isLastPage {
+                
+                self.pageNum += 1
+                
+                CombinationService.shared.getAllComment(combinationId: combinationId,
+                                                        page: self.pageNum) { result in
+                    switch result {
+                    case .success(let data):
+                        print("오늘의 조합 댓글 페이징 조회 성공")
+                        self.isLastPage = data.result.isLast
+                        self.arrayCombinationComment += data.result.combinationCommentList
+                        DispatchQueue.main.async {
+                            self.combinationDetailView.tabelView.reloadData()
                         }
+                    case .failure(let error):
+                        print("오늘의 조합 댓글 페이징 조회 실패 - \(error.localizedDescription)")
                     }
                 }
             }
@@ -354,7 +396,7 @@ extension TodayCombinationDetailViewController: UITableViewDataSourcePrefetching
 }
 
 // MARK: - UICollectionViewDataSource
-extension TodayCombinationDetailViewController: UICollectionViewDataSource {
+extension CombinationDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return combinationDetailData?.result.combinationResult.combinationImageList.count ?? 0
     }
@@ -372,7 +414,7 @@ extension TodayCombinationDetailViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension TodayCombinationDetailViewController: UICollectionViewDelegateFlowLayout {
+extension CombinationDetailViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.bounds.size
@@ -394,28 +436,32 @@ extension TodayCombinationDetailViewController: UICollectionViewDelegateFlowLayo
 }
 
 // MARK: - ComponentProductCellDelegate
-extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
-    func selectedInfoBtn(data: CombinationCommentModel.CombinationCommentList) {
+extension CombinationDetailViewController: ComponentProductCellDelegate {
+    func selectedInfoBtn(data: CombinationCommentDto) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.memberNickName == UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.memberNickName != UserDefaultManager.shared.userNickname
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if isCurrentUser { // 내가 작성한 댓글 일 때
-            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
-                guard let self = self else { return }
+            let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
                 
-                CombinationDetailDataManager().deleteComment(commentId: data.id)
-                
-                self.fetchData()
-                
-                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-                let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
-                self.present(alert, animated: true, completion: nil)
-                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                    alert.dismiss(animated: true, completion: nil)
-                }   
+                CombinationService.shared.deleteComment(commentId: data.id) { error in
+                    if let error = error {
+                        print("오늘의 조합 댓글 삭제 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("오늘의 조합 댓글 삭제 성공")
+                        self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
+                        self.fetchData()
+                        
+                        let alert = UIAlertController(title: nil, message: "댓글이 삭제되었습니다.", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                }
             }
             
             let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
@@ -443,7 +489,7 @@ extension TodayCombinationDetailViewController: ComponentProductCellDelegate {
 }
 
 // MARK: - UITextFieldDelegate
-extension TodayCombinationDetailViewController: UITextFieldDelegate {
+extension CombinationDetailViewController: UITextFieldDelegate {
     // 리턴 클릭 시 키보드 내림
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
