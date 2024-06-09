@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RecipeBookSearchVC: UIViewController {
+class RecipeBookSearchViewController: UIViewController {
     // MARK: - Properties
     private let searchResultView = SearchResultView()
     
@@ -57,21 +57,21 @@ class RecipeBookSearchVC: UIViewController {
 }
 
 // MARK: - @objc
-extension RecipeBookSearchVC {
+extension RecipeBookSearchViewController {
     @objc func cancelButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
 }
 
 // MARK: - UITextFieldDelegate
-extension RecipeBookSearchVC: UITextFieldDelegate {
+extension RecipeBookSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder() // 키보드 숨기기
         
-        if let recipeBookHomeVC = navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeVC }) as? RecipeBookHomeVC {
+        if let recipeBookHomeVC = navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeViewController }) as? RecipeBookHomeViewController {
             
-            recipeBookHomeVC.isReturningFromSearch = true
-            recipeBookHomeVC.searchKeyword = searchResultView.searchBar.textField.text ?? ""
+            recipeBookHomeVC.isSearch = true
+            recipeBookHomeVC.keyword = searchResultView.searchBar.textField.text ?? ""
             recipeBookHomeVC.fetchData()
             recipeBookHomeVC.recipeBookHomeView.tableView.setContentOffset(CGPoint.zero, animated: true)
             navigationController?.popViewController(animated: true)

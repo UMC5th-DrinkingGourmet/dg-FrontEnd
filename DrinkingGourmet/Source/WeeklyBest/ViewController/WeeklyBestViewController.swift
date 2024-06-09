@@ -12,7 +12,7 @@ final class WeeklyBestViewController: UIViewController {
     var isSearch = false
     var keyword = ""
     
-    var combinations: [CombinationHomeDto] = []
+    var combinations: [CombinationHomeDTO] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
     var isLastPage: Bool = false
@@ -157,7 +157,7 @@ extension WeeklyBestViewController: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
-        if let url = URL(string: combination.combinationImageUrl ?? "defaultImage") {
+        if let url = URL(string: combination.combinationImageUrl) {
                     cell.thumnailImage.kf.setImage(with: url)
         }
         

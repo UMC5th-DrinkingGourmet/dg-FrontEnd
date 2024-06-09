@@ -8,20 +8,20 @@
 import UIKit
 
 protocol ComponentProductCellDelegate {
-    func selectedInfoBtn(data : CombinationCommentDto)
+    func selectedInfoBtn(data : CombinationCommentDTO)
 }
 
 protocol RecipeBookCommentCellDelegate {
-    func selectedInfoBtn(data : RecipeBookCommentModel.CommentList)
+    func selectedInfoBtn(data : RecipeBookCommentDTO)
 }
 
 final class CombinationDetailCommentCell: UITableViewCell {
 
-    var delegate: ComponentProductCellDelegate?
-    var combinationCommentList: CombinationCommentDto? = nil
+    var combinationCommentDelegate: ComponentProductCellDelegate?
+    var combinationCommentList: CombinationCommentDTO? = nil
     
     var recipeBookCommentDelegate: RecipeBookCommentCellDelegate?
-    var recipeBookCommentList: RecipeBookCommentModel.CommentList? = nil
+    var recipeBookCommentList: RecipeBookCommentDTO? = nil
     
     // MARK: - View
     let profileImage = UIImageView().then {
@@ -130,7 +130,7 @@ final class CombinationDetailCommentCell: UITableViewCell {
     
     @objc func selectedInfoBtn(_ sender: UIButton) {
         guard let combinationCommentList = self.combinationCommentList else { return }
-        self.delegate?.selectedInfoBtn(data: combinationCommentList)
+        self.combinationCommentDelegate?.selectedInfoBtn(data: combinationCommentList)
     }
     
     @objc func selectedRecipeBookCommentBtn(_ sender: UIButton) {

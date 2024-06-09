@@ -1,5 +1,5 @@
 //
-//  CombiationHomeViewController.swift
+//  CombinationHomeViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 1/17/24.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class CombiationHomeViewController: UIViewController {
+final class CombinationHomeViewController: UIViewController {
     // MARK: - Properties
     var isSearch = false
     var keyword = ""
     
-    var combinations: [CombinationHomeDto] = []
+    var combinations: [CombinationHomeDTO] = []
     var totalPageNum: Int = 0
     var pageNum: Int = 0
     var isLastPage: Bool = false
@@ -27,7 +27,6 @@ final class CombiationHomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
         fetchData()
         setupRefresh()
@@ -67,7 +66,6 @@ final class CombiationHomeViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.combinationHomeView.tableView.reloadData()
                     }
-
                 case .failure(let error):
                     print("오늘의 조합 홈 조회 실패 - \(error.localizedDescription)")
                 }
@@ -117,22 +115,18 @@ final class CombiationHomeViewController: UIViewController {
     
     // MARK: - 버튼 설정
     private func setupButton() {
-        combinationHomeView.customSearchBar.searchBarButton.addTarget(
-            self,
-            action: #selector(searchBarButtonTapped),
-            for: .touchUpInside
-        )
+        combinationHomeView.customSearchBar.searchBarButton.addTarget(self,
+                                                                      action: #selector(searchBarButtonTapped),
+                                                                      for: .touchUpInside)
         
-        combinationHomeView.uploadButton.addTarget(
-            self,
-            action: #selector(uploadButtonTapped),
-            for: .touchUpInside
-        )
+        combinationHomeView.uploadButton.addTarget(self,
+                                                   action: #selector(uploadButtonTapped),
+                                                   for: .touchUpInside)
     }
 }
 
 // MARK: - Actions
-extension CombiationHomeViewController {
+extension CombinationHomeViewController {
     // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
         self.isSearch = false
@@ -158,7 +152,7 @@ extension CombiationHomeViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension CombiationHomeViewController: UITableViewDataSource {
+extension CombinationHomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return combinations.count
@@ -172,8 +166,8 @@ extension CombiationHomeViewController: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
-        if let url = URL(string: combination.combinationImageUrl ?? "defaultImage") {
-                    cell.thumnailImage.kf.setImage(with: url)
+        if let url = URL(string: combination.combinationImageUrl) {
+            cell.thumnailImage.kf.setImage(with: url)
         }
         
         cell.titleLabel.text = combination.title
@@ -189,7 +183,7 @@ extension CombiationHomeViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension CombiationHomeViewController: UITableViewDelegate {
+extension CombinationHomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = combinations[indexPath.row].combinationId
         
@@ -202,7 +196,7 @@ extension CombiationHomeViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSourcePrefetching
-extension CombiationHomeViewController: UITableViewDataSourcePrefetching {
+extension CombinationHomeViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             
