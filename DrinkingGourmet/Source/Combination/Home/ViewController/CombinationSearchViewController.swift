@@ -1,5 +1,5 @@
 //
-//  CombinationSearchVC.swift
+//  CombinationSearchViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 2/11/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CombinationSearchVC: UIViewController {
+class CombinationSearchViewController: UIViewController {
     
     // MARK: - Properties
     private let searchResultView = SearchResultView()
@@ -59,16 +59,16 @@ class CombinationSearchVC: UIViewController {
 }
 
 // MARK: - UITextFieldDelegate
-extension CombinationSearchVC: UITextFieldDelegate {
+extension CombinationSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder() // 키보드 숨기기
         
-        if let todayCombinationViewController = navigationController?.viewControllers.first(where: { $0 is CombiationViewController }) as? CombiationViewController {
+        if let todayCombinationViewController = navigationController?.viewControllers.first(where: { $0 is CombiationHomeViewController }) as? CombiationHomeViewController {
             
             todayCombinationViewController.isSearch = true
             todayCombinationViewController.keyword = searchResultView.searchBar.textField.text ?? ""
             todayCombinationViewController.fetchData()
-            todayCombinationViewController.todayCombinationView.tableView.setContentOffset(CGPoint.zero, animated: true)
+            todayCombinationViewController.combinationHomeView.tableView.setContentOffset(CGPoint.zero, animated: true)
             navigationController?.popViewController(animated: true)
         }
         return true

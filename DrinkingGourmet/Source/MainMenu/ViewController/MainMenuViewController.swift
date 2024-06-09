@@ -192,7 +192,7 @@ class MainMenuViewController: UIViewController {
     }
 
     @objc func todayCombiBtnTapped() {
-        let todayCombinationViewController = CombiationViewController()
+        let todayCombinationViewController = CombiationHomeViewController()
         todayCombinationViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(todayCombinationViewController, animated: true)
     }

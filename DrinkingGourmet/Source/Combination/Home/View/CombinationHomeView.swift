@@ -1,17 +1,16 @@
 //
-//  WeeklyBestView.swift
+//  TodayCombinationView.swift
 //  DrinkingGourmet
 //
-//  Created by 이승민 on 2/4/24.
+//  Created by 이승민 on 2/2/24.
 //
 
 import UIKit
 
-final class WeeklyBestView: UIView {
+final class CombinationHomeView: UIView {
     
     // MARK: - View
     let tableView = UITableView().then {
-        $0.showsVerticalScrollIndicator = false // 스크롤바 숨기기
         $0.keyboardDismissMode = .onDrag // 스크롤 할 때 키보드 내리기
         $0.separatorStyle = .none // 테이블뷰 구분선 없애기
     }
@@ -19,6 +18,14 @@ final class WeeklyBestView: UIView {
     let refreshControl = UIRefreshControl()
     
     let customSearchBar = CustomSearchBar()
+    
+    let uploadButton = UIButton().then {
+        $0.backgroundColor = .customOrange
+        $0.setImage(UIImage(named: "ic_floating_show"), for: .normal)
+        $0.tintColor = .white
+        $0.layer.cornerRadius = 25
+        $0.clipsToBounds = true
+    }
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -37,7 +44,8 @@ final class WeeklyBestView: UIView {
     private func addViews() {
         self.addSubviews([
             tableView,
-            customSearchBar
+            customSearchBar,
+            uploadButton
         ])
     }
     
@@ -49,8 +57,13 @@ final class WeeklyBestView: UIView {
         
         tableView.snp.makeConstraints { make in
             make.top.equalTo(customSearchBar.snp.bottom).offset(15)
-            make.leading.trailing.equalTo(customSearchBar)
-            make.bottom.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        uploadButton.snp.makeConstraints { make in
+            make.size.equalTo(50)
+            make.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset(58)
         }
     }
 }

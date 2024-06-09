@@ -1,5 +1,5 @@
 //
-//  TodayCombinationCell.swift
+//  CombinationHomeCell.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 1/17/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TodayCombinationCell: UITableViewCell {
+final class CombinationHomeCell: UITableViewCell {
     
     // MARK: - View
     let thumnailImage = UIImageView().then {

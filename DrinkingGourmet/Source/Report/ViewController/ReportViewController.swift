@@ -138,9 +138,9 @@ extension ReportViewController {
             
             if success {
                 if reportTarget == "COMBINATION" { // 오늘의 조합 게시물 신고일 때
-                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is CombiationViewController }) as? CombiationViewController {
+                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is CombiationHomeViewController }) as? CombiationHomeViewController {
                         VC.fetchData()
-                        VC.todayCombinationView.tableView.setContentOffset(.zero, animated: true)
+                        VC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(VC, animated: true)
                     }
                 }
