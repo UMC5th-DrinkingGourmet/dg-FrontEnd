@@ -21,7 +21,7 @@ struct LikeCombinationResultDTO: Codable {
 struct LikeCombinationDTO: Codable {
     let combinationId: Int
     let title: String
-    let combinationImageUrl: String?
+    let combinationImageUrl: String
 }
 
 // MARK: - 좋아요한 레시피북
@@ -40,5 +40,5 @@ struct LikeRecipeBookResultDTO: Codable {
 struct LikeRecipeBookDTO: Codable {
     let id: Int
     let name: String
-    let recipeImageUrl: String?
+    let recipeImageUrl: String
 }

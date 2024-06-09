@@ -9,11 +9,12 @@ import UIKit
 
 class LikeCell: UICollectionViewCell {
     
-    let mainImage = UIImageView().then {
-        $0.contentMode = .scaleToFill
+    let thumbnailimage = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
     }
     
-    let mainLabel = UILabel().then {
+    let titleLabel = UILabel().then {
         $0.textColor = .white
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13.36)
         $0.numberOfLines = 6
@@ -35,23 +36,27 @@ class LikeCell: UICollectionViewCell {
     }
     
     private func addViews() {
-        contentView.addSubviews([mainImage, mainLabel, heartIcon])
+        contentView.addSubviews([
+            thumbnailimage, 
+            titleLabel,
+            heartIcon
+        ])
     }
     
     private func configureConstraints() {
-        mainImage.snp.makeConstraints { make in
+        thumbnailimage.snp.makeConstraints { make in
             make.edges.equalTo(contentView)
         }
         
-        mainLabel.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView).inset(16)
             make.trailing.equalTo(contentView).inset(32)
             make.bottom.equalTo(contentView).inset(16)
         }
         
         heartIcon.snp.makeConstraints { make in
-            make.top.equalTo(contentView).inset(10)
-            make.trailing.equalTo(contentView).inset(10)
+            make.top.trailing.equalTo(contentView).inset(10)
+            make.size.equalTo(21)
         }
     }
 }

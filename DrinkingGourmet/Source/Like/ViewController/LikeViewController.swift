@@ -26,33 +26,27 @@ final class LikeViewController: UIViewController {
     }
     
     // MARK: - LifeCycle
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        updateUI()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchData()
         setupNaviBar()
         setupRefresh()
         setupCollectionView()
         setupButton()
     }
     
-    // MARK: - 초기 설정
-    private func updateUI() {
+    // MARK: - 데이터 가져오기
+    private func fetchData() {
         switch likeType {
         case .todayCombination:
-            loadCombinationData()
+            fetchCombinationData()
         case .recipeBook:
-            loadRecipeBookData()
+            fetchRecipeBookData()
         }
     }
     
-    // 오늘의 조합 데이터 로딩
-    private func loadCombinationData() {
+    private func fetchCombinationData() {
         LikeService.shared.getCombination(page: 0) { result in
             switch result {
             case .success(let data):
@@ -67,8 +61,7 @@ final class LikeViewController: UIViewController {
         }
     }
     
-    // 레시피북 데이터 로딩
-    private func loadRecipeBookData() {
+    private func fetchRecipeBookData() {
         LikeService.shared.getRecipeBook(page: 0) { result in
             switch result {
             case .success(let data):
@@ -84,7 +77,7 @@ final class LikeViewController: UIViewController {
     }
     
     // MARK: - 네비게이션바 설정
-    func setupNaviBar() {
+    private func setupNaviBar() {
         title = "좋아요"
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -96,6 +89,7 @@ final class LikeViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
+    // MARK: - 새로고침
     private func setupRefresh() {
         let rc = likeView.refreshControl
         rc.addTarget(self, action: #selector(refreshCollectionView(refresh:)), for: .valueChanged)
@@ -105,7 +99,7 @@ final class LikeViewController: UIViewController {
     }
     
     // MARK: - 컬렌션뷰 설정
-    func setupCollectionView() {
+    private func setupCollectionView() {
         let cv = likeView.collectionView
         cv.dataSource = self
         cv.delegate = self
@@ -115,20 +109,28 @@ final class LikeViewController: UIViewController {
     
     // MARK: - 버튼 설정
     func setupButton() {
-        likeView.combinationButton.addTarget(self, action: #selector(combinationButtonTapped), for: .touchUpInside)
-        likeView.recipeBookButton.addTarget(self, action: #selector(recipeBookButtonTapped), for: .touchUpInside)
+        likeView.combinationButton.addTarget(self, 
+                                             action: #selector(combinationButtonTapped),
+                                             for: .touchUpInside)
+        
+        likeView.recipeBookButton.addTarget(self, 
+                                            action: #selector(recipeBookButtonTapped),
+                                            for: .touchUpInside)
     }
-    
+}
+
+// MARK: - Actions
+extension LikeViewController {
     @objc func combinationButtonTapped() {
         likeType = .todayCombination
         arrayLikeAllCombination = []
-        
+    
         likeView.recipeBookLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
         likeView.combinationLabel.textColor = .black
         likeView.rightLine.backgroundColor = .clear
         likeView.leftLine.backgroundColor = .customOrange
         
-        self.loadCombinationData()
+        self.fetchCombinationData()
     }
     
     @objc func recipeBookButtonTapped() {
@@ -140,17 +142,16 @@ final class LikeViewController: UIViewController {
         likeView.rightLine.backgroundColor = .customOrange
         likeView.leftLine.backgroundColor = .clear
         
-        self.loadRecipeBookData()
+        self.fetchRecipeBookData()
     }
     
     // 새로고침
     @objc func refreshCollectionView(refresh: UIRefreshControl) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.updateUI()
+            self.fetchData()
             refresh.endRefreshing()
         }
     }
-    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -169,17 +170,17 @@ extension LikeViewController: UICollectionViewDataSource {
         
         switch likeType {
         case .todayCombination:
-            let combination = arrayLikeAllCombination[indexPath.item]
-            if let url = URL(string: combination.combinationImageUrl ?? "defualtImage") {
-                cell.mainImage.kf.setImage(with: url)
+            let data = arrayLikeAllCombination[indexPath.item]
+            if let url = URL(string: data.combinationImageUrl) {
+                cell.thumbnailimage.kf.setImage(with: url)
             }
-            cell.mainLabel.text = combination.title
+            cell.titleLabel.text = data.title
         case .recipeBook:
-            let recipeBook = arrayLikeAllRecipeBook[indexPath.item]
-            if let url = URL(string: recipeBook.recipeImageUrl ?? "defualtImage") {
-                cell.mainImage.kf.setImage(with: url)
+            let data = arrayLikeAllRecipeBook[indexPath.item]
+            if let url = URL(string: data.recipeImageUrl) {
+                cell.thumbnailimage.kf.setImage(with: url)
             }
-            cell.mainLabel.text = recipeBook.name
+            cell.titleLabel.text = data.name
         }
         return cell
     }
