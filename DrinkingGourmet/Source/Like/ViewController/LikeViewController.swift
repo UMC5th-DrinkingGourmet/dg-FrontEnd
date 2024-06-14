@@ -7,77 +7,77 @@
 
 import UIKit
 
-class LikeViewController: UIViewController {
+enum LikeType {
+    case todayCombination
+    case recipeBook
+}
+
+final class LikeViewController: UIViewController {
     // MARK: - Properties
-    var isleftButton: Bool = true
+    private var likeType: LikeType = .todayCombination
+    private var arrayLikeAllCombination: [LikeCombinationDTO] = []
+    private var arrayLikeAllRecipeBook: [LikeRecipeBookDTO] = []
     
-    var arrayLikeAllCombination: [LikeAllCombinationModel.CombinationList] = []
-    var arrayLikeAllRecipeBook: [LikeAllRecipeBookModel.RecipeList] = []
-    
-    let likeView = LikeView()
+    private let likeView = LikeView()
     
     // MARK: - View 설정
     override func loadView() {
         view = likeView
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        updateUI()
-    }
-    
-    // MARK: - viewDidLoad()
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
+        fetchData()
         setupNaviBar()
+        setupRefresh()
         setupCollectionView()
         setupButton()
     }
     
-    // MARK: - 초기 설정
-    private func updateUI() {
-        if isleftButton { // 오늘의 조합
-            loadCombinationData()
-        } else { // 레시피북
-            loadRecipeBookData()
+    // MARK: - 데이터 가져오기
+    private func fetchData() {
+        switch likeType {
+        case .todayCombination:
+            fetchCombinationData()
+        case .recipeBook:
+            fetchRecipeBookData()
         }
     }
     
-    // 오늘의 조합 데이터 로딩
-    private func loadCombinationData() {
-        let input = LikeInput(page: 0)
-        LikeDataManager().fetchLikeAllCombinationData(input, self) { [weak self] model in
-            guard let self = self else { return }
-            
-            if let model = model {
-                self.arrayLikeAllCombination = model.result.combinationList
+    private func fetchCombinationData() {
+        LikeService.shared.getCombination(page: 0) { result in
+            switch result {
+            case .success(let data):
+                print("좋아요한 오늘의 조합 조회 성공")
+                self.arrayLikeAllCombination = data.result.combinationList
                 DispatchQueue.main.async {
                     self.likeView.collectionView.reloadData()
                 }
+            case .failure(let error):
+                print("좋아요한 오늘의 조합 조회 실패 - \(error.localizedDescription)")
             }
         }
     }
     
-    // 레시피북 데이터 로딩
-    private func loadRecipeBookData() {
-        let input = LikeInput(page: 0)
-        LikeDataManager().fetchLikeAllRecipeBookData(input, self) { [weak self] model in
-            guard let self = self else { return }
-            
-            if let model = model {
-                self.arrayLikeAllRecipeBook = model.result.recipeList
+    private func fetchRecipeBookData() {
+        LikeService.shared.getRecipeBook(page: 0) { result in
+            switch result {
+            case .success(let data):
+                print("좋아요한 레시피북 조회 성공")
+                self.arrayLikeAllRecipeBook = data.result.recipeList
                 DispatchQueue.main.async {
                     self.likeView.collectionView.reloadData()
                 }
+            case .failure(let error):
+                print("좋아요한 레시피북 조회 실패 - \(error.localizedDescription)")
             }
         }
     }
     
     // MARK: - 네비게이션바 설정
-    func setupNaviBar() {
+    private func setupNaviBar() {
         title = "좋아요"
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -89,8 +89,17 @@ class LikeViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
+    // MARK: - 새로고침
+    private func setupRefresh() {
+        let rc = likeView.refreshControl
+        rc.addTarget(self, action: #selector(refreshCollectionView(refresh:)), for: .valueChanged)
+        rc.tintColor = .customOrange
+        
+        likeView.collectionView.refreshControl = rc
+    }
+    
     // MARK: - 컬렌션뷰 설정
-    func setupCollectionView() {
+    private func setupCollectionView() {
         let cv = likeView.collectionView
         cv.dataSource = self
         cv.delegate = self
@@ -100,24 +109,32 @@ class LikeViewController: UIViewController {
     
     // MARK: - 버튼 설정
     func setupButton() {
-        likeView.combinationButton.addTarget(self, action: #selector(combinationButtonTapped), for: .touchUpInside)
-        likeView.recipeBookButton.addTarget(self, action: #selector(recipeBookButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc func combinationButtonTapped() {
-        isleftButton = true
-        arrayLikeAllCombination = []
+        likeView.combinationButton.addTarget(self, 
+                                             action: #selector(combinationButtonTapped),
+                                             for: .touchUpInside)
         
+        likeView.recipeBookButton.addTarget(self, 
+                                            action: #selector(recipeBookButtonTapped),
+                                            for: .touchUpInside)
+    }
+}
+
+// MARK: - Actions
+extension LikeViewController {
+    @objc func combinationButtonTapped() {
+        likeType = .todayCombination
+        arrayLikeAllCombination = []
+    
         likeView.recipeBookLabel.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
         likeView.combinationLabel.textColor = .black
         likeView.rightLine.backgroundColor = .clear
         likeView.leftLine.backgroundColor = .customOrange
         
-        self.loadCombinationData()
+        self.fetchCombinationData()
     }
     
     @objc func recipeBookButtonTapped() {
-        isleftButton = false
+        likeType = .recipeBook
         arrayLikeAllRecipeBook = []
         
         likeView.recipeBookLabel.textColor = .black
@@ -125,41 +142,48 @@ class LikeViewController: UIViewController {
         likeView.rightLine.backgroundColor = .customOrange
         likeView.leftLine.backgroundColor = .clear
         
-        self.loadRecipeBookData()
+        self.fetchRecipeBookData()
     }
     
+    // 새로고침
+    @objc func refreshCollectionView(refresh: UIRefreshControl) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.fetchData()
+            refresh.endRefreshing()
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 extension LikeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isleftButton { // 오늘의 조합
+        switch likeType {
+        case .todayCombination:
             return arrayLikeAllCombination.count
-        } else { // 레시피북
+        case .recipeBook:
             return arrayLikeAllRecipeBook.count
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikeCell", for: indexPath) as! LikeCell
         
-        if isleftButton { // 오늘의 조합
-            let combination = arrayLikeAllCombination[indexPath.item]
-            if let url = URL(string: combination.combinationImageUrl ?? "defualtImage") {
-                cell.mainImage.kf.setImage(with: url)
-            } // 레시피북
-            cell.mainLabel.text = arrayLikeAllCombination[indexPath.item].title
-        } else {
-            let recipeBook = arrayLikeAllRecipeBook[indexPath.item]
-            if let url = URL(string: recipeBook.recipeImageUrl ?? "defualtImage") {
-                cell.mainImage.kf.setImage(with: url)
+        switch likeType {
+        case .todayCombination:
+            let data = arrayLikeAllCombination[indexPath.item]
+            if let url = URL(string: data.combinationImageUrl) {
+                cell.thumbnailimage.kf.setImage(with: url)
             }
-            cell.mainLabel.text = arrayLikeAllRecipeBook[indexPath.item].name
+            cell.titleLabel.text = data.title
+        case .recipeBook:
+            let data = arrayLikeAllRecipeBook[indexPath.item]
+            if let url = URL(string: data.recipeImageUrl) {
+                cell.thumbnailimage.kf.setImage(with: url)
+            }
+            cell.titleLabel.text = data.name
         }
         return cell
     }
-    
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -183,20 +207,20 @@ extension LikeViewController: UICollectionViewDelegateFlowLayout {
     
     // 셀 선택
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if isleftButton { // 오늘의 조합
+        switch likeType {
+        case .todayCombination: // 오늘의 조합
             let selectedItem = arrayLikeAllCombination[indexPath.row].combinationId
             let todayCombinationDetailVC = CombinationDetailViewController()
             todayCombinationDetailVC.combinationId = selectedItem
             todayCombinationDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
-        } else { // 레시피북
+            
+        case .recipeBook: // 레시피북
             let selectedItem = arrayLikeAllRecipeBook[indexPath.row].id
             let recipeBookDetailVC = RecipeBookDetailViewController()
             recipeBookDetailVC.recipeBookId = selectedItem
             recipeBookDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(recipeBookDetailVC, animated: true)
         }
-        
     }
 }

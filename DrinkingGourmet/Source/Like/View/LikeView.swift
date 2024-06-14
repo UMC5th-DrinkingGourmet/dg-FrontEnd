@@ -8,9 +8,10 @@
 import UIKit
 
 class LikeView: UIView {
-    
     // MARK: - View
-    private let combinationBackView = UIView()
+    let refreshControl = UIRefreshControl()
+    
+    private let combinationButtonView = UIView()
     
     let combinationButton = UIButton().then {
         $0.backgroundColor = .clear
@@ -26,7 +27,7 @@ class LikeView: UIView {
         $0.backgroundColor = .customOrange
     }
     
-    private let recipeBookBackView = UIView()
+    private let recipeBookButtonView = UIView()
     
     let recipeBookButton = UIButton().then {
         $0.backgroundColor = .clear
@@ -51,6 +52,8 @@ class LikeView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
+        
         addViews()
         configureConstraints()
     }
@@ -61,60 +64,66 @@ class LikeView: UIView {
     
     // MARK: - UI
     func addViews() {
-        self.addSubviews([combinationBackView, combinationButton, combinationLabel, leftLine, recipeBookBackView, recipeBookButton, recipeBookLabel, rightLine, collectionView])
+        self.addSubviews([
+            combinationButtonView,
+            leftLine,
+            recipeBookButtonView,
+            rightLine,
+            collectionView
+        ])
+        
+        combinationButtonView.addSubviews([combinationButton, combinationLabel])
+        recipeBookButtonView.addSubviews([recipeBookButton, recipeBookLabel])
     }
     
     func configureConstraints() {
         
-        let screenWidth = UIScreen.main.bounds.width
-        let backViewWidth = screenWidth / 2 // 화면 너비의 절반
+        let halfScreenWidth = UIScreen.main.bounds.width / 2 // 화면 너비의 절반
         
-        combinationBackView.snp.makeConstraints { make in
-            make.width.equalTo(backViewWidth)
-            make.height.equalTo(48)
+        combinationButtonView.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(25)
             make.leading.equalToSuperview()
+            make.width.equalTo(halfScreenWidth)
+            make.height.equalTo(48)
         }
         
         combinationButton.snp.makeConstraints { make in
-            make.edges.equalTo(combinationBackView)
+            make.edges.equalTo(combinationButtonView)
         }
         
         combinationLabel.snp.makeConstraints { make in
-            make.center.equalTo(combinationBackView)
+            make.center.equalTo(combinationButtonView)
         }
         
         leftLine.snp.makeConstraints { make in
-            make.width.equalTo(backViewWidth)
-            make.height.equalTo(1)
-            make.top.equalTo(combinationBackView.snp.bottom)
-            make.leading.equalTo(combinationBackView)
+            make.top.equalTo(combinationButtonView.snp.bottom)
+            make.leading.equalTo(combinationButtonView)
+            make.width.equalTo(combinationButtonView)
+            make.height.equalTo(2)
         }
         
-        recipeBookBackView.snp.makeConstraints { make in
-            make.width.equalTo(backViewWidth)
-            make.height.equalTo(combinationBackView)
-            make.top.equalTo(combinationBackView)
-            make.leading.equalTo(combinationBackView.snp.trailing)
+        recipeBookButtonView.snp.makeConstraints { make in
+            make.top.equalTo(combinationButtonView)
+            make.leading.equalTo(combinationButtonView.snp.trailing)
+            make.size.equalTo(combinationButtonView)
         }
         
         recipeBookButton.snp.makeConstraints { make in
-            make.edges.equalTo(recipeBookBackView)
+            make.edges.equalTo(recipeBookButtonView)
         }
         
         recipeBookLabel.snp.makeConstraints { make in
-            make.center.equalTo(recipeBookBackView)
+            make.center.equalTo(recipeBookButtonView)
         }
         
         rightLine.snp.makeConstraints { make in
-            make.width.equalTo(188)
-            make.height.equalTo(1)
-            make.top.equalTo(recipeBookBackView.snp.bottom)
-            make.leading.equalTo(recipeBookBackView)
+            make.top.equalTo(recipeBookButtonView.snp.bottom)
+            make.leading.equalTo(recipeBookButtonView)
+            make.size.equalTo(leftLine)
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(leftLine.snp.bottom)
+            make.top.equalTo(leftLine.snp.bottom).offset(1)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
