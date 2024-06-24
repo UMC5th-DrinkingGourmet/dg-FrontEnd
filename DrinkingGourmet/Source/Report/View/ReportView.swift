@@ -65,12 +65,11 @@ final class ReportView: UIView {
     }
     
     let reportDetailsTextView = UITextView().then {
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
         $0.textContainerInset = UIEdgeInsets(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
-        $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
-        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     
     // 설명

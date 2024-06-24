@@ -63,8 +63,11 @@ final class ReportViewController: UIViewController {
     }
     
     private func setupTextView() {
-        reportView.reportDetailsTextView.delegate = self
-        reportView.reportDetailsTextView.inputAccessoryView = createToolbar()
+        let tv = reportView.reportDetailsTextView
+        tv.delegate = self
+        tv.inputAccessoryView = createToolbar()
+        tv.text = "신고 내용을 입력해주세요."
+        tv.textColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
     }
     
     private func setupButton() {
@@ -78,7 +81,8 @@ final class ReportViewController: UIViewController {
               let reportType = ReportType(rawValue: reportTypeText),
               reportType != .select,
               let reportDetailsText = reportView.reportDetailsTextView.text,
-              !reportDetailsText.isEmpty else {
+              !reportDetailsText.isEmpty,
+              reportDetailsText != "신고 내용을 입력해주세요." else {
             reportView.completeButton.backgroundColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
             reportView.completeButton.isEnabled = false
             return
@@ -125,7 +129,7 @@ extension ReportViewController {
         
         DispatchQueue.main.async {
             self.navigationItem.hidesBackButton = true // 백버튼 숨기기
-            self.reportView.isUserInteractionEnabled = false // 화면 터지 막기
+            self.reportView.isUserInteractionEnabled = false // 화면 터치 막기
             self.reportView.completeView.isHidden = true
             
             let popUpView = ReportCompletePopUpView() // 토스트 뷰
@@ -200,10 +204,22 @@ extension ReportViewController: UITextFieldDelegate {
 extension ReportViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         reportView.reportDetailsTextView.layer.borderColor = UIColor.customOrange.cgColor
+        if textView.textColor == UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1) {
+            textView.text = nil
+            textView.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+        }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
         reportView.reportDetailsTextView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
+        if textView.text.isEmpty {
+            textView.text = "신고 내용을 입력해주세요."
+            textView.textColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        }
+        updateCompleteButton()
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
         updateCompleteButton()
     }
 }
