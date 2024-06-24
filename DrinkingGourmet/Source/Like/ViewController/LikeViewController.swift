@@ -18,7 +18,7 @@ final class LikeViewController: UIViewController {
     private var arrayLikeAllCombination: [LikeCombinationDTO] = []
     private var arrayLikeAllRecipeBook: [LikeRecipeBookDTO] = []
     
-    private let likeView = LikeView()
+    let likeView = LikeView()
     
     // MARK: - View 설정
     override func loadView() {
@@ -37,7 +37,7 @@ final class LikeViewController: UIViewController {
     }
     
     // MARK: - 데이터 가져오기
-    private func fetchData() {
+    func fetchData() {
         switch likeType {
         case .todayCombination:
             fetchCombinationData()
@@ -109,11 +109,11 @@ final class LikeViewController: UIViewController {
     
     // MARK: - 버튼 설정
     func setupButton() {
-        likeView.combinationButton.addTarget(self, 
+        likeView.combinationButton.addTarget(self,
                                              action: #selector(combinationButtonTapped),
                                              for: .touchUpInside)
         
-        likeView.recipeBookButton.addTarget(self, 
+        likeView.recipeBookButton.addTarget(self,
                                             action: #selector(recipeBookButtonTapped),
                                             for: .touchUpInside)
     }
