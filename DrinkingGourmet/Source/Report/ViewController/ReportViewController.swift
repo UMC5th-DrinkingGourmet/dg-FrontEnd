@@ -6,22 +6,35 @@
 //
 
 import UIKit
+import Toast
+
+enum ReportType: String, CaseIterable {
+    case select = "-- 신고 유형을 선택해주세요 --"
+    case abusiveLanguage = "욕설, 비속어, 혐오 발언 등 타인에게 불쾌감을 주는 내용"
+    case defamation = "타인을 모욕하거나 명예를 훼손하는 내용"
+    case pornographyIllegalContent = "음란물, 불법적인 내용"
+    case unauthorizedPersonalInfo = "타인의 개인정보를 무단으로 수집하거나 공개"
+    case copyrightInfringement = "타인의 저작권을 침해"
+    case termsViolation = "기타"
+    
+    var apiValue: String? {
+        switch self {
+        case .abusiveLanguage: return "ABUSIVE_LANGUAGE"
+        case .defamation: return "DEFAMATION"
+        case .pornographyIllegalContent: return "PORNOGRAPHY_ILLEGAL_CONTENT"
+        case .unauthorizedPersonalInfo: return "UNAUTHORIZED_PERSONAL_INFO"
+        case .copyrightInfringement: return "COPYRIGHT_INFRINGEMENT"
+        case .termsViolation: return "TERMS_VIOLATION"
+        case .select: return nil
+        }
+    }
+}
 
 final class ReportViewController: UIViewController {
     // MARK: - Properties
     var resourceId: Int?
     var reportTarget: String?
-    private var reportReason: String = "" // 신고유형
-    private var content: String = "" // 신고내용
     var reportContent: String?
-    
-    private let arrayReportType = ["-- 신고 유형을 선택해주세요 --",
-                                   "욕설, 비속어, 혐오 발언 등 타인에게 불쾌감을 주는 내용",
-                                   "타인을 모욕하거나 명예를 훼손하는 내용",
-                                   "음란물, 불법적인 내용",
-                                   "타인의 개인정보를 무단으로 수집하거나 공개",
-                                   "타인의 저작권을 침해",
-                                   "기타"]
     
     private let reportView = ReportView()
     
@@ -30,7 +43,7 @@ final class ReportViewController: UIViewController {
         view = reportView
     }
     
-    // MARK: - ViewDidLodad
+    // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,14 +74,18 @@ final class ReportViewController: UIViewController {
     }
     
     private func updateCompleteButton() {
-        if reportView.reportTypeView.layer.borderColor == UIColor.customOrange.cgColor
-            && reportView.reportDetailsTextView.layer.borderColor == UIColor.customOrange.cgColor {
-            reportView.completeButton.backgroundColor = .customOrange
-            reportView.completeButton.isEnabled = true
-        } else {
+        guard let reportTypeText = reportView.reportTypeTextField.text,
+              let reportType = ReportType(rawValue: reportTypeText),
+              reportType != .select,
+              let reportDetailsText = reportView.reportDetailsTextView.text,
+              !reportDetailsText.isEmpty else {
             reportView.completeButton.backgroundColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
             reportView.completeButton.isEnabled = false
+            return
         }
+        
+        reportView.completeButton.backgroundColor = .customOrange
+        reportView.completeButton.isEnabled = true
     }
     
     private func setupPickerView() {
@@ -97,55 +114,62 @@ extension ReportViewController {
     }
     
     @objc func completeButtonTapped() {
-        self.reportView.isUserInteractionEnabled = false // 터치 비활성화
-        
-        self.reportView.completeView.isHidden = true
-        self.reportView.reportCompletePopUpView.isHidden = false
-        
         guard let resourceId = self.resourceId,
               let reportTarget = self.reportTarget,
-              let reportContent = self.reportContent else { return }
+              let reportReasonText = self.reportView.reportTypeTextField.text,
+              let reportReason = ReportType(rawValue: reportReasonText)?.apiValue,
+              let content = self.reportView.reportDetailsTextView.text,
+              let reportContent = self.reportContent else {
+            return
+        }
         
-        AdministrationService.shared.postReport(resourceId: resourceId, 
+        DispatchQueue.main.async {
+            self.navigationItem.hidesBackButton = true // 백버튼 숨기기
+            self.reportView.isUserInteractionEnabled = false // 화면 터지 막기
+            self.reportView.completeView.isHidden = true
+            
+            let popUpView = ReportCompletePopUpView() // 토스트 뷰
+            ToastManager.shared.style.fadeDuration = 1.5
+            self.view.showToast(popUpView)
+        }
+        
+        AdministrationService.shared.postReport(resourceId: resourceId,
                                                 reportTarget: reportTarget,
-                                                reportReason: self.reportReason,
-                                                content: self.content,
+                                                reportReason: reportReason,
+                                                content: content,
                                                 reportContent: reportContent) { error in
             if let error = error {
                 print("\(reportTarget): \(resourceId)번 신고 실패 - \(error.localizedDescription)")
             } else {
                 print("\(reportTarget): \(resourceId)번 신고 성공")
                 
-                if reportTarget == "COMBINATION" { // 오늘의 조합 게시물 신고일 때
-                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is CombinationHomeViewController }) as? CombinationHomeViewController {
-                        VC.fetchData()
-                        VC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
-                        self.navigationController?.popToViewController(VC, animated: true)
+                switch reportTarget {
+                case "COMBINATION": // 오늘의 조합 게시물 신고
+                    if let vc = self.navigationController?.viewControllers.first(where: { $0 is CombinationHomeViewController }) as? CombinationHomeViewController {
+                        vc.fetchData()
+                        vc.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
+                        self.navigationController?.popToViewController(vc, animated: true)
                     }
-                }
-                
-                if reportTarget == "COMBINATION_COMMENT" { // 오늘의 조합 댓글 신고일 때
+                case "COMBINATION_COMMENT": // 오늘의 조합 뎃글 신고
                     self.navigationController?.popViewController(animated: true)
-                    if let VC = self.navigationController?.viewControllers.last as? CombinationDetailViewController {
-                        VC.combinationDetailView.tabelView.setContentOffset(.zero, animated: true)
-                        VC.fetchData()
+                    if let vc = self.navigationController?.viewControllers.last as? CombinationDetailViewController {
+                        vc.combinationDetailView.tabelView.setContentOffset(.zero, animated: true)
+                        vc.fetchData()
                     }
-                }
-                
-                if reportTarget == "RECIPE" { // 레시피북 게시물 신고일 때
-                    if let VC = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeViewController }) as? RecipeBookHomeViewController {
-                        VC.fetchData()
-                        VC.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
-                        self.navigationController?.popToViewController(VC, animated: true)
+                case "RECIPE": // 레시피북 게시물 신고
+                    if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeViewController }) as? RecipeBookHomeViewController {
+                        vc.fetchData()
+                        vc.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
+                        self.navigationController?.popToViewController(vc, animated: true)
                     }
-                }
-                
-                if reportTarget == "RECIPE_COMMENT" { // 레시피북 댓글 신고일 때
+                case "RECIPE_COMMENT": // // 레시피북 댓글 신고
                     self.navigationController?.popViewController(animated: true)
-                    if let VC = self.navigationController?.viewControllers.last as? RecipeBookDetailViewController {
-                        VC.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true)
-                        VC.fetchData()
+                    if let vc = self.navigationController?.viewControllers.last as? RecipeBookDetailViewController {
+                        vc.recipeBookDetailView.tabelView.setContentOffset(.zero, animated: true)
+                        vc.fetchData()
                     }
+                default:
+                    break
                 }
             }
         }
@@ -154,65 +178,38 @@ extension ReportViewController {
 
 // MARK: - UITextFieldDelegate
 extension ReportViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) { // 신고 유형
-        guard let text = textField.text else { return }
-        
-        if !text.isEmpty, text != "-- 신고 유형을 선택해주세요 --" {
-            switch text {
-            case arrayReportType[1]:
-                self.reportReason = "ABUSIVE_LANGUAGE"
-            case arrayReportType[2]:
-                self.reportReason = "DEFAMATION"
-            case arrayReportType[3]:
-                self.reportReason = "PORNOGRAPHY_ILLEGAL_CONTENT"
-            case arrayReportType[4]:
-                self.reportReason = "UNAUTHORIZED_PERSONAL_INFO"
-            case arrayReportType[5]:
-                self.reportReason = "COPYRIGHT_INFRINGEMENT"
-            case arrayReportType[6]:
-                self.reportReason = "TERMS_VIOLATION"
-            default:
-                return
-            }
-            reportView.reportTypeView.layer.borderColor = UIColor.customOrange.cgColor
-        } else {
-            reportView.reportTypeView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
-        }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        reportView.reportTypeView.layer.borderColor = UIColor.customOrange.cgColor
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        reportView.reportTypeView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
         updateCompleteButton()
     }
 }
 
 // MARK: - UITextViewDelegate
 extension ReportViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) { // 신고 내용
-        guard let text = textView.text else { return }
-        
-        if !text.isEmpty {
-            self.content = text
-            reportView.reportDetailsTextView.layer.borderColor = UIColor.customOrange.cgColor
-        } else {
-            reportView.reportDetailsTextView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
-        }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        reportView.reportDetailsTextView.layer.borderColor = UIColor.customOrange.cgColor
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        reportView.reportDetailsTextView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
         updateCompleteButton()
     }
 }
 
-// MARK: - 피커뷰
-extension ReportViewController: UIPickerViewDataSource {
+// MARK: - UIPickerViewDataSource & UIPickerViewDelegate
+extension ReportViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return arrayReportType.count
+        return ReportType.allCases.count
     }
-}
 
-extension ReportViewController: UIPickerViewDelegate {
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return "\(arrayReportType[row])"
-//    }
-    
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var label: UILabel
         if let view = view as? UILabel {
@@ -222,7 +219,7 @@ extension ReportViewController: UIPickerViewDelegate {
             label.numberOfLines = 0
         }
         
-        label.text = "\(arrayReportType[row])"
+        label.text = ReportType.allCases[row].rawValue
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
         
@@ -230,6 +227,7 @@ extension ReportViewController: UIPickerViewDelegate {
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        reportView.reportTypeTextField.text = "\(arrayReportType[row])"
+        reportView.reportTypeTextField.text = ReportType.allCases[row].rawValue
+        updateCompleteButton()
     }
 }

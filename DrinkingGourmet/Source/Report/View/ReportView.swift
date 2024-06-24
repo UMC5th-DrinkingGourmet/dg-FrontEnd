@@ -75,7 +75,6 @@ final class ReportView: UIView {
     
     // 설명
     private let descriptionLabel = UILabel().then {
-        $0.frame = CGRect(x: 0, y: 0, width: 319, height: 147)
         $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
         $0.numberOfLines = 0
@@ -103,10 +102,6 @@ final class ReportView: UIView {
         $0.attributedText = NSMutableAttributedString(string: "신고하기", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    let reportCompletePopUpView = ReportCompletePopUpView().then {
-        $0.isHidden = true
-    }
-    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -122,7 +117,8 @@ final class ReportView: UIView {
     
     // MARK: - UI
     private func addViews() {
-        self.addSubviews([scrollView, completeView, reportCompletePopUpView])
+        self.addSubviews([scrollView, 
+                          completeView])
         
         scrollView.addSubview(contentView)
         
@@ -209,13 +205,5 @@ final class ReportView: UIView {
             make.centerX.equalTo(completeView)
             make.top.equalTo(completeView).offset(18)
         }
-        
-        // 신고 접수
-        reportCompletePopUpView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(34)
-            make.height.equalTo(64)
-        }
     }
-    
 }
