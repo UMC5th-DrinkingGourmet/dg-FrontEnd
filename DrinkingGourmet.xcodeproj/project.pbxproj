@@ -76,6 +76,7 @@
 		567B9C372BC6741200D275A1 /* CombinationDetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C362BC6741200D275A1 /* CombinationDetailCommentCell.swift */; };
 		567B9C392BC6744600D275A1 /* CombinationDetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C382BC6744600D275A1 /* CombinationDetailImageCell.swift */; };
 		567B9C3B2BC6747C00D275A1 /* CombinationDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B9C3A2BC6747C00D275A1 /* CombinationDetailHeaderView.swift */; };
+		569C90242C29E6D3003A32AF /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 569C90232C29E6D3003A32AF /* Toast */; };
 		56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A405662B5F776200BF85A8 /* CommentInputView.swift */; };
 		56A7E8192C10CD4000CDE615 /* RecipeBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */; };
 		56A7E81F2C10CEB100CDE615 /* RecipeBookDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */; };
@@ -284,6 +285,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				569C90242C29E6D3003A32AF /* Toast in Frameworks */,
 				56D6499C2BB3B14E002ABC93 /* SnapKit in Frameworks */,
 				56D649AF2BB3B19D002ABC93 /* Then in Frameworks */,
 				56D649AA2BB3B191002ABC93 /* Alamofire in Frameworks */,
@@ -1128,6 +1130,7 @@
 				56D649AE2BB3B19D002ABC93 /* Then */,
 				56D649B12BB3B1B7002ABC93 /* Kingfisher */,
 				56D649B42BB3B1FA002ABC93 /* Lottie */,
+				569C90232C29E6D3003A32AF /* Toast */,
 			);
 			productName = DrinkingGourmet;
 			productReference = 2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */;
@@ -1164,6 +1167,7 @@
 				56D649AD2BB3B19D002ABC93 /* XCRemoteSwiftPackageReference "Then" */,
 				56D649B02BB3B1B7002ABC93 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				56D649B32BB3B1FA002ABC93 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				569C90222C29E6D3003A32AF /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = 2E6C26C52B497AD200C87B4A /* Products */;
 			projectDirPath = "";
@@ -1558,6 +1562,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		569C90222C29E6D3003A32AF /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 		56D6499A2BB3B14E002ABC93 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -1609,6 +1621,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		569C90232C29E6D3003A32AF /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 569C90222C29E6D3003A32AF /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
 		56D6499B2BB3B14E002ABC93 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 56D6499A2BB3B14E002ABC93 /* XCRemoteSwiftPackageReference "SnapKit" */;

@@ -22,6 +22,7 @@ final class ReportCompletePopUpView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.frame = CGRect(x: 0, y: 0, width: 335, height: 64)
         self.backgroundColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
         self.layer.cornerRadius = 8
         
@@ -43,6 +44,7 @@ final class ReportCompletePopUpView: UIView {
     
     private func configureConstraints() {
         icon.snp.makeConstraints { make in
+            make.size.equalTo(24)
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(20)
         }
@@ -50,6 +52,7 @@ final class ReportCompletePopUpView: UIView {
         label.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(icon.snp.trailing).offset(8)
+            make.trailing.equalToSuperview()
         }
     }
 }
