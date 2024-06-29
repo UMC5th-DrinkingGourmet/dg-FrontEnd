@@ -47,11 +47,9 @@ class UserInfoDataManager {
     
     func loginWithProviderInfo(completion: @escaping () -> Void) {
         print("loginWithProviderInfo providerId: \(UserDefaultManager.shared.providerId)")
-        // provider와 providerId를 UserDefaults에서 가져옵니다.
         let provider = UserDefaultManager.shared.provider
         let providerId = UserDefaultManager.shared.providerId
         
-        // 로그인에 필요한 정보를 모델로 만듭니다.
         let loginInfo = LoginInfoModel(provider: provider, providerId: providerId)
         
         let headers: HTTPHeaders = ["Content-Type": "application/json"]
