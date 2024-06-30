@@ -282,26 +282,36 @@ extension ProfileCreationViewController {
     
     func postUserInfo() {
         let userInfo = UserInfoModel(
-            name: UserDefaultManager.shared.userName,
+            name: inputNameView.textField.text ?? "",
             profileImage: UserDefaultManager.shared.userProfileImg,
             email: UserDefaultManager.shared.email,
-            nickName: UserDefaultManager.shared.userNickname,
-            birthDate: UserDefaultManager.shared.userBirth,
-            phoneNumber: UserDefaultManager.shared.userPhoneNumber,
-            gender: UserDefaultManager.shared.userGender,
+            nickName: inputNicknameView.textField.text ?? "",
+            birthDate: inputBirthView.textField.text ?? "",
+            phoneNumber: inputPhoneNumberView.textField.text ?? "",
+            gender: determineSelectedGender(),
             provider: UserDefaultManager.shared.provider,
             providerId: UserDefaultManager.shared.providerId
         )
                 
         UserInfoDataManager.shared.sendUserInfo(userInfo) {
-            let mainMenuVC = MainMenuViewController()
-            self.navigationController?.pushViewController(mainMenuVC, animated: true)
+            let tabbarVC = TabBarViewController()
+            self.navigationController?.pushViewController(tabbarVC, animated: true)
+        }
+    }
+    
+    func determineSelectedGender() -> String {
+        if maleBtn.isSelected {
+            return "male"
+        } else if femaleBtn.isSelected {
+            return "female"
+        } else {
+            return "none"
         }
     }
     
     @objc func confirmBtnClicked() {
         if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood {
-            UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Nil이에요"
+            UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Guest"
             
             postUserInfo()
         } else {
