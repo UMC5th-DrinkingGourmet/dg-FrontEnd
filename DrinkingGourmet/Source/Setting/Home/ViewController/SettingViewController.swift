@@ -31,6 +31,7 @@ final class SettingViewController: UIViewController {
     
     private func setupNaviBar() {
         title = "설정"
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     private func setupTableView() {
@@ -114,7 +115,12 @@ extension SettingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            print("섹션 0, 로우: \(settingSections.supportAndInformation[indexPath.row])")
+            let selectedItem = settingSections.supportAndInformation[indexPath.row]
+            if selectedItem == "자주 묻는 질문" {
+                let VC = QuestionViewController()
+                VC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(VC, animated: true)
+            }
         case 1:
             print("섹션 1, 로우: \(settingSections.login[indexPath.row])")
         default:
