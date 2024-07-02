@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         self.window = window
-        window.rootViewController = UINavigationController(rootViewController: UploadViewController())
+//        window.rootViewController = UINavigationController(rootViewController: UploadViewController())
         
 //        do {
 //            try Keychain.shared.deleteToken(kind: .refreshToken)
