@@ -111,8 +111,12 @@ final class CombinationDetailViewController: UIViewController {
                         print("오늘의 조합 댓글 조회 실패 - \(error.localizedDescription)")
                     }
                 }
+                
             case .failure(let error):
                 print("오늘의 조합 상세 조회 실패 - \(error.localizedDescription)")
+                let alertVC = RemovedAlertViewController()
+                alertVC.delegate = self
+                alertVC.appear(sender: self)
             }
         }
     }
@@ -580,5 +584,12 @@ extension CombinationDetailViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+// MARK: - RemovedAlertViewControllerDelegate
+extension CombinationDetailViewController: RemovedAlertViewControllerDelegate {
+    func removedAlertViewControllerDidTapClose(_ controller: RemovedAlertViewController) {
+        navigationController?.popViewController(animated: true)
     }
 }

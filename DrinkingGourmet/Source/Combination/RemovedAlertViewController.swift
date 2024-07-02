@@ -41,23 +41,16 @@ final class RemovedAlertViewController: UIViewController {
     }
     
     private func show() {
-        UIView.animate(withDuration: 0.3) {
-            self.removedAlertView.backView.alpha = 1
-            self.removedAlertView.contentView.alpha = 1
-        }
+        self.removedAlertView.backView.alpha = 1
+        self.removedAlertView.contentView.alpha = 1
     }
 }
 
 // MARK: - Actions
 extension RemovedAlertViewController {
     @objc private func closeButtonTapped() {
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut) {
-            self.removedAlertView.backView.alpha = 0
-            self.removedAlertView.contentView.alpha = 0
-        } completion: { _ in
-            self.dismiss(animated: false) {
-                self.delegate?.removedAlertViewControllerDidTapClose(self)
-            }
+        self.dismiss(animated: false) {
+            self.delegate?.removedAlertViewControllerDidTapClose(self)
         }
     }
 }
