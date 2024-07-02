@@ -100,6 +100,10 @@
 		56BBF3512C32BDDD0058B19B /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3502C32BDDD0058B19B /* QuestionViewController.swift */; };
 		56BBF3572C32BF770058B19B /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3562C32BF770058B19B /* QuestionView.swift */; };
 		56BBF35A2C32C2CE0058B19B /* QuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3592C32C2CE0058B19B /* QuestionCell.swift */; };
+		56BBF35C2C33FEDD0058B19B /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF35B2C33FEDD0058B19B /* AnswerViewController.swift */; };
+		56BBF35E2C33FEE80058B19B /* AnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF35D2C33FEE80058B19B /* AnswerView.swift */; };
+		56BBF3602C340BBD0058B19B /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF35F2C340BBD0058B19B /* DeleteAccountViewController.swift */; };
+		56BBF3622C340BC60058B19B /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3612C340BC60058B19B /* DeleteAccountView.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
@@ -247,6 +251,10 @@
 		56BBF3502C32BDDD0058B19B /* QuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		56BBF3562C32BF770058B19B /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		56BBF3592C32C2CE0058B19B /* QuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCell.swift; sourceTree = "<group>"; };
+		56BBF35B2C33FEDD0058B19B /* AnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
+		56BBF35D2C33FEE80058B19B /* AnswerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerView.swift; sourceTree = "<group>"; };
+		56BBF35F2C340BBD0058B19B /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
+		56BBF3612C340BC60058B19B /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -964,6 +972,8 @@
 			isa = PBXGroup;
 			children = (
 				56BBF3502C32BDDD0058B19B /* QuestionViewController.swift */,
+				56BBF35B2C33FEDD0058B19B /* AnswerViewController.swift */,
+				56BBF35F2C340BBD0058B19B /* DeleteAccountViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -973,6 +983,8 @@
 			children = (
 				56BBF3562C32BF770058B19B /* QuestionView.swift */,
 				56BBF3592C32C2CE0058B19B /* QuestionCell.swift */,
+				56BBF35D2C33FEE80058B19B /* AnswerView.swift */,
+				56BBF3612C340BC60058B19B /* DeleteAccountView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1236,6 +1248,7 @@
 				5625E37D2BBABE8500269BBF /* SettingTopView.swift in Sources */,
 				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
+				56BBF35C2C33FEDD0058B19B /* AnswerViewController.swift in Sources */,
 				56AE28552B8403BC009CE0A1 /* MyPageCombinationModel.swift in Sources */,
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
 				56AE28532B83F6D9009CE0A1 /* MyPageRecommendModel.swift in Sources */,
@@ -1322,10 +1335,13 @@
 				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
 				56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */,
 				975F09242B827B75009C6F0E /* MyRecommendDataManager.swift in Sources */,
+				56BBF35E2C33FEE80058B19B /* AnswerView.swift in Sources */,
+				56BBF3622C340BC60058B19B /* DeleteAccountView.swift in Sources */,
 				567B9C3B2BC6747C00D275A1 /* CombinationDetailHeaderView.swift in Sources */,
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				5601EBC82B7C169A0043CCD4 /* RecipeBookSearchViewController.swift in Sources */,
 				2E0274E02B6FCF5200F92177 /* MainMenuViewController.swift in Sources */,
+				56BBF3602C340BBD0058B19B /* DeleteAccountViewController.swift in Sources */,
 				2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */,
 				97EB4ACA2B70F626009A62EB /* SelectMyMoodResource.swift in Sources */,
 				56EAD58A2B6C6C1A005C3A80 /* CombinationHomeView.swift in Sources */,

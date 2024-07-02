@@ -114,10 +114,13 @@ extension SettingViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
-        case 0: // 자주 묻는 질문
-            let VC = QuestionViewController()
-            VC.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(VC, animated: true)
+        case 0:
+            let selectedItem = settingSections.supportAndInformation[indexPath.row]
+            if selectedItem == "자주 묻는 질문" {
+                let VC = QuestionViewController()
+                VC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(VC, animated: true)
+            }
         case 1:
             print("섹션 1, 로우: \(settingSections.login[indexPath.row])")
         default:
