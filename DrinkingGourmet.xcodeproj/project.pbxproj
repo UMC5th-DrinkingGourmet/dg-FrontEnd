@@ -110,6 +110,10 @@
 		56BBF3EA2C359CB80058B19B /* NextButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3E92C359CB80058B19B /* NextButtonView.swift */; };
 		56BBF3EC2C359CF40058B19B /* RecommendGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3EB2C359CF40058B19B /* RecommendGuideView.swift */; };
 		56BBF3EE2C359D400058B19B /* RecommendGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3ED2C359D400058B19B /* RecommendGuideViewController.swift */; };
+		56BBF3F02C359F010058B19B /* RecommendStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3EF2C359F010058B19B /* RecommendStartView.swift */; };
+		56BBF3F22C359F250058B19B /* RecommendStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F12C359F250058B19B /* RecommendStartViewController.swift */; };
+		56BBF3F42C359F460058B19B /* RecommendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F32C359F460058B19B /* RecommendService.swift */; };
+		56BBF3F62C359F5B0058B19B /* RecommendDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
@@ -251,6 +255,10 @@
 		56BBF3E92C359CB80058B19B /* NextButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButtonView.swift; sourceTree = "<group>"; };
 		56BBF3EB2C359CF40058B19B /* RecommendGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendGuideView.swift; sourceTree = "<group>"; };
 		56BBF3ED2C359D400058B19B /* RecommendGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendGuideViewController.swift; sourceTree = "<group>"; };
+		56BBF3EF2C359F010058B19B /* RecommendStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendStartView.swift; sourceTree = "<group>"; };
+		56BBF3F12C359F250058B19B /* RecommendStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendStartViewController.swift; sourceTree = "<group>"; };
+		56BBF3F32C359F460058B19B /* RecommendService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendService.swift; sourceTree = "<group>"; };
+		56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendDTO.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -862,6 +870,7 @@
 				56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */,
 				56A7E8202C117A1B00CDE615 /* AdministrationService.swift */,
 				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
+				56BBF3F32C359F460058B19B /* RecommendService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -872,6 +881,7 @@
 				566B83382C0EE937008C0773 /* CombinationDTO.swift */,
 				56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */,
 				56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */,
+				56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */,
 			);
 			path = Dto;
 			sourceTree = "<group>";
@@ -963,6 +973,7 @@
 			isa = PBXGroup;
 			children = (
 				56BBF3ED2C359D400058B19B /* RecommendGuideViewController.swift */,
+				56BBF3F12C359F250058B19B /* RecommendStartViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -971,6 +982,7 @@
 			isa = PBXGroup;
 			children = (
 				56BBF3EB2C359CF40058B19B /* RecommendGuideView.swift */,
+				56BBF3EF2C359F010058B19B /* RecommendStartView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1264,12 +1276,14 @@
 				5668A2EF2B6EDB4F0009FCD6 /* CustomResultSearchBar.swift in Sources */,
 				56B9DCCE2BCEC77700D08D22 /* RecipeBookDetailHeaderView.swift in Sources */,
 				5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */,
+				56BBF3F62C359F5B0058B19B /* RecommendDTO.swift in Sources */,
 				2E5407982B84BE7200724513 /* RecipeBookUpoadModel.swift in Sources */,
 				566B83362C0EE311008C0773 /* CombinationService.swift in Sources */,
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
 				56A9EC3B2B857388004BD199 /* RecommendDetailResponseModel.swift in Sources */,
 				2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */,
 				2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */,
+				56BBF3F02C359F010058B19B /* RecommendStartView.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				5668A3D12B78F69C0009FCD6 /* CombinationSearchViewController.swift in Sources */,
 				975F09032B816D18009C6F0E /* WelcomeViewController.swift in Sources */,
@@ -1277,6 +1291,7 @@
 				97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */,
 				97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */,
 				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
+				56BBF3F42C359F460058B19B /* RecommendService.swift in Sources */,
 				56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */,
 				56BBF35E2C33FEE80058B19B /* AnswerView.swift in Sources */,
 				56BBF3622C340BC60058B19B /* DeleteAccountView.swift in Sources */,
@@ -1284,6 +1299,7 @@
 				2E6C26F32B49836600C87B4A /* UIColor+CustomColor.swift in Sources */,
 				5601EBC82B7C169A0043CCD4 /* RecipeBookSearchViewController.swift in Sources */,
 				2E0274E02B6FCF5200F92177 /* MainMenuViewController.swift in Sources */,
+				56BBF3F22C359F250058B19B /* RecommendStartViewController.swift in Sources */,
 				56BBF3602C340BBD0058B19B /* DeleteAccountViewController.swift in Sources */,
 				2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */,
 				56EAD58A2B6C6C1A005C3A80 /* CombinationHomeView.swift in Sources */,

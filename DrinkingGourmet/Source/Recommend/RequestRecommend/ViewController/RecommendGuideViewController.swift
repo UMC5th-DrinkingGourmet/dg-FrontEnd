@@ -44,9 +44,9 @@ final class RecommendGuideViewController: UIViewController {
 // MARK: - Actions
 extension RecommendGuideViewController {
     @objc private func recommendButtonTapped() {
-//        let VC = RecommendStartViewController()
-//        VC.hidesBottomBarWhenPushed = true
-//        navigationController?.pushViewController(VC, animated: true)
+        let VC = RecommendStartViewController()
+        VC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(VC, animated: true)
     }
     
     @objc private func myRecommendButtonTapped() {
