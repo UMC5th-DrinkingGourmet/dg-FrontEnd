@@ -114,6 +114,10 @@
 		56BBF3F22C359F250058B19B /* RecommendStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F12C359F250058B19B /* RecommendStartViewController.swift */; };
 		56BBF3F42C359F460058B19B /* RecommendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F32C359F460058B19B /* RecommendService.swift */; };
 		56BBF3F62C359F5B0058B19B /* RecommendDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */; };
+		56BBF3F82C35A0940058B19B /* InputIntoxicationview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F72C35A0940058B19B /* InputIntoxicationview.swift */; };
+		56BBF3FA2C35A0A70058B19B /* InputIntoxicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3F92C35A0A70058B19B /* InputIntoxicationViewController.swift */; };
+		56BBF3FC2C35A1540058B19B /* InputFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3FB2C35A1540058B19B /* InputFoodView.swift */; };
+		56BBF3FE2C35A1650058B19B /* InputFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3FD2C35A1650058B19B /* InputFoodViewController.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
@@ -259,6 +263,10 @@
 		56BBF3F12C359F250058B19B /* RecommendStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendStartViewController.swift; sourceTree = "<group>"; };
 		56BBF3F32C359F460058B19B /* RecommendService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendService.swift; sourceTree = "<group>"; };
 		56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendDTO.swift; sourceTree = "<group>"; };
+		56BBF3F72C35A0940058B19B /* InputIntoxicationview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputIntoxicationview.swift; sourceTree = "<group>"; };
+		56BBF3F92C35A0A70058B19B /* InputIntoxicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputIntoxicationViewController.swift; sourceTree = "<group>"; };
+		56BBF3FB2C35A1540058B19B /* InputFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFoodView.swift; sourceTree = "<group>"; };
+		56BBF3FD2C35A1650058B19B /* InputFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFoodViewController.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -974,6 +982,8 @@
 			children = (
 				56BBF3ED2C359D400058B19B /* RecommendGuideViewController.swift */,
 				56BBF3F12C359F250058B19B /* RecommendStartViewController.swift */,
+				56BBF3F92C35A0A70058B19B /* InputIntoxicationViewController.swift */,
+				56BBF3FD2C35A1650058B19B /* InputFoodViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -983,6 +993,8 @@
 			children = (
 				56BBF3EB2C359CF40058B19B /* RecommendGuideView.swift */,
 				56BBF3EF2C359F010058B19B /* RecommendStartView.swift */,
+				56BBF3F72C35A0940058B19B /* InputIntoxicationview.swift */,
+				56BBF3FB2C35A1540058B19B /* InputFoodView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1239,6 +1251,7 @@
 				56A7E8192C10CD4000CDE615 /* RecipeBookService.swift in Sources */,
 				2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */,
 				97599C122B84F577009B9CF9 /* NewDrinkDetailView.swift in Sources */,
+				56BBF3FC2C35A1540058B19B /* InputFoodView.swift in Sources */,
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				56AE284D2B83ED52009CE0A1 /* MyPageUserModel.swift in Sources */,
 				56BBF3662C3455D80058B19B /* RemovedAlertView.swift in Sources */,
@@ -1310,10 +1323,12 @@
 				2E6C26DC2B497DE700C87B4A /* WeeklyBestViewController.swift in Sources */,
 				56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */,
 				2EFA32FA2B71629100059188 /* GradientView.swift in Sources */,
+				56BBF3FA2C35A0A70058B19B /* InputIntoxicationViewController.swift in Sources */,
 				97599C152B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
 				567B9C372BC6741200D275A1 /* CombinationDetailCommentCell.swift in Sources */,
 				5668A3412B6F68280009FCD6 /* RecipeBookHomeViewController.swift in Sources */,
+				56BBF3F82C35A0940058B19B /* InputIntoxicationview.swift in Sources */,
 				2EFA32F22B714CC000059188 /* RecommendView.swift in Sources */,
 				97599C102B84F551009B9CF9 /* NewDrinkDetailInfoView.swift in Sources */,
 				567B9C352BC6711E00D275A1 /* CombinationDetailView.swift in Sources */,
@@ -1326,6 +1341,7 @@
 				56BBF3682C345A810058B19B /* RemovedAlertViewController.swift in Sources */,
 				5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */,
 				5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */,
+				56BBF3FE2C35A1650058B19B /* InputFoodViewController.swift in Sources */,
 				56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */,
 				2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */,
 				97EB4AD52B70F668009A62EB /* SelectDrinkCapacityViewController.swift in Sources */,

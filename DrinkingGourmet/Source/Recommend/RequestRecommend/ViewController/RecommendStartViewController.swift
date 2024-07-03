@@ -37,19 +37,19 @@ final class RecommendStartViewController: UIViewController {
     }
     
     private func setupButton() {
-        recommendstartView.nextButton.button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        recommendstartView.nextButton.button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
     }
 }
 
 // MARK: - Actions
 extension RecommendStartViewController {
-    @objc private func nextButtonTapped() {
+    @objc private func startButtonTapped() {
         RecommendRequestDTO.shared.desireLevel = 0
         RecommendRequestDTO.shared.foodName = ""
         RecommendRequestDTO.shared.mood = ""
         RecommendRequestDTO.shared.weather = ""
         
-//        let VC = InputIntoxicationViewController()
-//        navigationController?.pushViewController(VC, animated: true)
+        let VC = InputIntoxicationViewController()
+        navigationController?.pushViewController(VC, animated: true)
     }
 }
