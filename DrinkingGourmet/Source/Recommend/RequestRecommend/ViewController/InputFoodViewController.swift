@@ -46,8 +46,8 @@ extension InputFoodViewController {
             RecommendRequestDTO.shared.foodName = foodName
         }
         
-//        let VC = SelectMoodViewController()
-//        navigationController?.pushViewController(VC, animated: true)
+        let VC = SelectMoodViewController()
+        navigationController?.pushViewController(VC, animated: true)
     }
 }
 
@@ -58,14 +58,14 @@ extension InputFoodViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        inputFoodView.lineView.backgroundColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        inputFoodView.lineView.backgroundColor = .base0700
         
         if let text = textField.text, !text.isEmpty {
             inputFoodView.nextButton.button.isEnabled = true
-            inputFoodView.nextButton.backgroundColor = .black
+            inputFoodView.nextButton.backgroundColor = .base0100
         } else {
             inputFoodView.nextButton.button.isEnabled = false
-            inputFoodView.nextButton.backgroundColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
+            inputFoodView.nextButton.backgroundColor = .base0500
         }
     }
     

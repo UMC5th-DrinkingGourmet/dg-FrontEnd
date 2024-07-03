@@ -10,6 +10,7 @@ import UIKit
 final class RecommendStartView: UIView {
     // MARK: - View
     let nickNameLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 24)
         $0.numberOfLines = 0
         $0.lineBreakMode = .byWordWrapping

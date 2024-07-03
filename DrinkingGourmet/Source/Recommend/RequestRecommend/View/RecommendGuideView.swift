@@ -10,6 +10,7 @@ import UIKit
 final class RecommendGuideView: UIView {
     // MARK: - View
     private let guideLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 24)
         $0.numberOfLines = 0
         $0.lineBreakMode = .byWordWrapping
@@ -21,7 +22,7 @@ final class RecommendGuideView: UIView {
     private let recommendButtonView = UIView().then {
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1).cgColor
+        $0.layer.borderColor = UIColor.base0800.cgColor
         $0.clipsToBounds = true
     }
     
@@ -31,14 +32,14 @@ final class RecommendGuideView: UIView {
     
     private let recommendLabel = UILabel().then {
         $0.text = "주류추천"
-        $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
+        $0.textColor = .base0300
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     
     private let myRecommendButtonView = UIView().then {
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1).cgColor
+        $0.layer.borderColor = UIColor.base0800.cgColor
         $0.clipsToBounds = true
     }
     
@@ -48,7 +49,7 @@ final class RecommendGuideView: UIView {
     
     private let myRecommendLabel = UILabel().then {
         $0.text = "내가 받은 추천"
-        $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
+        $0.textColor = .base0300
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     

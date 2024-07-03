@@ -11,10 +11,12 @@ final class InputIntoxicationview: UIView {
     // MARK: - View
     private let progressBar = UIProgressView().then {
         $0.progress = 0.2
-        $0.progressTintColor = .black
+        $0.progressTintColor = .base0100
+        $0.trackTintColor = .base0800
     }
     
     private let titleLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 24)
         $0.numberOfLines = 0
         $0.lineBreakMode = .byWordWrapping

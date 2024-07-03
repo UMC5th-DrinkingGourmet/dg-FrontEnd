@@ -42,7 +42,7 @@ extension InputIntoxicationViewController {
         print(inputIntoxicationview.slider.value)
         
         inputIntoxicationview.nextButton.button.isEnabled = true
-        inputIntoxicationview.nextButton.backgroundColor = .black
+        inputIntoxicationview.nextButton.backgroundColor = .base0100
     }
     
     @objc private func nextButtonTapped() {

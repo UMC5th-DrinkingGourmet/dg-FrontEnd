@@ -10,7 +10,7 @@ import UIKit
 final class NextButtonView: UIView {
     // MARK: - View
     let label = UILabel().then {
-        $0.textColor = .white
+        $0.textColor = .base1000
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1
@@ -25,7 +25,7 @@ final class NextButtonView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
+        self.backgroundColor = .base0500
         
         addViews()
         configureConstraints()

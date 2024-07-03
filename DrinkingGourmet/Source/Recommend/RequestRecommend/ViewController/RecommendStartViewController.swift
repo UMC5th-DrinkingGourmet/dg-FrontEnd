@@ -26,7 +26,7 @@ final class RecommendStartViewController: UIViewController {
     }
     
     private func prepare() {
-        recommendstartView.nextButton.backgroundColor = .black
+        recommendstartView.nextButton.backgroundColor = .base0100
         recommendstartView.nextButton.label.text = "시작하기"
         recommendstartView.nextButton.button.isEnabled = true
     }
