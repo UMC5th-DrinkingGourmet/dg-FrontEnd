@@ -303,17 +303,13 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
             MyPageDataManager().fetchRecommendDetailData(selectedItem, self) { model in
                 guard let model = model else { return }
                 
-//                let getDrinkingRecommendVC = GetDrinkingRecommendViewController()
-//                
-//                if let url = URL(string: model.result.imageUrl) {
-//                    getDrinkingRecommendVC.mainImage.kf.setImage(with: url)
-//                }
-//                getDrinkingRecommendVC.drinkNameLabel.text = model.result.drinkName
-//                getDrinkingRecommendVC.descriptionLabel.text = model.result.recommendReason
-//                self.navigationController?.pushViewController(getDrinkingRecommendVC, animated: true)
+                let VC = RecommendResultViewController()
+                VC.recommendResult = model.result
+                
+                
+                self.navigationController?.pushViewController(VC, animated: true)
             }
             
         }
     }
-    
 }
