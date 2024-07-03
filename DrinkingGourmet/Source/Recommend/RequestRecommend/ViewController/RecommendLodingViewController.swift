@@ -40,9 +40,9 @@ final class RecommendLodingViewController: UIViewController {
             switch result {
             case .success(let data):
                 print("주류추천 요청 성공")
-//                let VC = RecommendResultViewController()
-//                VC.recommendResult = data.result
-//                self.navigationController?.pushViewController(VC, animated: true)
+                let VC = RecommendResultViewController()
+                VC.recommendResult = data.result
+                self.navigationController?.pushViewController(VC, animated: true)
             case .failure(let error):
                 print("주류추천 요청 실패 - \(error.localizedDescription)")
             }

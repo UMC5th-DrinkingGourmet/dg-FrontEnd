@@ -125,6 +125,8 @@
 		56BBF4082C35B27A0058B19B /* SelectWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4072C35B27A0058B19B /* SelectWeatherViewController.swift */; };
 		56BBF40A2C35B8120058B19B /* RecommendLodingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4092C35B8120058B19B /* RecommendLodingView.swift */; };
 		56BBF40C2C35B8210058B19B /* RecommendLodingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF40B2C35B8210058B19B /* RecommendLodingViewController.swift */; };
+		56BBF40E2C35B9150058B19B /* RecommendResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF40D2C35B9150058B19B /* RecommendResultView.swift */; };
+		56BBF4102C35B9280058B19B /* RecommendResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF40F2C35B9280058B19B /* RecommendResultViewController.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
@@ -281,6 +283,8 @@
 		56BBF4072C35B27A0058B19B /* SelectWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWeatherViewController.swift; sourceTree = "<group>"; };
 		56BBF4092C35B8120058B19B /* RecommendLodingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendLodingView.swift; sourceTree = "<group>"; };
 		56BBF40B2C35B8210058B19B /* RecommendLodingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendLodingViewController.swift; sourceTree = "<group>"; };
+		56BBF40D2C35B9150058B19B /* RecommendResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendResultView.swift; sourceTree = "<group>"; };
+		56BBF40F2C35B9280058B19B /* RecommendResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendResultViewController.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -1002,6 +1006,7 @@
 				56BBF4032C35AD550058B19B /* InputMoodeViewController.swift */,
 				56BBF4072C35B27A0058B19B /* SelectWeatherViewController.swift */,
 				56BBF40B2C35B8210058B19B /* RecommendLodingViewController.swift */,
+				56BBF40F2C35B9280058B19B /* RecommendResultViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1016,6 +1021,7 @@
 				56BBF3FF2C35A1F60058B19B /* SelectMoodView.swift */,
 				56BBF4052C35B1EE0058B19B /* SelectWeatherView.swift */,
 				56BBF4092C35B8120058B19B /* RecommendLodingView.swift */,
+				56BBF40D2C35B9150058B19B /* RecommendResultView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1243,6 +1249,7 @@
 				2E6C270B2B4989D900C87B4A /* UIView+Gradient.swift in Sources */,
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
 				56BBF3EA2C359CB80058B19B /* NextButtonView.swift in Sources */,
+				56BBF4102C35B9280058B19B /* RecommendResultViewController.swift in Sources */,
 				56BBF35C2C33FEDD0058B19B /* AnswerViewController.swift in Sources */,
 				56AE28552B8403BC009CE0A1 /* MyPageCombinationModel.swift in Sources */,
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
@@ -1343,6 +1350,7 @@
 				2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */,
 				56EAD58A2B6C6C1A005C3A80 /* CombinationHomeView.swift in Sources */,
 				56BBF4042C35AD550058B19B /* InputMoodeViewController.swift in Sources */,
+				56BBF40E2C35B9150058B19B /* RecommendResultView.swift in Sources */,
 				56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */,
 				5625E3792BB962D700269BBF /* SettingView.swift in Sources */,
 				2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */,
