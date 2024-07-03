@@ -53,25 +53,18 @@ final class InputMoodeViewController: UIViewController {
 // MARK: - Actions
 extension InputMoodeViewController {
     private func navigateToNextViewController() {
-//        let VC = SelectWeatherViewController()
-//        navigationController?.pushViewController(VC, animated: true)
+        let VC = SelectWeatherViewController()
+        navigationController?.pushViewController(VC, animated: true)
     }
     
     @objc private func passButtonTapped() {
         RecommendRequestDTO.shared.mood = previousMood // 이전 상태로 되돌리기
-        print(RecommendRequestDTO.shared.desireLevel)
-        print(RecommendRequestDTO.shared.foodName)
-        print(RecommendRequestDTO.shared.mood)
         navigateToNextViewController()
     }
     
     @objc private func nextButtonTapped() {
         guard let moodText = inputMoodView.textField.text, !moodText.isEmpty else { return }
         RecommendRequestDTO.shared.mood.append(", \(moodText)")
-        
-        print(RecommendRequestDTO.shared.desireLevel)
-        print(RecommendRequestDTO.shared.foodName)
-        print(RecommendRequestDTO.shared.mood)
         navigateToNextViewController()
     }
 }

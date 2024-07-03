@@ -1,5 +1,5 @@
 //
-//  SelectMoodView.swift
+//  SelectWeatherView.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 7/4/24.
@@ -8,10 +8,10 @@
 import UIKit
 import TagListView
 
-final class SelectMoodView: UIView {
+final class SelectWeatherView: UIView {
     // MARK: - View
     private let progressBar = UIProgressView().then {
-        $0.progress = 0.6
+        $0.progress = 1.0
         $0.progressTintColor = .black
         $0.trackTintColor = .base0800
     }
@@ -23,7 +23,7 @@ final class SelectMoodView: UIView {
         $0.lineBreakMode = .byWordWrapping
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "기분은 어떠신가요?", attributes: [NSAttributedString.Key.kern: -0.72, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "지금 날씨는 어떤가요?", attributes: [NSAttributedString.Key.kern: -0.72, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     private let descriptionLabel = UILabel().then {
@@ -31,7 +31,7 @@ final class SelectMoodView: UIView {
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "기분과 어올리는 주류를 추천해드릴게요.", attributes: [NSAttributedString.Key.kern: -0.42, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "날씨와 어울리는 주류를 추천해드릴게요.", attributes: [NSAttributedString.Key.kern: -0.42, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     private let stackView = UIStackView().then {
@@ -40,17 +40,17 @@ final class SelectMoodView: UIView {
     }
     
     let tagListView = TagListView().then {
-        $0.addTags(["기뻐요", 
-                    "즐거워요",
-                    "행복해요",
-                    "지쳤어요",
-                    "우울해요", 
-                    "힘들어요",
-                    "화나요",
-                    "스트레스 받아요",
-                    "긴장돼요",
-                    "걱정돼요",
-                    "기대돼요"])
+        $0.addTags(["화창해요",
+                    "맑아요",
+                    "흐려요",
+                    "바람이 불어요",
+                    "우중충해요",
+                    "비가 와요",
+                    "눈이 와요",
+                    "소나기가 내려요",
+                    "추워요",
+                    "따뜻해요",
+                    "더워요"])
         
         // 기본 값 (선택 전)
         $0.textFont = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)!
@@ -130,3 +130,4 @@ final class SelectMoodView: UIView {
         }
     }
 }
+

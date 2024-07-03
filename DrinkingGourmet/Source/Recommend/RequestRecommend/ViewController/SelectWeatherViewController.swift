@@ -1,5 +1,5 @@
 //
-//  SelectMoodViewController.swift
+//  SelectWeatherViewController.swift
 //  DrinkingGourmet
 //
 //  Created by 이승민 on 7/4/24.
@@ -8,14 +8,13 @@
 import UIKit
 import TagListView
 
-final class SelectMoodViewController: UIViewController {
+final class SelectWeatherViewController: UIViewController {
     // MARK: - Properties
-    private let selectMoodView = SelectMoodView()
-    private var selectedTags: String = ""
+    private let selectWeatherView = SelectWeatherView()
     
     // MARK: - View 설정
     override func loadView() {
-        view = selectMoodView
+        view = selectWeatherView
     }
     
     // MARK: - ViewDidLoad
@@ -33,50 +32,47 @@ final class SelectMoodViewController: UIViewController {
     }
     
     private func setupButton() {
-        selectMoodView.passButton.addTarget(self, action: #selector(passButtonTapped), for: .touchUpInside)
-        selectMoodView.nextButton.button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        selectWeatherView.passButton.addTarget(self, action: #selector(passButtonTapped), for: .touchUpInside)
+        selectWeatherView.nextButton.button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
     private func setupTagListView() {
-        selectMoodView.tagListView.delegate = self
+        selectWeatherView.tagListView.delegate = self
     }
     
-    private func getSelectedTags() -> String { // 선택되어있는 값 얻기
-        let selectedTags = selectMoodView.tagListView.tagViews
+    private func getSelectedTags() -> String {
+        let selectedTags = selectWeatherView.tagListView.tagViews
             .filter { $0.isSelected }
             .map { $0.titleLabel?.text ?? "" }
         return selectedTags.joined(separator: ", ")
     }
     
     private func updateNextButtonState() {
-        let hasSelectedTags = !selectMoodView.tagListView.tagViews.filter { $0.isSelected }.isEmpty
-        selectMoodView.nextButton.button.isEnabled = hasSelectedTags
-        selectMoodView.nextButton.backgroundColor = hasSelectedTags ? .base0100 : .base0500
+        let hasSelectedTags = !selectWeatherView.tagListView.tagViews.filter { $0.isSelected }.isEmpty
+        selectWeatherView.nextButton.button.isEnabled = hasSelectedTags
+        selectWeatherView.nextButton.backgroundColor = hasSelectedTags ? .base0100 : .base0500
     }
 }
 
 // MARK: - Actions
-extension SelectMoodViewController {
+extension SelectWeatherViewController {
     private func navigateToNextViewController() {
-        let VC = InputMoodeViewController()
-        VC.previousMood = RecommendRequestDTO.shared.mood // 다음 뷰컨에 현재 상태를 전달
+        let VC = RecommendLodingViewController()
         navigationController?.pushViewController(VC, animated: true)
     }
     
     @objc private func passButtonTapped() {
-        RecommendRequestDTO.shared.mood = ""
         navigateToNextViewController()
     }
     
     @objc private func nextButtonTapped() {
-        selectedTags = getSelectedTags()
-        RecommendRequestDTO.shared.mood = selectedTags
+        RecommendRequestDTO.shared.weather = getSelectedTags()
         navigateToNextViewController()
     }
 }
 
 // MARK: - TagListViewDelegate
-extension SelectMoodViewController: TagListViewDelegate {
+extension SelectWeatherViewController: TagListViewDelegate {
     func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
         tagView.isSelected = !tagView.isSelected
         print("\(title) - \(tagView.isSelected)")
