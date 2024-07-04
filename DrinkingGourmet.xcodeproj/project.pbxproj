@@ -104,6 +104,8 @@
 		56BBF35E2C33FEE80058B19B /* AnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF35D2C33FEE80058B19B /* AnswerView.swift */; };
 		56BBF3602C340BBD0058B19B /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF35F2C340BBD0058B19B /* DeleteAccountViewController.swift */; };
 		56BBF3622C340BC60058B19B /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3612C340BC60058B19B /* DeleteAccountView.swift */; };
+		56BBF3662C3455D80058B19B /* RemovedAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3652C3455D80058B19B /* RemovedAlertView.swift */; };
+		56BBF3682C345A810058B19B /* RemovedAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3672C345A810058B19B /* RemovedAlertViewController.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
@@ -255,6 +257,8 @@
 		56BBF35D2C33FEE80058B19B /* AnswerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerView.swift; sourceTree = "<group>"; };
 		56BBF35F2C340BBD0058B19B /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
 		56BBF3612C340BC60058B19B /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
+		56BBF3652C3455D80058B19B /* RemovedAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemovedAlertView.swift; sourceTree = "<group>"; };
+		56BBF3672C345A810058B19B /* RemovedAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemovedAlertViewController.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -720,6 +724,8 @@
 				56543EBB2B7E923D0099E648 /* Upload */,
 				5658DDFB2B58297600F72F42 /* Home */,
 				5658DDFA2B58296B00F72F42 /* Detail */,
+				56BBF3652C3455D80058B19B /* RemovedAlertView.swift */,
+				56BBF3672C345A810058B19B /* RemovedAlertViewController.swift */,
 			);
 			path = Combination;
 			sourceTree = "<group>";
@@ -1283,6 +1289,7 @@
 				2E6C26F52B4983D600C87B4A /* UIView+addSubViews.swift in Sources */,
 				97EB4AE72B70F704009A62EB /* CustomizedButtons.swift in Sources */,
 				56AE284D2B83ED52009CE0A1 /* MyPageUserModel.swift in Sources */,
+				56BBF3662C3455D80058B19B /* RemovedAlertView.swift in Sources */,
 				97EB4AC22B70F5E6009A62EB /* InputMyMoodViewController.swift in Sources */,
 				97EB4AC32B70F5E6009A62EB /* InputMyFoodViewController.swift in Sources */,
 				56543EBD2B7E9A880099E648 /* CombinationUploadVC.swift in Sources */,
@@ -1369,6 +1376,7 @@
 				5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */,
 				97EB4AC72B70F5E6009A62EB /* SelectDrunkDegreeViewController.swift in Sources */,
 				56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */,
+				56BBF3682C345A810058B19B /* RemovedAlertViewController.swift in Sources */,
 				5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */,
 				97EB4AE52B70F704009A62EB /* CustomizedSlider.swift in Sources */,
 				5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */,

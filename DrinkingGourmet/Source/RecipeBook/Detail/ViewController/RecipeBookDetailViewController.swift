@@ -102,6 +102,9 @@ final class RecipeBookDetailViewController: UIViewController {
                 }
             case .failure(let error):
                 print("레시피북 상세 조회 실패 - \(error.localizedDescription)")
+                let alertVC = RemovedAlertViewController()
+                alertVC.delegate = self
+                alertVC.appear(sender: self)
             }
         }
     }
@@ -497,5 +500,12 @@ extension RecipeBookDetailViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+// MARK: - RemovedAlertViewControllerDelegate
+extension RecipeBookDetailViewController: RemovedAlertViewControllerDelegate {
+    func removedAlertViewControllerDidTapClose(_ controller: RemovedAlertViewController) {
+        navigationController?.popViewController(animated: true)
     }
 }
