@@ -149,7 +149,7 @@ class MyPageDataManager {
     // 내가 작성한 레시피북 조회
     func fetchRecommendDetailData (_ recommendId: Int,
                                    _ viewController: MyPageViewController,
-                                   completion: @escaping (RecommendDetailResponseModel?) -> Void) {
+                                   completion: @escaping (RecommendResponseDTO?) -> Void) {
         do {
             // Keychain에서 액세스 토큰 가져오기
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -164,7 +164,7 @@ class MyPageDataManager {
                        method: .post,
                        headers: headers)
             .validate()
-            .responseDecodable(of: RecommendDetailResponseModel.self) { response in
+            .responseDecodable(of: RecommendResponseDTO.self) { response in
                 switch response.result {
                 case .success(let result):
                     print("추천 받은 조합 상세보기 - 네트워킹 성공")

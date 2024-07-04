@@ -1,5 +1,5 @@
 {
-  "originHash" : "5449c47e5d1a78d76603d42eec4aa6ddea59ae87995a6665ae7c4b391f0ba844",
+  "originHash" : "50019422415c9af7642cc6cfecc060e189d56dcfb99a3d68dd900c7016ca9b9d",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "taglistview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ElaWorkshop/TagListView.git",
+      "state" : {
+        "revision" : "b30b61826736f4d9ec04aef5df891f3914423f16",
+        "version" : "1.4.1"
       }
     },
     {
