@@ -11,12 +11,14 @@ import Then
 import Combine
 import Kingfisher
 import KakaoSDKUser
+import AuthenticationServices
 
 class AuthenticationViewController: UIViewController {
     
     var subscriptions = Set<AnyCancellable>()
     
     private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
+    private let appleAuthVM: AppleAuthViewModel = { AppleAuthViewModel() }()
     
     private let backgroundImageview = UIImageView(
         image: UIImage(named: "img_splash_background")
@@ -72,7 +74,9 @@ class AuthenticationViewController: UIViewController {
         kakaoBtn.addTarget(self, action: #selector(kakaoBtnClicked), for: .touchUpInside)
         
         naverBtn.layer.cornerRadius = naverBtn.frame.width / 2
+        
         appleBtn.layer.cornerRadius = appleBtn.frame.width / 2
+        appleBtn.addTarget(self, action: #selector(appleBtnClicked), for: .touchUpInside)
     }
     
     @objc func kakaoBtnClicked() {
@@ -97,6 +101,33 @@ class AuthenticationViewController: UIViewController {
             let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
                 self?.kakaoAuthVM.kakaoLogin()
                 UserDefaultManager.shared.provider = "kakao"
+            }
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        } catch {
+            print("unexpected error")
+        }
+    }
+    
+    @objc func appleBtnClicked() {
+        do {
+            // 리프레시 토큰의 유효성 검사
+            let _ = try Keychain.shared.getToken(kind: .refreshToken)
+            let mainMenuVC = MainMenuViewController()
+            // MainMenuViewController로 이동
+            self.navigationController?.pushViewController(mainMenuVC, animated: true)
+            return
+        } catch KeyChainError.noData {
+            // 리프레시 토큰이 없는 경우
+            let alert = UIAlertController(title: "애플 로그인", message: "애플 계정으로 로그인하시겠습니까?", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+                self?.appleAuthVM.handleAppleLogin()
+                UserDefaultManager.shared.provider = "apple"
             }
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
@@ -156,6 +187,24 @@ class AuthenticationViewController: UIViewController {
 
 extension AuthenticationViewController {
     fileprivate func setBindings() {
+        
+        // 애플 로그인 성공 시
+        appleAuthVM.$isLoggedIn
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoggedIn in
+                if isLoggedIn {
+                    DispatchQueue.main.async {
+                        // 이미 TermsViewController가 푸시되었는지 확인
+                        if self?.navigationController?.topViewController is TermsViewController {
+                            return
+                        }
+
+                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+                    }
+                }
+            }
+            .store(in: &subscriptions)
+            
         // 로그인 성공시
         kakaoAuthVM.$isLoggedIn
             .receive(on: DispatchQueue.main)

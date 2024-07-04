@@ -19,12 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
 //        window.rootViewController = UINavigationController(rootViewController: UploadViewController())
         
-        //            do {
-        //                try Keychain.shared.deleteToken(kind: .accessToken)
-        //                print("Deleted Access Token")
-        //            } catch {
-        //                print("Failed to delete Access Token: \(error)")
-        //            }
+//        do {
+//            try Keychain.shared.deleteToken(kind: .refreshToken)
+//            print("Deleted Access Token")
+//        } catch {
+//            print("Failed to delete Access Token: \(error)")
+//        }
         
         do {
             let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)

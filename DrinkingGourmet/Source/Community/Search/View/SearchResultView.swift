@@ -14,21 +14,33 @@ class SearchResultView: UIView {
     
     let cancelButton = UIButton().then {
         $0.setTitle("취소", for: .normal)
-        $0.setTitleColor(.customOrange, for: .normal)
+        $0.setTitleColor(UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1), for: .normal)
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     }
     
     let recentLabel = UILabel().then {
         $0.text = "최근검색어"
+        $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
-        $0.textColor = .customOrange
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "최근 검색어", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     let deleteAllButton = UIButton().then {
-        $0.setTitle("전체삭제", for: .normal)
-        $0.setTitleColor(.customOrange, for: .normal)
-        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1),
+            .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 12)!,
+            .kern: -0.36,
+            .paragraphStyle: paragraphStyle
+        ]
+        
+        $0.setAttributedTitle(NSAttributedString(string: "전체삭제", attributes: attributes), for: .normal)
     }
+
     
     let tableView = UITableView().then {
         $0.showsVerticalScrollIndicator = false // 스크롤바 숨기기

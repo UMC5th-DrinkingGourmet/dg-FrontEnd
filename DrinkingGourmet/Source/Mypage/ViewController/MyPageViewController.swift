@@ -26,6 +26,7 @@ class MyPageViewController: UIViewController {
     var arrayCombinationData: [MyPageCombinationModel.CombinationList] = []
     var arrayRecipeBookData: [MyPageRecipeBookModel.RecipeList] = []
     
+    private let settingViewController = SettingViewController()
     private let myPageView = MyPageView()
     
     // MARK: - View 설정
@@ -63,18 +64,20 @@ class MyPageViewController: UIViewController {
         }
     }
     
-    // 유저 데이터 로딩 후 업데이트
+    // 유저 데이터 로딩 후 업데이트 & 설정창에 프로필이미지, 닉네임 넘겨주기
     private func loadUserData() {
         MyPageDataManager().fetchUserData(self) { [weak self] model in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 if let urlString = model?.result.profileImageUrl {
+                    self.settingViewController.profileImageUrl = urlString
                     let url = URL(string: urlString)
                     self.myPageView.profileImage.kf.setImage(with: url)
                 }
                 
                 self.myPageView.nameLabel.text = model?.result.nickName
+                self.settingViewController.nickName = model?.result.nickName
             }
         }
     }
@@ -148,7 +151,8 @@ class MyPageViewController: UIViewController {
     }
     
     @objc func settingButtonTapped() {
-        print("설정 버튼이 탭되었습니다.")
+        let VC = settingViewController
+        navigationController?.pushViewController(VC, animated: true)
     }
     
     // MARK: - 컬렌션뷰 설정
@@ -284,13 +288,13 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
         
         if currentTab == .combination { // 오늘의 조합
             let selectedItem = arrayCombinationData[indexPath.row].combinationId
-            let todayCombinationDetailVC = TodayCombinationDetailViewController()
+            let todayCombinationDetailVC = CombinationDetailViewController()
             todayCombinationDetailVC.combinationId = selectedItem
             todayCombinationDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(todayCombinationDetailVC, animated: true)
         } else if currentTab == .recipeBook { // 레시피북
             let selectedItem = arrayRecipeBookData[indexPath.row].id
-            let recipeBookDetailVC = RecipeBookDetailVC()
+            let recipeBookDetailVC = RecipeBookDetailViewController()
             recipeBookDetailVC.recipeBookId = selectedItem
             recipeBookDetailVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(recipeBookDetailVC, animated: true)
@@ -299,17 +303,13 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
             MyPageDataManager().fetchRecommendDetailData(selectedItem, self) { model in
                 guard let model = model else { return }
                 
-                let getDrinkingRecommendVC = GetDrinkingRecommendViewController()
+                let VC = RecommendResultViewController()
+                VC.recommendResult = model.result
                 
-                if let url = URL(string: model.result.imageUrl) {
-                    getDrinkingRecommendVC.mainImage.kf.setImage(with: url)
-                }
-                getDrinkingRecommendVC.drinkNameLabel.text = model.result.drinkName
-                getDrinkingRecommendVC.descriptionLabel.text = model.result.recommendReason
-                self.navigationController?.pushViewController(getDrinkingRecommendVC, animated: true)
+                
+                self.navigationController?.pushViewController(VC, animated: true)
             }
             
         }
     }
-    
 }

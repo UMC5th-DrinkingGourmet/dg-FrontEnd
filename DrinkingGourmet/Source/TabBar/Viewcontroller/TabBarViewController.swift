@@ -28,8 +28,8 @@ class TabBarViewController: UITabBarController {
         
         // 뷰컨 생성
         let mainMenuVC = UINavigationController(rootViewController: MainMenuViewController())
-        let recommendVC = UINavigationController(rootViewController: MyDrinkStyleViewController())
-        let communityHomeVC = UINavigationController(rootViewController: CommunityHomeVC())
+        let recommendVC = UINavigationController(rootViewController: RecommendGuideViewController())
+        let communityVC = UINavigationController(rootViewController: CommunityViewController())
         let likeVC = UINavigationController(rootViewController: LikeViewController())
         let myPageVC = UINavigationController(rootViewController: MyPageViewController())
         
@@ -45,7 +45,7 @@ class TabBarViewController: UITabBarController {
             image: UIImage(named: "ic_navigation_recommend"),
             selectedImage: UIImage(named: "ic_navigation_recommend_selected")
         )
-        communityHomeVC.tabBarItem = UITabBarItem(
+        communityVC.tabBarItem = UITabBarItem(
             title: "커뮤니티",
             image: UIImage(named: "ic_navigation_community"),
             selectedImage: UIImage(named: "ic_navigation_community_selected")
@@ -65,7 +65,7 @@ class TabBarViewController: UITabBarController {
         
         let tabItems = [
             recommendVC,
-            communityHomeVC,
+            communityVC,
             mainMenuVC,
             likeVC,
             myPageVC

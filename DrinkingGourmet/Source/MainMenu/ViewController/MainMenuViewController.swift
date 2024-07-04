@@ -173,7 +173,7 @@ class MainMenuViewController: UIViewController {
     }
 
     @objc func recipeBookBtnTapped() {
-        let recipeBookHomeVC = RecipeBookHomeVC()
+        let recipeBookHomeVC = RecipeBookHomeViewController()
         recipeBookHomeVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(recipeBookHomeVC, animated: true)
     }
@@ -192,7 +192,7 @@ class MainMenuViewController: UIViewController {
     }
 
     @objc func todayCombiBtnTapped() {
-        let todayCombinationViewController = TodayCombinationViewController()
+        let todayCombinationViewController = CombinationHomeViewController()
         todayCombinationViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(todayCombinationViewController, animated: true)
     }
