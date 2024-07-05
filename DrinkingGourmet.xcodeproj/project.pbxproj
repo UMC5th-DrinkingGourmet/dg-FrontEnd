@@ -130,6 +130,8 @@
 		56BBF4242C378B1B0058B19B /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = 56BBF4232C378B1B0058B19B /* Tabman */; };
 		56BBF4262C378D310058B19B /* LikeCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4252C378D310058B19B /* LikeCombinationViewController.swift */; };
 		56BBF4282C378D420058B19B /* LikeRecipeBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4272C378D420058B19B /* LikeRecipeBookViewController.swift */; };
+		56BBF42A2C3810AA0058B19B /* MyPageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4292C3810AA0058B19B /* MyPageService.swift */; };
+		56BBF42C2C3812DA0058B19B /* MyPageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF42B2C3812DA0058B19B /* MyPageDTO.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
@@ -290,6 +292,8 @@
 		56BBF40F2C35B9280058B19B /* RecommendResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendResultViewController.swift; sourceTree = "<group>"; };
 		56BBF4252C378D310058B19B /* LikeCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCombinationViewController.swift; sourceTree = "<group>"; };
 		56BBF4272C378D420058B19B /* LikeRecipeBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeRecipeBookViewController.swift; sourceTree = "<group>"; };
+		56BBF4292C3810AA0058B19B /* MyPageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageService.swift; sourceTree = "<group>"; };
+		56BBF42B2C3812DA0058B19B /* MyPageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDTO.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -903,6 +907,7 @@
 				56A7E8202C117A1B00CDE615 /* AdministrationService.swift */,
 				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
 				56BBF3F32C359F460058B19B /* RecommendService.swift */,
+				56BBF4292C3810AA0058B19B /* MyPageService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -914,6 +919,7 @@
 				56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */,
 				56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */,
 				56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */,
+				56BBF42B2C3812DA0058B19B /* MyPageDTO.swift */,
 			);
 			path = Dto;
 			sourceTree = "<group>";
@@ -1276,6 +1282,7 @@
 				2EFA32F72B7156EF00059188 /* RecipeBookCollectionViewCell.swift in Sources */,
 				5625E37F2BBAC25E00269BBF /* SettingCell.swift in Sources */,
 				56BBF4002C35A1F60058B19B /* SelectMoodView.swift in Sources */,
+				56BBF42A2C3810AA0058B19B /* MyPageService.swift in Sources */,
 				2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */,
 				56AE284F2B83ED5A009CE0A1 /* MyPageDataManager.swift in Sources */,
 				56BBF40A2C35B8120058B19B /* RecommendLodingView.swift in Sources */,
@@ -1390,6 +1397,7 @@
 				5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */,
 				5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */,
 				56BBF3FE2C35A1650058B19B /* InputFoodViewController.swift in Sources */,
+				56BBF42C2C3812DA0058B19B /* MyPageDTO.swift in Sources */,
 				56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */,
 				2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */,
 				97EB4AD52B70F668009A62EB /* SelectDrinkCapacityViewController.swift in Sources */,
