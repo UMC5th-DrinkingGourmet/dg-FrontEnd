@@ -127,6 +127,9 @@
 		56BBF40C2C35B8210058B19B /* RecommendLodingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF40B2C35B8210058B19B /* RecommendLodingViewController.swift */; };
 		56BBF40E2C35B9150058B19B /* RecommendResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF40D2C35B9150058B19B /* RecommendResultView.swift */; };
 		56BBF4102C35B9280058B19B /* RecommendResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF40F2C35B9280058B19B /* RecommendResultViewController.swift */; };
+		56BBF4242C378B1B0058B19B /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = 56BBF4232C378B1B0058B19B /* Tabman */; };
+		56BBF4262C378D310058B19B /* LikeCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4252C378D310058B19B /* LikeCombinationViewController.swift */; };
+		56BBF4282C378D420058B19B /* LikeRecipeBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4272C378D420058B19B /* LikeRecipeBookViewController.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
@@ -141,7 +144,7 @@
 		56D649B22BB3B1B7002ABC93 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 56D649B12BB3B1B7002ABC93 /* Kingfisher */; };
 		56D649B52BB3B1FA002ABC93 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 56D649B42BB3B1FA002ABC93 /* Lottie */; };
 		56EAD58A2B6C6C1A005C3A80 /* CombinationHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EAD5892B6C6C1A005C3A80 /* CombinationHomeView.swift */; };
-		56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */; };
+		56F8A7162B8000C2000F6CA4 /* LikeTapmanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7152B8000C2000F6CA4 /* LikeTapmanViewController.swift */; };
 		56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7172B8000CA000F6CA4 /* LikeView.swift */; };
 		56F8A71A2B800D6F000F6CA4 /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8A7192B800D6F000F6CA4 /* LikeCell.swift */; };
 		97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */; };
@@ -285,11 +288,13 @@
 		56BBF40B2C35B8210058B19B /* RecommendLodingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendLodingViewController.swift; sourceTree = "<group>"; };
 		56BBF40D2C35B9150058B19B /* RecommendResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendResultView.swift; sourceTree = "<group>"; };
 		56BBF40F2C35B9280058B19B /* RecommendResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendResultViewController.swift; sourceTree = "<group>"; };
+		56BBF4252C378D310058B19B /* LikeCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCombinationViewController.swift; sourceTree = "<group>"; };
+		56BBF4272C378D420058B19B /* LikeRecipeBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeRecipeBookViewController.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		56EAD5892B6C6C1A005C3A80 /* CombinationHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationHomeView.swift; sourceTree = "<group>"; };
-		56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
+		56F8A7152B8000C2000F6CA4 /* LikeTapmanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeTapmanViewController.swift; sourceTree = "<group>"; };
 		56F8A7172B8000CA000F6CA4 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		56F8A7192B800D6F000F6CA4 /* LikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
 		97599BF92B840009009B9CF9 /* MyDrinkingStyleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDrinkingStyleDataManager.swift; sourceTree = "<group>"; };
@@ -316,6 +321,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56BBF4242C378B1B0058B19B /* Tabman in Frameworks */,
 				569C90242C29E6D3003A32AF /* Toast in Frameworks */,
 				56D6499C2BB3B14E002ABC93 /* SnapKit in Frameworks */,
 				56BBF3E62C359C190058B19B /* TagListView in Frameworks */,
@@ -1064,7 +1070,9 @@
 		56F8A7122B800099000F6CA4 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				56F8A7152B8000C2000F6CA4 /* LikeViewController.swift */,
+				56F8A7152B8000C2000F6CA4 /* LikeTapmanViewController.swift */,
+				56BBF4252C378D310058B19B /* LikeCombinationViewController.swift */,
+				56BBF4272C378D420058B19B /* LikeRecipeBookViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1178,6 +1186,7 @@
 				56D649B42BB3B1FA002ABC93 /* Lottie */,
 				569C90232C29E6D3003A32AF /* Toast */,
 				56BBF3E52C359C190058B19B /* TagListView */,
+				56BBF4232C378B1B0058B19B /* Tabman */,
 			);
 			productName = DrinkingGourmet;
 			productReference = 2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */;
@@ -1216,6 +1225,7 @@
 				56D649B32BB3B1FA002ABC93 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				569C90222C29E6D3003A32AF /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 				56BBF3E42C359C190058B19B /* XCRemoteSwiftPackageReference "TagListView" */,
+				56BBF4222C378B1B0058B19B /* XCRemoteSwiftPackageReference "Tabman" */,
 			);
 			productRefGroup = 2E6C26C52B497AD200C87B4A /* Products */;
 			projectDirPath = "";
@@ -1351,7 +1361,9 @@
 				56EAD58A2B6C6C1A005C3A80 /* CombinationHomeView.swift in Sources */,
 				56BBF4042C35AD550058B19B /* InputMoodeViewController.swift in Sources */,
 				56BBF40E2C35B9150058B19B /* RecommendResultView.swift in Sources */,
+				56BBF4262C378D310058B19B /* LikeCombinationViewController.swift in Sources */,
 				56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */,
+				56BBF4282C378D420058B19B /* LikeRecipeBookViewController.swift in Sources */,
 				5625E3792BB962D700269BBF /* SettingView.swift in Sources */,
 				2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */,
 				2E6C26F92B49847200C87B4A /* UIStackView+AddArrangedSubviews.swift in Sources */,
@@ -1373,7 +1385,7 @@
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */,
 				5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */,
-				56F8A7162B8000C2000F6CA4 /* LikeViewController.swift in Sources */,
+				56F8A7162B8000C2000F6CA4 /* LikeTapmanViewController.swift in Sources */,
 				56BBF3682C345A810058B19B /* RemovedAlertViewController.swift in Sources */,
 				5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */,
 				5668A2F32B6EDB9F0009FCD6 /* SearchResultVC.swift in Sources */,
@@ -1641,6 +1653,14 @@
 				minimumVersion = 1.4.1;
 			};
 		};
+		56BBF4222C378B1B0058B19B /* XCRemoteSwiftPackageReference "Tabman" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uias/Tabman";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
 		56D6499A2BB3B14E002ABC93 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -1701,6 +1721,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 56BBF3E42C359C190058B19B /* XCRemoteSwiftPackageReference "TagListView" */;
 			productName = TagListView;
+		};
+		56BBF4232C378B1B0058B19B /* Tabman */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 56BBF4222C378B1B0058B19B /* XCRemoteSwiftPackageReference "Tabman" */;
+			productName = Tabman;
 		};
 		56D6499B2BB3B14E002ABC93 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
