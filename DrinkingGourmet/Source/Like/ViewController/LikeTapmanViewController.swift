@@ -14,11 +14,26 @@ class LikeTapmanViewController: TabmanViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "좋아요"
         
         self.dataSource = self
         self.view.backgroundColor = .white
+        setupNaviBar()
         setupTabman()
+    }
+    
+    private func setupNaviBar() {
+        title = "좋아요"
+        
+        // 네비게이션바 투명
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        // 백버튼 커스텀
+        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
+        navigationController?.navigationBar.backIndicatorImage = customBackImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     private func setupTabman() {

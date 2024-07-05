@@ -8,6 +8,8 @@
 import UIKit
 
 class LikeCombinationViewController: UIViewController {
+    // MARK: - Properties
+    private var arrayLikeAllCombination: [LikeCombinationDTO] = []
     
     let likeView = LikeView()
     
@@ -15,12 +17,28 @@ class LikeCombinationViewController: UIViewController {
     override func loadView() {
         view = likeView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchData()
         setupRefresh()
         setupCollectionView()
+    }
+    
+    private func fetchData() {
+        LikeService.shared.getCombination(page: 0) { result in
+            switch result {
+            case .success(let data):
+                print("좋아요한 오늘의 조합 조회 성공")
+                self.arrayLikeAllCombination = data.result.combinationList
+                DispatchQueue.main.async {
+                    self.likeView.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("좋아요한 오늘의 조합 조회 실패 - \(error.localizedDescription)")
+            }
+        }
     }
     
     private func setupRefresh() {
@@ -46,7 +64,7 @@ extension LikeCombinationViewController {
     // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//            self.fetchData()
+            self.fetchData()
             refresh.endRefreshing()
         }
     }
@@ -55,15 +73,19 @@ extension LikeCombinationViewController {
 // MARK: - UICollectionViewDataSource
 extension LikeCombinationViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return self.arrayLikeAllCombination.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikeCell", for: indexPath) as! LikeCell
         
+        let data = self.arrayLikeAllCombination[indexPath.item]
         
-        cell.thumbnailimage.backgroundColor = .red
-        cell.titleLabel.text = "테스트"
+        if let url = URL(string: data.combinationImageUrl) {
+            cell.thumbnailimage.kf.setImage(with: url)
+        }
+        
+        cell.titleLabel.text = data.title
         
         return cell
     }
@@ -86,5 +108,13 @@ extension LikeCombinationViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedCombinationId = arrayLikeAllCombination[indexPath.row].combinationId
+        let VC = CombinationDetailViewController()
+        VC.combinationId = selectedCombinationId
+        VC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(VC, animated: true)
     }
 }
