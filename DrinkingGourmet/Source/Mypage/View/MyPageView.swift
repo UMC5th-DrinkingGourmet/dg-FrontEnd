@@ -8,7 +8,6 @@
 import UIKit
 
 class MyPageView: UIView {
-    
     // MARK: - View
     let profileImage = UIImageView().then {
         $0.image = UIImage(named: "ic_profile_mypage")
@@ -36,8 +35,6 @@ class MyPageView: UIView {
         $0.setImage(UIImage(named: "ic_more"), for: .normal)
     }
     
-    let myPageLowerView = MyPageLowerView()
-    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,7 +48,11 @@ class MyPageView: UIView {
     
     // MARK: - UI
     func addViews() {
-        self.addSubviews([profileImage, nameLabel, providerImage, informationButton, moreButton, myPageLowerView])
+        self.addSubviews([profileImage,
+                          nameLabel,
+                          providerImage,
+                          informationButton,
+                          moreButton,])
     }
     
     func configureConstraints() {
@@ -83,11 +84,11 @@ class MyPageView: UIView {
             make.size.equalTo(12)
         }
         
-        myPageLowerView.snp.makeConstraints { make in
-            make.top.equalTo(profileImage.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
-        }
+//        myPageLowerView.snp.makeConstraints { make in
+//            make.top.equalTo(profileImage.snp.bottom).offset(16)
+//            make.leading.trailing.equalToSuperview()
+//            make.bottom.equalTo(self.safeAreaLayoutGuide)
+//        }
         
     }
 }

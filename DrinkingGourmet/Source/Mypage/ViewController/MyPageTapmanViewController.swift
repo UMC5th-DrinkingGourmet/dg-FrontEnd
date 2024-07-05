@@ -1,16 +1,16 @@
 //
-//  LikeTapmanViewController.swift
+//  MyPageTapmanViewController.swift
 //  DrinkingGourmet
 //
-//  Created by 이승민 on 2/17/24.
+//  Created by 이승민 on 7/5/24.
 //
 
 import UIKit
 import Tabman
 import Pageboy
 
-class LikeTapmanViewController: TabmanViewController {
-    let viewControllers:[UIViewController] = [LikeCombinationViewController(), LikeRecipeBookViewController()]
+class MyPageTapmanViewController: TabmanViewController {
+    let viewControllers:[UIViewController] = [MyRecommendViewController(), MyCombinationViewController(), MyRecipeBookViewController()]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class LikeTapmanViewController: TabmanViewController {
     }
     
     private func setupNaviBar() {
-        title = "좋아요"
+        title = "마이페이지"
         
         // 네비게이션바 투명
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -63,14 +63,16 @@ class LikeTapmanViewController: TabmanViewController {
     }
 }
 
-extension LikeTapmanViewController: PageboyViewControllerDataSource, TMBarDataSource {
+extension MyPageTapmanViewController: PageboyViewControllerDataSource, TMBarDataSource {
     
     // 각 탭바 항목
     func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
         switch index {
         case 0:
-            return TMBarItem(title: "오늘의 조합")
+            return TMBarItem(title: "추천")
         case 1:
+            return TMBarItem(title: "오늘의 조합")
+        case 2:
             return TMBarItem(title: "레시피북")
         default:
             return TMBarItem(title: "Page \(index)")
