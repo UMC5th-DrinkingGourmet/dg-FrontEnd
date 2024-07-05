@@ -9,7 +9,7 @@ import UIKit
 
 class LikeCombinationViewController: UIViewController {
     // MARK: - Properties
-    private var arrayLikeAllCombination: [LikeCombinationDTO] = []
+    private var likeCombinations: [LikeCombinationDTO] = []
     
     let likeView = LikeView()
     
@@ -31,7 +31,7 @@ class LikeCombinationViewController: UIViewController {
             switch result {
             case .success(let data):
                 print("좋아요한 오늘의 조합 조회 성공")
-                self.arrayLikeAllCombination = data.result.combinationList
+                self.likeCombinations = data.result.combinationList
                 DispatchQueue.main.async {
                     self.likeView.collectionView.reloadData()
                 }
@@ -73,13 +73,13 @@ extension LikeCombinationViewController {
 // MARK: - UICollectionViewDataSource
 extension LikeCombinationViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.arrayLikeAllCombination.count
+        return self.likeCombinations.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikeCell", for: indexPath) as! LikeCell
         
-        let data = self.arrayLikeAllCombination[indexPath.item]
+        let data = self.likeCombinations[indexPath.item]
         
         if let url = URL(string: data.combinationImageUrl) {
             cell.thumbnailimage.kf.setImage(with: url)
@@ -111,7 +111,7 @@ extension LikeCombinationViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCombinationId = arrayLikeAllCombination[indexPath.row].combinationId
+        let selectedCombinationId = likeCombinations[indexPath.row].combinationId
         let VC = CombinationDetailViewController()
         VC.combinationId = selectedCombinationId
         VC.hidesBottomBarWhenPushed = true

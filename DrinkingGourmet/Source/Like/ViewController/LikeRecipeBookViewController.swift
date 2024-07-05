@@ -8,6 +8,8 @@
 import UIKit
 
 class LikeRecipeBookViewController: UIViewController {
+    // MARK: - Properties
+    private var likeRecipeBooks: [LikeRecipeBookDTO] = []
     
     let likeView = LikeView()
     
@@ -15,12 +17,28 @@ class LikeRecipeBookViewController: UIViewController {
     override func loadView() {
         view = likeView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchData()
         setupRefresh()
         setupCollectionView()
+    }
+    
+    private func fetchData() {
+        LikeService.shared.getRecipeBook(page: 0) { result in
+            switch result {
+            case .success(let data):
+                print("좋아요한 레시피북 조회 성공")
+                self.likeRecipeBooks = data.result.recipeList
+                DispatchQueue.main.async {
+                    self.likeView.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("좋아요한 레시피북 조회 실패 - \(error.localizedDescription)")
+            }
+        }
     }
     
     private func setupRefresh() {
@@ -46,7 +64,7 @@ extension LikeRecipeBookViewController {
     // 새로고침
     @objc func refreshTable(refresh: UIRefreshControl) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//            self.fetchData()
+            self.fetchData()
             refresh.endRefreshing()
         }
     }
@@ -55,15 +73,19 @@ extension LikeRecipeBookViewController {
 // MARK: - UICollectionViewDataSource
 extension LikeRecipeBookViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return self.likeRecipeBooks.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikeCell", for: indexPath) as! LikeCell
         
+        let data = self.likeRecipeBooks[indexPath.item]
         
-        cell.thumbnailimage.backgroundColor = .red
-        cell.titleLabel.text = "테스트"
+        if let url = URL(string: data.recipeImageUrl) {
+            cell.thumbnailimage.kf.setImage(with: url)
+        }
+        
+        cell.titleLabel.text = data.name
         
         return cell
     }
@@ -86,5 +108,13 @@ extension LikeRecipeBookViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedRecipebBookId = likeRecipeBooks[indexPath.row].id
+        let VC = RecipeBookDetailViewController()
+        VC.recipeBookId = selectedRecipebBookId
+        VC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(VC, animated: true)
     }
 }
