@@ -11,11 +11,11 @@ class MyRecommendViewController: UIViewController {
     // MARK: - Properties
     private var myRecommends: [RecommendResultDTO] = []
     
-    let likeView = LikeView()
+    let myRecommendView = LikeView()
     
     // MARK: - View 설정
     override func loadView() {
-        view = likeView
+        view = myRecommendView
     }
     
     override func viewDidLoad() {
@@ -34,7 +34,7 @@ class MyRecommendViewController: UIViewController {
                 print("나의 주류 추천 조회 성공")
                 self.myRecommends = data.result.recommendResponseDTOList
                 DispatchQueue.main.async {
-                    self.likeView.collectionView.reloadData()
+                    self.myRecommendView.collectionView.reloadData()
                 }
             case .failure(let error):
                 print("나의 주류 추천 조회 실패 - \(error.localizedDescription)")
@@ -43,15 +43,15 @@ class MyRecommendViewController: UIViewController {
     }
     
     private func setupRefresh() {
-        let rc = likeView.refreshControl
+        let rc = myRecommendView.refreshControl
         rc.addTarget(self, action: #selector(refreshTable(refresh:)), for: .valueChanged)
         rc.tintColor = .customOrange
         
-        likeView.collectionView.refreshControl = rc
+        myRecommendView.collectionView.refreshControl = rc
     }
     
     private func setupCollectionView() {
-        let cv = likeView.collectionView
+        let cv = myRecommendView.collectionView
         cv.dataSource = self
         cv.delegate = self
         
@@ -87,6 +87,7 @@ extension MyRecommendViewController: UICollectionViewDataSource {
         }
         
         cell.titleLabel.text = "\(data.foodName) & \(data.drinkName)"
+        cell.heartIcon.isHidden = true
         
         return cell
     }

@@ -34,7 +34,7 @@ struct MyRecommendResultDTO: Codable {
 struct MyCombinationResponseDTO: Codable {
     let isSuccess: Bool
     let code, message: String
-    let result: Result
+    let result: MyCombinationResultDTO
 }
 
 struct MyCombinationResultDTO: Codable {
@@ -53,7 +53,7 @@ struct MyCombinationDTO: Codable {
 struct MyRecipeBookResponseDTO: Codable {
     let isSuccess: Bool
     let code, message: String
-    let result: Result
+    let result: MyRecipeBookResultDTO
 }
 
 struct MyRecipeBookResultDTO: Codable {
