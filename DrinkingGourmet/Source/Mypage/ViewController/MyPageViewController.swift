@@ -23,9 +23,46 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        fetchData()
         addViews()
         configureConstraints()
         setupNaviBar()
+        setupButton()
+    }
+    
+    private func fetchData() {
+        MyPageService.shared.getMyInfo { result in
+            switch result {
+            case .success(let data):
+                print("내 정보 조회 성공")
+                DispatchQueue.main.async {
+                    if let profileImageUrl = URL(string: data.result.profileImageUrl) {
+                        self.myPageView.profileImage.kf.setImage(with: profileImageUrl)
+                    }
+                    
+                    self.myPageView.nickNameLabel.text = ("\(data.result.nickName) 님")
+                    
+                    var provider = ""
+                    switch data.result.provider {
+                    case "kakao":
+                        provider = "ic_login_kakao"
+                    case "apple":
+                        provider = "ic_login_apple"
+                    case "naver":
+                        provider = "ic_login_naver"
+                    default:
+                        return
+                    }
+                    self.myPageView.providerIcon.image = UIImage(named: provider)
+                }
+            case .failure:
+                print("내 정보 조회 실패")
+            }
+        }
+    }
+    
+    private func updateUI() {
+        
     }
     
     private func addViews() {
@@ -59,6 +96,10 @@ class MyPageViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = settingButton
     }
+    
+    private func setupButton() {
+        myPageView.myInfoButton.addTarget(self, action: #selector(myInfoButtonTapped), for: .touchUpInside)
+    }
 }
 
 // MARK: - Actions
@@ -66,5 +107,9 @@ extension MyPageViewController {
     @objc func settingButtonTapped() {
         let VC = SettingViewController()
         navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    @objc func myInfoButtonTapped() {
+        print("기본 정보 보기 클릭")
     }
 }

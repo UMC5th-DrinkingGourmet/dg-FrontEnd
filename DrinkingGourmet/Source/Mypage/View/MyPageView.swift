@@ -15,9 +15,9 @@ class MyPageView: UIView {
         $0.clipsToBounds = true
     }
     
-    let nameLabel = UILabel().then {
+    let nickNameLabel = UILabel().then {
         $0.text = "이름 님"
-        $0.textColor = .black
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
     }
     
@@ -25,14 +25,18 @@ class MyPageView: UIView {
         $0.image = UIImage(named: "ic_login_kakao")
     }
     
-    let informationButton = UIButton().then {
-        $0.setTitle("기본 정보 보기", for: .normal)
-        $0.setTitleColor(UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1), for: .normal)
-        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+    private let myInfoLabel = UILabel().then {
+        $0.text = "기본 정보 보기"
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        $0.textColor = .base0300
     }
     
     private let arrowIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_more")
+    }
+    
+    let myInfoButton = UIButton().then {
+        $0.backgroundColor = .clear
     }
     
     let tapmanView = UIView()
@@ -53,10 +57,11 @@ class MyPageView: UIView {
     // MARK: - UI
     private func addViews() {
         self.addSubviews([profileImage,
-                          nameLabel,
+                          nickNameLabel,
                           providerIcon,
-                          informationButton,
+                          myInfoLabel,
                           arrowIcon,
+                          myInfoButton,
                           tapmanView])
     }
     
@@ -67,26 +72,32 @@ class MyPageView: UIView {
             make.size.equalTo(64)
         }
         
-        nameLabel.snp.makeConstraints { make in
+        nickNameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImage.snp.top).inset(10)
             make.leading.equalTo(profileImage.snp.trailing).offset(20)
         }
         
         providerIcon.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel)
-            make.leading.equalTo(nameLabel.snp.trailing).offset(8)
+            make.top.equalTo(nickNameLabel)
+            make.leading.equalTo(nickNameLabel.snp.trailing).offset(8)
             make.size.equalTo(20)
         }
         
-        informationButton.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(4)
-            make.leading.equalTo(nameLabel)
+        myInfoLabel.snp.makeConstraints { make in
+            make.top.equalTo(nickNameLabel.snp.bottom).offset(4)
+            make.leading.equalTo(nickNameLabel)
         }
         
         arrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(profileImage)
             make.trailing.equalToSuperview().inset(20)
             make.size.equalTo(12)
+        }
+        
+        myInfoButton.snp.makeConstraints { make in
+            make.top.bottom.equalTo(profileImage)
+            make.leading.equalTo(nickNameLabel)
+            make.trailing.equalToSuperview()
         }
         
         tapmanView.snp.makeConstraints { make in
