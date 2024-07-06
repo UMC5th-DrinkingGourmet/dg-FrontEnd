@@ -31,7 +31,7 @@ class TabBarViewController: UITabBarController {
         let recommendVC = UINavigationController(rootViewController: RecommendGuideViewController())
         let communityVC = UINavigationController(rootViewController: CommunityViewController())
         let likeVC = UINavigationController(rootViewController: LikeTapmanViewController())
-        let myPageVC = UINavigationController(rootViewController: MyPageTapmanViewController())
+        let myPageVC = UINavigationController(rootViewController: MyPageViewController())
         
         
         // 탭 바 이이템 설정

@@ -21,7 +21,7 @@ class MyPageView: UIView {
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
     }
     
-    let providerImage = UIImageView().then {
+    let providerIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_login_kakao")
     }
     
@@ -31,13 +31,17 @@ class MyPageView: UIView {
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     }
     
-    let moreButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_more"), for: .normal)
+    private let arrowIcon = UIImageView().then {
+        $0.image = UIImage(named: "ic_more")
     }
+    
+    let tapmanView = UIView()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
+        
         addViews()
         configureConstraints()
     }
@@ -47,15 +51,16 @@ class MyPageView: UIView {
     }
     
     // MARK: - UI
-    func addViews() {
+    private func addViews() {
         self.addSubviews([profileImage,
                           nameLabel,
-                          providerImage,
+                          providerIcon,
                           informationButton,
-                          moreButton,])
+                          arrowIcon,
+                          tapmanView])
     }
     
-    func configureConstraints() {
+    private func configureConstraints() {
         profileImage.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(33)
             make.leading.equalToSuperview().offset(20)
@@ -67,7 +72,7 @@ class MyPageView: UIView {
             make.leading.equalTo(profileImage.snp.trailing).offset(20)
         }
         
-        providerImage.snp.makeConstraints { make in
+        providerIcon.snp.makeConstraints { make in
             make.top.equalTo(nameLabel)
             make.leading.equalTo(nameLabel.snp.trailing).offset(8)
             make.size.equalTo(20)
@@ -78,17 +83,15 @@ class MyPageView: UIView {
             make.leading.equalTo(nameLabel)
         }
         
-        moreButton.snp.makeConstraints { make in
+        arrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(profileImage)
             make.trailing.equalToSuperview().inset(20)
             make.size.equalTo(12)
         }
         
-//        myPageLowerView.snp.makeConstraints { make in
-//            make.top.equalTo(profileImage.snp.bottom).offset(16)
-//            make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(self.safeAreaLayoutGuide)
-//        }
-        
+        tapmanView.snp.makeConstraints { make in
+            make.top.equalTo(profileImage.snp.bottom).offset(16)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 }

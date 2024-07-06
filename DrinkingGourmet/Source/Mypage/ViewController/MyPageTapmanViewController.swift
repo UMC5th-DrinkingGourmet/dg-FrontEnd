@@ -10,30 +10,20 @@ import Tabman
 import Pageboy
 
 class MyPageTapmanViewController: TabmanViewController {
-    let viewControllers:[UIViewController] = [MyRecommendViewController(), MyCombinationViewController(), MyRecipeBookViewController()]
+    private var viewControllers:[UIViewController] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("MyPageTapmanViewController - viewDidLoad")
+        
+        viewControllers.append(MyRecommendViewController())
+        viewControllers.append(MyCombinationViewController())
+        viewControllers.append(MyRecipeBookViewController())
         
         self.dataSource = self
         self.view.backgroundColor = .white
-        setupNaviBar()
+        
         setupTabman()
-    }
-    
-    private func setupNaviBar() {
-        title = "마이페이지"
-        
-        // 네비게이션바 투명
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        
-        // 백버튼 커스텀
-        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
-        navigationController?.navigationBar.backIndicatorImage = customBackImage
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
-        
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     private func setupTabman() {
@@ -46,13 +36,11 @@ class MyPageTapmanViewController: TabmanViewController {
         bar.layout.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         bar.layout.interButtonSpacing = 0 // 버튼 사이 간격
         
-        
         bar.buttons.customize { (button) in
             button.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)!
             button.tintColor = .base0400 // 선택 X
             button.selectedTintColor = .black // 선택 O
         }
-        
 
         bar.indicator.weight = .light
         bar.indicator.tintColor = .customOrange

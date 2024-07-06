@@ -85,7 +85,6 @@
 		56A7E82D2C15C6BA00CDE615 /* LikeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */; };
 		56AE28452B83D57B009CE0A1 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28442B83D57B009CE0A1 /* MyPageView.swift */; };
 		56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */; };
-		56AE284B2B83E51D009CE0A1 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AE284A2B83E51D009CE0A1 /* MyPageCell.swift */; };
 		56B9DCCC2BCBF37700D08D22 /* ReportCompletePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B9DCCB2BCBF37700D08D22 /* ReportCompletePopUpView.swift */; };
 		56B9DCCE2BCEC77700D08D22 /* RecipeBookDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B9DCCD2BCEC77700D08D22 /* RecipeBookDetailHeaderView.swift */; };
 		56BBF3512C32BDDD0058B19B /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF3502C32BDDD0058B19B /* QuestionViewController.swift */; };
@@ -245,7 +244,6 @@
 		56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeDTO.swift; sourceTree = "<group>"; };
 		56AE28442B83D57B009CE0A1 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		56AE28462B83D8DE009CE0A1 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		56AE284A2B83E51D009CE0A1 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		56B9DCCB2BCBF37700D08D22 /* ReportCompletePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCompletePopUpView.swift; sourceTree = "<group>"; };
 		56B9DCCD2BCEC77700D08D22 /* RecipeBookDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookDetailHeaderView.swift; sourceTree = "<group>"; };
 		56BBF3502C32BDDD0058B19B /* QuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
@@ -941,7 +939,6 @@
 			isa = PBXGroup;
 			children = (
 				56AE28442B83D57B009CE0A1 /* MyPageView.swift */,
-				56AE284A2B83E51D009CE0A1 /* MyPageCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1280,7 +1277,6 @@
 				56BBF3662C3455D80058B19B /* RemovedAlertView.swift in Sources */,
 				56543EBD2B7E9A880099E648 /* CombinationUploadVC.swift in Sources */,
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
-				56AE284B2B83E51D009CE0A1 /* MyPageCell.swift in Sources */,
 				5658DDF72B57498600F72F42 /* CombinationHomeViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* CombinationHomeCell.swift in Sources */,
 				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
