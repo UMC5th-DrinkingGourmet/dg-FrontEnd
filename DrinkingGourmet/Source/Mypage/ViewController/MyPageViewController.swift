@@ -10,7 +10,8 @@ import UIKit
 class MyPageViewController: UIViewController {
     // MARK: - Properties
     private let tabmanVC = MyPageTapmanViewController()
-    
+    private var myInfo: MyInfoResultDTO?
+
     private let myPageView = MyPageView()
     
     // MARK: - View 설정
@@ -35,26 +36,8 @@ class MyPageViewController: UIViewController {
             switch result {
             case .success(let data):
                 print("내 정보 조회 성공")
-                DispatchQueue.main.async {
-                    if let profileImageUrl = URL(string: data.result.profileImageUrl) {
-                        self.myPageView.profileImage.kf.setImage(with: profileImageUrl)
-                    }
-                    
-                    self.myPageView.nickNameLabel.text = ("\(data.result.nickName) 님")
-                    
-                    var provider = ""
-                    switch data.result.provider {
-                    case "kakao":
-                        provider = "ic_login_kakao"
-                    case "apple":
-                        provider = "ic_login_apple"
-                    case "naver":
-                        provider = "ic_login_naver"
-                    default:
-                        return
-                    }
-                    self.myPageView.providerIcon.image = UIImage(named: provider)
-                }
+                self.myInfo = data.result
+                self.updateUI()
             case .failure:
                 print("내 정보 조회 실패")
             }
@@ -62,7 +45,28 @@ class MyPageViewController: UIViewController {
     }
     
     private func updateUI() {
+        guard let myInfo = self.myInfo else { return }
         
+        DispatchQueue.main.async {
+            if let profileImageUrl = URL(string: myInfo.profileImageUrl) {
+                self.myPageView.profileImage.kf.setImage(with: profileImageUrl)
+            }
+            
+            self.myPageView.nicknameLabel.text = ("\(myInfo.nickName) 님")
+            
+            var provider = ""
+            switch myInfo.provider {
+            case "kakao":
+                provider = "ic_login_kakao"
+            case "apple":
+                provider = "ic_login_apple"
+            case "naver":
+                provider = "ic_login_naver"
+            default:
+                return
+            }
+            self.myPageView.providerIcon.image = UIImage(named: provider)
+        }
     }
     
     private func addViews() {
@@ -106,6 +110,7 @@ class MyPageViewController: UIViewController {
 extension MyPageViewController {
     @objc func settingButtonTapped() {
         let VC = SettingViewController()
+        VC.myInfo = self.myInfo
         navigationController?.pushViewController(VC, animated: true)
     }
     

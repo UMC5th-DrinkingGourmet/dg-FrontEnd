@@ -15,7 +15,7 @@ class MyPageView: UIView {
         $0.clipsToBounds = true
     }
     
-    let nickNameLabel = UILabel().then {
+    let nicknameLabel = UILabel().then {
         $0.text = "이름 님"
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
@@ -57,7 +57,7 @@ class MyPageView: UIView {
     // MARK: - UI
     private func addViews() {
         self.addSubviews([profileImage,
-                          nickNameLabel,
+                          nicknameLabel,
                           providerIcon,
                           myInfoLabel,
                           arrowIcon,
@@ -72,20 +72,20 @@ class MyPageView: UIView {
             make.size.equalTo(64)
         }
         
-        nickNameLabel.snp.makeConstraints { make in
+        nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImage.snp.top).inset(10)
             make.leading.equalTo(profileImage.snp.trailing).offset(20)
         }
         
         providerIcon.snp.makeConstraints { make in
-            make.top.equalTo(nickNameLabel)
-            make.leading.equalTo(nickNameLabel.snp.trailing).offset(8)
+            make.top.equalTo(nicknameLabel)
+            make.leading.equalTo(nicknameLabel.snp.trailing).offset(8)
             make.size.equalTo(20)
         }
         
         myInfoLabel.snp.makeConstraints { make in
-            make.top.equalTo(nickNameLabel.snp.bottom).offset(4)
-            make.leading.equalTo(nickNameLabel)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
+            make.leading.equalTo(nicknameLabel)
         }
         
         arrowIcon.snp.makeConstraints { make in
@@ -96,7 +96,7 @@ class MyPageView: UIView {
         
         myInfoButton.snp.makeConstraints { make in
             make.top.bottom.equalTo(profileImage)
-            make.leading.equalTo(nickNameLabel)
+            make.leading.equalTo(nicknameLabel)
             make.trailing.equalToSuperview()
         }
         
