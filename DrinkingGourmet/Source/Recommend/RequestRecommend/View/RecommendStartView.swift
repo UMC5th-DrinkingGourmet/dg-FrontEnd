@@ -16,7 +16,7 @@ final class RecommendStartView: UIView {
         $0.lineBreakMode = .byWordWrapping
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "서리님을 위한 주류를\n추천해드립니다.", attributes: [NSAttributedString.Key.kern: -0.72, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "\(UserDefaultManager.shared.userNickname)님을 위한 주류를\n추천해드립니다.", attributes: [NSAttributedString.Key.kern: -0.72, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     let nextButton = NextButtonView()

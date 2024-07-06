@@ -347,6 +347,8 @@ extension CombinationDetailViewController: UITableViewDataSource {
         if let imageUrlString = data.memberProfile {
             if let imageUrl = URL(string: imageUrlString) {
                 cell.profileImage.kf.setImage(with: imageUrl)
+            } else {
+                cell.profileImage.image = UIImage(named: "ic_default_profile")
             }
         }
         
