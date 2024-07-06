@@ -153,9 +153,9 @@ extension ReportViewController {
                         vc.fetchData()
                         vc.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(vc, animated: true)
-                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeViewController }) as? LikeViewController {
-                        likeVC.fetchData()
-                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
+                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeTapmanViewController }) as? LikeTapmanViewController {
+//                        likeVC.fetchData()
+//                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(likeVC, animated: true)
                     }
                 case "COMBINATION_COMMENT": // 오늘의 조합 뎃글 신고
@@ -169,9 +169,9 @@ extension ReportViewController {
                         vc.fetchData()
                         vc.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(vc, animated: true)
-                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeViewController }) as? LikeViewController {
-                        likeVC.fetchData()
-                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
+                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeTapmanViewController }) as? LikeTapmanViewController {
+//                        likeVC.fetchData()
+//                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(likeVC, animated: true)
                     }
                 case "RECIPE_COMMENT": // // 레시피북 댓글 신고

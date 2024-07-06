@@ -30,7 +30,7 @@ class TabBarViewController: UITabBarController {
         let mainMenuVC = UINavigationController(rootViewController: MainMenuViewController())
         let recommendVC = UINavigationController(rootViewController: RecommendGuideViewController())
         let communityVC = UINavigationController(rootViewController: CommunityViewController())
-        let likeVC = UINavigationController(rootViewController: LikeViewController())
+        let likeVC = UINavigationController(rootViewController: LikeTapmanViewController())
         let myPageVC = UINavigationController(rootViewController: MyPageViewController())
         
         
