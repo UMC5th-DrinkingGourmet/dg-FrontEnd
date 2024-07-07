@@ -8,7 +8,6 @@
 import UIKit
 
 class MyPageView: UIView {
-    
     // MARK: - View
     let profileImage = UIImageView().then {
         $0.image = UIImage(named: "ic_profile_mypage")
@@ -16,31 +15,37 @@ class MyPageView: UIView {
         $0.clipsToBounds = true
     }
     
-    let nameLabel = UILabel().then {
+    let nicknameLabel = UILabel().then {
         $0.text = "이름 님"
-        $0.textColor = .black
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
     }
     
-    let providerImage = UIImageView().then {
+    let providerIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_login_kakao")
     }
     
-    let informationButton = UIButton().then {
-        $0.setTitle("기본 정보 보기", for: .normal)
-        $0.setTitleColor(UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1), for: .normal)
-        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+    private let myInfoLabel = UILabel().then {
+        $0.text = "기본 정보 보기"
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        $0.textColor = .base0300
     }
     
-    let moreButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_more"), for: .normal)
+    private let arrowIcon = UIImageView().then {
+        $0.image = UIImage(named: "ic_more")
     }
     
-    let myPageLowerView = MyPageLowerView()
+    let myInfoButton = UIButton().then {
+        $0.backgroundColor = .clear
+    }
+    
+    let tapmanView = UIView()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
+        
         addViews()
         configureConstraints()
     }
@@ -50,44 +55,54 @@ class MyPageView: UIView {
     }
     
     // MARK: - UI
-    func addViews() {
-        self.addSubviews([profileImage, nameLabel, providerImage, informationButton, moreButton, myPageLowerView])
+    private func addViews() {
+        self.addSubviews([profileImage,
+                          nicknameLabel,
+                          providerIcon,
+                          myInfoLabel,
+                          arrowIcon,
+                          myInfoButton,
+                          tapmanView])
     }
     
-    func configureConstraints() {
+    private func configureConstraints() {
         profileImage.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(33)
             make.leading.equalToSuperview().offset(20)
             make.size.equalTo(64)
         }
         
-        nameLabel.snp.makeConstraints { make in
+        nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImage.snp.top).inset(10)
             make.leading.equalTo(profileImage.snp.trailing).offset(20)
         }
         
-        providerImage.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel)
-            make.leading.equalTo(nameLabel.snp.trailing).offset(8)
+        providerIcon.snp.makeConstraints { make in
+            make.top.equalTo(nicknameLabel)
+            make.leading.equalTo(nicknameLabel.snp.trailing).offset(8)
             make.size.equalTo(20)
         }
         
-        informationButton.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(4)
-            make.leading.equalTo(nameLabel)
+        myInfoLabel.snp.makeConstraints { make in
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
+            make.leading.equalTo(nicknameLabel)
         }
         
-        moreButton.snp.makeConstraints { make in
+        arrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(profileImage)
             make.trailing.equalToSuperview().inset(20)
             make.size.equalTo(12)
         }
         
-        myPageLowerView.snp.makeConstraints { make in
-            make.top.equalTo(profileImage.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
+        myInfoButton.snp.makeConstraints { make in
+            make.top.bottom.equalTo(profileImage)
+            make.leading.equalTo(nicknameLabel)
+            make.trailing.equalToSuperview()
         }
         
+        tapmanView.snp.makeConstraints { make in
+            make.top.equalTo(profileImage.snp.bottom).offset(16)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 }

@@ -21,27 +21,31 @@ final class SettingTopView: UITableViewHeaderFooterView {
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
     }
     
-    let providerImage = UIImageView().then {
+    let providerIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_login_kakao")
     }
     
-    private let informationButton = UIButton().then {
-        $0.setTitle("기본 정보 보기", for: .normal)
-        $0.setTitleColor(UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1), for: .normal)
-        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+    private let myInfoLabel = UILabel().then {
+        $0.text = "기본 정보 보기"
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        $0.textColor = .base0300
     }
     
-    let moreButton = UIButton().then {
+    private let arrowIcon = UIButton().then {
         $0.setImage(UIImage(named: "ic_more"), for: .normal)
     }
     
+    private let myInfoButton = UIButton().then {
+        $0.backgroundColor = .clear
+    }
+    
     private let modifyView = UIView().then {
-        $0.backgroundColor = UIColor(red: 0.961, green: 0.961, blue: 0.961, alpha: 1)
+        $0.backgroundColor = .base0900
         $0.layer.cornerRadius = 8
     }
     
     private let modifyLabel_1 = UILabel().then {
-        $0.textColor = .black
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
@@ -49,7 +53,7 @@ final class SettingTopView: UITableViewHeaderFooterView {
     }
     
     private let modifyLabel_2 = UILabel().then {
-        $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+        $0.textColor = .base0400
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
@@ -72,7 +76,7 @@ final class SettingTopView: UITableViewHeaderFooterView {
     }
     
     private let divideLine = UIView().then {
-        $0.backgroundColor = UIColor(red: 0.961, green: 0.961, blue: 0.961, alpha: 1)
+        $0.backgroundColor = .base0900
     }
     
     override init(reuseIdentifier: String?) {
@@ -87,25 +91,21 @@ final class SettingTopView: UITableViewHeaderFooterView {
     
     // MARK: - UI
     private func addViews() {
-        self.addSubviews([
-            profileImage,
-            nicknameLabel,
-            providerImage,
-            informationButton,
-            moreButton,
-            modifyView,
-            divideLine
-        ])
+        self.addSubviews([profileImage,
+                          nicknameLabel,
+                          providerIcon,
+                          myInfoLabel,
+                          arrowIcon,
+                          myInfoButton,
+                          modifyView,
+                          divideLine])
         
-        modifyView.addSubviews([
-            modifyLabel_1,
-            modifyLabel_2,
-            modifyButton
-        ])
+        modifyView.addSubviews([modifyLabel_1,
+                                modifyLabel_2,
+                                modifyButton])
     }
     
     private func configureConstraints() {
-    
         profileImage.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(33)
             make.leading.equalToSuperview().offset(22)
@@ -117,21 +117,27 @@ final class SettingTopView: UITableViewHeaderFooterView {
             make.leading.equalTo(profileImage.snp.trailing).offset(18)
         }
         
-        providerImage.snp.makeConstraints { make in
+        providerIcon.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel)
             make.leading.equalTo(nicknameLabel.snp.trailing).offset(8)
             make.size.equalTo(20)
         }
         
-        informationButton.snp.makeConstraints { make in
+        myInfoLabel.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
             make.leading.equalTo(nicknameLabel)
         }
         
-        moreButton.snp.makeConstraints { make in
+        arrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(profileImage)
             make.trailing.equalToSuperview().inset(20)
             make.size.equalTo(12)
+        }
+        
+        myInfoButton.snp.makeConstraints { make in
+            make.top.bottom.equalTo(profileImage)
+            make.leading.equalTo(nicknameLabel)
+            make.trailing.equalToSuperview()
         }
         
         modifyView.snp.makeConstraints { make in

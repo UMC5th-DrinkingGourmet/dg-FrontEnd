@@ -1,39 +1,29 @@
 //
-//  LikeTapmanViewController.swift
+//  MyPageTapmanViewController.swift
 //  DrinkingGourmet
 //
-//  Created by 이승민 on 2/17/24.
+//  Created by 이승민 on 7/5/24.
 //
 
 import UIKit
 import Tabman
 import Pageboy
 
-class LikeTapmanViewController: TabmanViewController {
-    let viewControllers:[UIViewController] = [LikeCombinationViewController(), LikeRecipeBookViewController()]
+class MyPageTapmanViewController: TabmanViewController {
+    private var viewControllers:[UIViewController] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("MyPageTapmanViewController - viewDidLoad")
+        
+        viewControllers.append(MyRecommendViewController())
+        viewControllers.append(MyCombinationViewController())
+        viewControllers.append(MyRecipeBookViewController())
         
         self.dataSource = self
         self.view.backgroundColor = .white
-        setupNaviBar()
+        
         setupTabman()
-    }
-    
-    private func setupNaviBar() {
-        title = "좋아요"
-        
-        // 네비게이션바 투명
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        
-        // 백버튼 커스텀
-        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
-        navigationController?.navigationBar.backIndicatorImage = customBackImage
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
-        
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     private func setupTabman() {
@@ -46,13 +36,11 @@ class LikeTapmanViewController: TabmanViewController {
         bar.layout.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         bar.layout.interButtonSpacing = 0 // 버튼 사이 간격
         
-        
         bar.buttons.customize { (button) in
             button.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)!
             button.tintColor = .base0400 // 선택 X
             button.selectedTintColor = .black // 선택 O
         }
-        
 
         bar.indicator.weight = .light
         bar.indicator.tintColor = .customOrange
@@ -63,14 +51,16 @@ class LikeTapmanViewController: TabmanViewController {
     }
 }
 
-extension LikeTapmanViewController: PageboyViewControllerDataSource, TMBarDataSource {
+extension MyPageTapmanViewController: PageboyViewControllerDataSource, TMBarDataSource {
     
     // 각 탭바 항목
     func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
         switch index {
         case 0:
-            return TMBarItem(title: "오늘의 조합")
+            return TMBarItem(title: "추천")
         case 1:
+            return TMBarItem(title: "오늘의 조합")
+        case 2:
             return TMBarItem(title: "레시피북")
         default:
             return TMBarItem(title: "Page \(index)")

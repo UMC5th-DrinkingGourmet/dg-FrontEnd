@@ -16,7 +16,7 @@ final class RecommendLodingView: UIView {
         $0.lineBreakMode = .byWordWrapping
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "00님을 위한 주류를\n선정하고 있어요", attributes: [NSAttributedString.Key.kern: -0.72, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "\(UserDefaultManager.shared.userNickname)님을 위한 주류를\n선정하고 있어요", attributes: [NSAttributedString.Key.kern: -0.72, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     let animationView: LottieAnimationView = .init(name: "Animation - 1707200937141")

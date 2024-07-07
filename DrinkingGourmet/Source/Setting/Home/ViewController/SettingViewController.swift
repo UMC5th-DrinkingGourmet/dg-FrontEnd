@@ -10,8 +10,7 @@ import Kingfisher
 
 final class SettingViewController: UIViewController {
     // MARK: - Properties
-    var profileImageUrl: String? = nil
-    var nickName: String? = nil
+    var myInfo: MyInfoResultDTO?
     
     private let settingSections = SettingSections()
     private let settingView = SettingView()
@@ -43,12 +42,26 @@ final class SettingViewController: UIViewController {
         
         let settingHomeHeaderView = SettingTopView(frame: CGRect(x: 0, y: 0, width: 0, height: 215))
         
-        if let profileImageUrl = self.profileImageUrl,
-           let nickName = self.nickName {
-            let url = URL(string: profileImageUrl)
-            settingHomeHeaderView.profileImage.kf.setImage(with: url)
-            settingHomeHeaderView.nicknameLabel.text = nickName
+        guard let myInfo = self.myInfo else { return }
+        
+        if let profileImageUrl = URL(string: myInfo.profileImageUrl) {
+            settingHomeHeaderView.profileImage.kf.setImage(with: profileImageUrl)
         }
+        
+        settingHomeHeaderView.nicknameLabel.text = ("\(myInfo.nickName) 님")
+        
+        var provider = ""
+        switch myInfo.provider {
+        case "kakao":
+            provider = "ic_login_kakao"
+        case "apple":
+            provider = "ic_login_apple"
+        case "naver":
+            provider = "ic_login_naver"
+        default:
+            return
+        }
+        settingHomeHeaderView.providerIcon.image = UIImage(named: provider)
         
         tb.tableHeaderView = settingHomeHeaderView
     }
