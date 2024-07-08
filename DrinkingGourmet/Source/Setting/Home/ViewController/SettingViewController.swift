@@ -129,10 +129,17 @@ extension SettingViewController: UITableViewDelegate {
         switch indexPath.section {
         case 0:
             let selectedItem = settingSections.supportAndInformation[indexPath.row]
-            if selectedItem == "자주 묻는 질문" {
+            switch selectedItem {
+            case "자주 묻는 질문":
                 let VC = QuestionViewController()
                 VC.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(VC, animated: true)
+            case "약관 및 정책":
+                let VC = TermsAndPoliciesViewController()
+                VC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(VC, animated: true)
+            default:
+                break
             }
         case 1:
             print("섹션 1, 로우: \(settingSections.login[indexPath.row])")
