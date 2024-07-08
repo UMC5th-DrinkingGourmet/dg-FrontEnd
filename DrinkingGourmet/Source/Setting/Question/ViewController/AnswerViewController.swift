@@ -10,6 +10,7 @@ import UIKit
 final class AnswerViewController: UIViewController {
     // MARK: - Properties
     var answer: String?
+    var isTermsAndPolicies = false
     
     private let questionAnswerView = AnswerView()
     
@@ -27,7 +28,7 @@ final class AnswerViewController: UIViewController {
     }
     
     private func setupNaviBar() {
-        title = "자주 묻는 질문"
+        title = isTermsAndPolicies ? "약관 및 정책" : "자주 묻는 질문"
     }
     
     private func setupContent() {

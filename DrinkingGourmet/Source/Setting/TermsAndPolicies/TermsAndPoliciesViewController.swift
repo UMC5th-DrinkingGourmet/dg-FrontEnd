@@ -114,6 +114,7 @@ extension TermsAndPoliciesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let VC = AnswerViewController()
         VC.answer = detailQuestions[indexPath.row].answer
+        VC.isTermsAndPolicies = true
         navigationController?.pushViewController(VC, animated: true)
     }
 }
