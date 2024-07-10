@@ -208,6 +208,7 @@ extension RecipeBookDetailViewController {
                 VC.resourceId = recipeBookDetailData?.result.id
                 VC.reportTarget = "RECIPE"
                 VC.reportContent = recipeBookDetailData?.result.recipeInstruction
+                VC.reportedMemberId = recipeBookDetailData?.result.member.memberId
                 navigationController?.pushViewController(VC, animated: true)
             }
             
@@ -483,6 +484,7 @@ extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓
                 VC.resourceId = data.id
                 VC.reportTarget = "RECIPE_COMMENT"
                 VC.reportContent = data.content
+                VC.reportedMemberId = data.id
                 navigationController?.pushViewController(VC, animated: true)
             }
             

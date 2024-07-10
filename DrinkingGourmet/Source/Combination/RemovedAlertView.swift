@@ -51,7 +51,7 @@ final class RemovedAlertView: UIView {
         paragraphStyle.lineHeightMultiple = 1.25
         paragraphStyle.alignment = .center // 여기에 텍스트 정렬 설정
         $0.attributedText = NSMutableAttributedString(
-            string: "사용자가 직접 삭제했거나 정책 위반으로 삭제된 게시물 입니다.",
+            string: "사용자가 직접 삭제했거나\n정책 위반으로 삭제된 게시물 입니다.",
             attributes: [
                 NSAttributedString.Key.kern: -0.42,
                 NSAttributedString.Key.paragraphStyle: paragraphStyle
