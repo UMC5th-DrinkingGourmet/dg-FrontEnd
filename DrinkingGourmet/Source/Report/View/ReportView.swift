@@ -29,16 +29,16 @@ final class ReportView: UIView {
     let reportTypeView = UIView().then {
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
+        $0.layer.borderColor = UIColor.base0700.cgColor
     }
     
     let reportTypeTextField = UITextField().then {
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
         $0.tintColor = .clear
-        $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+        $0.textColor = .base0400
         
-        let textColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        let textColor = UIColor.base0700
         let font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
@@ -68,13 +68,13 @@ final class ReportView: UIView {
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
+        $0.layer.borderColor = UIColor.base0700.cgColor
         $0.textContainerInset = UIEdgeInsets(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
     }
     
     // 설명
     private let descriptionLabel = UILabel().then {
-        $0.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+        $0.textColor = UIColor.base0400
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
         $0.numberOfLines = 0
         $0.lineBreakMode = .byWordWrapping
@@ -85,7 +85,7 @@ final class ReportView: UIView {
     
     // 신고하기
     let completeView = UIView().then {
-        $0.backgroundColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
+        $0.backgroundColor = .base0500
     }
     
     let completeButton = UIButton().then {
@@ -94,7 +94,7 @@ final class ReportView: UIView {
     }
     
     private let completeLabel = UILabel().then {
-        $0.textColor = .white
+        $0.textColor = .base1000
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1

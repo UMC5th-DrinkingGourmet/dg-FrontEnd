@@ -219,6 +219,7 @@ extension CombinationDetailViewController {
                 VC.reportTarget = "COMBINATION"
                 VC.resourceId = self.combinationDetailData?.result.combinationResult.combinationId
                 VC.reportContent = self.combinationDetailData?.result.combinationResult.content
+                VC.reportedMemberId = self.combinationDetailData?.result.memberResult.memberId
                 self.navigationController?.pushViewController(VC, animated: true)
             }
             
@@ -518,6 +519,7 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
                 VC.resourceId = data.id
                 VC.reportTarget = "COMBINATION_COMMENT"
                 VC.reportContent = data.content
+                VC.reportedMemberId = data.memberId
                 navigationController?.pushViewController(VC, animated: true)
             }
             
