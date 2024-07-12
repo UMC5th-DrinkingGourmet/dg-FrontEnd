@@ -26,7 +26,7 @@ class LikeRecipeBookViewController: UIViewController {
         setupCollectionView()
     }
     
-    private func fetchData() {
+    func fetchData() {
         LikeService.shared.getRecipeBook(page: 0) { result in
             switch result {
             case .success(let data):

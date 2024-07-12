@@ -228,6 +228,10 @@ extension CombinationDetailViewController {
                 guard let self = self else { return }
                 guard let blockedMemberId = self.combinationDetailData?.result.memberResult.memberId else { return }
                 
+                DispatchQueue.main.async {
+                    self.combinationDetailView.commentInputView.isHidden = true
+                }
+                
                 AdministrationService.shared.postBlock(blockedMemberId: blockedMemberId) { error in
                     if let error = error {
                         print("\(blockedMemberId)번 멤버 차단 실패 - \(error.localizedDescription)")
@@ -243,6 +247,12 @@ extension CombinationDetailViewController {
                                     if let combinationHomeVC = vc as? CombinationHomeViewController {
                                         combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
                                         combinationHomeVC.fetchData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        break
+                                    }
+                                    if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                        likeTapmanVC.likeCombinationViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                        likeTapmanVC.likeCombinationViewController.fetchData()
                                         self.navigationController?.popViewController(animated: true)
                                         break
                                     }
