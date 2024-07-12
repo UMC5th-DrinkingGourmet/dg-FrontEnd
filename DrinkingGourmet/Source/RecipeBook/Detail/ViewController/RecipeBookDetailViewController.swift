@@ -526,7 +526,43 @@ extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓
                 navigationController?.pushViewController(VC, animated: true)
             }
             
-            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default) { _ in
+                
+                DispatchQueue.main.async {
+                    self.recipeBookDetailView.commentInputView.isHidden = true
+                }
+                
+                AdministrationService.shared.postBlock(blockedMemberId: data.member.memberId) { error in
+                    if let error = error {
+                        print("\(data.member.memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("\(data.member.memberId)번 멤버 차단 성공")
+                        // 차단 성공 토스트 메시지
+                        let popUpView = ReportCompletePopUpView()
+                        popUpView.label.text = "차단되었습니다"
+                        ToastManager.shared.style.fadeDuration = 0.7
+                        self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { didTap in
+                            if let viewControllers = self.navigationController?.viewControllers {
+                                for vc in viewControllers {
+                                    if let recipeBookHomeVC = vc as? RecipeBookHomeViewController {
+                                        recipeBookHomeVC.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
+                                        recipeBookHomeVC.fetchData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        break
+                                    }
+                                    if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                        likeTapmanVC.likeRecipeBookViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                        likeTapmanVC.likeRecipeBookViewController.fetchData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        break
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }
