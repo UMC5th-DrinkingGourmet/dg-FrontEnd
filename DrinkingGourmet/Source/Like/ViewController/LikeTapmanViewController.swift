@@ -10,10 +10,16 @@ import Tabman
 import Pageboy
 
 class LikeTapmanViewController: TabmanViewController {
-    let viewControllers:[UIViewController] = [LikeCombinationViewController(), LikeRecipeBookViewController()]
+    let likeCombinationViewController = LikeCombinationViewController()
+    let likeRecipeBookViewController = LikeRecipeBookViewController()
+    
+    var viewControllers: [UIViewController] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewControllers.append(likeCombinationViewController)
+        viewControllers.append(likeRecipeBookViewController)
         
         self.dataSource = self
         self.view.backgroundColor = .white
@@ -37,6 +43,8 @@ class LikeTapmanViewController: TabmanViewController {
     }
     
     private func setupTabman() {
+        
+        
         let bar = TMBar.ButtonBar()
         bar.backgroundView.style = .clear
         

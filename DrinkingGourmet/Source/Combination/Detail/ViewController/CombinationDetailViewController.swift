@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Toast
 
 final class CombinationDetailViewController: UIViewController {
     // MARK: - Properties
@@ -96,7 +97,7 @@ final class CombinationDetailViewController: UIViewController {
                 print("오늘의 조합 상세 조회 성공")
                 self.combinationDetailData = data
                 
-                CombinationService.shared.getAllComment(combinationId: combinationId, 
+                CombinationService.shared.getAllComment(combinationId: combinationId,
                                                         page: 0) { result in
                     switch result {
                     case .success(let data):
@@ -225,36 +226,39 @@ extension CombinationDetailViewController {
             
             let blockingAction = UIAlertAction(title: "차단하기", style: .default) { [weak self] _ in
                 guard let self = self else { return }
-                guard let memberId = self.combinationDetailData?.result.memberResult.memberId else { return }
+                guard let blockedMemberId = self.combinationDetailData?.result.memberResult.memberId else { return }
                 
-                AdministrationService.shared.postBlock(blockedMemberId: memberId) { error in
+                DispatchQueue.main.async {
+                    self.combinationDetailView.commentInputView.isHidden = true
+                }
+                
+                AdministrationService.shared.postBlock(blockedMemberId: blockedMemberId) { error in
                     if let error = error {
-                        print("\(memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                        print("\(blockedMemberId)번 멤버 차단 실패 - \(error.localizedDescription)")
                     } else {
-                        print("\(memberId)번 멤버 차단 성공")
-                        DispatchQueue.main.async {
-                            // 차단 성공 메시지 표시
-                            let alert = UIAlertController(title: nil, message: "차단되었습니다.", preferredStyle: .alert)
-                            self.present(alert, animated: true, completion: nil)
-                            
-                            Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                                alert.dismiss(animated: true) {
-                                    // 뷰 컨트롤러를 pop하고 fetchData 호출
-                                    if let navigationController = self.navigationController {
-                                        let viewControllers = navigationController.viewControllers
-                                        for vc in viewControllers {
-                                            if let combinationHomeVC = vc as? CombinationHomeViewController {
-                                                combinationHomeVC.fetchData()
-                                                // 스크롤 맨 위로 올리기
-                                                combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
-                                                navigationController.popToViewController(combinationHomeVC, animated: true)
-                                                break
-                                            }
-                                        }
+                        print("\(blockedMemberId)번 멤버 차단 성공")
+                        // 차단 성공 토스트 메시지
+                        let popUpView = ReportCompletePopUpView()
+                        popUpView.label.text = "차단되었습니다"
+                        ToastManager.shared.style.fadeDuration = 0.7
+                        self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { didTap in
+                            if let viewControllers = self.navigationController?.viewControllers {
+                                for vc in viewControllers {
+                                    if let combinationHomeVC = vc as? CombinationHomeViewController {
+                                        combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
+                                        combinationHomeVC.fetchData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        break
+                                    }
+                                    if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                        likeTapmanVC.likeCombinationViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                        likeTapmanVC.likeCombinationViewController.fetchData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        break
                                     }
                                 }
                             }
-                        }
+                        })
                     }
                 }
             }
@@ -279,7 +283,7 @@ extension CombinationDetailViewController {
             return
         }
         
-        CombinationService.shared.postComment(combinationId: combinationId, 
+        CombinationService.shared.postComment(combinationId: combinationId,
                                               content: content,
                                               parentId: "0") { error in
             if let error = error {
@@ -526,49 +530,37 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
             let blockingAction = UIAlertAction(title: "차단하기", style: .default) { [weak self] _ in
                 guard let self = self else { return }
                 
+                DispatchQueue.main.async {
+                    self.combinationDetailView.commentInputView.isHidden = true
+                }
+                
                 AdministrationService.shared.postBlock(blockedMemberId: data.memberId) { error in
                     if let error = error {
                         print("\(data.memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
                     } else {
                         print("\(data.memberId)번 멤버 차단 성공")
-                        
-                        // 내가 차단할 사람(댓글)이랑 글쓴이랑 같다면
-                        if self.combinationDetailData?.result.memberResult.memberId == data.memberId {
-                            DispatchQueue.main.async {
-                                // 차단 성공 메시지 표시
-                                let alert = UIAlertController(title: nil, message: "차단되었습니다.", preferredStyle: .alert)
-                                self.present(alert, animated: true, completion: nil)
-                                
-                                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                                    alert.dismiss(animated: true) {
-                                        // 뷰 컨트롤러를 pop하고 fetchData 호출
-                                        if let navigationController = self.navigationController {
-                                            let viewControllers = navigationController.viewControllers
-                                            for vc in viewControllers {
-                                                if let combinationHomeVC = vc as? CombinationHomeViewController {
-                                                    combinationHomeVC.fetchData()
-                                                    // 스크롤 맨 위로 올리기
-                                                    combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
-                                                    navigationController.popToViewController(combinationHomeVC, animated: true)
-                                                    break
-                                                }
-                                            }
-                                        }
+                        // 차단 성공 토스트 메시지
+                        let popUpView = ReportCompletePopUpView()
+                        popUpView.label.text = "차단되었습니다"
+                        ToastManager.shared.style.fadeDuration = 0.7
+                        self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { didTap in
+                            if let viewControllers = self.navigationController?.viewControllers {
+                                for vc in viewControllers {
+                                    if let combinationHomeVC = vc as? CombinationHomeViewController {
+                                        combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
+                                        combinationHomeVC.fetchData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        break
+                                    }
+                                    if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                        likeTapmanVC.likeCombinationViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                        likeTapmanVC.likeCombinationViewController.fetchData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        break
                                     }
                                 }
                             }
-                        } else {
-                            DispatchQueue.main.async {
-                                self.combinationDetailView.tabelView.setContentOffset(.zero, animated: true) // 맨 위로 스크롤
-                                self.fetchData()
-                                
-                                let alert = UIAlertController(title: nil, message: "댓글이 작성되었습니다.", preferredStyle: .alert)
-                                self.present(alert, animated: true, completion: nil)
-                                Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                                    alert.dismiss(animated: true, completion: nil)
-                                }
-                            }
-                        }
+                        })
                     }
                 }
             }
