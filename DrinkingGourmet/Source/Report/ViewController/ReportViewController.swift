@@ -35,6 +35,7 @@ final class ReportViewController: UIViewController {
     var resourceId: Int?
     var reportTarget: String?
     var reportContent: String?
+    var reportedMemberId: Int?
     
     private let reportView = ReportView()
     
@@ -67,7 +68,7 @@ final class ReportViewController: UIViewController {
         tv.delegate = self
         tv.inputAccessoryView = createToolbar()
         tv.text = "신고 내용을 입력해주세요."
-        tv.textColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+        tv.textColor = .base0700
     }
     
     private func setupButton() {
@@ -83,7 +84,7 @@ final class ReportViewController: UIViewController {
               let reportDetailsText = reportView.reportDetailsTextView.text,
               !reportDetailsText.isEmpty,
               reportDetailsText != "신고 내용을 입력해주세요." else {
-            reportView.completeButton.backgroundColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+            reportView.completeButton.backgroundColor = .base0700
             reportView.completeButton.isEnabled = false
             return
         }
@@ -123,9 +124,8 @@ extension ReportViewController {
               let reportReasonText = self.reportView.reportTypeTextField.text,
               let reportReason = ReportType(rawValue: reportReasonText)?.apiValue,
               let content = self.reportView.reportDetailsTextView.text,
-              let reportContent = self.reportContent else {
-            return
-        }
+              let reportContent = self.reportContent,
+              let reportedMemberId = self.reportedMemberId else { return }
         
         DispatchQueue.main.async {
             self.navigationItem.hidesBackButton = true // 백버튼 숨기기
@@ -141,7 +141,8 @@ extension ReportViewController {
                                                 reportTarget: reportTarget,
                                                 reportReason: reportReason,
                                                 content: content,
-                                                reportContent: reportContent) { error in
+                                                reportContent: reportContent,
+                                                reportedMemberId: reportedMemberId) { error in
             if let error = error {
                 print("\(reportTarget): \(resourceId)번 신고 실패 - \(error.localizedDescription)")
             } else {
@@ -153,9 +154,9 @@ extension ReportViewController {
                         vc.fetchData()
                         vc.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(vc, animated: true)
-                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeViewController }) as? LikeViewController {
-                        likeVC.fetchData()
-                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
+                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeTapmanViewController }) as? LikeTapmanViewController {
+//                        likeVC.fetchData()
+//                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(likeVC, animated: true)
                     }
                 case "COMBINATION_COMMENT": // 오늘의 조합 뎃글 신고
@@ -169,9 +170,9 @@ extension ReportViewController {
                         vc.fetchData()
                         vc.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(vc, animated: true)
-                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeViewController }) as? LikeViewController {
-                        likeVC.fetchData()
-                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
+                    } else if let likeVC = self.navigationController?.viewControllers.first(where: { $0 is LikeTapmanViewController }) as? LikeTapmanViewController {
+//                        likeVC.fetchData()
+//                        likeVC.likeView.collectionView.setContentOffset(.zero, animated: true)
                         self.navigationController?.popToViewController(likeVC, animated: true)
                     }
                 case "RECIPE_COMMENT": // // 레시피북 댓글 신고
@@ -195,7 +196,7 @@ extension ReportViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        reportView.reportTypeView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
+        reportView.reportTypeView.layer.borderColor = UIColor.base0700.cgColor
         updateCompleteButton()
     }
 }
@@ -204,17 +205,17 @@ extension ReportViewController: UITextFieldDelegate {
 extension ReportViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         reportView.reportDetailsTextView.layer.borderColor = UIColor.customOrange.cgColor
-        if textView.textColor == UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1) {
+        if textView.textColor == UIColor.base0700 {
             textView.text = nil
-            textView.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
+            textView.textColor = UIColor.base0400
         }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        reportView.reportDetailsTextView.layer.borderColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1).cgColor
+        reportView.reportDetailsTextView.layer.borderColor = UIColor.base0700.cgColor
         if textView.text.isEmpty {
             textView.text = "신고 내용을 입력해주세요."
-            textView.textColor = UIColor(red: 0.878, green: 0.878, blue: 0.878, alpha: 1)
+            textView.textColor = UIColor.base0700
         }
         updateCompleteButton()
     }

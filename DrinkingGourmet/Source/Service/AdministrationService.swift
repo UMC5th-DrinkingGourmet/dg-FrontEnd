@@ -22,9 +22,10 @@ final class AdministrationService {
     // MARK: - 신고하기
     func postReport(resourceId: Int,
                     reportTarget: String,
-                    reportReason: String,
-                    content: String,
-                    reportContent: String,
+                    reportReason: String, // 신고 유형
+                    content: String, // 해당 게시물 or 댓글 내용
+                    reportContent: String, // 신고 내용
+                    reportedMemberId: Int, // 신고 당하는 MemberId
                     completion: @escaping (Error?) -> Void) {
         do {
             let headers = try getHeaders()
@@ -34,7 +35,8 @@ final class AdministrationService {
                 "reportTarget": reportTarget,
                 "reportReason": reportReason,
                 "content": content,
-                "reportContent": reportContent
+                "reportContent": reportContent,
+                "reportedMemberId" : reportedMemberId
             ]
             
             AF.request("\(baseURL)/member/reports",
