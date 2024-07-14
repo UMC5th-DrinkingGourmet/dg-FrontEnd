@@ -41,7 +41,8 @@ final class AdministrationService {
                        method: .post,
                        parameters: parameters,
                        encoding: JSONEncoding.default,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -70,7 +71,8 @@ final class AdministrationService {
                        method: .post,
                        parameters: parameters,
                        encoding: JSONEncoding.default,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {

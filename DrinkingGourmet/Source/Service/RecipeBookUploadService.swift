@@ -32,7 +32,8 @@ final class RecipeBookUploadService {
             AF.request("\(baseURL)/recommends/list",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationUploadModel.FetchRecommendListModel.self) { response in
                 switch response.result {
@@ -62,7 +63,13 @@ final class RecipeBookUploadService {
                 "Content-Type": "application/json"
             ]
             
-            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers)
+            AF.request(
+                url,
+                method: .post,
+                parameters: postModel,
+                encoder: JSONParameterEncoder.default,
+                headers: headers,
+                interceptor: AuthInterceptor())
                 .responseDecodable(of: RecipeBookUploadModel.RecipeResponseDTO.self) { response in
                     
                     switch response.result {
@@ -110,7 +117,7 @@ final class RecipeBookUploadService {
                                                  mimeType: "image/jpeg")
                     }
                 }
-            }, to: url, method: .post, headers: headers)
+            }, to: url, method: .post, headers: headers, interceptor: AuthInterceptor())
             .responseDecodable(of: RecipeBookUploadModel.ImageUploadResponseDTO.self) { response in
                 debugPrint(response)
                 guard let statusCode = response.response?.statusCode else { return }

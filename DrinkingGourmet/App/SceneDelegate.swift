@@ -40,6 +40,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         window.makeKeyAndVisible()
+        
+        registerForNotifications()
+    }
+    private func registerForNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRefreshTokenExpired), name: Notification.Name("refreshTokenExpired"), object: nil)
+    }
+
+    @objc private func handleRefreshTokenExpired() {
+        DispatchQueue.main.async {
+            let loginViewController = AuthenticationViewController()
+            if let window = self.window {
+                window.rootViewController = loginViewController
+                window.makeKeyAndVisible()
+            }
+        }
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

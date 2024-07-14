@@ -24,7 +24,8 @@ final class SignUpService {
                    method: .post,
                    parameters: parameter,
                    encoder: JSONParameterEncoder.default,
-                   headers: headers)
+                   headers: headers,
+                   interceptor: AuthInterceptor())
         .validate()
         .response { response in
             self.handleResponse(response, completion: completion)
@@ -41,7 +42,8 @@ final class SignUpService {
                    method: .post,
                    parameters: loginInfo,
                    encoder: JSONParameterEncoder.default,
-                   headers: headers)
+                   headers: headers,
+                   interceptor: AuthInterceptor())
         .validate(statusCode: 200..<601)
         .response { response in
             self.handleResponse(response, completion: completion)

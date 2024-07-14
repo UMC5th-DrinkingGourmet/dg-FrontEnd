@@ -37,8 +37,7 @@
 		2EAD6D5E2C327ACD00B19476 /* RecipeBookUploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */; };
 		2EAD6D602C327B0700B19476 /* RecipeBookUploadDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D5F2C327B0700B19476 /* RecipeBookUploadDTO.swift */; };
 		2EAD6D622C32825E00B19476 /* CombinationUpoadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */; };
-		2EAD6D642C3286DD00B19476 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D632C3286DD00B19476 /* AuthService.swift */; };
-		2EAD6D662C32871B00B19476 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D652C32871B00B19476 /* NetworkManager.swift */; };
+		2EAD6D642C3286DD00B19476 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
 		2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */; };
@@ -184,8 +183,7 @@
 		2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadService.swift; sourceTree = "<group>"; };
 		2EAD6D5F2C327B0700B19476 /* RecipeBookUploadDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadDTO.swift; sourceTree = "<group>"; };
 		2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUpoadService.swift; sourceTree = "<group>"; };
-		2EAD6D632C3286DD00B19476 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		2EAD6D652C32871B00B19476 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+setPlaceholder.swift"; sourceTree = "<group>"; };
@@ -580,6 +578,14 @@
 			path = Viewcontroller;
 			sourceTree = "<group>";
 		};
+		2ED2A87D2C43CA3C00273519 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		2EFA32F32B714E6D00059188 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -865,6 +871,7 @@
 		566B83332C0EE2FC008C0773 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				2ED2A87D2C43CA3C00273519 /* Auth */,
 				2EAD6D582C32799600B19476 /* Service */,
 				566B83372C0EE928008C0773 /* Dto */,
 				566B83352C0EE311008C0773 /* CombinationService.swift */,
@@ -874,8 +881,6 @@
 				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
 				2EAD6D562C32781100B19476 /* SignUpService.swift */,
 				2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */,
-				2EAD6D632C3286DD00B19476 /* AuthService.swift */,
-				2EAD6D652C32871B00B19476 /* NetworkManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1201,7 +1206,7 @@
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
 				56AE28532B83F6D9009CE0A1 /* MyPageRecommendModel.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
-				2EAD6D642C3286DD00B19476 /* AuthService.swift in Sources */,
+				2EAD6D642C3286DD00B19476 /* AuthInterceptor.swift in Sources */,
 				2E06A6F12C1EE16100FF5449 /* AppleAuthViewModel.swift in Sources */,
 				2E5407962B84BAF100724513 /* RecipeBookUploadViewController.swift in Sources */,
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
@@ -1302,7 +1307,6 @@
 				2EFA32F22B714CC000059188 /* RecommendView.swift in Sources */,
 				97599C102B84F551009B9CF9 /* NewDrinkDetailInfoView.swift in Sources */,
 				567B9C352BC6711E00D275A1 /* CombinationDetailView.swift in Sources */,
-				2EAD6D662C32871B00B19476 /* NetworkManager.swift in Sources */,
 				2EAD6D602C327B0700B19476 /* RecipeBookUploadDTO.swift in Sources */,
 				97EB4AC42B70F5E6009A62EB /* SelectMyMoodViewController.swift in Sources */,
 				2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */,

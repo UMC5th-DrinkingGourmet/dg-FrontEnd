@@ -5,14 +5,14 @@
 //  Created by hwijinjeong on 7/1/24.
 //
 
+import UIKit
+import Alamofire
+
 struct ErrorResponseModel: Codable {
     let timestamp: String
     let status: Int
     let error, path: String
 }
-
-import UIKit
-import Alamofire
 
 final class CombinationUploadService {
     static let shared = CombinationUploadService()
@@ -38,7 +38,8 @@ final class CombinationUploadService {
             AF.request("\(baseURL)/recommends/list",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationUploadModel.FetchRecommendListModel.self) { response in
                 switch response.result {
@@ -77,7 +78,7 @@ final class CombinationUploadService {
                                                  mimeType: "image/jpeg")
                     }
                 }
-            }, to: url, method: .post, headers: headers)
+            }, to: url, method: .post, headers: headers, interceptor: AuthInterceptor())
             .responseDecodable(of: CombinationUploadModel.ImageUploadResponse.self) { response in
                 debugPrint(response)
                 guard let statusCode = response.response?.statusCode else { return }
@@ -114,7 +115,7 @@ final class CombinationUploadService {
                 "Content-Type": "application/json"
             ]
             
-            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers)
+            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers, interceptor: AuthInterceptor())
                 .responseDecodable(of: CombinationUploadModel.WritingPostResponseModel.self) { response in
                     
                     switch response.result {
