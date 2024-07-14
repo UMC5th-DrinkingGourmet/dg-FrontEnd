@@ -1,13 +1,13 @@
 //
-//  UserInfoInput.swift
+//  UserInfoDTO.swift
 //  DrinkingGourmet
 //
-//  Created by hwijinjeong on 2/7/24.
+//  Created by hwijinjeong on 7/1/24.
 //
 
 import Foundation
 
-struct UserInfoModel: Encodable {
+struct UserInfoDTO: Encodable {
     var name: String
     var profileImage: String
     var email: String

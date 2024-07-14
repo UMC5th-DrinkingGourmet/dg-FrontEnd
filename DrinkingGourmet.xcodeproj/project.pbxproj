@@ -10,13 +10,9 @@
 		2E0274E02B6FCF5200F92177 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274DF2B6FCF5200F92177 /* MainMenuViewController.swift */; };
 		2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */; };
 		2E06A6F12C1EE16100FF5449 /* AppleAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */; };
-		2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1D4F072B72816A0065D9B2 /* UserInfoModel.swift */; };
 		2E3E5A7D2B6C04590000E651 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */; };
 		2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */; };
 		2E5407962B84BAF100724513 /* RecipeBookUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */; };
-		2E5407982B84BE7200724513 /* RecipeBookUpoadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5407972B84BE7200724513 /* RecipeBookUpoadModel.swift */; };
-		2E54079A2B84C51E00724513 /* RecipeBookUploadDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5407992B84C51E00724513 /* RecipeBookUploadDataManager.swift */; };
-		2E56A0DB2B76499A007747ED /* UserInfoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56A0DA2B76499A007747ED /* UserInfoDataManager.swift */; };
 		2E56A0DD2B78861B007747ED /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56A0DC2B78861B007747ED /* KeyChain.swift */; };
 		2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C72B497AD200C87B4A /* AppDelegate.swift */; };
 		2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6C26C92B497AD200C87B4A /* SceneDelegate.swift */; };
@@ -33,6 +29,13 @@
 		2E7139592B5E7B05003D0190 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2E7139582B5E7B05003D0190 /* .gitignore */; };
 		2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */; };
 		2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */; };
+		2EAD6D572C32781100B19476 /* SignUpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D562C32781100B19476 /* SignUpService.swift */; };
+		2EAD6D5A2C3279B400B19476 /* SignInInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D592C3279B400B19476 /* SignInInfoDTO.swift */; };
+		2EAD6D5C2C3279EC00B19476 /* UserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D5B2C3279EC00B19476 /* UserInfoDTO.swift */; };
+		2EAD6D5E2C327ACD00B19476 /* RecipeBookUploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */; };
+		2EAD6D602C327B0700B19476 /* RecipeBookUploadDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D5F2C327B0700B19476 /* RecipeBookUploadDTO.swift */; };
+		2EAD6D622C32825E00B19476 /* CombinationUpoadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */; };
+		2EAD6D642C3286DD00B19476 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
 		2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */; };
@@ -43,7 +46,6 @@
 		2EFA32F72B7156EF00059188 /* RecipeBookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32F62B7156EF00059188 /* RecipeBookCollectionViewCell.swift */; };
 		2EFA32FA2B71629100059188 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32F92B71629100059188 /* GradientView.swift */; };
 		2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */; };
-		2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */; };
 		5601EBC82B7C169A0043CCD4 /* RecipeBookSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5601EBC72B7C169A0043CCD4 /* RecipeBookSearchViewController.swift */; };
 		5625E3792BB962D700269BBF /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E3782BB962D700269BBF /* SettingView.swift */; };
 		5625E37B2BB962EA00269BBF /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E37A2BB962EA00269BBF /* SettingViewController.swift */; };
@@ -55,7 +57,6 @@
 		56543EBD2B7E9A880099E648 /* CombinationUploadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EBC2B7E9A880099E648 /* CombinationUploadVC.swift */; };
 		56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */; };
 		56543EC92B7EF1190099E648 /* CombinationUploadInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */; };
-		56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543ECA2B7EF1500099E648 /* CombinationUploadDataManager.swift */; };
 		5658DDF72B57498600F72F42 /* CombinationHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF62B57498600F72F42 /* CombinationHomeViewController.swift */; };
 		5658DDF92B57C2A200F72F42 /* CombinationHomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDF82B57C2A200F72F42 /* CombinationHomeCell.swift */; };
 		5658DE002B582A8D00F72F42 /* CombinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */; };
@@ -168,13 +169,9 @@
 		2E0274DF2B6FCF5200F92177 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthViewModel.swift; sourceTree = "<group>"; };
-		2E1D4F072B72816A0065D9B2 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedImgCollectionViewCell.swift; sourceTree = "<group>"; };
 		2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadViewController.swift; sourceTree = "<group>"; };
-		2E5407972B84BE7200724513 /* RecipeBookUpoadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUpoadModel.swift; sourceTree = "<group>"; };
-		2E5407992B84C51E00724513 /* RecipeBookUploadDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadDataManager.swift; sourceTree = "<group>"; };
-		2E56A0DA2B76499A007747ED /* UserInfoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDataManager.swift; sourceTree = "<group>"; };
 		2E56A0DC2B78861B007747ED /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkingGourmet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E6C26C72B497AD200C87B4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -193,6 +190,13 @@
 		2E7139582B5E7B05003D0190 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCreationViewController.swift; sourceTree = "<group>"; };
 		2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
+		2EAD6D562C32781100B19476 /* SignUpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpService.swift; sourceTree = "<group>"; };
+		2EAD6D592C3279B400B19476 /* SignInInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInInfoDTO.swift; sourceTree = "<group>"; };
+		2EAD6D5B2C3279EC00B19476 /* UserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDTO.swift; sourceTree = "<group>"; };
+		2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadService.swift; sourceTree = "<group>"; };
+		2EAD6D5F2C327B0700B19476 /* RecipeBookUploadDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadDTO.swift; sourceTree = "<group>"; };
+		2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUpoadService.swift; sourceTree = "<group>"; };
+		2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+setPlaceholder.swift"; sourceTree = "<group>"; };
@@ -204,7 +208,6 @@
 		2EFA32F62B7156EF00059188 /* RecipeBookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookCollectionViewCell.swift; sourceTree = "<group>"; };
 		2EFA32F92B71629100059188 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2EFA32FC2B71648500059188 /* TodayCombiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCombiCollectionViewCell.swift; sourceTree = "<group>"; };
-		2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoModel.swift; sourceTree = "<group>"; };
 		5601EBC72B7C169A0043CCD4 /* RecipeBookSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookSearchViewController.swift; sourceTree = "<group>"; };
 		5625E3782BB962D700269BBF /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		5625E37A2BB962EA00269BBF /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -216,7 +219,6 @@
 		56543EBC2B7E9A880099E648 /* CombinationUploadVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadVC.swift; sourceTree = "<group>"; };
 		56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadModel.swift; sourceTree = "<group>"; };
 		56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadInput.swift; sourceTree = "<group>"; };
-		56543ECA2B7EF1500099E648 /* CombinationUploadDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUploadDataManager.swift; sourceTree = "<group>"; };
 		5658DDF62B57498600F72F42 /* CombinationHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationHomeViewController.swift; sourceTree = "<group>"; };
 		5658DDF82B57C2A200F72F42 /* CombinationHomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationHomeCell.swift; sourceTree = "<group>"; };
 		5658DDFF2B582A8D00F72F42 /* CombinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationDetailViewController.swift; sourceTree = "<group>"; };
@@ -363,16 +365,6 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		2E1D4F062B72813B0065D9B2 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2E1D4F072B72816A0065D9B2 /* UserInfoModel.swift */,
-				2EFF886A2B7BB0E00060C211 /* LoginInfoModel.swift */,
-				2E56A0DA2B76499A007747ED /* UserInfoDataManager.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		2E3E5A792B6C04250000E651 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
@@ -402,19 +394,9 @@
 		2E5407922B84B98E00724513 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
-				2E5407932B84BAB500724513 /* Model */,
 				2E5407942B84BABC00724513 /* ViewController */,
 			);
 			path = Upload;
-			sourceTree = "<group>";
-		};
-		2E5407932B84BAB500724513 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2E5407972B84BE7200724513 /* RecipeBookUpoadModel.swift */,
-				2E5407992B84C51E00724513 /* RecipeBookUploadDataManager.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		2E5407942B84BABC00724513 /* ViewController */ = {
@@ -571,6 +553,13 @@
 			path = InputTextField;
 			sourceTree = "<group>";
 		};
+		2EAD6D582C32799600B19476 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		2EB001902B5E40A400B74580 /* UserAuthentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,7 +567,6 @@
 				2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */,
 				2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */,
 				2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */,
-				2E1D4F062B72813B0065D9B2 /* Model */,
 				2EB001912B5E40AE00B74580 /* Viewcontroller */,
 			);
 			path = UserAuthentication;
@@ -592,6 +580,14 @@
 				2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */,
 			);
 			path = Viewcontroller;
+			sourceTree = "<group>";
+		};
+		2ED2A87D2C43CA3C00273519 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		2EFA32F32B714E6D00059188 /* View */ = {
@@ -684,7 +680,6 @@
 		56543EBB2B7E923D0099E648 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
-				56543EC52B7EF0080099E648 /* Model */,
 				56543EBE2B7E9BF90099E648 /* ViewController */,
 			);
 			path = Upload;
@@ -696,16 +691,6 @@
 				56543EBC2B7E9A880099E648 /* CombinationUploadVC.swift */,
 			);
 			path = ViewController;
-			sourceTree = "<group>";
-		};
-		56543EC52B7EF0080099E648 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */,
-				56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */,
-				56543ECA2B7EF1500099E648 /* CombinationUploadDataManager.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		5658DDF22B57491D00F72F42 /* Combination */ = {
@@ -894,11 +879,16 @@
 		566B83332C0EE2FC008C0773 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				2ED2A87D2C43CA3C00273519 /* Auth */,
+				2EAD6D582C32799600B19476 /* Service */,
 				566B83372C0EE928008C0773 /* Dto */,
 				566B83352C0EE311008C0773 /* CombinationService.swift */,
+				2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */,
 				56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */,
 				56A7E8202C117A1B00CDE615 /* AdministrationService.swift */,
 				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
+				2EAD6D562C32781100B19476 /* SignUpService.swift */,
+				2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */,
 				56BBF3F32C359F460058B19B /* RecommendService.swift */,
 				56BBF4292C3810AA0058B19B /* MyPageService.swift */,
 			);
@@ -911,6 +901,11 @@
 				566B83382C0EE937008C0773 /* CombinationDTO.swift */,
 				56A7E81E2C10CEB100CDE615 /* RecipeBookDTO.swift */,
 				56A7E82C2C15C6BA00CDE615 /* LikeDTO.swift */,
+				2EAD6D592C3279B400B19476 /* SignInInfoDTO.swift */,
+				2EAD6D5B2C3279EC00B19476 /* UserInfoDTO.swift */,
+				2EAD6D5F2C327B0700B19476 /* RecipeBookUploadDTO.swift */,
+				56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */,
+				56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */,
 				56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */,
 				56BBF42B2C3812DA0058B19B /* MyPageDTO.swift */,
 			);
@@ -1257,6 +1252,7 @@
 				56BBF35C2C33FEDD0058B19B /* AnswerViewController.swift in Sources */,
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
+				2EAD6D642C3286DD00B19476 /* AuthInterceptor.swift in Sources */,
 				2E06A6F12C1EE16100FF5449 /* AppleAuthViewModel.swift in Sources */,
 				2E5407962B84BAF100724513 /* RecipeBookUploadViewController.swift in Sources */,
 				2E6C270F2B498D8400C87B4A /* TabBarViewController.swift in Sources */,
@@ -1264,11 +1260,13 @@
 				97EB4AF12B714123009A62EB /* SelectDrinkFrequencyResource.swift in Sources */,
 				56A405672B5F776200BF85A8 /* CommentInputView.swift in Sources */,
 				97EB4AED2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift in Sources */,
+				2EAD6D5A2C3279B400B19476 /* SignInInfoDTO.swift in Sources */,
 				2EFA32F72B7156EF00059188 /* RecipeBookCollectionViewCell.swift in Sources */,
 				5625E37F2BBAC25E00269BBF /* SettingCell.swift in Sources */,
 				56BBF4002C35A1F60058B19B /* SelectMoodView.swift in Sources */,
 				56BBF42A2C3810AA0058B19B /* MyPageService.swift in Sources */,
 				2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */,
+				2EAD6D572C32781100B19476 /* SignUpService.swift in Sources */,
 				56BBF40A2C35B8120058B19B /* RecommendLodingView.swift in Sources */,
 				97599BFC2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift in Sources */,
 				5625E37B2BB962EA00269BBF /* SettingViewController.swift in Sources */,
@@ -1281,6 +1279,7 @@
 				56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */,
 				56AE28472B83D8DE009CE0A1 /* MyPageViewController.swift in Sources */,
 				56A7E8192C10CD4000CDE615 /* RecipeBookService.swift in Sources */,
+				2EAD6D5C2C3279EC00B19476 /* UserInfoDTO.swift in Sources */,
 				2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */,
 				97599C122B84F577009B9CF9 /* NewDrinkDetailView.swift in Sources */,
 				56BBF3FC2C35A1540058B19B /* InputFoodView.swift in Sources */,
@@ -1290,7 +1289,6 @@
 				2E6C26FB2B4984B700C87B4A /* UIButton+Configuration.swift in Sources */,
 				5658DDF72B57498600F72F42 /* CombinationHomeViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* CombinationHomeCell.swift in Sources */,
-				2E1D4F082B72816A0065D9B2 /* UserInfoModel.swift in Sources */,
 				566B83392C0EE937008C0773 /* CombinationDTO.swift in Sources */,
 				5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */,
 				5668A2FD2B6EDCD70009FCD6 /* CommunityView.swift in Sources */,
@@ -1313,7 +1311,6 @@
 				5668A34D2B6FBAF00009FCD6 /* RecipeBookDetailViewController.swift in Sources */,
 				56BBF4302C381F680058B19B /* MyRecommendViewController.swift in Sources */,
 				56BBF4022C35A23E0058B19B /* SelectMoodViewController.swift in Sources */,
-				2E56A0DB2B76499A007747ED /* UserInfoDataManager.swift in Sources */,
 				56BBF3EC2C359CF40058B19B /* RecommendGuideView.swift in Sources */,
 				56F8A71A2B800D6F000F6CA4 /* LikeCell.swift in Sources */,
 				56AE28452B83D57B009CE0A1 /* MyPageView.swift in Sources */,
@@ -1323,16 +1320,15 @@
 				56B9DCCE2BCEC77700D08D22 /* RecipeBookDetailHeaderView.swift in Sources */,
 				5668A2EB2B6EDB340009FCD6 /* SearchResultCell.swift in Sources */,
 				56BBF3F62C359F5B0058B19B /* RecommendDTO.swift in Sources */,
-				2E5407982B84BE7200724513 /* RecipeBookUpoadModel.swift in Sources */,
 				566B83362C0EE311008C0773 /* CombinationService.swift in Sources */,
 				2EFA32F02B714B6200059188 /* UILabel + setLineSpacing.swift in Sources */,
 				2EFA32EE2B71153500059188 /* MainMenuBannerCollectionViewCell.swift in Sources */,
-				2EFF886B2B7BB0E00060C211 /* LoginInfoModel.swift in Sources */,
 				56BBF3F02C359F010058B19B /* RecommendStartView.swift in Sources */,
 				2E6C26CA2B497AD200C87B4A /* SceneDelegate.swift in Sources */,
 				5668A3D12B78F69C0009FCD6 /* CombinationSearchViewController.swift in Sources */,
 				975F09032B816D18009C6F0E /* WelcomeViewController.swift in Sources */,
 				56A7E82D2C15C6BA00CDE615 /* LikeDTO.swift in Sources */,
+				2EAD6D622C32825E00B19476 /* CombinationUpoadService.swift in Sources */,
 				97599BFA2B840009009B9CF9 /* MyDrinkingStyleDataManager.swift in Sources */,
 				97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */,
 				56BBF4322C381F740058B19B /* MyCombinationViewController.swift in Sources */,
@@ -1363,6 +1359,7 @@
 				2EFA32FA2B71629100059188 /* GradientView.swift in Sources */,
 				56BBF3FA2C35A0A70058B19B /* InputIntoxicationViewController.swift in Sources */,
 				97599C152B84FBBF009B9CF9 /* NewDrinkDetailViewController.swift in Sources */,
+				2EAD6D5E2C327ACD00B19476 /* RecipeBookUploadService.swift in Sources */,
 				5668A2ED2B6EDB400009FCD6 /* SearchResultView.swift in Sources */,
 				567B9C372BC6741200D275A1 /* CombinationDetailCommentCell.swift in Sources */,
 				56BBF4062C35B1EE0058B19B /* SelectWeatherView.swift in Sources */,
@@ -1371,6 +1368,7 @@
 				2EFA32F22B714CC000059188 /* RecommendView.swift in Sources */,
 				97599C102B84F551009B9CF9 /* NewDrinkDetailInfoView.swift in Sources */,
 				567B9C352BC6711E00D275A1 /* CombinationDetailView.swift in Sources */,
+				2EAD6D602C327B0700B19476 /* RecipeBookUploadDTO.swift in Sources */,
 				2EFA32FD2B71648500059188 /* TodayCombiCollectionViewCell.swift in Sources */,
 				2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */,
 				56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */,
@@ -1385,7 +1383,6 @@
 				2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */,
 				56BBF42E2C381EE90058B19B /* MyPageTapmanViewController.swift in Sources */,
 				97EB4AD52B70F668009A62EB /* SelectDrinkCapacityViewController.swift in Sources */,
-				2E54079A2B84C51E00724513 /* RecipeBookUploadDataManager.swift in Sources */,
 				56BBF3EE2C359D400058B19B /* RecommendGuideViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

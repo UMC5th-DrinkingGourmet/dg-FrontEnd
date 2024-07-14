@@ -32,7 +32,8 @@ final class LikeService {
             AF.request("\(baseURL)/combinations/likes",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: LikeCombinationResponseDTO.self) { response in
                 switch response.result {
@@ -60,7 +61,8 @@ final class LikeService {
             AF.request("\(baseURL)/recipes/likes",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: LikeRecipeBookResponseDTO.self) { response in
                 switch response.result {

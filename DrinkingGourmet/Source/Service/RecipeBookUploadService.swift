@@ -1,24 +1,24 @@
 //
-//  RecipeBookUploadDataManager.swift
+//  RecipeBookUploadService.swift
 //  DrinkingGourmet
 //
-//  Created by hwijinjeong on 2/20/24.
+//  Created by hwijinjeong on 7/1/24.
 //
 
 import UIKit
 import Alamofire
 
-class RecipeBookUploadDataManager {
-    static let shared = RecipeBookUploadDataManager()
+final class RecipeBookUploadService {
+    static let shared = RecipeBookUploadService()
     
     private init() { }
     
     private let baseURL = "https://drink-gourmet.kro.kr"
     
     // MARK: - 조합 조회
-    func fetchRecommendListData(_ parameters: CombinationUploadInput.fetchRecommendListDataInput,
+    func fetchRecommendListData(_ parameters: CombinationUploadInput.FetchRecommendListDataInput,
                                 _ viewController: RecipeBookUploadViewController,
-                                completion: @escaping (CombinationUploadModel.fetchRecommendListModel?) -> Void) {
+                                completion: @escaping (CombinationUploadModel.FetchRecommendListModel?) -> Void) {
         do {
             // Keychain에서 액세스 토큰 가져오기
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -32,9 +32,10 @@ class RecipeBookUploadDataManager {
             AF.request("\(baseURL)/recommends/list",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
-            .responseDecodable(of: CombinationUploadModel.fetchRecommendListModel.self) { response in
+            .responseDecodable(of: CombinationUploadModel.FetchRecommendListModel.self) { response in
                 switch response.result {
                 case .success(let result):
                     print("추천 받은 조합 리스트 조회 - 네트워킹 성공")
@@ -51,7 +52,7 @@ class RecipeBookUploadDataManager {
     }
     
     // MARK: - 레시피북 게시글 업로드
-    func uploadPost(_ postModel: RecipeBookUpoadModel.RecipeRequest, completion: @escaping (RecipeBookUpoadModel.RecipeResponseModel?, Error?) -> Void) {
+    func uploadPost(_ postModel: RecipeBookUploadModel.RecipeRequestDTO, completion: @escaping (RecipeBookUploadModel.RecipeResponseDTO?, Error?) -> Void) {
         let url = "\(baseURL)/recipes"
         
         do {
@@ -62,8 +63,14 @@ class RecipeBookUploadDataManager {
                 "Content-Type": "application/json"
             ]
             
-            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers)
-                .responseDecodable(of: RecipeBookUpoadModel.RecipeResponseModel.self) { response in
+            AF.request(
+                url,
+                method: .post,
+                parameters: postModel,
+                encoder: JSONParameterEncoder.default,
+                headers: headers,
+                interceptor: AuthInterceptor())
+                .responseDecodable(of: RecipeBookUploadModel.RecipeResponseDTO.self) { response in
                     
                     switch response.result {
                     case .success(let data):
@@ -90,7 +97,7 @@ class RecipeBookUploadDataManager {
     }
 
     // MARK: - 레시피북 이미지 업로드
-    func uploadImages(_ images: [UIImage], recipeId: Int, completion: @escaping (RecipeBookUpoadModel.ImageUploadResponse?, Error?) -> Void) {
+    func uploadImages(_ images: [UIImage], recipeId: Int, completion: @escaping (RecipeBookUploadModel.ImageUploadResponseDTO?, Error?) -> Void) {
         let url = "\(baseURL)/recipe-images?recipeId=\(recipeId)"
         
         do {
@@ -110,8 +117,8 @@ class RecipeBookUploadDataManager {
                                                  mimeType: "image/jpeg")
                     }
                 }
-            }, to: url, method: .post, headers: headers)
-            .responseDecodable(of: RecipeBookUpoadModel.ImageUploadResponse.self) { response in
+            }, to: url, method: .post, headers: headers, interceptor: AuthInterceptor())
+            .responseDecodable(of: RecipeBookUploadModel.ImageUploadResponseDTO.self) { response in
                 debugPrint(response)
                 guard let statusCode = response.response?.statusCode else { return }
 

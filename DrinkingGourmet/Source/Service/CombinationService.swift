@@ -11,7 +11,7 @@ final class CombinationService {
     
     static let shared = CombinationService()
     private init() {}
-    
+
     private let baseURL = "https://drink-gourmet.kro.kr"
     
     private func getHeaders() throws -> HTTPHeaders {
@@ -32,7 +32,8 @@ final class CombinationService {
             AF.request("\(baseURL)/combinations",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
@@ -62,7 +63,8 @@ final class CombinationService {
             AF.request("\(baseURL)/combinations/search",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
@@ -85,7 +87,8 @@ final class CombinationService {
             
             AF.request("\(baseURL)/combinations/\(combinationId)",
                        method: .get,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationDetailResponseDTO.self) { response in
                 switch response.result {
@@ -108,7 +111,8 @@ final class CombinationService {
             
             AF.request("\(baseURL)/combination-likes/\(combinationId)",
                        method: .post,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -131,7 +135,8 @@ final class CombinationService {
             
             AF.request("\(baseURL)/combinations/\(combinationId)",
                        method: .delete,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -160,7 +165,8 @@ final class CombinationService {
             AF.request("\(baseURL)/combination-comments/\(combinationId)",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationCommentResponseDTO.self) { response in
                 switch response.result {
@@ -192,7 +198,8 @@ final class CombinationService {
                        method: .post,
                        parameters: parameters,
                        encoding: JSONEncoding.default,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -215,7 +222,8 @@ final class CombinationService {
             
             AF.request("\(baseURL)/combination-comments/\(commentId)",
                        method: .delete,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -244,7 +252,8 @@ final class CombinationService {
             AF.request("\(baseURL)/combinations/weekly-best",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
@@ -276,7 +285,8 @@ final class CombinationService {
             AF.request("\(baseURL)/combinations/weekly-best/search",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: CombinationHomeResponseDTO.self) { response in
                 switch response.result {
@@ -290,5 +300,4 @@ final class CombinationService {
             print("Failed to get access token: \(error.localizedDescription)")
         }
     }
-    
 }

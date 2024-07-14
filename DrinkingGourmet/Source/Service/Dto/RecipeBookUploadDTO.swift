@@ -1,67 +1,62 @@
 //
-//  RecipeBookUpoadModel.swift
+//  RecipeBookUploadDTO.swift
 //  DrinkingGourmet
 //
-//  Created by hwijinjeong on 2/20/24.
+//  Created by hwijinjeong on 7/1/24.
 //
 
-struct RecipeBookUpoadModel {
-    struct ImageUploadRequest: Codable {
-        let file: [ImageUrl]
+import Foundation
+
+struct RecipeBookUploadModel {
+    struct ImageUploadRequestDTO: Codable {
+        let file: [ImageUrlDTO]
         
-        struct ImageUrl: Codable {
+        struct ImageUrlDTO: Codable {
             let imageUrl: String
         }
     }
     
-    // MARK: - ImageResponseModel
-    struct ImageUploadResponse: Codable {
+    struct ImageUploadResponseDTO: Codable {
         let isSuccess: Bool?
         let code, message: String?
-        let result: Result?
+        let result: ResultDTO?
     }
 
-    // MARK: - Result
-    struct Result: Codable {
+    struct ResultDTO: Codable {
         let imageURLList: [String]?
 
         enum CodingKeys: String, CodingKey {
             case imageURLList = "imageUrlList"
         }
     }
-
     
-    
-    
-    struct RecipeRequest: Codable {
+    struct RecipeRequestDTO: Codable {
         let title, cookingTime, calorie, ingredient: String
         let recipeInstruction, recommendCombination: String
         let hashTagNameList: [String]
     }
     
-    struct RecipeResponseModel: Codable {
+    struct RecipeResponseDTO: Codable {
         let isSuccess: Bool
         let code: String
         let message: String
-        let result: Results
+        let result: ResultsDTO
     }
 
-    struct Results: Codable {
+    struct ResultsDTO: Codable {
         let id: Int?
         let title, cookingTime, calorie: String
         let likeCount, commentCount: Int
         let ingredient, recipeInstruction, recommendCombination: String
         let state: Bool
-        let member: MemberModel
+        let member: MemberDTO
         let recipeImageList: [String]
         let hashTagNameList: [String]
         let like: Bool
     }
 
-    struct MemberModel: Codable {
+    struct MemberDTO: Codable {
         let memberId: Int
         let nickName, profileImageUrl: String
     }
-
-    
 }

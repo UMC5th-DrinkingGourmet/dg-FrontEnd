@@ -281,7 +281,7 @@ extension ProfileCreationViewController {
     }
     
     func postUserInfo() {
-        let userInfo = UserInfoModel(
+        let userInfo = UserInfoDTO(
             name: inputNameView.textField.text ?? "",
             profileImage: UserDefaultManager.shared.userProfileImg,
             email: UserDefaultManager.shared.email,
@@ -293,7 +293,7 @@ extension ProfileCreationViewController {
             providerId: UserDefaultManager.shared.providerId
         )
                 
-        UserInfoDataManager.shared.sendUserInfo(userInfo) {
+        SignUpService.shared.sendUserInfo(userInfo) {
             let tabbarVC = TabBarViewController()
             self.navigationController?.pushViewController(tabbarVC, animated: true)
         }

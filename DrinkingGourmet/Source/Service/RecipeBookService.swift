@@ -32,7 +32,8 @@ final class RecipeBookService {
             AF.request("\(baseURL)/recipes",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: RecipeBookHomeResponseDTO.self) { response in
                 switch response.result {
@@ -62,7 +63,8 @@ final class RecipeBookService {
             AF.request("\(baseURL)/recipes/search",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: RecipeBookHomeResponseDTO.self) { response in
                 switch response.result {
@@ -85,7 +87,8 @@ final class RecipeBookService {
             
             AF.request("\(baseURL)/recipes/\(recipeBookId)",
                        method: .get,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: RecipeBookDetailResponseDTO.self) { response in
                 switch response.result {
@@ -108,7 +111,8 @@ final class RecipeBookService {
             
             AF.request("\(baseURL)/recipe-likes/\(recipeBookId)",
                        method: .post,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -131,7 +135,8 @@ final class RecipeBookService {
             
             AF.request("\(baseURL)/recipes/\(recipeBookId)",
                        method: .delete,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -160,7 +165,8 @@ final class RecipeBookService {
             AF.request("\(baseURL)/recipe-comments/\(recipeBookId)",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .responseDecodable(of: RecipeBookCommentResponseDTO.self) { response in
                 switch response.result {
@@ -192,7 +198,8 @@ final class RecipeBookService {
                        method: .post,
                        parameters: parameters,
                        encoding: JSONEncoding.default,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {
@@ -220,7 +227,8 @@ final class RecipeBookService {
             AF.request("\(baseURL)/recipe-comments",
                        method: .delete,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
             .response { response in
                 switch response.result {

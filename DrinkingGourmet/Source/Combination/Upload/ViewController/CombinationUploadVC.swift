@@ -18,7 +18,7 @@ class CombinationUploadVC: UIViewController {
     
     var recommendId: Int?
     
-    var arrayRecommendList: [CombinationUploadModel.fetchRecommendListModel.RecommendResponseDTOList] = []
+    var arrayRecommendList: [CombinationUploadModel.FetchRecommendListModel.RecommendResponseDTOList] = []
     
     // MARK: - View
     let scrollView = UIScrollView().then {
@@ -268,9 +268,9 @@ class CombinationUploadVC: UIViewController {
     
     // MARK: - 초기 설정
     func prepare() {
-        let input = CombinationUploadInput.fetchRecommendListDataInput(page: 0, size: 20)
+        let input = CombinationUploadInput.FetchRecommendListDataInput(page: 0, size: 20)
         
-        CombinationUploadDataManager.shared.fetchRecommendListData(input, self) { [weak self] model in
+        CombinationUploadService.shared.fetchRecommendListData(input, self) { [weak self] model in
             guard let self = self else { return }
             
             if let model = model {
@@ -428,7 +428,7 @@ class CombinationUploadVC: UIViewController {
         if completionButton.isEnabled == true {
             print("클릭")
             print("Uploading \(imageList.count) images.")
-            CombinationUploadDataManager.shared.uploadImages(imageList) { (response, error) in
+            CombinationUploadService.shared.uploadImages(imageList) { (response, error) in
                 if let error = error {
                     print("Error: \(error)")
                 } else if let response = response {
@@ -444,7 +444,7 @@ class CombinationUploadVC: UIViewController {
                             recommendId: recommendId,
                             hashTagNameList: hashTagNameList,
                             combinationImageList: combinationImageList)
-                        CombinationUploadDataManager.shared.uploadPost(postModel) { (response, error) in
+                        CombinationUploadService.shared.uploadPost(postModel) { (response, error) in
                             if let error = error {
                                 print("Post upload error: \(error)")
                             } else if let response = response {

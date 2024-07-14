@@ -19,7 +19,7 @@ class RecipeBookUploadViewController: UIViewController {
     
     var recommendId: Int?
     
-    var arrayRecommendList: [CombinationUploadModel.fetchRecommendListModel.RecommendResponseDTOList] = []
+    var arrayRecommendList: [CombinationUploadModel.FetchRecommendListModel.RecommendResponseDTOList] = []
     
     // MARK: - View
     let scrollView = UIScrollView().then {
@@ -265,9 +265,9 @@ class RecipeBookUploadViewController: UIViewController {
     
     // MARK: - 초기 설정
     func prepare() {
-        let input = CombinationUploadInput.fetchRecommendListDataInput(page: 0, size: 20)
+        let input = CombinationUploadInput.FetchRecommendListDataInput(page: 0, size: 20)
         
-        RecipeBookUploadDataManager.shared.fetchRecommendListData(input, self) { [weak self] model in
+        RecipeBookUploadService.shared.fetchRecommendListData(input, self) { [weak self] model in
             guard let self = self else { return }
             
             if let model = model {
@@ -442,7 +442,7 @@ class RecipeBookUploadViewController: UIViewController {
         if completionButton.isEnabled == true {
             print("클릭")
             print("Uploading \(imageList.count) images.")
-            let postModel = RecipeBookUpoadModel.RecipeRequest(
+            let postModel = RecipeBookUploadModel.RecipeRequestDTO(
                 title: self.combinationTextField.text!,
                 cookingTime: self.titleLabel.text!,
                 calorie: self.contentInputView.textField.text!,
@@ -452,14 +452,14 @@ class RecipeBookUploadViewController: UIViewController {
                 hashTagNameList: ["#dummy"]
             )
 
-            RecipeBookUploadDataManager.shared.uploadPost(postModel) { (response, error) in
+            RecipeBookUploadService.shared.uploadPost(postModel) { (response, error) in
                 if let error = error {
                     print("Post upload error: \(error)")
                 } else if let response = response, let recipeId = response.result.id {
                     print("Post upload response: \(response)")
                     print("recipeId: \(recipeId)")
                     // 게시글 업로드가 성공하면 이미지 업로드
-                    RecipeBookUploadDataManager.shared.uploadImages(self.imageList, recipeId: recipeId) { (response, error) in
+                    RecipeBookUploadService.shared.uploadImages(self.imageList, recipeId: recipeId) { (response, error) in
                         if let error = error {
                             print("Error: \(error)")
                         } else if let response = response {
@@ -793,4 +793,5 @@ extension RecipeBookUploadViewController: UIPickerViewDelegate {
         print("recommendId: \(String(describing: recommendId))")
     }
 }
+
 

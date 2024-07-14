@@ -1,9 +1,12 @@
 //
-//  CombinationUploadDataManager.swift
+//  CombinationUpoadService.swift
 //  DrinkingGourmet
 //
-//  Created by 이승민 on 2/16/24.
+//  Created by hwijinjeong on 7/1/24.
+//
 
+import UIKit
+import Alamofire
 
 struct ErrorResponseModel: Codable {
     let timestamp: String
@@ -11,20 +14,17 @@ struct ErrorResponseModel: Codable {
     let error, path: String
 }
 
-import UIKit
-import Alamofire
-
-class CombinationUploadDataManager {
-    static let shared = CombinationUploadDataManager()
+final class CombinationUploadService {
+    static let shared = CombinationUploadService()
     
     private init() { }
     
     private let baseURL = "https://drink-gourmet.kro.kr"
     
     // MARK: - 오늘의 조합 홈 조회
-    func fetchRecommendListData(_ parameters: CombinationUploadInput.fetchRecommendListDataInput,
-                                  _ viewController: CombinationUploadVC,
-                                    completion: @escaping (CombinationUploadModel.fetchRecommendListModel?) -> Void) {
+    func fetchRecommendListData(_ parameters: CombinationUploadInput.FetchRecommendListDataInput,
+                                _ viewController: CombinationUploadVC,
+                                completion: @escaping (CombinationUploadModel.FetchRecommendListModel?) -> Void) {
         do {
             // Keychain에서 액세스 토큰 가져오기
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -38,9 +38,10 @@ class CombinationUploadDataManager {
             AF.request("\(baseURL)/recommends/list",
                        method: .get,
                        parameters: parameters,
-                       headers: headers)
+                       headers: headers,
+                       interceptor: AuthInterceptor())
             .validate()
-            .responseDecodable(of: CombinationUploadModel.fetchRecommendListModel.self) { response in
+            .responseDecodable(of: CombinationUploadModel.FetchRecommendListModel.self) { response in
                 switch response.result {
                 case .success(let result):
                     print("추천 받은 조합 리스트 조회 - 네트워킹 성공")
@@ -57,7 +58,7 @@ class CombinationUploadDataManager {
     }
     
     // MARK: - 오늘의 조합 이미지 업로드
-    func uploadImages(_ images: [UIImage], completion: @escaping (CombinationUploadModel.imageUploadResponse?, Error?) -> Void) {
+    func uploadImages(_ images: [UIImage], completion: @escaping (CombinationUploadModel.ImageUploadResponse?, Error?) -> Void) {
         let url = "\(baseURL)/combinationImages"
         
         do {
@@ -77,8 +78,8 @@ class CombinationUploadDataManager {
                                                  mimeType: "image/jpeg")
                     }
                 }
-            }, to: url, method: .post, headers: headers)
-            .responseDecodable(of: CombinationUploadModel.imageUploadResponse.self) { response in
+            }, to: url, method: .post, headers: headers, interceptor: AuthInterceptor())
+            .responseDecodable(of: CombinationUploadModel.ImageUploadResponse.self) { response in
                 debugPrint(response)
                 guard let statusCode = response.response?.statusCode else { return }
 
@@ -102,7 +103,7 @@ class CombinationUploadDataManager {
         }
     }
 
-
+    // MARK: - 게시글 작성 업로드
     func uploadPost(_ postModel: CombinationUploadModel.WritingPostModel, completion: @escaping (CombinationUploadModel.WritingPostResponseModel?, Error?) -> Void) {
         let url = "\(baseURL)/combinations/recommends"
         
@@ -114,7 +115,7 @@ class CombinationUploadDataManager {
                 "Content-Type": "application/json"
             ]
             
-            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers)
+            AF.request(url, method: .post, parameters: postModel, encoder: JSONParameterEncoder.default, headers: headers, interceptor: AuthInterceptor())
                 .responseDecodable(of: CombinationUploadModel.WritingPostResponseModel.self) { response in
                     
                     switch response.result {
@@ -140,6 +141,4 @@ class CombinationUploadDataManager {
             completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get access token"]))
         }
     }
-
-
 }
