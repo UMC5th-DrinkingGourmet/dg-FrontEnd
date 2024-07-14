@@ -1,13 +1,13 @@
 //
-//  LoginInfoModel.swift
+//  SignInInfoDTO.swift
 //  DrinkingGourmet
 //
-//  Created by hwijinjeong on 2/13/24.
+//  Created by hwijinjeong on 7/1/24.
 //
 
 import Foundation
 
-struct LoginInfoModel: Encodable {
+struct SignInfoDTO: Encodable {
     var provider: String
     var providerId: String
 }

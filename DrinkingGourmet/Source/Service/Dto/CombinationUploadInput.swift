@@ -7,7 +7,7 @@
 
 struct CombinationUploadInput {
     
-    struct fetchRecommendListDataInput: Codable {
+    struct FetchRecommendListDataInput: Codable {
         var page: Int?
         var size: Int?
     }
