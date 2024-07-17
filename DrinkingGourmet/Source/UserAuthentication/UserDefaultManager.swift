@@ -15,6 +15,7 @@ class UserDefaultManager {
     static let shared = UserDefaultManager()
     
     enum UDKey: String {
+        case userId
         case userName
         case userBirth
         case userPhoneNumber
@@ -27,6 +28,15 @@ class UserDefaultManager {
     }
     
     let ud = UserDefaults.standard
+    
+    var userId: String {
+        get {
+            ud.string(forKey: UDKey.userId.rawValue) ?? "-1"
+        }
+        set {
+            ud.setValue(newValue, forKey: UDKey.userId.rawValue)
+        }
+    }
     
     var userName: String {
         get {

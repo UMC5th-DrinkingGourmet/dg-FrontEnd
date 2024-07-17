@@ -17,7 +17,7 @@ final class SignUpService {
     private let baseURL = "https://drink-gourmet.kro.kr/auth/kakao"
     private let headers: HTTPHeaders = ["Content-Type": "application/json"]
     
-    func sendUserInfo(_ parameter: UserInfoDTO, completion: @escaping () -> Void) {
+    func sendUserInfo(_ parameter: UserInfoDTO, completion: @escaping (UserStatusResponse?) -> Void) {
         print("sendUserInfo providerId: \(UserDefaultManager.shared.providerId)")
         
         AF.request(baseURL,
@@ -27,7 +27,7 @@ final class SignUpService {
                    headers: headers,
                    interceptor: AuthInterceptor())
         .validate()
-        .response { response in
+        .responseDecodable(of: UserStatusResponse.self) { response in
             self.handleResponse(response, completion: completion)
         }
     }
@@ -46,7 +46,31 @@ final class SignUpService {
                    interceptor: AuthInterceptor())
         .validate(statusCode: 200..<601)
         .response { response in
-            self.handleResponse(response, completion: completion)
+            self.handleResponse(response) {
+                completion()
+            }
+        }
+    }
+    
+    private func handleResponse(_ response: AFDataResponse<UserStatusResponse>, completion: @escaping (UserStatusResponse?) -> Void) {
+        switch response.result {
+        case .success(let userStatusResponse):
+            if let headerFields = response.response?.allHeaderFields as? [String: String] {
+                if let refreshToken = headerFields["RefreshToken"] {
+                    Keychain.shared.saveToken(kind: .refreshToken, token: refreshToken)
+                    print("Saved Refresh Token: \(refreshToken)")
+                }
+                
+                if let accessToken = headerFields["Authorization"] {
+                    Keychain.shared.saveToken(kind: .accessToken, token: accessToken)
+                    print("Saved Access Token: \(accessToken)")
+                }
+            }
+            completion(userStatusResponse)
+            
+        case .failure(let failure):
+            print("Request Failed: \(failure)")
+            completion(nil)
         }
     }
     

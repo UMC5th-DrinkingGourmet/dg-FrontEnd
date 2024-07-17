@@ -46,6 +46,7 @@ class AuthenticationViewController: UIViewController {
     
     private let naverBtn = UIButton().then {
         $0.setImage(UIImage(named: "ic_login_naver"), for: .normal)
+        $0.isHidden = true
     }
     
     private let appleBtn = UIButton().then {
@@ -83,17 +84,7 @@ class AuthenticationViewController: UIViewController {
         do {
              // 리프레시 토큰의 유효성 검사
             let _ = try Keychain.shared.getToken(kind: .refreshToken)
-            let mainMenuVC = MainMenuViewController()
-            // MainMenuViewController로 이동
-            self.navigationController?.pushViewController(mainMenuVC, animated: true)
-            return
-//            UserInfoDataManager.shared.loginWithProviderInfo { [weak self] in
-//                        DispatchQueue.main.async {
-//                            let mainMenuVC = MainMenuViewController()
-//                            // MainMenuViewController로 이동
-//                            self?.navigationController?.pushViewController(mainMenuVC, animated: true)
-//                        }
-//                    }
+            navigateToMainMenu()
         } catch KeyChainError.noData {
             // 리프레시 토큰이 없는 경우
             let alert = UIAlertController(title: "카카오톡 로그인", message: "카카오톡으로 로그인하시겠습니까?", preferredStyle: .alert)
@@ -117,10 +108,7 @@ class AuthenticationViewController: UIViewController {
         do {
             // 리프레시 토큰의 유효성 검사
             let _ = try Keychain.shared.getToken(kind: .refreshToken)
-            let mainMenuVC = MainMenuViewController()
-            // MainMenuViewController로 이동
-            self.navigationController?.pushViewController(mainMenuVC, animated: true)
-            return
+            navigateToMainMenu()
         } catch KeyChainError.noData {
             // 리프레시 토큰이 없는 경우
             let alert = UIAlertController(title: "애플 로그인", message: "애플 계정으로 로그인하시겠습니까?", preferredStyle: .alert)
@@ -169,13 +157,13 @@ class AuthenticationViewController: UIViewController {
         kakaoBtn.snp.makeConstraints {
             $0.width.height.equalTo(50)
             $0.top.equalTo(naverBtn.snp.top)
-            $0.trailing.equalTo(naverBtn.snp.leading).offset(-30)
+            $0.trailing.equalTo(naverBtn.snp.leading)
         }
         
         appleBtn.snp.makeConstraints {
             $0.width.height.equalTo(50)
             $0.top.equalTo(naverBtn.snp.top)
-            $0.leading.equalTo(naverBtn.snp.trailing).offset(30)
+            $0.leading.equalTo(naverBtn.snp.trailing)
         }
         
         loginLabel.snp.makeConstraints {
@@ -193,31 +181,30 @@ extension AuthenticationViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
-                    DispatchQueue.main.async {
-                        // 이미 TermsViewController가 푸시되었는지 확인
-                        if self?.navigationController?.topViewController is TermsViewController {
-                            return
-                        }
-
-                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
-                    }
+                    self?.handleLogin()
                 }
             }
             .store(in: &subscriptions)
+//            .sink { [weak self] isLoggedIn in
+//                if isLoggedIn {
+//                    DispatchQueue.main.async {
+//                        // 이미 TermsViewController가 푸시되었는지 확인
+//                        if self?.navigationController?.topViewController is TermsViewController {
+//                            return
+//                        }
+//
+//                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+//                    }
+//                }
+//            }
+//            .store(in: &subscriptions)
             
         // 로그인 성공시
         kakaoAuthVM.$isLoggedIn
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
-                    DispatchQueue.main.async {
-                        // 이미 TermsViewController가 푸시되었는지 확인
-                        if self?.navigationController?.topViewController is TermsViewController {
-                            return
-                        }
-
-                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
-                    }
+                    self?.handleLogin()
                 }
             }
             .store(in: &subscriptions)
@@ -253,5 +240,44 @@ extension AuthenticationViewController {
                 UserDefaultManager.shared.providerId = String(validUser.id ?? -1)
             }
             .store(in: &subscriptions)
+    }
+    
+    private func handleLogin() {
+            let userInfo = UserInfoDTO(
+                name: "",
+                profileImage: "",
+                email: UserDefaultManager.shared.email,
+                nickName: "",
+                birthDate: "",
+                phoneNumber: "",
+                gender: "",
+                provider: UserDefaultManager.shared.provider,
+                providerId: UserDefaultManager.shared.providerId
+            )
+            
+            SignUpService.shared.sendUserInfo(userInfo) { [weak self] userStatus in
+                guard let userStatus = userStatus else {
+                    print("로그인/회원가입 실패")
+                    return
+                }
+
+                if userStatus.isSuccess {
+                    UserDefaultManager.shared.userId = String(userStatus.result.memberId)
+                    UserDefaultManager.shared.userNickname = userStatus.result.nickName
+                    
+                    if userStatus.result.newMember {
+                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+                    } else {
+                        self?.navigateToMainMenu()
+                    }
+                } else {
+                    print("로그인 실패: \(userStatus.message)")
+                }
+            }
+        }
+    
+    private func navigateToMainMenu() {
+        let tabBarVC = TabBarViewController()
+        self.navigationController?.pushViewController(tabBarVC, animated: true)
     }
 }

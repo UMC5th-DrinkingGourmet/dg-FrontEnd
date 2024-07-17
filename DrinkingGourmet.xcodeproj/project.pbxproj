@@ -10,6 +10,7 @@
 		2E0274E02B6FCF5200F92177 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274DF2B6FCF5200F92177 /* MainMenuViewController.swift */; };
 		2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */; };
 		2E06A6F12C1EE16100FF5449 /* AppleAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */; };
+		2E22A47B2C47BFD900D38881 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E22A47A2C47BFD900D38881 /* File.swift */; };
 		2E3E5A7D2B6C04590000E651 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */; };
 		2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */; };
 		2E5407962B84BAF100724513 /* RecipeBookUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */; };
@@ -169,6 +170,7 @@
 		2E0274DF2B6FCF5200F92177 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthViewModel.swift; sourceTree = "<group>"; };
+		2E22A47A2C47BFD900D38881 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedImgCollectionViewCell.swift; sourceTree = "<group>"; };
 		2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadViewController.swift; sourceTree = "<group>"; };
@@ -908,6 +910,7 @@
 				56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */,
 				56BBF3F52C359F5B0058B19B /* RecommendDTO.swift */,
 				56BBF42B2C3812DA0058B19B /* MyPageDTO.swift */,
+				2E22A47A2C47BFD900D38881 /* File.swift */,
 			);
 			path = Dto;
 			sourceTree = "<group>";
@@ -1309,6 +1312,7 @@
 				56B9DCCC2BCBF37700D08D22 /* ReportCompletePopUpView.swift in Sources */,
 				56BBF3512C32BDDD0058B19B /* QuestionViewController.swift in Sources */,
 				5668A34D2B6FBAF00009FCD6 /* RecipeBookDetailViewController.swift in Sources */,
+				2E22A47B2C47BFD900D38881 /* File.swift in Sources */,
 				56BBF4302C381F680058B19B /* MyRecommendViewController.swift in Sources */,
 				56BBF4022C35A23E0058B19B /* SelectMoodViewController.swift in Sources */,
 				56BBF3EC2C359CF40058B19B /* RecommendGuideView.swift in Sources */,
@@ -1349,7 +1353,6 @@
 				56BBF4042C35AD550058B19B /* InputMoodeViewController.swift in Sources */,
 				56BBF40E2C35B9150058B19B /* RecommendResultView.swift in Sources */,
 				56BBF4262C378D310058B19B /* LikeCombinationViewController.swift in Sources */,
-				56543ECB2B7EF1500099E648 /* CombinationUploadDataManager.swift in Sources */,
 				56BBF4282C378D420058B19B /* LikeRecipeBookViewController.swift in Sources */,
 				5625E3792BB962D700269BBF /* SettingView.swift in Sources */,
 				2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */,

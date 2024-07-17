@@ -293,7 +293,7 @@ extension ProfileCreationViewController {
             providerId: UserDefaultManager.shared.providerId
         )
                 
-        SignUpService.shared.sendUserInfo(userInfo) {
+        SignUpService.shared.sendUserInfo(userInfo) {_ in 
             let tabbarVC = TabBarViewController()
             self.navigationController?.pushViewController(tabbarVC, animated: true)
         }
