@@ -30,7 +30,7 @@
 		2E7139592B5E7B05003D0190 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2E7139582B5E7B05003D0190 /* .gitignore */; };
 		2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */; };
 		2E871E702B6E3DCB00B4BB70 /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */; };
-		2EAD6D572C32781100B19476 /* SignUpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D562C32781100B19476 /* SignUpService.swift */; };
+		2EAD6D572C32781100B19476 /* SignService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D562C32781100B19476 /* SignService.swift */; };
 		2EAD6D5A2C3279B400B19476 /* SignInInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D592C3279B400B19476 /* SignInInfoDTO.swift */; };
 		2EAD6D5C2C3279EC00B19476 /* UserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D5B2C3279EC00B19476 /* UserInfoDTO.swift */; };
 		2EAD6D5E2C327ACD00B19476 /* RecipeBookUploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */; };
@@ -192,7 +192,7 @@
 		2E7139582B5E7B05003D0190 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCreationViewController.swift; sourceTree = "<group>"; };
 		2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
-		2EAD6D562C32781100B19476 /* SignUpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpService.swift; sourceTree = "<group>"; };
+		2EAD6D562C32781100B19476 /* SignService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignService.swift; sourceTree = "<group>"; };
 		2EAD6D592C3279B400B19476 /* SignInInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInInfoDTO.swift; sourceTree = "<group>"; };
 		2EAD6D5B2C3279EC00B19476 /* UserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDTO.swift; sourceTree = "<group>"; };
 		2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadService.swift; sourceTree = "<group>"; };
@@ -889,7 +889,7 @@
 				56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */,
 				56A7E8202C117A1B00CDE615 /* AdministrationService.swift */,
 				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
-				2EAD6D562C32781100B19476 /* SignUpService.swift */,
+				2EAD6D562C32781100B19476 /* SignService.swift */,
 				2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */,
 				56BBF3F32C359F460058B19B /* RecommendService.swift */,
 				56BBF4292C3810AA0058B19B /* MyPageService.swift */,
@@ -1269,7 +1269,7 @@
 				56BBF4002C35A1F60058B19B /* SelectMoodView.swift in Sources */,
 				56BBF42A2C3810AA0058B19B /* MyPageService.swift in Sources */,
 				2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */,
-				2EAD6D572C32781100B19476 /* SignUpService.swift in Sources */,
+				2EAD6D572C32781100B19476 /* SignService.swift in Sources */,
 				56BBF40A2C35B8120058B19B /* RecommendLodingView.swift in Sources */,
 				97599BFC2B840269009B9CF9 /* MyDrinkingStyleDataModels.swift in Sources */,
 				5625E37B2BB962EA00269BBF /* SettingViewController.swift in Sources */,
