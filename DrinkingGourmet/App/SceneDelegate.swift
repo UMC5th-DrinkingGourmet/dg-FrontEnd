@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         do {
             let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
             print("Refresh Token: \(refreshToken)")
-            SignUpService.shared.loginWithProviderInfo { [weak self] in
+            SignService.shared.loginWithProviderInfo { [weak self] in
                 DispatchQueue.main.async {
                     self?.window?.rootViewController = TabBarViewController() // 여기를 탭바 컨트롤러로 변경
                     self?.window?.makeKeyAndVisible()
