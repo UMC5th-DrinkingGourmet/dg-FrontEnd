@@ -115,7 +115,7 @@ class MyPageViewController: UIViewController {
 extension MyPageViewController {
     @objc func settingButtonTapped() {
         let VC = SettingViewController()
-        VC.myInfo = self.myInfo
+//        VC.myInfo = self.myInfo
         navigationController?.pushViewController(VC, animated: true)
     }
     

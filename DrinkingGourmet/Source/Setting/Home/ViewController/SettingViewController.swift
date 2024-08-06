@@ -11,45 +11,68 @@ import Kingfisher
 final class SettingViewController: UIViewController {
     // MARK: - Properties
     var myInfo: MyInfoResultDTO?
-    
+
     private let settingSections = SettingSections()
     private let settingView = SettingView()
-    
+
     // MARK: - View 설정
     override func loadView() {
         view = settingView
     }
+
+    // MARK: - LifeCycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchData()
+    }
     
-    // MARK: - ViewDidLodad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupNaviBar()
         setupTableView()
     }
-    
+
+    func fetchData() {
+        MyPageService.shared.getMyInfo { result in
+            switch result {
+            case .success(let data):
+                print("내 정보 조회 성공")
+                self.myInfo = data.result
+                // 데이터가 성공적으로 불러와졌을 때 UI 업데이트
+                DispatchQueue.main.async {
+                    self.updateHeaderView()
+                }
+            case .failure:
+                print("내 정보 조회 실패")
+            }
+        }
+    }
+
     private func setupNaviBar() {
         title = "설정"
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
-    
+
     private func setupTableView() {
         let tb = settingView.tableView
-        
+
         tb.register(SettingCell.self, forCellReuseIdentifier: "SettingHomeCell")
         tb.dataSource = self
         tb.delegate = self
-        
-        let settingHomeHeaderView = SettingTopView(frame: CGRect(x: 0, y: 0, width: 0, height: 215))
-        
+    }
+
+    private func updateHeaderView() {
         guard let myInfo = self.myInfo else { return }
-        
+
+        let settingHomeHeaderView = SettingTopView(frame: CGRect(x: 0, y: 0, width: 0, height: 215))
+
         if let profileImageUrl = URL(string: myInfo.profileImageUrl) {
             settingHomeHeaderView.profileImage.kf.setImage(with: profileImageUrl)
         }
-        
+
         settingHomeHeaderView.nicknameLabel.text = ("\(myInfo.nickName) 님")
-        
+
         var provider = ""
         switch myInfo.provider {
         case "kakao":
@@ -62,8 +85,22 @@ final class SettingViewController: UIViewController {
             return
         }
         settingHomeHeaderView.providerIcon.image = UIImage(named: provider)
-        
-        tb.tableHeaderView = settingHomeHeaderView
+
+        settingHomeHeaderView.myInfoButton.addTarget(self, action: #selector(myInfoButtonTapped), for: .touchUpInside)
+
+        // 테이블 뷰의 헤더 뷰 설정
+        settingView.tableView.tableHeaderView = settingHomeHeaderView
+    }
+}
+
+// MARK: - Actions
+extension SettingViewController {
+    @objc func myInfoButtonTapped() {
+        print("기본 정보 보기 클릭")
+        let VC = ProfileCreationViewController()
+        VC.hidesBottomBarWhenPushed = true
+        VC.isPatch = true
+        navigationController?.pushViewController(VC, animated: true);
     }
 }
 

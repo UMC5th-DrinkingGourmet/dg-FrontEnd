@@ -35,7 +35,7 @@ final class SettingTopView: UITableViewHeaderFooterView {
         $0.setImage(UIImage(named: "ic_more"), for: .normal)
     }
     
-    private let myInfoButton = UIButton().then {
+    let myInfoButton = UIButton().then {
         $0.backgroundColor = .clear
     }
     
