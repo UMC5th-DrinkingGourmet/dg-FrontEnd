@@ -155,7 +155,9 @@ class MainMenuViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
             print("액세스 토큰: \(accessToken)")
+            print("리프레시 토큰: \(refreshToken)")
             print("main menu providerid: \(UserDefaultManager.shared.providerId)")
         } catch {
             print("Failed to get access token")

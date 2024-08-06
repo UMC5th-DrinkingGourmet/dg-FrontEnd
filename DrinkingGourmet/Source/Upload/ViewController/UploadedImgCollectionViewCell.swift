@@ -15,7 +15,7 @@ class UploadedImgCollectionViewCell: UICollectionViewCell {
     }
     
     let uploadedImageView = UIImageView().then {
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFill
     }
     
     let deleteBtn = UIButton().then {
