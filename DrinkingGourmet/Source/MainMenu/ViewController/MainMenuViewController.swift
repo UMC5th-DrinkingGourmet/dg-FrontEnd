@@ -71,20 +71,23 @@ class MainMenuViewController: UIViewController {
     }
     
     lazy var todayCombiCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout3()).then {
-        $0.isPagingEnabled = true
+        $0.isPagingEnabled = false
         $0.showsHorizontalScrollIndicator = false
         $0.delegate = self
         $0.dataSource = self
         $0.register(TodayCombiCollectionViewCell.self, forCellWithReuseIdentifier: "TodayCombiCollectionViewCell")
         $0.tag = 2
         $0.backgroundColor = .clear
+        $0.contentInsetAdjustmentBehavior = .never
     }
     
     let newAlcoholBtn = UIButton().then {
+        $0.isHidden = true
         $0.trailingBtnConfiguration(title: "새로 출시된 주류", font: .boldSystemFont(ofSize: 20), foregroundColor: .black, padding: 8, image: UIImage(systemName: "chevron.right"), imageSize: CGSize(width: 10, height: 12))
     }
     
     let newAlcoholImage = UIImageView().then {
+        $0.isHidden = true
         $0.image = UIImage(named: "img_main_new_alcohol")
     }
     
@@ -116,10 +119,10 @@ class MainMenuViewController: UIViewController {
     func configureCollectionViewLayout3() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 220, height: 160)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width * 0.55, height: 160)
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 0
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return layout
     }
     
@@ -146,11 +149,7 @@ class MainMenuViewController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
-        // 백버튼 커스텀
-        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
-        navigationController?.navigationBar.backIndicatorImage = customBackImage
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.hidesBackButton = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -277,7 +276,7 @@ class MainMenuViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView)
             $0.edges.equalTo(scrollView)
-            $0.height.equalTo(1650)
+            $0.height.equalTo(1132)
         }
         
         bannerCollectionView.snp.makeConstraints {
@@ -313,7 +312,7 @@ class MainMenuViewController: UIViewController {
         
         todayCombiCollectionView.snp.makeConstraints {
             $0.top.equalTo(todayCombiBtn.snp.bottom).offset(8)
-            $0.leading.equalTo(contentView).inset(20)
+            $0.leading.equalTo(contentView)
             $0.trailing.equalTo(contentView)
             $0.height.equalTo(160)
         }
@@ -332,8 +331,9 @@ class MainMenuViewController: UIViewController {
         }
         
         mainAdImage.snp.makeConstraints { make in
-            make.top.equalTo(newAlcoholImage.snp.bottom).offset(48)
+            make.bottom.equalTo(contentView)
             make.leading.trailing.equalToSuperview()
+            make.height.equalTo(200)
         }
         
 //        logoutBtn.snp.makeConstraints {
