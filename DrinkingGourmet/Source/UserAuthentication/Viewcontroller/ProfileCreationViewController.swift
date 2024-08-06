@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 class ProfileCreationViewController: UIViewController {
-    
+    var isPatch = false // 내 정보 수정 여부
     var nickNameisgood = false  // 닉네임 제대로 입력 했는지
     
     private let scrollView = UIScrollView().then {
@@ -80,7 +80,11 @@ class ProfileCreationViewController: UIViewController {
     
     lazy var confirmBtn = UIButton().then {
         $0.backgroundColor = .black
-        $0.setTitle("확인", for: .normal)
+        if isPatch {
+            $0.setTitle("수정하기", for: .normal)
+        } else {
+            $0.setTitle("확인", for: .normal)
+        }
         $0.setTitleColor(.white, for: .normal)
     }
     
@@ -218,10 +222,10 @@ extension ProfileCreationViewController {
         
         let gender = UserDefaultManager.shared.userGender
         
-        if gender == "male" {
+        if gender == "MALE" {
             maleBtn.isSelected = true
             updateButtonColor(maleBtn, "  남성  ")
-        } else if gender == "female" {
+        } else if gender == "FEMALE" {
             femaleBtn.isSelected = true
             updateButtonColor(femaleBtn, "  여성  ")
         } else {
@@ -307,9 +311,9 @@ extension ProfileCreationViewController {
     
     func determineSelectedGender() -> String {
         if maleBtn.isSelected {
-            return "male"
+            return "MALE"
         } else if femaleBtn.isSelected {
-            return "female"
+            return "FEMALE"
         } else {
             return "none"
         }
@@ -319,7 +323,35 @@ extension ProfileCreationViewController {
         if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood {
             UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Guest"
             
-            postUserInfo()
+            if isPatch { // 내 정보 수정일 때
+                guard let name = inputNameView.textField.text,
+                      let birthDate = inputBirthView.textField.text,
+                      let phoneNumber = inputPhoneNumberView.textField.text,
+                      let nickName = inputNicknameView.textField.text else { return }
+                
+                MyPageService.shared.patchMyInfo(name: name, 
+                                                 birthDate: birthDate,
+                                                 phoneNumber: phoneNumber,
+                                                 gender: determineSelectedGender(),
+                                                 nickName: nickName) { error in
+                    if let error = error {
+                        print("내 정보 수정 실패 - \(error.localizedDescription)")
+                    } else {
+                        print("내 정보 수정 성공")
+                        
+                        // 성공 시 UserDefaults 업데이트
+                        UserDefaultManager.shared.userName = name
+                        UserDefaultManager.shared.userBirth = birthDate
+                        UserDefaultManager.shared.userPhoneNumber = phoneNumber
+                        UserDefaultManager.shared.userNickname = nickName
+                        UserDefaultManager.shared.userGender = self.determineSelectedGender()
+                        
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            } else { // 최초 가입일 때
+                postUserInfo()
+            }
         } else {
             let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "프로필을 제대로 입력하지 않으셨습니다.", preferredStyle: .alert)
             
