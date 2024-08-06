@@ -293,9 +293,15 @@ extension ProfileCreationViewController {
             providerId: UserDefaultManager.shared.providerId
         )
                 
-        SignUpService.shared.sendUserInfo(userInfo) {_ in 
+        SignService.shared.sendUserInfo(userInfo) {_ in 
             let tabbarVC = TabBarViewController()
-            self.navigationController?.pushViewController(tabbarVC, animated: true)
+            if let navigationController = self.navigationController {
+                navigationController.setViewControllers([tabbarVC], animated: true)
+            } else {
+                let navigationController = UINavigationController(rootViewController: tabbarVC)
+                self.view.window?.rootViewController = navigationController
+                self.view.window?.makeKeyAndVisible()
+            }
         }
     }
     

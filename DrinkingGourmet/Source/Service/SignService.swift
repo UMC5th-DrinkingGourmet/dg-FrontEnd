@@ -8,9 +8,9 @@
 import Foundation
 import Alamofire
 
-final class SignUpService {
+final class SignService {
     
-    static let shared = SignUpService()
+    static let shared = SignService()
     
     private init() {}
     
@@ -48,6 +48,27 @@ final class SignUpService {
         .response { response in
             self.handleResponse(response) {
                 completion()
+            }
+        }
+    }
+    
+    // checkUserDivision 메서드 수정
+    func checkUserDivision(signInfo: SignInfoDTO, completion: @escaping (Bool?) -> Void) {
+        let url = "https://drink-gourmet.kro.kr/auth/user-division"
+        
+        AF.request(url,
+                   method: .post,
+                   parameters: signInfo,
+                   encoder: JSONParameterEncoder.default,
+                   headers: headers)
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: UserDivisionResponse.self) { response in
+            switch response.result {
+            case .success(let userDivisionResponse):
+                completion(userDivisionResponse.result.isSignedUp)
+            case .failure(let error):
+                print("회원 구분 요청 실패: \(error)")
+                completion(nil)
             }
         }
     }

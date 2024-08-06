@@ -16,6 +16,8 @@ import AuthenticationServices
 class AuthenticationViewController: UIViewController {
     
     var subscriptions = Set<AnyCancellable>()
+    private var isKakaoUserInfoLoaded = false
+    private var isKakaoLoggedIn = false
     
     private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
     private let appleAuthVM: AppleAuthViewModel = { AppleAuthViewModel() }()
@@ -185,37 +187,29 @@ extension AuthenticationViewController {
                 }
             }
             .store(in: &subscriptions)
-//            .sink { [weak self] isLoggedIn in
-//                if isLoggedIn {
-//                    DispatchQueue.main.async {
-//                        // 이미 TermsViewController가 푸시되었는지 확인
-//                        if self?.navigationController?.topViewController is TermsViewController {
-//                            return
-//                        }
-//
-//                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
-//                    }
-//                }
-//            }
-//            .store(in: &subscriptions)
-            
-        // 로그인 성공시
-        kakaoAuthVM.$isLoggedIn
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLoggedIn in
-                if isLoggedIn {
-                    self?.handleLogin()
-                }
-            }
-            .store(in: &subscriptions)
-
+        //            .sink { [weak self] isLoggedIn in
+        //                if isLoggedIn {
+        //                    DispatchQueue.main.async {
+        //                        // 이미 TermsViewController가 푸시되었는지 확인
+        //                        if self?.navigationController?.topViewController is TermsViewController {
+        //                            return
+        //                        }
+        //
+        //                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+        //                    }
+        //                }
+        //            }
+        //            .store(in: &subscriptions)
+        
+        
         
         kakaoAuthVM.$userInfo
             .receive(on: DispatchQueue.main)
-            .sink { user in
-                guard let validUser = user, validUser.id != -1 else { return }
-                UserDefaultManager.shared.userName = validUser.kakaoAccount?.profile?.nickname ?? "-1"
+            .sink { [weak self] user in
+                guard let self = self, let validUser = user, validUser.id != -1 else { return }
                 
+                // 필요한 사용자 정보 설정
+                UserDefaultManager.shared.userName = validUser.kakaoAccount?.profile?.nickname ?? "-1"
                 UserDefaultManager.shared.userBirth = (user?.kakaoAccount?.birthyear ?? "-1") + (user?.kakaoAccount?.birthday ?? "-1")
                 
                 // 전화번호 format
@@ -229,55 +223,71 @@ extension AuthenticationViewController {
                 
                 if let url = user?.kakaoAccount?.profile?.profileImageUrl {
                     let urlString = url.absoluteString
-                    
                     UserDefaultManager.shared.userProfileImg = urlString
                 }
                 
                 UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? "-1"
-                
-                UserDefaultManager.shared.email = user?.kakaoAccount?.email ?? "-l"
-                
+                UserDefaultManager.shared.email = user?.kakaoAccount?.email ?? "-1"
                 UserDefaultManager.shared.providerId = String(validUser.id ?? -1)
+                
+                print("유저 정보1: \(String(validUser.id ?? -1))")
+                print("유저 정보2: \(UserDefaultManager.shared.providerId)")
+                
+                // 사용자 정보가 성공적으로 로드된 경우 플래그 설정
+                self.isKakaoUserInfoLoaded = true
+                self.checkKakaoLoginStatus()
+            }
+            .store(in: &subscriptions)
+        
+        // 로그인 성공 시
+        kakaoAuthVM.$isLoggedIn
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoggedIn in
+                guard let self = self else { return }
+                self.isKakaoLoggedIn = isLoggedIn
+                self.checkKakaoLoginStatus()
             }
             .store(in: &subscriptions)
     }
     
+    // 두 상태가 모두 충족될 때 handleLogin 호출
+    private func checkKakaoLoginStatus() {
+        if isKakaoUserInfoLoaded && isKakaoLoggedIn {
+            handleLogin()
+        }
+    }
+    
     private func handleLogin() {
-            let userInfo = UserInfoDTO(
-                name: "",
-                profileImage: "",
-                email: UserDefaultManager.shared.email,
-                nickName: "",
-                birthDate: "",
-                phoneNumber: "",
-                gender: "",
-                provider: UserDefaultManager.shared.provider,
-                providerId: UserDefaultManager.shared.providerId
-            )
+        let signInfo = SignInfoDTO(
+            provider: UserDefaultManager.shared.provider,
+            providerId: UserDefaultManager.shared.providerId
+        )
+        
+        SignService.shared.checkUserDivision(signInfo: signInfo) { [weak self] isSignedUp in
+            guard let isSignedUp = isSignedUp else {
+                print("로그인/회원가입 확인 실패")
+                return
+            }
             
-            SignUpService.shared.sendUserInfo(userInfo) { [weak self] userStatus in
-                guard let userStatus = userStatus else {
-                    print("로그인/회원가입 실패")
-                    return
-                }
-
-                if userStatus.isSuccess {
-                    UserDefaultManager.shared.userId = String(userStatus.result.memberId)
-                    UserDefaultManager.shared.userNickname = userStatus.result.nickName
-                    
-                    if userStatus.result.newMember {
-                        self?.navigationController?.pushViewController(TermsViewController(), animated: true)
-                    } else {
-                        self?.navigateToMainMenu()
-                    }
-                } else {
-                    print("로그인 실패: \(userStatus.message)")
-                }
+            if isSignedUp {
+                UserDefaultManager.shared.userId = String(UserDefaultManager.shared.providerId)
+                self?.navigateToMainMenu()
+            } else {
+                let termsVC = TermsViewController()
+                self?.navigationController?.pushViewController(termsVC, animated: true)
             }
         }
+    }
     
+    // 기존 회원을 메인 메뉴로 이동시키는 함수
     private func navigateToMainMenu() {
         let tabBarVC = TabBarViewController()
-        self.navigationController?.pushViewController(tabBarVC, animated: true)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else {
+            print("UIWindow를 찾을 수 없습니다.")
+            return
+        }
+        window.rootViewController = UINavigationController(rootViewController: tabBarVC)
+        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil, completion: nil)
     }
 }

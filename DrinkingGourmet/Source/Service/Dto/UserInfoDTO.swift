@@ -8,13 +8,13 @@
 import Foundation
 
 struct UserInfoDTO: Encodable {
-    var name: String
-    var profileImage: String
-    var email: String
-    var nickName: String
-    var birthDate: String
-    var phoneNumber: String
-    var gender: String
+    var name: String?
+    var profileImage: String?
+    var email: String?
+    var nickName: String?
+    var birthDate: String?
+    var phoneNumber: String?
+    var gender: String?
     var provider: String
     var providerId: String
 }

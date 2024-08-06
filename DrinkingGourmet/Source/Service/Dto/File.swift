@@ -21,3 +21,14 @@ struct UserStatus: Decodable {
     var newMember: Bool
     var createdAt: String
 }
+
+struct UserDivisionResponse: Decodable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: UserDivisionResult
+}
+
+struct UserDivisionResult: Decodable {
+    let isSignedUp: Bool
+}
