@@ -20,18 +20,23 @@ class MyPageViewController: UIViewController {
     }
     
     // MARK: - LifeCycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        fetchData()
+//        fetchData()
         addViews()
         configureConstraints()
         setupNaviBar()
         setupButton()
     }
     
-    private func fetchData() {
+    func fetchData() {
         MyPageService.shared.getMyInfo { result in
             switch result {
             case .success(let data):
@@ -116,5 +121,9 @@ extension MyPageViewController {
     
     @objc func myInfoButtonTapped() {
         print("기본 정보 보기 클릭")
+        let VC = ProfileCreationViewController()
+        VC.hidesBottomBarWhenPushed = true
+        VC.isPatch = true
+        navigationController?.pushViewController(VC, animated: true);
     }
 }
