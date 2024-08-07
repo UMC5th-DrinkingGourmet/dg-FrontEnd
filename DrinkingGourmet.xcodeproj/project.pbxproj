@@ -477,7 +477,7 @@
 		2E6C26E32B497EB900C87B4A /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				566B83332C0EE2FC008C0773 /* Service */,
+				566B83332C0EE2FC008C0773 /* Network */,
 				56D649932BB2BCE6002ABC93 /* Report */,
 				5644C8F62B856E470025E44F /* NewAlcohol */,
 				97599C092B84F4F8009B9CF9 /* NewDrinks */,
@@ -887,14 +887,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		566B83332C0EE2FC008C0773 /* Service */ = {
+		566B83332C0EE2FC008C0773 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				2ED2A87D2C43CA3C00273519 /* Auth */,
 				2EAD6D582C32799600B19476 /* Service */,
 				566B83372C0EE928008C0773 /* Dto */,
 			);
-			path = Service;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		566B83372C0EE928008C0773 /* Dto */ = {
