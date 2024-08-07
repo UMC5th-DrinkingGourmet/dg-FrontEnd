@@ -264,22 +264,47 @@ extension AuthenticationViewController {
         )
         
         SignService.shared.checkUserDivision(signInfo: signInfo) { [weak self] isSignedUp in
+            guard let self = self else { return }
             guard let isSignedUp = isSignedUp else {
                 print("로그인/회원가입 확인 실패")
                 return
             }
             
             if isSignedUp {
-                UserDefaultManager.shared.userId = String(UserDefaultManager.shared.providerId)
-                self?.navigateToMainMenu()
+                let userInfo = UserInfoDTO(
+                    name: UserDefaultManager.shared.userName,
+                    profileImage: UserDefaultManager.shared.userProfileImg,
+                    email: UserDefaultManager.shared.email,
+                    nickName: UserDefaultManager.shared.userNickname,
+                    birthDate: UserDefaultManager.shared.userBirth,
+                    phoneNumber: UserDefaultManager.shared.userPhoneNumber,
+                    gender: UserDefaultManager.shared.userGender,
+                    provider: UserDefaultManager.shared.provider,
+                    providerId: UserDefaultManager.shared.providerId
+                )
+                
+                SignService.shared.sendUserInfo(userInfo) { [weak self] userStatus in
+                    guard let self = self else { return }
+                    guard let userStatus = userStatus else {
+                        print("로그인 실패")
+                        return
+                    }
+
+                    if userStatus.isSuccess {
+                        UserDefaultManager.shared.userId = String(userStatus.result.memberId)
+                        UserDefaultManager.shared.userNickname = userStatus.result.nickName
+                        self.navigateToMainMenu()
+                    } else {
+                        print("로그인 실패: \(userStatus.message)")
+                    }
+                }
             } else {
                 let termsVC = TermsViewController()
-                self?.navigationController?.pushViewController(termsVC, animated: true)
+                self.navigationController?.pushViewController(termsVC, animated: true)
             }
         }
     }
-    
-    // 기존 회원을 메인 메뉴로 이동시키는 함수
+
     private func navigateToMainMenu() {
         let tabBarVC = TabBarViewController()
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
