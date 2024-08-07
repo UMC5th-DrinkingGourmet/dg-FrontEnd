@@ -17,8 +17,8 @@ final class SignService {
     private let baseURL = "https://drink-gourmet.kro.kr/auth/kakao"
     private let headers: HTTPHeaders = ["Content-Type": "application/json"]
     
-    func sendUserInfo(_ parameter: UserInfoDTO, completion: @escaping (UserStatusResponse?) -> Void) {
-        print("sendUserInfo providerId: \(UserDefaultManager.shared.providerId)")
+    func sendUserInfo(_ userInfo: UserInfo, completion: @escaping (UserStatus?) -> Void) {
+        let parameter = UserInfoDTO(from: userInfo)
         
         AF.request(baseURL,
                    method: .post,
@@ -27,8 +27,29 @@ final class SignService {
                    headers: headers,
                    interceptor: AuthInterceptor())
         .validate()
-        .responseDecodable(of: UserStatusResponse.self) { response in
+        .responseDecodable(of: UserStatusResponseDTO.self) { response in
             self.handleResponse(response, completion: completion)
+        }
+    }
+
+    
+    func checkUserDivision(signInfo: SignInfoDTO, completion: @escaping (UserDivision?) -> Void) {
+        let url = "https://drink-gourmet.kro.kr/auth/user-division"
+        
+        AF.request(url,
+                   method: .post,
+                   parameters: signInfo,
+                   encoder: JSONParameterEncoder.default,
+                   headers: headers)
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: UserDivisionResponseDTO.self) { response in
+            switch response.result {
+            case .success(let userDivisionResponse):
+                completion(userDivisionResponse.toDomain())
+            case .failure(let error):
+                print("회원 구분 요청 실패: \(error)")
+                completion(nil)
+            }
         }
     }
     
@@ -45,37 +66,16 @@ final class SignService {
                    headers: headers,
                    interceptor: AuthInterceptor())
         .validate(statusCode: 200..<601)
-        .response { response in
-            self.handleResponse(response) {
+        .responseDecodable(of: UserStatusResponseDTO.self) { response in
+            self.handleResponse(response) { _ in
                 completion()
             }
         }
     }
     
-    // checkUserDivision 메서드 수정
-    func checkUserDivision(signInfo: SignInfoDTO, completion: @escaping (Bool?) -> Void) {
-        let url = "https://drink-gourmet.kro.kr/auth/user-division"
-        
-        AF.request(url,
-                   method: .post,
-                   parameters: signInfo,
-                   encoder: JSONParameterEncoder.default,
-                   headers: headers)
-        .validate(statusCode: 200..<300)
-        .responseDecodable(of: UserDivisionResponse.self) { response in
-            switch response.result {
-            case .success(let userDivisionResponse):
-                completion(userDivisionResponse.result.isSignedUp)
-            case .failure(let error):
-                print("회원 구분 요청 실패: \(error)")
-                completion(nil)
-            }
-        }
-    }
-    
-    private func handleResponse(_ response: AFDataResponse<UserStatusResponse>, completion: @escaping (UserStatusResponse?) -> Void) {
+    private func handleResponse(_ response: AFDataResponse<UserStatusResponseDTO>, completion: @escaping (UserStatus?) -> Void) {
         switch response.result {
-        case .success(let userStatusResponse):
+        case .success(let userStatusResponseDTO):
             if let headerFields = response.response?.allHeaderFields as? [String: String] {
                 if let refreshToken = headerFields["RefreshToken"] {
                     Keychain.shared.saveToken(kind: .refreshToken, token: refreshToken)
@@ -87,36 +87,17 @@ final class SignService {
                     print("Saved Access Token: \(accessToken)")
                 }
             }
-            completion(userStatusResponse)
+            
+            if userStatusResponseDTO.isSuccess {
+                completion(userStatusResponseDTO.result.toDomain())
+            } else {
+                print("Request Failed: \(userStatusResponseDTO.message)")
+                completion(nil)
+            }
             
         case .failure(let failure):
             print("Request Failed: \(failure)")
             completion(nil)
-        }
-    }
-    
-    private func handleResponse(_ response: AFDataResponse<Data?>, completion: @escaping () -> Void) {
-        switch response.result {
-        case .success:
-            if let headerFields = response.response?.allHeaderFields as? [String: String] {
-                if let refreshToken = headerFields["RefreshToken"] {
-                    Keychain.shared.saveToken(kind: .refreshToken, token: refreshToken)
-                    print("Saved Refresh Token: \(refreshToken)")
-                }
-                
-                if let accessToken = headerFields["Authorization"] {
-                    Keychain.shared.saveToken(kind: .accessToken, token: accessToken)
-                    print("Saved Access Token: \(accessToken)")
-                    completion()
-                }
-            }
-            
-            if let data = response.data, let str = String(data: data, encoding: .utf8) {
-                print("Server Response: \(str)")
-                print(UserDefaultManager.shared.userGender)
-            }
-        case .failure(let failure):
-            print("Request Failed: \(failure)")
         }
     }
 }

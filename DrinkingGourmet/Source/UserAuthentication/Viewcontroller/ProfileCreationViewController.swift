@@ -285,7 +285,7 @@ extension ProfileCreationViewController {
     }
     
     func postUserInfo() {
-        let userInfo = UserInfoDTO(
+        let userInfo = UserInfo(
             name: inputNameView.textField.text ?? "",
             profileImage: UserDefaultManager.shared.userProfileImg,
             email: UserDefaultManager.shared.email,

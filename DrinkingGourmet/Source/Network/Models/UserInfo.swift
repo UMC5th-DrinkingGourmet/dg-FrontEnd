@@ -1,13 +1,13 @@
 //
-//  UserInfoDTO.swift
+//  User.swift
 //  DrinkingGourmet
 //
-//  Created by hwijinjeong on 7/1/24.
+//  Created by hwijinjeong on 8/11/24.
 //
 
 import Foundation
 
-struct UserInfoDTO: Encodable {
+struct UserInfo {
     var name: String?
     var profileImage: String?
     var email: String?
@@ -18,3 +18,4 @@ struct UserInfoDTO: Encodable {
     var provider: String
     var providerId: String
 }
+
