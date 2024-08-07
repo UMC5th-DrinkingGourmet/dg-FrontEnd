@@ -558,6 +558,15 @@
 		2EAD6D582C32799600B19476 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				566B83352C0EE311008C0773 /* CombinationService.swift */,
+				2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */,
+				56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */,
+				56A7E8202C117A1B00CDE615 /* AdministrationService.swift */,
+				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
+				2EAD6D562C32781100B19476 /* SignService.swift */,
+				2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */,
+				56BBF3F32C359F460058B19B /* RecommendService.swift */,
+				56BBF4292C3810AA0058B19B /* MyPageService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -884,15 +893,6 @@
 				2ED2A87D2C43CA3C00273519 /* Auth */,
 				2EAD6D582C32799600B19476 /* Service */,
 				566B83372C0EE928008C0773 /* Dto */,
-				566B83352C0EE311008C0773 /* CombinationService.swift */,
-				2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */,
-				56A7E8182C10CD4000CDE615 /* RecipeBookService.swift */,
-				56A7E8202C117A1B00CDE615 /* AdministrationService.swift */,
-				56A7E82A2C15C54100CDE615 /* LikeService.swift */,
-				2EAD6D562C32781100B19476 /* SignService.swift */,
-				2EAD6D5D2C327ACD00B19476 /* RecipeBookUploadService.swift */,
-				56BBF3F32C359F460058B19B /* RecommendService.swift */,
-				56BBF4292C3810AA0058B19B /* MyPageService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
