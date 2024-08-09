@@ -42,6 +42,7 @@
 		2EB865F52C68AB5D00CFF348 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865F42C68AB5D00CFF348 /* UserInfo.swift */; };
 		2EB865F72C68B65900CFF348 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865F62C68B65900CFF348 /* UserStatus.swift */; };
 		2EB865F92C68B6DD00CFF348 /* UserDivision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865F82C68B6DD00CFF348 /* UserDivision.swift */; };
+		2EB865FD2C68CE9100CFF348 /* LogoutResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865FC2C68CE9100CFF348 /* LogoutResponseDTO.swift */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
 		2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */; };
 		2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */; };
@@ -208,6 +209,7 @@
 		2EB865F42C68AB5D00CFF348 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		2EB865F62C68B65900CFF348 /* UserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
 		2EB865F82C68B6DD00CFF348 /* UserDivision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDivision.swift; sourceTree = "<group>"; };
+		2EB865FC2C68CE9100CFF348 /* LogoutResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResponseDTO.swift; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+setPlaceholder.swift"; sourceTree = "<group>"; };
 		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
@@ -622,6 +624,7 @@
 			isa = PBXGroup;
 			children = (
 				2E22A47A2C47BFD900D38881 /* SignInResponseDTO.swift */,
+				2EB865FC2C68CE9100CFF348 /* LogoutResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1362,6 +1365,7 @@
 				56BBF4022C35A23E0058B19B /* SelectMoodViewController.swift in Sources */,
 				56BBF3EC2C359CF40058B19B /* RecommendGuideView.swift in Sources */,
 				56F8A71A2B800D6F000F6CA4 /* LikeCell.swift in Sources */,
+				2EB865FD2C68CE9100CFF348 /* LogoutResponseDTO.swift in Sources */,
 				56AE28452B83D57B009CE0A1 /* MyPageView.swift in Sources */,
 				56543EC92B7EF1190099E648 /* CombinationUploadInput.swift in Sources */,
 				2E56A0DD2B78861B007747ED /* KeyChain.swift in Sources */,
