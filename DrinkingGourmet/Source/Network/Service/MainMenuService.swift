@@ -16,6 +16,7 @@ final class MainMenuService {
     private init() {}
     
     private let baseURL = "https://drink-gourmet.kro.kr"
+    private let interceptor = AuthInterceptor()
     
     func fetchRecipes(completionHandler: @escaping ([RecipeModel]) -> Void) {
         guard let accessToken = try? Keychain.shared.getToken(kind: .accessToken),
@@ -34,7 +35,9 @@ final class MainMenuService {
         
         AF.request(url,
                    method: .get,
-                   headers: headers).responseDecodable(of: RecipeResponseDTO.self) { response in
+                   headers: headers,
+                   interceptor: interceptor
+        ).responseDecodable(of: RecipeResponseDTO.self) { response in
             switch response.result {
             case .success(let recipeResponse):
                 if recipeResponse.isSuccess {
@@ -48,4 +51,36 @@ final class MainMenuService {
             }
         }
     }
+    
+    func fetchWeeklyBestCombinations(completionHandler: @escaping ([CombinationModel]) -> Void) {
+        let url = "\(baseURL)/combinations/main/rotation"
+        
+        AF.request(url, method: .get, interceptor: interceptor)
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: CombinationResponseDTO.self) { response in
+                switch response.result {
+                case .success(let combinationResponse):
+                    if combinationResponse.isSuccess {
+                        // 응답 전체 출력
+                        print("CombinationResponseDTO: \(combinationResponse)")
+                        
+                        // 각 combination의 hashTagList 상태 확인
+                        for combination in combinationResponse.result.combinationList {
+                            print("Combination ID: \(combination.combinationId)")
+                            print("Title: \(combination.title)")
+                            print("Image URL: \(combination.combinationImageUrl)")
+                            print("HashTagList: \(combination.hashTagList ?? [])") // 해시태그 배열 상태 확인
+                        }
+                        
+                        let models = combinationResponse.result.combinationList.map { $0.toModel() }
+                        completionHandler(models)
+                    } else {
+                        print("API Error: \(combinationResponse.message)")
+                    }
+                case .failure(let error):
+                    print("Failed to fetch combinations: \(error.localizedDescription)")
+                }
+            }
+    }
+
 }

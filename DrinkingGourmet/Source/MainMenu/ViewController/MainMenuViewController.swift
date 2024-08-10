@@ -12,20 +12,11 @@ import Then
 class MainMenuViewController: UIViewController {
     private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
     
-    // dummy
     var topCollectionViewImgList = ["img_home_banner", "HomeBanner01", "HomeBanner03", "HomeBanner04"]
     var topCollectionViewTitleList = ["넌 지금 어묵국물에\n소주가 땡긴다", "와인과 어울리는\n안주 페어링", "오늘 퇴근주는\n하이볼 당첨!", "위스키 하이볼 황금비율\n여기서만 공개할게요"]
     
-    
-    var imageList2 = ["img_mypage_thumbnail_01", "img_mypage_thumbnail_02", "img_mypage_thumbnail_03"]
-    
-    var todayCombiTitleList = ["메론 하몽과\n버번 위스키 언더락", "육전과\n서울의 밤", "숯불치킨과\n맥주"]
-    
-    var hashtagList = ["#홈파티 #언더락 #버번위스키", "#한식주 #미식가 #커플 #저녁식사", "#야식 #불금"]
-    
-    // 여기까지 dummy
-    
     var recipes: [RecipeModel] = []
+    var combinations: [CombinationModel] = []
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -133,7 +124,7 @@ class MainMenuViewController: UIViewController {
         configHierarchy()
         layout()
         configButton()
-        fetchRecipes()
+        fetchPostsData()
     }
     
     func setupNaviBar() {
@@ -300,12 +291,6 @@ class MainMenuViewController: UIViewController {
             make.height.equalTo(200)
         }
         
-//        logoutBtn.snp.makeConstraints {
-//            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(12)
-//            $0.trailing.equalToSuperview().offset(-12)
-//            $0.height.equalTo(20)
-//        }
-        
     }
     
     @objc func backToPrevious() {
@@ -314,11 +299,18 @@ class MainMenuViewController: UIViewController {
 }
 
 extension MainMenuViewController {
-    func fetchRecipes() {
+    func fetchPostsData() {
         MainMenuService.shared.fetchRecipes { [weak self] recipeList in
             self?.recipes = recipeList
             DispatchQueue.main.async {
                 self?.recipeBookCollectionView.reloadData()
+            }
+        }
+        
+        MainMenuService.shared.fetchWeeklyBestCombinations { [weak self] (combinationList: [CombinationModel]) in
+            self?.combinations = combinationList
+            DispatchQueue.main.async {
+                self?.todayCombiCollectionView.reloadData()
             }
         }
     }
@@ -331,7 +323,7 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
         } else if collectionView.tag == 1 {
             return recipes.count
         } else {
-            return imageList2.count
+            return combinations.count
         }
     }
     
@@ -358,9 +350,12 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TodayCombiCollectionViewCell", for: indexPath) as! TodayCombiCollectionViewCell
             
-            cell.combiImageView.image = UIImage(named: imageList2[indexPath.item])
-            cell.titleLabel.text = todayCombiTitleList[indexPath.item]
-            cell.hashTagLabel.text = hashtagList[indexPath.item]
+            let combination = combinations[indexPath.item]
+            cell.titleLabel.text = combination.title
+            cell.hashTagLabel.text = combination.hashTags
+            if let url = URL(string: combination.imageUrl) {
+                cell.combiImageView.kf.setImage(with: url)
+            }
             
             return cell
         }

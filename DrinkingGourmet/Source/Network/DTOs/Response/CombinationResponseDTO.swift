@@ -22,5 +22,18 @@ struct CombinationDTO: Decodable {
     let combinationId: Int
     let title: String
     let combinationImageUrl: String
-    let hashTagList: [String]
+    let hashTagList: [String]?
+}
+
+extension CombinationDTO {
+    func toModel() -> CombinationModel {
+        let hashtags = hashTagList?.joined(separator: " ") ?? ""
+        print("Transformed hashtags: \(hashtags)") // 변환된 해시태그 문자열을 출력하여 확인
+        return CombinationModel(
+            id: combinationId,
+            title: title,
+            imageUrl: combinationImageUrl,
+            hashTags: hashtags
+        )
+    }
 }

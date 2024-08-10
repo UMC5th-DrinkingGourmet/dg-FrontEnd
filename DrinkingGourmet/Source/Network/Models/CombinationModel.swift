@@ -13,14 +13,3 @@ struct CombinationModel {
     let imageUrl: String
     let hashTags: String
 }
-
-extension CombinationDTO {
-    func toModel() -> CombinationModel {
-        return CombinationModel(
-            id: combinationId,
-            title: title,
-            imageUrl: combinationImageUrl,
-            hashTags: hashTagList.joined(separator: " ")
-        )
-    }
-}
