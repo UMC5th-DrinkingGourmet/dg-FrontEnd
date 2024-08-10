@@ -46,6 +46,8 @@
 		2EB866012C68F14100CFF348 /* RecipeResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB866002C68F14100CFF348 /* RecipeResponseDTO.swift */; };
 		2EB866032C68F16400CFF348 /* RecipeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB866022C68F16400CFF348 /* RecipeModel.swift */; };
 		2EB866052C68F18600CFF348 /* MainMenuService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB866042C68F18600CFF348 /* MainMenuService.swift */; };
+		2EB866072C68F8B300CFF348 /* CombinationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB866062C68F8B300CFF348 /* CombinationResponseDTO.swift */; };
+		2EB866092C68F8C400CFF348 /* CombinationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB866082C68F8C400CFF348 /* CombinationModel.swift */; };
 		2EC9AF5D2B666870003DF1A6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */; };
 		2ED5DF8E2B827558000EE2DC /* UITextField+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */; };
 		2EE2E88D2B657A52006F81E9 /* KakaoAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */; };
@@ -216,6 +218,8 @@
 		2EB866002C68F14100CFF348 /* RecipeResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeResponseDTO.swift; sourceTree = "<group>"; };
 		2EB866022C68F16400CFF348 /* RecipeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeModel.swift; sourceTree = "<group>"; };
 		2EB866042C68F18600CFF348 /* MainMenuService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuService.swift; sourceTree = "<group>"; };
+		2EB866062C68F8B300CFF348 /* CombinationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationResponseDTO.swift; sourceTree = "<group>"; };
+		2EB866082C68F8C400CFF348 /* CombinationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationModel.swift; sourceTree = "<group>"; };
 		2EC9AF5C2B666870003DF1A6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2ED5DF8D2B827558000EE2DC /* UITextField+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+setPlaceholder.swift"; sourceTree = "<group>"; };
 		2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthViewModel.swift; sourceTree = "<group>"; };
@@ -633,6 +637,7 @@
 				2E22A47A2C47BFD900D38881 /* SignInResponseDTO.swift */,
 				2EB865FC2C68CE9100CFF348 /* LogoutResponseDTO.swift */,
 				2EB866002C68F14100CFF348 /* RecipeResponseDTO.swift */,
+				2EB866062C68F8B300CFF348 /* CombinationResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -644,6 +649,7 @@
 				2EB865F62C68B65900CFF348 /* UserStatus.swift */,
 				2EB865F82C68B6DD00CFF348 /* UserDivision.swift */,
 				2EB866022C68F16400CFF348 /* RecipeModel.swift */,
+				2EB866082C68F8C400CFF348 /* CombinationModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1308,6 +1314,7 @@
 				2E6C26F72B4983FC00C87B4A /* UITextField+AddPadding.swift in Sources */,
 				56BBF3EA2C359CB80058B19B /* NextButtonView.swift in Sources */,
 				56BBF4102C35B9280058B19B /* RecommendResultViewController.swift in Sources */,
+				2EB866092C68F8C400CFF348 /* CombinationModel.swift in Sources */,
 				56BBF35C2C33FEDD0058B19B /* AnswerViewController.swift in Sources */,
 				2EB865F02C68A80200CFF348 /* User+Mapping.swift in Sources */,
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
@@ -1350,6 +1357,7 @@
 				5658DDF72B57498600F72F42 /* CombinationHomeViewController.swift in Sources */,
 				5658DDF92B57C2A200F72F42 /* CombinationHomeCell.swift in Sources */,
 				566B83392C0EE937008C0773 /* CombinationDTO.swift in Sources */,
+				2EB866072C68F8B300CFF348 /* CombinationResponseDTO.swift in Sources */,
 				2EB866052C68F18600CFF348 /* MainMenuService.swift in Sources */,
 				5668A2F12B6EDB580009FCD6 /* CustomSearchBar.swift in Sources */,
 				5668A2FD2B6EDCD70009FCD6 /* CommunityView.swift in Sources */,
