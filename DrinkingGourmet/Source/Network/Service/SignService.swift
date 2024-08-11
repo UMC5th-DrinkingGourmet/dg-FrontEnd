@@ -60,8 +60,7 @@ final class SignService {
                    method: .post,
                    parameters: loginInfo,
                    encoder: JSONParameterEncoder.default,
-                   headers: headers,
-                   interceptor: AuthInterceptor())
+                   headers: headers)
         .validate(statusCode: 200..<601)
         .responseDecodable(of: UserStatusResponseDTO.self) { response in
             self.handleResponse(response) { _ in
