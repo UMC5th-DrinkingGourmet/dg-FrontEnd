@@ -214,7 +214,50 @@ extension SettingViewController: UITableViewDelegate {
                 break
             }
         case 1:
-            print("섹션 1, 로우: \(settingSections.login[indexPath.row])")
+            let selectedItem = settingSections.login[indexPath.row]
+            if selectedItem == "로그아웃" {
+                Task {
+                    SignService.shared.logout { success in
+                        if success {
+                            let provider = UserDefaultManager.shared.provider
+
+                            switch provider {
+                            case "kakao":
+                                let kakaoAuthViewModel = KakaoAuthViewModel()
+                                kakaoAuthViewModel.kakaoLogut()
+                            case "apple":
+                                let appleAuthViewModel = AppleAuthViewModel()
+                                appleAuthViewModel.isLoggedIn = false
+                            default:
+                                print("알 수 없는 provider: \(provider)")
+                                return
+                            }
+
+                            do {
+                                try Keychain.shared.deleteToken(kind: .accessToken)
+                                try Keychain.shared.deleteToken(kind: .refreshToken)
+                            } catch {
+                                print("토큰 삭제 실패: \(error)")
+                                return
+                            }
+
+                            DispatchQueue.main.async {
+                                let authVC = AuthenticationViewController()
+                                let windowScene = UIApplication.shared.connectedScenes
+                                    .filter { $0.activationState == .foregroundActive }
+                                    .compactMap { $0 as? UIWindowScene }
+                                    .first
+                                if let window = windowScene?.windows.first {
+                                    window.rootViewController = UINavigationController(rootViewController: authVC)
+                                    window.makeKeyAndVisible()
+                                }
+                            }
+                        } else {
+                            print("로그아웃 실패: 서버와의 로그아웃 실패 또는 네트워크 문제")
+                        }
+                    }
+                }
+            }
         default:
             break
         }

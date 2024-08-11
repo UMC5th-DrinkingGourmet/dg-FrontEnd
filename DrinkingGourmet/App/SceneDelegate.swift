@@ -18,12 +18,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         
-        do {
-            try Keychain.shared.deleteToken(kind: .refreshToken)
-            print("Deleted Access Token")
-        } catch {
-            print("Failed to delete Access Token: \(error)")
-        }
+//        do {
+//            try Keychain.shared.deleteToken(kind: .refreshToken)
+//            print("Deleted Access Token")
+//        } catch {
+//            print("Failed to delete Access Token: \(error)")
+//        }
 
         
         do {

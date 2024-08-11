@@ -126,9 +126,6 @@ class MainMenuViewController: UIViewController {
         return layout
     }
     
-    private let logoutBtn = UIButton().then {
-        $0.logoutBtnConfig(title: "로그아웃", font: .systemFont(ofSize: 12), backgroundColor: .clear)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,7 +167,7 @@ class MainMenuViewController: UIViewController {
         todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
         newAlcoholBtn.addTarget(self, action: #selector(newAlcoholBtnTapped), for: .touchUpInside)
         
-        logoutBtn.addTarget(self, action: #selector(logoutBtnClicked), for: .touchUpInside)
+        
     }
 
     @objc func recipeBookBtnTapped() {
@@ -204,39 +201,7 @@ class MainMenuViewController: UIViewController {
         newAlcoholViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(newAlcoholViewController, animated: true)
     }
-    
-    @objc func logoutBtnClicked() {
-        let alert = UIAlertController(title: "로그아웃 하시겠습니까?", message: nil, preferredStyle: .alert)
 
-        let btn1 = UIAlertAction(title: "취소", style: .cancel)
-        let btn2 = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-//            do {
-//                try Keychain.shared.deleteToken(kind: .accessToken)
-//                print("Deleted Access Token")
-//            } catch {
-//                print("Failed to delete Access Token: \(error)")
-//            }
-//            
-//            do {
-//                try Keychain.shared.deleteToken(kind: .refreshToken)
-//                print("Deleted refreshToken")
-//            } catch {
-//                print("Failed to delete refreshToken: \(error)")
-//            }
-
-            self?.kakaoAuthVM.kakaoLogut()
-            
-            let authVC = AuthenticationViewController()
-            let navigationController = UINavigationController(rootViewController: authVC)
-            navigationController.modalPresentationStyle = .fullScreen
-            self?.present(navigationController, animated: true)
-        }
-
-        alert.addAction(btn1)
-        alert.addAction(btn2)
-
-        present(alert, animated: true)
-    }
 
 
     
