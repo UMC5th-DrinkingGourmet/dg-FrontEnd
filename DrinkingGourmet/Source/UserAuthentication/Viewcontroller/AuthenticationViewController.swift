@@ -263,15 +263,15 @@ extension AuthenticationViewController {
             providerId: UserDefaultManager.shared.providerId
         )
         
-        SignService.shared.checkUserDivision(signInfo: signInfo) { [weak self] isSignedUp in
+        SignService.shared.checkUserDivision(signInfo: signInfo) { [weak self] userDivision in
             guard let self = self else { return }
-            guard let isSignedUp = isSignedUp else {
+            guard let userDivision = userDivision else {
                 print("로그인/회원가입 확인 실패")
                 return
             }
             
-            if isSignedUp {
-                let userInfo = UserInfoDTO(
+            if userDivision.isSignedUp { // UserDivision에서 isSignedUp 속성 사용
+                let userInfo = UserInfo(
                     name: UserDefaultManager.shared.userName,
                     profileImage: UserDefaultManager.shared.userProfileImg,
                     email: UserDefaultManager.shared.email,
@@ -290,13 +290,9 @@ extension AuthenticationViewController {
                         return
                     }
 
-                    if userStatus.isSuccess {
-                        UserDefaultManager.shared.userId = String(userStatus.result.memberId)
-                        UserDefaultManager.shared.userNickname = userStatus.result.nickName
-                        self.navigateToMainMenu()
-                    } else {
-                        print("로그인 실패: \(userStatus.message)")
-                    }
+                    UserDefaultManager.shared.userId = String(userStatus.memberId)
+                    UserDefaultManager.shared.userNickname = userStatus.nickName
+                    self.navigateToMainMenu()
                 }
             } else {
                 let termsVC = TermsViewController()
