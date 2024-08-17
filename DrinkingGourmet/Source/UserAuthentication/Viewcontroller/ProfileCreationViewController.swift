@@ -209,6 +209,9 @@ extension ProfileCreationViewController {
         inputPhoneNumberView.title = "전화번호"
         inputNicknameView.title = "닉네임"
         
+        inputBirthView.inputType = .date
+        inputPhoneNumberView.inputType = .phoneNumber
+        
         inputNameView.textfieldText = UserDefaultManager.shared.userName
         inputBirthView.textfieldText = UserDefaultManager.shared.userBirth
         inputPhoneNumberView.textfieldText = UserDefaultManager.shared.userPhoneNumber
