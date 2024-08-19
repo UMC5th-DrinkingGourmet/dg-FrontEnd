@@ -10,6 +10,18 @@ import UIKit
 class InputTextFieldView: UIView {
     var onTextChanged: ((String) -> Void)?
     
+    enum InputType {
+        case text
+        case date
+        case phoneNumber
+    }
+    
+    var inputType: InputType = .text {
+        didSet {
+            configureInputType()
+        }
+    }
+    
     var title: String? {
         didSet {
             titleLabel.text = title
@@ -45,14 +57,28 @@ class InputTextFieldView: UIView {
             string: "입력 부탁드려요~",
             attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]
         )
-        $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // 수정된 부분
+        $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }
+    
+    lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .wheels
+        picker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        picker.locale = Locale(identifier: "ko_KR")
+        return picker
+    }()
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
-
-        // 콜백 클로저 호출
         onTextChanged?(text)
+    }
+    
+    @objc func dateChanged(_ sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        textField.text = dateFormatter.string(from: sender.date)
+        onTextChanged?(textField.text ?? "")
     }
     
     lazy var xBtn = UIButton().then {
@@ -66,7 +92,6 @@ class InputTextFieldView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configHierarchy()
         layout()
     }
@@ -112,4 +137,16 @@ class InputTextFieldView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func configureInputType() {
+        switch inputType {
+        case .text:
+            textField.inputView = nil
+            textField.keyboardType = .default
+        case .date:
+            textField.inputView = datePicker
+        case .phoneNumber:
+            textField.inputView = nil
+            textField.keyboardType = .numberPad
+        }
+    }
 }
