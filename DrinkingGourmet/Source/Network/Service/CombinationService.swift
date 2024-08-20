@@ -127,6 +127,36 @@ final class CombinationService {
         }
     }
     
+    // MARK: - 오늘의 조합 수정
+    func patchCombination(combinationId: Int,
+                          fetchModel: CombinationUploadModel.WritingPostModel,
+                          completion: @escaping (Error?) -> Void) {
+        
+        do {
+            let headers = try getHeaders()
+            
+            print("********\(fetchModel)")
+            
+            AF.request("\(baseURL)/combinations/\(combinationId)",
+                       method: .patch,
+                       parameters: fetchModel,
+                       encoder: JSONParameterEncoder.default,
+                       headers: headers,
+                       interceptor: AuthInterceptor())
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
     // MARK: - 오늘의 조합 삭제
     func deleteCombination(combinationId: Int,
                            completion: @escaping (Error?) -> Void) {

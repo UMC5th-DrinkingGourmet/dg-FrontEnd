@@ -308,7 +308,13 @@ extension AuthenticationViewController {
             print("UIWindow를 찾을 수 없습니다.")
             return
         }
-        window.rootViewController = UINavigationController(rootViewController: tabBarVC)
-        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil, completion: nil)
+//        window.rootViewController = UINavigationController(rootViewController: tabBarVC)
+//        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil, completion: nil)
+        
+//        let VC = tabBarVC
+//        navigationController?.pushViewController(VC, animated: true)
+        
+        tabBarVC.modalPresentationStyle = .fullScreen
+        self.present(tabBarVC, animated: true, completion: nil)
     }
 }
