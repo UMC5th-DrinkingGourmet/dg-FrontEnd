@@ -14,6 +14,8 @@ import PhotosUI
 class RecipeBookUploadViewController: UIViewController {
     
     // MARK: - Properties
+    var isModify = false // 수정 여부
+    var recipeBookDetailData: RecipeBookDetailResponseDTO? // 수정일 때 이전 값
     
     var imageList: [UIImage] = []
     

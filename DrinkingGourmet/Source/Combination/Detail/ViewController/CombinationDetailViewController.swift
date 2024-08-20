@@ -518,10 +518,9 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
                 }
             }
             
-            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
-            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            [deleteAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 댓글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [weak self] _ in

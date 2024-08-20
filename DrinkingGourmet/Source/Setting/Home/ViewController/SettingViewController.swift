@@ -257,6 +257,45 @@ extension SettingViewController: UITableViewDelegate {
                         }
                     }
                 }
+            } else if selectedItem == "회원탈퇴" {
+                let alertController = UIAlertController(title: "회원 탈퇴", message: "7일 내에 다시 로그인하시면 탈퇴처리가 취소됩니다.\n정말 회원 탈퇴하시겠습니까?", preferredStyle: .alert)
+               
+                let cancelAction = UIAlertAction(title: "취소", style: .destructive, handler: nil)
+                alertController.addAction(cancelAction)
+                
+                let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+                    SignService.shared.postCancellations { error in
+                        if let error = error {
+                            print("회원 탈퇴 실패: \(error.localizedDescription)")
+                        } else {
+                            print("회원 탈퇴 성공")
+                            
+                            do {
+                                try Keychain.shared.deleteToken(kind: .accessToken)
+                                try Keychain.shared.deleteToken(kind: .refreshToken)
+                                print("토큰 삭제 성공")
+                            } catch {
+                                print("토큰 삭제 실패: \(error)")
+                            }
+                            
+                            DispatchQueue.main.async {
+                                let authVC = AuthenticationViewController()
+                                let windowScene = UIApplication.shared.connectedScenes
+                                    .filter { $0.activationState == .foregroundActive }
+                                    .compactMap { $0 as? UIWindowScene }
+                                    .first
+                                if let window = windowScene?.windows.first {
+                                    window.rootViewController = UINavigationController(rootViewController: authVC)
+                                    window.makeKeyAndVisible()
+                                }
+                            }
+                        }
+                    }
+                }
+                alertController.addAction(confirmAction)
+                
+                // Alert Controller를 화면에 표시
+                self.present(alertController, animated: true, completion: nil)
             }
         default:
             break

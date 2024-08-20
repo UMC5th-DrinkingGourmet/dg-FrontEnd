@@ -17,6 +17,11 @@ final class SignService {
     private let baseURL = "https://drink-gourmet.kro.kr/auth"
     private let headers: HTTPHeaders = ["Content-Type": "application/json"]
     
+    private func getHeaders() throws -> HTTPHeaders {
+        let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+        return ["Authorization": "Bearer \(accessToken)"]
+    }
+    
     func sendUserInfo(_ userInfo: UserInfo, completion: @escaping (UserStatus?) -> Void) {
         let parameter = UserInfoDTO(from: userInfo)
         
@@ -129,4 +134,28 @@ final class SignService {
             completion(nil)
         }
     }
+    
+    // MARK: - 회원탈퇴
+    func postCancellations(completion: @escaping (Error?) -> Void) {
+        do {
+            let headers = try getHeaders()
+            
+            AF.request("https://drink-gourmet.kro.kr/users/cancellations",
+                       method: .post,
+                       headers: headers,
+                       interceptor: AuthInterceptor())
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
 }
