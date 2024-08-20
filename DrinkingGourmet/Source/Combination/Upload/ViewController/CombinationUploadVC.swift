@@ -13,6 +13,8 @@ import PhotosUI
 class CombinationUploadVC: UIViewController {
     
     // MARK: - Properties
+    var isModify = false // 수정 여부
+    var combinationDetailData: CombinationDetailResponseDTO? // 수정일 때 이전 값
     
     var imageList: [UIImage] = []
     
@@ -202,6 +204,37 @@ class CombinationUploadVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        if isModify { // 수정일 때
+            guard let beforeData = combinationDetailData else { return }
+            
+            DispatchQueue.main.async {
+                self.completionLabel.text = "수정하기"
+                self.hashtagTextField.text = beforeData.result.combinationResult.hashTagList.joined(separator: " ")
+                self.titleTextField.text = beforeData.result.combinationResult.title
+                self.contentInputView.textField.text = beforeData.result.combinationResult.content
+                print("MOICHI : \(beforeData.result.combinationResult.content)")
+                
+                for imageURL in beforeData.result.combinationResult.combinationImageList {
+                    if let url = URL(string: imageURL) {
+                        // Kingfisher를 사용해 이미지를 비동기적으로 로드하고 캐시
+                        let imageView = UIImageView()
+                        imageView.kf.setImage(with: url) { result in
+                            switch result {
+                            case .success(let value):
+                                DispatchQueue.main.async {
+                                    self.imageList.append(value.image)
+                                    self.collectionView.reloadData()
+                                    self.updateUploadButtonConfiguration()
+                                }
+                            case .failure(let error):
+                                print("Error: \(error)")
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
         setupNaviBar()
         prepare()
@@ -439,18 +472,32 @@ class CombinationUploadVC: UIViewController {
                        let hashtagString = self.hashtagTextField.text {
                         let hashTagNameList = hashtagString.components(separatedBy: " ")
                         let postModel = CombinationUploadModel.WritingPostModel(
-                            title: self.combinationTextField.text!,
+                            title: self.titleTextField.text!,
                             content: self.contentInputView.textField.text ?? "contentInputView",
                             recommendId: recommendId,
                             hashTagNameList: hashTagNameList,
                             combinationImageList: combinationImageList)
-                        CombinationUploadService.shared.uploadPost(postModel) { (response, error) in
-                            if let error = error {
-                                print("Post upload error: \(error)")
-                            } else if let response = response {
-                                print("Post upload response: \(response)")
-                                DispatchQueue.main.async {
-                                    self.navigationController?.popViewController(animated: true)
+                        
+                        if self.isModify { // 수정일 때
+                            guard let combinationId = self.combinationDetailData?.result.combinationResult.combinationId else { return }
+                            
+                            CombinationService.shared.patchCombination(combinationId: combinationId, fetchModel: postModel) { error in
+                                if let error = error {
+                                    print("오늘의 조합 수정 실패 - \(error.localizedDescription)")
+                                } else {
+                                    print("오늘의 조합 수정 성공")
+                                }
+                            }
+                            
+                        } else {
+                            CombinationUploadService.shared.uploadPost(postModel) { (response, error) in
+                                if let error = error {
+                                    print("Post upload error: \(error)")
+                                } else if let response = response {
+                                    print("Post upload response: \(response)")
+                                    DispatchQueue.main.async {
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
                                 }
                             }
                         }

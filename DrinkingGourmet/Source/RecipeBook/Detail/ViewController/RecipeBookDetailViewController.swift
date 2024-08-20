@@ -175,7 +175,7 @@ extension RecipeBookDetailViewController {
     
     @objc func moreButtonTapped() {
         // 내가 작성한 글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = recipeBookDetailData?.result.member.nickName == UserDefaultManager.shared.userNickname
+        let isCurrentUser = recipeBookDetailData?.result.member.memberId == Int(UserDefaultManager.shared.userId)
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -198,7 +198,14 @@ extension RecipeBookDetailViewController {
                 }
             }
             
-            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
+            let modifyAction = UIAlertAction(title: "수정하기", style: .default) { _ in
+                guard let recipeBookDetailData = self.recipeBookDetailData else { return }
+                let VC = RecipeBookUploadViewController()
+                VC.recipeBookDetailData = recipeBookDetailData
+                VC.isModify = true
+                self.navigationController?.pushViewController(VC, animated: true)
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
@@ -487,7 +494,7 @@ extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓
     func selectedInfoBtn(data: RecipeBookCommentDTO) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.member.nickName != UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.member.memberId == Int(UserDefaultManager.shared.userId)
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -511,10 +518,9 @@ extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓
                 }
             }
             
-            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
-            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            [deleteAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 댓글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in

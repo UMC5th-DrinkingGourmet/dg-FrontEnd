@@ -36,6 +36,8 @@ final class CombinationDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        fetchData()
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardUp),
                                                name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -75,7 +77,7 @@ final class CombinationDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupNaviBar()
-        fetchData()
+//        fetchData()
         addTapGesture()
         setupTableView()
         setupTextField()
@@ -185,8 +187,7 @@ extension CombinationDetailViewController {
     }
     
     @objc func moreButtonTapped() {
-        // 내가 작성한 글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = combinationDetailData?.result.memberResult.nickName == UserDefaultManager.shared.userNickname
+        let isCurrentUser = combinationDetailData?.result.memberResult.memberId == Int(UserDefaultManager.shared.userId)
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -209,7 +210,14 @@ extension CombinationDetailViewController {
                 }
             }
             
-            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
+            let modifyAction = UIAlertAction(title: "수정하기", style: .default) { _ in
+                guard let combinationDetailData = self.combinationDetailData else { return }
+                let VC = CombinationUploadVC()
+                VC.combinationDetailData = combinationDetailData
+                VC.isModify = true
+                self.navigationController?.pushViewController(VC, animated: true)
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
@@ -486,7 +494,7 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
     func selectedInfoBtn(data: CombinationCommentDTO) {
         
         // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.memberNickName == UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.memberId == Int(UserDefaultManager.shared.userId)
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -510,10 +518,9 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
                 }
             }
             
-            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
-            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            [deleteAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 댓글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [weak self] _ in
