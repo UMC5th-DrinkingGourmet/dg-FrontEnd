@@ -247,6 +247,42 @@ final class RecipeBookUploadViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        if self.isModify { // 수정일 때
+            guard let beforeData = self.recipeBookDetailData else { return }
+            
+            DispatchQueue.main.async {
+                self.completeLabel.text = "수정하기"
+                self.hashtagTextField.text = beforeData.result.hashTagNameList.joined(separator: " ")
+                self.titleTextField.text = beforeData.result.title
+                self.cookingTimeTextField.text = beforeData.result.cookingTime
+                self.calorieTextField.text = beforeData.result.calorie
+                self.ingredientTextField.text = beforeData.result.ingredient
+                self.cookingMethodTextField.text = beforeData.result.recipeInstruction
+                
+                for imageURL in beforeData.result.recipeImageList {
+                    if let url = URL(string: imageURL) {
+                        // Kingfisher를 사용해 이미지를 비동기적으로 로드하고 캐시
+                        let imageView = UIImageView()
+                        imageView.kf.setImage(with: url) { result in
+                            switch result {
+                            case .success(let value):
+                                DispatchQueue.main.async {
+                                    self.imageList.append(value.image)
+                                    self.imageCollectionView.reloadData()
+                                    self.updateImageCountLabel()
+                                    self.updateCompleteButton()
+                                }
+                            case .failure(let error):
+                                print("Error: \(error)")
+                            }
+                        }
+                    }
+                }
+                
+               
+            }
+        }
+        
         checkPermission()
         
         addViews()
@@ -407,23 +443,47 @@ extension RecipeBookUploadViewController {
             hashTagNameList: hashtags
         )
         
-        RecipeBookUploadService.shared.uploadPost(postModel) { (response, error) in
-            if let error = error {
-                print("Post upload error: \(error)")
-            } else if let response = response, let recipeId = response.result.id {
-                print("Post upload response: \(response)")
-                print("recipeId: \(recipeId)")
-                // 게시글 업로드가 성공하면 이미지 업로드
-                RecipeBookUploadService.shared.uploadImages(self.imageList, recipeId: recipeId) { (response, error) in
-                    if let error = error {
-                        print("Error: \(error)")
-                    } else if let response = response {
-                        print("Response: \(response)")
-                        
-                        if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeViewController }) as? RecipeBookHomeViewController {
-                            vc.fetchData()
-                            vc.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
-                            self.navigationController?.popToViewController(vc, animated: true)
+        if isModify { // 수정일 때
+            guard let recipeBookId = self.recipeBookDetailData?.result.id else { return }
+            
+            RecipeBookService.shared.patchRecipeBook(recipeBookId: recipeBookId, patchModel: postModel) { error in
+                if let error = error {
+                    print("레시피북 수정 실패 - \(error.localizedDescription)")
+                } else {
+                    RecipeBookUploadService.shared.uploadImages(self.imageList, recipeId: recipeBookId) { (response, error) in
+                        if let error = error {
+                            print("레시피북 이미지 업로드 실패 - \(error.localizedDescription)")
+                        } else if let response = response {
+                            print("레시피북 이미지 업로드 성공")
+                            print("레시피북 수정 성공")
+                            
+                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookDetailViewController }) as? RecipeBookDetailViewController {
+                                vc.fetchData()
+                                self.navigationController?.popToViewController(vc, animated: true)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            RecipeBookUploadService.shared.uploadPost(postModel) { (response, error) in
+                if let error = error {
+                    print("Post upload error: \(error)")
+                } else if let response = response, let recipeId = response.result.id {
+                    print("Post upload response: \(response)")
+                    print("recipeId: \(recipeId)")
+                    // 게시글 업로드가 성공하면 이미지 업로드
+                    RecipeBookUploadService.shared.uploadImages(self.imageList, recipeId: recipeId) { (response, error) in
+                        if let error = error {
+                            print("Error: \(error)")
+                        } else if let response = response {
+                            print("Response: \(response)")
+                            
+                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeViewController }) as? RecipeBookHomeViewController {
+                                vc.fetchData()
+                                vc.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
+                                self.navigationController?.popToViewController(vc, animated: true)
+                            }
                         }
                     }
                 }
@@ -557,6 +617,7 @@ extension RecipeBookUploadViewController: UICollectionViewDataSource {
         imageList.remove(at: index)
         imageCollectionView.reloadData()
         self.updateImageCountLabel()
+        self.updateCompleteButton()
     }
 }
 
@@ -627,6 +688,7 @@ extension RecipeBookUploadViewController: PHPickerViewControllerDelegate {
                     self?.imageList.append(image)
                     self?.imageCollectionView.reloadData()
                     self?.updateImageCountLabel()
+                    self?.updateCompleteButton()
                     
                     print(self?.imageList ?? "No data available")
                 }
