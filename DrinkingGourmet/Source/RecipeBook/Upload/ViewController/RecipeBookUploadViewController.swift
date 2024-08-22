@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import SnapKit
-import Then
 import Photos
 import PhotosUI
 
@@ -819,7 +817,6 @@ final class RecipeBookUploadViewController: UIViewController {
     private let titleView = UIView()
     
     private let titleLabel = UILabel().then {
-        $0.text = "제목"
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
 
@@ -845,7 +842,6 @@ final class RecipeBookUploadViewController: UIViewController {
     private let hashtagView = UIView()
     
     private let hashtagLabel = UILabel().then {
-        $0.text = "해시태그"
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
 
@@ -871,7 +867,9 @@ final class RecipeBookUploadViewController: UIViewController {
     private let imageView = UIView()
     
     private let imageLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.attributedText = NSMutableAttributedString(string: "사진", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
@@ -900,9 +898,6 @@ final class RecipeBookUploadViewController: UIViewController {
     
     lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout()).then {
         $0.backgroundColor = .clear
-        $0.delegate = self
-        $0.dataSource = self
-        $0.register(UploadedImgCollectionViewCell.self, forCellWithReuseIdentifier: "UploadedImgCollectionViewCell")
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
@@ -919,7 +914,6 @@ final class RecipeBookUploadViewController: UIViewController {
     private let cookingTimeView = UIView()
     
     private let cookingTimeLabel = UILabel().then {
-        $0.text = "소요시간"
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
 
@@ -929,7 +923,7 @@ final class RecipeBookUploadViewController: UIViewController {
     }
     
     private let cookingTimeTextField = UITextField().then {
-        $0.placeholder = "소요시간을 입력해주세요."
+        $0.placeholder = "소요시간을 분 단위로 입력해주세요."
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
         $0.autocapitalizationType = .none
@@ -946,7 +940,6 @@ final class RecipeBookUploadViewController: UIViewController {
     private let calorieView = UIView()
     
     private let calorieLabel = UILabel().then {
-        $0.text = "칼로리"
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
 
@@ -973,13 +966,12 @@ final class RecipeBookUploadViewController: UIViewController {
     private let ingredientView = UIView()
     
     private let ingredientLabel = UILabel().then {
-        $0.text = "재료"
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
 
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "칼로리", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "재료", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
     private let ingredientTextField = UITextField().then {
@@ -1030,27 +1022,300 @@ final class RecipeBookUploadViewController: UIViewController {
     private let completeLabel = UILabel().then {
         $0.text = "작성 완료"
         $0.textColor = .base1000
-        $0.font = UIFont(name: "AppleSDGothicNeo-Midium", size: 16)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
-    
     
     // MARK: - Properties
     var isModify = false // 수정 여부
     var recipeBookDetailData: RecipeBookDetailResponseDTO? // 수정일 때 이전 값
+    
+    var imageList: [UIImage] = [] // 사진 담는 배열
     
     // MARK: - ViewDidLodad
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        setupNaviBar()
+        checkPermission()
+        
         addViews()
         configureConstraints()
+        
+        setupNaviBar()
+        setupTextField()
+        setupButton()
+        setupCollectionView()
+        
+        // 키보드 알림 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+
+    deinit {
+        // 알림 제거
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func setupNaviBar() {
         title = "글쓰기"
     }
+    
+    private func setupTextField() {
+        [self.titleTextField,
+         self.hashtagTextField,
+         self.cookingTimeTextField,
+         self.calorieTextField,
+         self.ingredientTextField,
+         self.cookingMethodTextField].forEach { $0.delegate = self }
+    }
+    
+    private func setupButton() {
+        self.imageUploadButton.addTarget(self, action: #selector(imageUploadButtonTapped), for: .touchUpInside)
+    }
+    
+    private func setupCollectionView() {
+        self.imageCollectionView.dataSource = self
+        self.imageCollectionView.register(UploadedImgCollectionViewCell.self, forCellWithReuseIdentifier: "UploadedImgCollectionViewCell")
+    }
+    
+    private func updateImageCountLabel() {
+        var configuration = imageUploadButton.configuration
+        var titleAttr = AttributedString("\(imageList.count)/10")
+        titleAttr.foregroundColor = .lightGray
+        titleAttr.font = UIFont.systemFont(ofSize: 12)
+        configuration?.attributedTitle = titleAttr
+        imageUploadButton.configuration = configuration
+    }
+    
+    // 작성완료 버튼 상태 변경
+    private func updateCompleteButton() {
+        let textFields: [UITextField] = [
+            self.titleTextField,
+            self.hashtagTextField,
+            self.cookingTimeTextField,
+            self.calorieTextField,
+            self.ingredientTextField,
+            self.cookingMethodTextField
+        ]
+        
+        // 모든 텍스트 필드가 채워져 있는지 확인
+        let allFieldsFilled = textFields.allSatisfy { !$0.text!.isEmpty }
+        
+        // 이미지 리스트에 최소 하나 이상의 이미지가 있는지 확인
+        let hasImages = !imageList.isEmpty
+        
+        // 검사 후 상태 변경
+        if allFieldsFilled && hasImages{
+            self.completeButton.backgroundColor = .base0100
+            self.completeButton.isEnabled = true
+        } else {
+            self.completeButton.backgroundColor = .base0500
+            self.completeButton.isEnabled = false
+        }
+    }
+}
+
+// MARK: - Actions
+extension RecipeBookUploadViewController {
+    // 이미지 업로드 버튼
+    @objc private func imageUploadButtonTapped() {
+        let availableSlots = 10 - imageList.count
+        
+        if availableSlots > 0 {
+            var config = PHPickerConfiguration()
+            config.filter = .images // 이미지만 보이게
+            config.selectionLimit = availableSlots // 사진 갯수 제한
+                    
+            let imagePicker = PHPickerViewController(configuration: config)
+            imagePicker.delegate = self
+            imagePicker.modalPresentationStyle = .fullScreen
+                    
+            self.present(imagePicker, animated: true)
+        } else {
+            let alert = UIAlertController(title: nil, message: "이미지는 최대 10장까지만 업로드 가능합니다.", preferredStyle: .alert)
+            
+            let btn1 = UIAlertAction(title: "확인", style: .default)
+            
+            alert.addAction(btn1)
+            
+            self.present(alert, animated: true)
+        }
+    }
+}
+
+// MARK: - Setting
+extension RecipeBookUploadViewController {
+    private func checkPermission() {
+        if #available(iOS 14, *) {
+            switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+            case .notDetermined:
+                print("not determined")
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                    switch status {
+                    case .authorized, .limited:
+                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                    case .denied:
+                        DispatchQueue.main.async {
+                            self.moveToSetting()
+                        }
+                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                    default:
+                        print("그 밖의 권한이 부여 되었습니다.")
+                    }
+                }
+            case .restricted:
+                print("restricted")
+            case .denied:
+                DispatchQueue.main.async {
+                    self.moveToSetting()
+                }
+                print("denined")
+            case .authorized:
+                print("autorized")
+            case .limited:
+                print("limited")
+            @unknown default:
+                print("unKnown")
+            }
+        } else {
+            switch PHPhotoLibrary.authorizationStatus() {
+            case .notDetermined:
+                print("not determined")
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                    switch status {
+                    case .authorized, .limited:
+                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                    case .denied:
+                        DispatchQueue.main.async {
+                            self.moveToSetting()
+                        }
+                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                    default:
+                        print("그 밖의 권한이 부여 되었습니다.")
+                    }
+                }
+            case .restricted:
+                print("restricted")
+            case .denied:
+                DispatchQueue.main.async {
+                    self.moveToSetting()
+                }
+                print("denined")
+            case .authorized:
+                print("autorized")
+            case .limited:
+                print("limited")
+            @unknown default:
+                print("unKnown")
+            }
+            
+        }
+    }
+    
+    private func moveToSetting() {
+        let alertController = UIAlertController(title: "권한 거부됨", message: "앨범 접근이 거부 되었습니다. 앱의 일부 기능을 사용할 수 없어요", preferredStyle: UIAlertController.Style.alert)
+            
+        let okAction = UIAlertAction(title: "권한 설정으로 이동하기", style: .default) { (action) in
+            
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Settings opened: \(success)")
+                })
+            }
+        }
+        let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+            
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+            
+        self.present(alertController, animated: false, completion: nil)
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+extension RecipeBookUploadViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
+        
+        let image = imageList[indexPath.item]
+        cell.uploadedImageView.image = image
+        cell.uploadedImageView.layer.cornerRadius = 8
+        cell.uploadedImageView.layer.masksToBounds = true
+
+        cell.deleteBtn.tag = indexPath.row
+        cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
+        
+        return cell
+    }
+    
+    @objc private func deleteImg(sender: UIButton) {
+        let index = sender.tag
+        
+        imageList.remove(at: index)
+        imageCollectionView.reloadData()
+        self.updateImageCountLabel()
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension RecipeBookUploadViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.updateCompleteButton() // 텍스트필드 입력이 끝날때 마다 작성완료 버튼 업데이트
+    }
+}
+
+// MARK: - PHPickerViewControllerDelegate
+extension RecipeBookUploadViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard let image = image as? UIImage else {
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self?.imageList.append(image)
+                    self?.imageCollectionView.reloadData()
+                    self?.updateImageCountLabel()
+                    
+                    print(self?.imageList ?? "No data available")
+                }
+            }
+        }
+        picker.dismiss(animated: true)
+    }
+}
+
+// MARK: - UI
+extension RecipeBookUploadViewController {
     
     private func addViews() {
         view.addSubviews([
@@ -1101,15 +1366,12 @@ final class RecipeBookUploadViewController: UIViewController {
         
         [titleView, hashtagView, cookingTimeView, calorieView, ingredientView, cookingMethodView].forEach {
             $0.snp.makeConstraints { make in
+                make.leading.trailing.equalTo(stackView)
                 make.height.equalTo(72)
             }
         }
         
         // 제목
-        titleView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(stackView)
-        }
-        
         titleLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(titleView)
         }
@@ -1125,10 +1387,6 @@ final class RecipeBookUploadViewController: UIViewController {
         }
         
         // 해시태그
-        hashtagView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(stackView)
-        }
-        
         hashtagLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(hashtagView)
         }
@@ -1166,10 +1424,6 @@ final class RecipeBookUploadViewController: UIViewController {
         }
         
         // 소요시간
-        cookingTimeView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(stackView)
-        }
-        
         cookingTimeLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(cookingTimeView)
         }
@@ -1185,10 +1439,6 @@ final class RecipeBookUploadViewController: UIViewController {
         }
         
         // 칼로리
-        calorieView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(stackView)
-        }
-        
         calorieLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(calorieView)
         }
@@ -1204,10 +1454,6 @@ final class RecipeBookUploadViewController: UIViewController {
         }
         
         // 재료
-        ingredientView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(stackView)
-        }
-        
         ingredientLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(ingredientView)
         }
@@ -1223,10 +1469,6 @@ final class RecipeBookUploadViewController: UIViewController {
         }
         
         // 조리 방법
-        cookingMethodView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(stackView)
-        }
-        
         cookingMethodLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(cookingMethodView)
         }
@@ -1253,21 +1495,3 @@ final class RecipeBookUploadViewController: UIViewController {
         }
     }
 }
-
-extension RecipeBookUploadViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
-        
-        return cell
-    }
-}
-
-extension RecipeBookUploadViewController: UICollectionViewDelegateFlowLayout {
-    
-}
-
