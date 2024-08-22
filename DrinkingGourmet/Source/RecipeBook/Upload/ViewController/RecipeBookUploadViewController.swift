@@ -11,6 +11,8 @@ import Then
 import Photos
 import PhotosUI
 
+/*
+ 
 class RecipeBookUploadViewController: UIViewController {
     
     // MARK: - Properties
@@ -796,4 +798,476 @@ extension RecipeBookUploadViewController: UIPickerViewDelegate {
     }
 }
 
+ */
+
+final class RecipeBookUploadViewController: UIViewController {
+    
+    // MARK: - UI
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = true
+        $0.keyboardDismissMode = .onDrag // 스크롤 시 키보드 숨김
+    }
+    
+    private let contentView = UIView()
+    
+    private let stackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 56
+    }
+    
+    // 제목
+    private let titleView = UIView()
+    
+    private let titleLabel = UILabel().then {
+        $0.text = "제목"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "제목", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    private let titleTextField = UITextField().then {
+        $0.placeholder = "쉽게 만드는 토스트"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
+    }
+    
+    private let titleLine = UIView().then {
+        $0.backgroundColor = .base0700
+    }
+    
+    // 해시태그
+    private let hashtagView = UIView()
+    
+    private let hashtagLabel = UILabel().then {
+        $0.text = "해시태그"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "해시태그", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    private let hashtagTextField = UITextField().then {
+        $0.placeholder = "#태그입력"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
+    }
+    
+    private let hashtagLine = UIView().then {
+        $0.backgroundColor = .base0700
+    }
+    
+    // 사진
+    private let imageView = UIView()
+    
+    private let imageLabel = UILabel().then {
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "사진", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    private let imageUploadButton = UIButton().then {
+        let resizedImg = UIImage(systemName: "camera.fill")?.resizedImage(to: CGSize(width: 30, height: 20))
+        var configuration = UIButton.Configuration.plain()
+        configuration.baseBackgroundColor = .clear
+
+        var titleAttr = AttributedString.init("0/10")
+        titleAttr.foregroundColor = .lightGray
+        titleAttr.font = UIFont.systemFont(ofSize: 12)
+        configuration.attributedTitle = titleAttr
+        
+        configuration.image = resizedImg?.withTintColor(.lightGray)
+        configuration.imagePlacement = .top
+        configuration.imagePadding = 12
+
+        $0.configuration = configuration
+
+        $0.layer.cornerRadius = 8
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.lightGray.cgColor
+    }
+    
+    lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout()).then {
+        $0.backgroundColor = .clear
+        $0.delegate = self
+        $0.dataSource = self
+        $0.register(UploadedImgCollectionViewCell.self, forCellWithReuseIdentifier: "UploadedImgCollectionViewCell")
+    }
+    
+    func configureCollectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 115, height: 115)
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return layout
+    }
+    
+    // 소요시간
+    private let cookingTimeView = UIView()
+    
+    private let cookingTimeLabel = UILabel().then {
+        $0.text = "소요시간"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "소요시간", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    private let cookingTimeTextField = UITextField().then {
+        $0.placeholder = "소요시간을 입력해주세요."
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
+        $0.keyboardType = .numberPad
+    }
+    
+    private let cookingTimeLine = UIView().then {
+        $0.backgroundColor = .base0700
+    }
+    
+    // 칼로리
+    private let calorieView = UIView()
+    
+    private let calorieLabel = UILabel().then {
+        $0.text = "칼로리"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "칼로리", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    private let calorieTextField = UITextField().then {
+        $0.placeholder = "칼로리를 입력해주세요."
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
+        $0.keyboardType = .numberPad
+    }
+    
+    private let calorieLine = UIView().then {
+        $0.backgroundColor = .base0700
+    }
+    
+    // 재료
+    private let ingredientView = UIView()
+    
+    private let ingredientLabel = UILabel().then {
+        $0.text = "재료"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "칼로리", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    private let ingredientTextField = UITextField().then {
+        $0.placeholder = "재료를 입력해주세요."
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
+    }
+    
+    private let ingredientLine = UIView().then {
+        $0.backgroundColor = .base0700
+    }
+    
+    // 조리 방법
+    private let cookingMethodView = UIView()
+    
+    private let cookingMethodLabel = UILabel().then {
+        $0.text = "조리 방법"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "조리 방법", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
+    private let cookingMethodTextField = UITextField().then {
+        $0.placeholder = "조리방법을 입력해주세요."
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
+    }
+    
+    private let cookingMethodLine = UIView().then {
+        $0.backgroundColor = .base0700
+    }
+    
+    // 작성완료 버튼
+    private let completeButton = UIButton().then {
+        $0.backgroundColor = .base0500
+        $0.isEnabled = false
+    }
+    
+    private let completeLabel = UILabel().then {
+        $0.text = "작성 완료"
+        $0.textColor = .base1000
+        $0.font = UIFont(name: "AppleSDGothicNeo-Midium", size: 16)
+    }
+    
+    
+    // MARK: - Properties
+    var isModify = false // 수정 여부
+    var recipeBookDetailData: RecipeBookDetailResponseDTO? // 수정일 때 이전 값
+    
+    // MARK: - ViewDidLodad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        
+        setupNaviBar()
+        addViews()
+        configureConstraints()
+    }
+    
+    private func setupNaviBar() {
+        title = "글쓰기"
+    }
+    
+    private func addViews() {
+        view.addSubviews([
+            scrollView,
+            completeButton
+        ])
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(stackView)
+        
+        stackView.addArrangedSubviews([
+            titleView,
+            hashtagView,
+            imageView,
+            cookingTimeView,
+            calorieView,
+            ingredientView,
+            cookingMethodView
+        ])
+        
+        titleView.addSubviews([titleLabel, titleTextField, titleLine])
+        hashtagView.addSubviews([hashtagLabel, hashtagTextField, hashtagLine])
+        imageView.addSubviews([imageLabel, imageUploadButton, imageCollectionView])
+        cookingTimeView.addSubviews([cookingTimeLabel, cookingTimeTextField, cookingTimeLine])
+        calorieView.addSubviews([calorieLabel, calorieTextField, calorieLine])
+        ingredientView.addSubviews([ingredientLabel, ingredientTextField, ingredientLine])
+        cookingMethodView.addSubviews([cookingMethodLabel, cookingMethodTextField, cookingMethodLine])
+        
+        completeButton.addSubview(completeLabel)
+    }
+    
+    private func configureConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(completeButton.snp.top)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.width.equalTo(scrollView)
+            make.edges.equalTo(scrollView)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(contentView).inset(20)
+        }
+        
+        [titleView, hashtagView, cookingTimeView, calorieView, ingredientView, cookingMethodView].forEach {
+            $0.snp.makeConstraints { make in
+                make.height.equalTo(72)
+            }
+        }
+        
+        // 제목
+        titleView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(titleView)
+        }
+        
+        titleTextField.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(titleView)
+        }
+        
+        titleLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(titleView)
+            make.height.equalTo(1)
+        }
+        
+        // 해시태그
+        hashtagView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+        }
+        
+        hashtagLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(hashtagView)
+        }
+        
+        hashtagTextField.snp.makeConstraints { make in
+            make.top.equalTo(hashtagLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(hashtagView)
+        }
+        
+        hashtagLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(hashtagView)
+            make.height.equalTo(1)
+        }
+        
+        // 이미지
+        imageView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+            make.height.equalTo(136)
+        }
+        
+        imageLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(imageView)
+        }
+        
+        imageUploadButton.snp.makeConstraints { make in
+            make.top.equalTo(imageLabel.snp.bottom).offset(12)
+            make.leading.equalTo(imageView)
+            make.size.equalTo(100)
+        }
+        
+        imageCollectionView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(imageUploadButton)
+            make.leading.equalTo(imageUploadButton.snp.trailing).offset(16)
+            make.trailing.equalTo(stackView)
+        }
+        
+        // 소요시간
+        cookingTimeView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+        }
+        
+        cookingTimeLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(cookingTimeView)
+        }
+        
+        cookingTimeTextField.snp.makeConstraints { make in
+            make.top.equalTo(cookingTimeLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(cookingTimeView)
+        }
+        
+        cookingTimeLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(cookingTimeView)
+            make.height.equalTo(1)
+        }
+        
+        // 칼로리
+        calorieView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+        }
+        
+        calorieLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(calorieView)
+        }
+        
+        calorieTextField.snp.makeConstraints { make in
+            make.top.equalTo(calorieLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(calorieView)
+        }
+        
+        calorieLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(calorieView)
+            make.height.equalTo(1)
+        }
+        
+        // 재료
+        ingredientView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+        }
+        
+        ingredientLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(ingredientView)
+        }
+        
+        ingredientTextField.snp.makeConstraints { make in
+            make.top.equalTo(ingredientLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(ingredientView)
+        }
+        
+        ingredientLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(ingredientView)
+            make.height.equalTo(1)
+        }
+        
+        // 조리 방법
+        cookingMethodView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+        }
+        
+        cookingMethodLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(cookingMethodView)
+        }
+        
+        cookingMethodTextField.snp.makeConstraints { make in
+            make.top.equalTo(cookingMethodLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(cookingMethodView)
+        }
+        
+        cookingMethodLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(cookingMethodView)
+            make.height.equalTo(1)
+        }
+        
+        // 작성완료 버튼
+        completeButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(89)
+        }
+        
+        completeLabel.snp.makeConstraints { make in
+            make.top.equalTo(completeButton).offset(18)
+            make.centerX.equalTo(completeButton)
+        }
+    }
+}
+
+extension RecipeBookUploadViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
+        
+        return cell
+    }
+}
+
+extension RecipeBookUploadViewController: UICollectionViewDelegateFlowLayout {
+    
+}
 
