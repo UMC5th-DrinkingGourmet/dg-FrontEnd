@@ -52,7 +52,6 @@ class InputTextFieldView: UIView {
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
         $0.textColor = .black
-        $0.text = "textfield.text"
         $0.attributedPlaceholder = NSAttributedString(
             string: "입력 부탁드려요~",
             attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]
