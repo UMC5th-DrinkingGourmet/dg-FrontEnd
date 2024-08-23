@@ -408,7 +408,7 @@ extension RecipeBookDetailViewController: UITableViewDelegate {
         
         header.hashtagLabel.text = data.result.hashTagNameList.map { "\($0)" }.joined(separator: " ")
         header.titleLabel.text = data.result.title
-        header.recipeBookDetailInfoView.timeNumLabel.text = "\(data.result.cookingTime)"
+        header.recipeBookDetailInfoView.timeNumLabel.text = "\(data.result.cookingTime)분"
         header.recipeBookDetailInfoView.kcalNumLabel.text = "\(data.result.calorie)"
         header.recipeBookDetailInfoView.likeNumLabel.text = "\(data.result.likeCount)"
         header.ingredientListLabel.text = data.result.ingredient

@@ -127,6 +127,36 @@ final class RecipeBookService {
         }
     }
     
+    // MARK: - 레시피북 수정
+    func patchRecipeBook(recipeBookId: Int,
+                         patchModel: RecipeBookUploadModel.RecipeRequestDTO,
+                         completion: @escaping (Error?) -> Void) {
+        
+        do {
+            let headers = try getHeaders()
+            
+            print("********\(patchModel)")
+            
+            AF.request("\(baseURL)/recipes/\(recipeBookId)",
+                       method: .patch,
+                       parameters: patchModel,
+                       encoder: JSONParameterEncoder.default,
+                       headers: headers,
+                       interceptor: AuthInterceptor())
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
     // MARK: - 레시피북 삭제
     func deleteRecipeBook(recipeBookId: Int,
                           completion: @escaping (Error?) -> Void) {
