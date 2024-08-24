@@ -79,7 +79,7 @@ class ProfileCreationViewController: UIViewController {
     }
     
     lazy var confirmBtn = UIButton().then {
-        $0.backgroundColor = .black
+        $0.backgroundColor = .lightGray
         if isPatch {
             $0.setTitle("수정하기", for: .normal)
         } else {
@@ -204,17 +204,14 @@ extension ProfileCreationViewController {
     }
     
     func configView() {
-        inputNameView.title = "이름"
+        inputNameView.title = "이름(선택)"
         inputBirthView.title = "생년월일"
-        inputPhoneNumberView.title = "전화번호"
+        inputPhoneNumberView.title = "전화번호(선택)"
         inputNicknameView.title = "닉네임"
         
         inputBirthView.inputType = .date
         inputPhoneNumberView.inputType = .phoneNumber
         
-        inputNameView.textfieldText = UserDefaultManager.shared.userName
-        inputBirthView.textfieldText = UserDefaultManager.shared.userBirth
-        inputPhoneNumberView.textfieldText = UserDefaultManager.shared.userPhoneNumber
         inputNicknameView.textfieldText = UserDefaultManager.shared.userNickname
         
         inputNicknameView.placeholder = "닉네임을 입력해주세요."
@@ -248,22 +245,27 @@ extension ProfileCreationViewController {
         if text.count < 2 || text.count > 9 || text.isEmpty {
             stateLabel.text = "2글자 이상 10글자 미만으로 설정해주세요"
             confirmBtn.isEnabled = false
+            confirmBtn.backgroundColor = .lightGray
             nickNameisgood = false
         } else if specialChar.contains(where: text.contains) {
             stateLabel.text = "닉네임에 @, #, $, %는 포함할 수 없어요"
             confirmBtn.isEnabled = false
+            confirmBtn.backgroundColor = .lightGray
             nickNameisgood = false
         } else if text.contains(where: { $0.isNumber }) {
             stateLabel.text = "닉네임에 숫자는 포함할 수 없어요"
             confirmBtn.isEnabled = false
+            confirmBtn.backgroundColor = .lightGray
             nickNameisgood = false
         } else if text == "" {
             stateLabel.text = "닉네임을 반드시 입력해야 합니다"
             confirmBtn.isEnabled = false
+            confirmBtn.backgroundColor = .lightGray
             nickNameisgood = false
         } else {
             stateLabel.text = "사용할 수 있는 닉네임이에요"
             confirmBtn.isEnabled = true
+            confirmBtn.backgroundColor = .black
             nickNameisgood = true
         }
     }
@@ -323,7 +325,7 @@ extension ProfileCreationViewController {
     }
     
     @objc func confirmBtnClicked() {
-        if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood {
+        if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood && inputBirthView.textField.text != "" {
             UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Guest"
             
             if isPatch { // 내 정보 수정일 때
