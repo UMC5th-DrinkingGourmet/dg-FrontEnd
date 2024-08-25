@@ -7,269 +7,6 @@
 
 import UIKit
 
-//class TermsViewController: UIViewController {
-//    
-//    lazy var buttonDictionary: [UIButton: String] = [
-//        useTermsBtn: "음주미식회 이용약관 동의 (필수)",
-//        financialTermsBtn: "전자 금융거래 이용약관 동의 (필수)",
-//        privacyTermsBtn: "개인정보 수집이용 동의 (필수)",
-//        providePrivacyTermsBtn: "개인정보 제3자 제공 동의 (선택)",
-//        marketingTermsBtn: "마케팅, 정보메일, SMS 수신 동의 (선택)"
-//    ]
-//        
-//    private let termsabel = UILabel().then {
-//        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 24)
-//        $0.numberOfLines = 0
-//        $0.lineBreakMode = .byWordWrapping
-//        var paragraphStyle = NSMutableParagraphStyle()
-//        paragraphStyle.lineHeightMultiple = 1.25
-//        $0.attributedText = NSMutableAttributedString(string: "음주미식회\n서비스 이용약관에\n동의해주세요.", attributes: [NSAttributedString.Key.kern: -0.72, NSAttributedString.Key.paragraphStyle: paragraphStyle])
-//    }
-//
-//    private let totalTermsBtn = UIButton().then {
-//        $0.buttonConfiguration(title: "전체 약관에 동의합니다.", font: .boldSystemFont(ofSize: 16), foregroundColor: .black, padding: 15, image: UIImage(systemName: "square")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), imageSize: CGSize(width: 23, height: 20))
-//        $0.isSelected = false
-//        
-//    }
-//    
-//    private let useTermsBtn = UIButton().then {
-//        $0.buttonConfiguration(title: "음주미식회 이용약관 동의 (필수)", font: .systemFont(ofSize: 14), foregroundColor: .darkGray, padding: 14, image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray), imageSize: CGSize(width: 16, height: 16))
-//        $0.isSelected = false
-//    }
-//    
-//    private let financialTermsBtn = UIButton().then {
-//        $0.buttonConfiguration(title: "전자 금융거래 이용약관 동의 (필수)", font: .systemFont(ofSize: 14), foregroundColor: .darkGray, padding: 14, image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray), imageSize: CGSize(width: 16, height: 16))
-//        $0.isSelected = false
-//    }
-//    
-//    private let privacyTermsBtn = UIButton().then {
-//        $0.buttonConfiguration(title: "개인정보 수집이용 동의 (필수)", font: .systemFont(ofSize: 14), foregroundColor: .darkGray, padding: 14, image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray), imageSize: CGSize(width: 16, height: 16))
-//        $0.isSelected = false
-//    }
-//    
-//    private let providePrivacyTermsBtn = UIButton().then {
-//        $0.buttonConfiguration(title: "개인정보 제3자 제공 동의 (선택)", font: .systemFont(ofSize: 14), foregroundColor: .darkGray, padding: 14, image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray), imageSize: CGSize(width: 16, height: 16))
-//        $0.isSelected = false
-//    }
-//    
-//    private let marketingTermsBtn = UIButton().then {
-//        $0.buttonConfiguration(title: "마케팅, 정보메일, SMS 수신 동의 (선택)", font: .systemFont(ofSize: 14), foregroundColor: .darkGray, padding: 14, image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray), imageSize: CGSize(width: 16, height: 16))
-//        $0.isSelected = false
-//    }
-//
-//    private let stackView = UIStackView().then {
-//        $0.axis = .vertical
-//        $0.alignment = .leading
-//        $0.distribution = .equalSpacing
-//        $0.spacing = 20
-//    }
-//    
-//    // 확인 버튼
-//    private let completeButton = UIButton().then {
-//        $0.backgroundColor = .base0500
-//        $0.isEnabled = false
-//    }
-//    
-//    private let completeLabel = UILabel().then {
-//        $0.text = "확인"
-//        $0.textColor = .base1000
-//        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
-//    }
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .white
-//        configHierarchy()
-//        layout()
-//        configView()
-//        configNav()
-//    }
-//}
-//
-//extension TermsViewController {
-//    func configHierarchy() {
-//        view.addSubviews([
-//            termsabel,
-//            totalTermsBtn,
-//            stackView,
-//            completeButton
-//        ])
-//        
-//        stackView.addArrangedSubviews([
-//            useTermsBtn,
-//            financialTermsBtn,
-//            privacyTermsBtn,
-//            providePrivacyTermsBtn,
-//            marketingTermsBtn,
-//        ])
-//        
-//        completeButton.addSubview(completeLabel)
-//    }
-//    
-//    func layout() {
-//        termsabel.snp.makeConstraints {
-//            $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
-//            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-//        }
-//        
-//        totalTermsBtn.snp.makeConstraints {
-//            $0.centerY.equalToSuperview().offset(70)
-//            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-//        }
-//        
-//        // 확인 버튼
-//        completeButton.snp.makeConstraints { make in
-//            make.leading.trailing.bottom.equalToSuperview()
-//            make.height.equalTo(89)
-//        }
-//        
-//        completeLabel.snp.makeConstraints { make in
-//            make.top.equalTo(completeButton).offset(18)
-//            make.centerX.equalTo(completeButton)
-//        }
-//        
-//        useTermsBtn.snp.makeConstraints {
-//            $0.height.equalTo(30)
-//        }
-//
-//        financialTermsBtn.snp.makeConstraints {
-//            $0.height.equalTo(useTermsBtn)
-//        }
-//
-//        privacyTermsBtn.snp.makeConstraints {
-//            $0.height.equalTo(useTermsBtn)
-//        }
-//
-//        providePrivacyTermsBtn.snp.makeConstraints {
-//            $0.height.equalTo(useTermsBtn)
-//        }
-//
-//        marketingTermsBtn.snp.makeConstraints {
-//            $0.height.equalTo(useTermsBtn)
-//        }
-//        
-//        stackView.snp.makeConstraints {
-//            $0.top.equalTo(totalTermsBtn.snp.bottom).offset(40)
-//            $0.bottom.equalTo(completeButton.snp.top).offset(-40)
-//            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-//            $0.trailing.equalTo(view.safeAreaLayoutGuide)
-//        }
-//    }
-//    
-//    func configView() {
-//        totalTermsBtn.addTarget(self, action: #selector(totalTermsBtnClicked), for: .touchUpInside)
-//        useTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
-//        financialTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
-//        privacyTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
-//        providePrivacyTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
-//        marketingTermsBtn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
-//        
-//        completeButton.addTarget(self, action: #selector(pushViewController), for: .touchUpInside)
-//    }
-//    
-//    @objc func btnClicked(sender: UIButton) {
-//        if sender.isSelected == true {
-//            sender.buttonConfiguration(
-//            title: buttonDictionary[sender] ?? "",
-//            font: .systemFont(ofSize: 14),
-//            foregroundColor: .darkGray,
-//            padding: 14,
-//            image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.customColor.checkMarkGray),
-//            imageSize: CGSize(width: 16, height: 16)
-//            )
-//            sender.isSelected = false
-//        } else {
-//            sender.buttonConfiguration(
-//            title: buttonDictionary[sender] ?? "",
-//            font: .systemFont(ofSize: 14),
-//            foregroundColor: .darkGray,
-//            padding: 14,
-//            image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-//            imageSize: CGSize(width: 16, height: 16)
-//            )
-//            sender.isSelected = true
-//        }
-//        updateConfirmButtonState()
-//    }
-//    
-//    
-//    @objc func pushViewController() {
-//        self.navigationController?.pushViewController(ProfileCreationViewController(), animated: true)
-//    }
-//    
-//    @objc func totalTermsBtnClicked() {
-//        totalTermsBtn.isSelected.toggle()
-//            
-//        let allTermsAgreed = totalTermsBtn.isSelected
-//        
-//        totalTermsBtn.buttonConfiguration(
-//            title: "전체 약관에 동의합니다.",
-//            font: .boldSystemFont(ofSize: 16),
-//            foregroundColor: .black,
-//            padding: 15,
-//            image: UIImage(systemName: allTermsAgreed ? "checkmark.square.fill" : "square")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-//            imageSize: CGSize(width: 23, height: 20)
-//        )
-//            
-//        for (button, _) in buttonDictionary {
-//            button.isSelected = allTermsAgreed
-//            button.buttonConfiguration(
-//                title: buttonDictionary[button] ?? "",
-//                font: .systemFont(ofSize: 14),
-//                foregroundColor: .darkGray,
-//                padding: 14,
-//                image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysOriginal).withTintColor(allTermsAgreed ? .black : .customColor.checkMarkGray),
-//                imageSize: CGSize(width: 16, height: 16)
-//            )
-//        }
-//        updateConfirmButtonState()
-//    }
-//    
-//    func updateConfirmButtonState() {
-//        // 필수 약관 동의 여부 확인
-//        let allButtons = [useTermsBtn, financialTermsBtn, privacyTermsBtn, providePrivacyTermsBtn, marketingTermsBtn]
-//        let requiredButtons = [useTermsBtn, financialTermsBtn, privacyTermsBtn]
-//        
-//        let allRequiredSelected = requiredButtons.allSatisfy { $0.isSelected }
-//        let allTermsAgreed = totalTermsBtn.isSelected
-//        
-//        completeButton.isEnabled = allRequiredSelected || allTermsAgreed
-//        
-//        if allButtons.contains(where: { !$0.isSelected }) {
-//            totalTermsBtn.buttonConfiguration(
-//                title: "전체 약관에 동의합니다.",
-//                font: .boldSystemFont(ofSize: 16),
-//                foregroundColor: .black,
-//                padding: 15,
-//                image: UIImage(systemName: "square")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-//                imageSize: CGSize(width: 23, height: 20)
-//            )
-//            totalTermsBtn.isSelected = false
-//        } else {
-//            totalTermsBtn.buttonConfiguration(
-//                title: "전체 약관에 동의합니다.",
-//                font: .boldSystemFont(ofSize: 16),
-//                foregroundColor: .black,
-//                padding: 15,
-//                image: UIImage(systemName: "checkmark.square.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-//                imageSize: CGSize(width: 23, height: 20)
-//            )
-//            totalTermsBtn.isSelected = true
-//        }
-//        
-//        if requiredButtons.contains(where: { !$0.isSelected }) {
-//            completeButton.isEnabled = false
-//        } else {
-//            completeButton.isEnabled = true
-//        }
-//    }
-//    
-//    func configNav() {
-//        navigationItem.title = "이용 약관 동의"
-//        navigationItem.hidesBackButton = true
-//    }
-//}
-
 final class TermsViewController: UIViewController {
     // MARK: - UI
     private let termsLabel = UILabel().then {
@@ -284,6 +21,7 @@ final class TermsViewController: UIViewController {
     
     // 전체
     private let totalTermsCheckButton = UIButton().then {
+        $0.isSelected = false
         $0.setImage(UIImage(named: "ic_terms_total_unchecked"), for: .normal)
     }
     
@@ -312,6 +50,7 @@ final class TermsViewController: UIViewController {
     
     // 이용약관
     private let useTermsCheckButton = UIButton().then {
+        $0.isSelected = false
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
@@ -341,6 +80,7 @@ final class TermsViewController: UIViewController {
     
     // 전자금융
     private let financialTermsCheckButton = UIButton().then {
+        $0.isSelected = false
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
@@ -370,6 +110,7 @@ final class TermsViewController: UIViewController {
     
     // 개인정보 수집
     private let privacyTermsCheckButton = UIButton().then {
+        $0.isSelected = false
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
@@ -399,6 +140,7 @@ final class TermsViewController: UIViewController {
     
     // 개인정보 제3자
     private let providePrivacyTermsCheckButton = UIButton().then {
+        $0.isSelected = false
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
@@ -428,6 +170,7 @@ final class TermsViewController: UIViewController {
     
     // 마케팅
     private let marketingTermsCheckButton = UIButton().then {
+        $0.isSelected = false
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
@@ -475,16 +218,142 @@ final class TermsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        setupNaviBar()
-        
         addViews()
         configureConstraints()
+        
+        setupNaviBar()
+        setupButton()
     }
     
     private func setupNaviBar() {
         title = "이용약관 동의"
         navigationItem.hidesBackButton = true
+        
+        // 백버튼 커스텀
+        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
+        navigationController?.navigationBar.backIndicatorImage = customBackImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
+    
+    private func setupButton() {
+        [totalTermsCheckButton].forEach {
+            $0.addTarget(self, action: #selector(totalTermsButtonTapped), for: .touchUpInside)
+        }
+        
+        [useTermsCheckButton,
+         financialTermsCheckButton,
+         privacyTermsCheckButton,
+         providePrivacyTermsCheckButton,
+         marketingTermsCheckButton].forEach {
+            $0.addTarget(self, action: #selector(termsButtonTapped), for: .touchUpInside)
+        }
+        
+        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
+        
+        useTermsMoreButton.addTarget(self, action: #selector(useTermsMoreButtonTapped), for: .touchUpInside)
+    }
+    
+    private func updateConfirmButtonState() {
+        // 필수 약관 동의 여부 확인
+        let allButtons = [useTermsCheckButton, financialTermsCheckButton, privacyTermsCheckButton, providePrivacyTermsCheckButton, marketingTermsCheckButton]
+        
+        let requiredButtons = [useTermsCheckButton, financialTermsCheckButton, privacyTermsCheckButton]
+        
+        // 필수 약관 모두 동의한 경우
+        let allRequiredSelected = requiredButtons.allSatisfy { $0.isSelected }
+        
+        // 전체 약관 동의 여부
+        let allTermsAgreed = totalTermsCheckButton.isSelected
+        
+        // 확인 버튼 활성화 조건 설정
+        completeButton.isEnabled = allRequiredSelected || allTermsAgreed
+        
+        // 전체 약관 체크 버튼 상태 업데이트
+        if allButtons.contains(where: { !$0.isSelected }) {
+            totalTermsCheckButton.setImage(UIImage(named: "ic_terms_total_unchecked"), for: .normal)
+            totalTermsCheckButton.isSelected = false
+        } else {
+            totalTermsCheckButton.setImage(UIImage(named: "ic_terms_total_checked"), for: .normal)
+            totalTermsCheckButton.isSelected = true
+        }
+        
+        // 필수 약관 동의 상태에 따른 확인 버튼 스타일 업데이트
+        if requiredButtons.contains(where: { !$0.isSelected }) {
+            completeButton.backgroundColor = .base0500
+        } else {
+            completeButton.backgroundColor = .base0100
+        }
+    }
+
+}
+
+// MARK: - Actions
+extension TermsViewController {
+    // 전체
+    @objc private func totalTermsButtonTapped() {
+        let isSelected = !totalTermsCheckButton.isSelected
+        totalTermsCheckButton.isSelected = isSelected
+        
+        [useTermsCheckButton,
+         financialTermsCheckButton,
+         privacyTermsCheckButton,
+         providePrivacyTermsCheckButton,
+         marketingTermsCheckButton].forEach { button in
+            button.isSelected = isSelected
+            button.setImage(UIImage(named: isSelected ? "ic_check_selected" : "ic_check"), for: .normal)
+        }
+        
+        totalTermsCheckButton.setImage(UIImage(named: isSelected ? "ic_terms_total_checked" : "ic_terms_total_unchecked"), for: .normal)
+        
+        updateConfirmButtonState()
+    }
+
+    
+    // 각각
+    @objc private func termsButtonTapped(sender: UIButton) {
+        if sender.isSelected {
+            sender.setImage(UIImage(named: "ic_check"), for: .normal)
+            sender.isSelected = false
+        } else {
+            sender.setImage(UIImage(named: "ic_check_selected"), for: .normal)
+            sender.isSelected = true
+        }
+        updateConfirmButtonState()
+    }
+    
+    // 확인
+    @objc private func completeButtonTapped() {
+        print("확인")
+    }
+    
+    @objc private func useTermsMoreButtonTapped() {
+        let VC = AnswerViewController()
+        VC.answer = """
+        서비스 소개
+         · 본 이용 약관은 "음주 미식회" 서비스(이하 '서비스')의 이용 조건 및 절차, 사용자와 운영자의 권리, 의무, 책임 사항 등 기본적인 사항을 규정합니다.
+        
+        이용 조건
+         · 서비스를 사용함으로써, 사용자는 본 약관에 동의하는 것으로 간주합니다.
+         · 사용자는 서비스 이용 시 법적인 제한사항을 준수해야 합니다.
+        
+        계정 관리
+         · 사용자는 자신의 계정 정보를 안전하게 관리해야 합니다.
+         · 계정의 부정 사용에 대한 책임은 사용자에게 있습니다.
+        
+        지적 재산권
+         · 서비스에 포함된 모든 콘텐츠의 저작권은 "음주 미식회"에 있습니다.
+        
+        면책 조항
+         · 서비스 운영자는 서비스 이용으로 발생하는 직접적, 간접적 손해에 대해 책임지지 않습니다.
+        
+        약관의 변경
+         · 서비스 운영자는 필요시 이용 약관을 변경할 수 있으며, 변경된 약관은 서비스 내에 공지됩니다.
+        """
+        VC.isTermsAndPolicies = true
+        navigationController?.pushViewController(VC, animated: true)
+    }
+    
 }
 
 // MARK: - UI
@@ -527,7 +396,7 @@ extension TermsViewController {
         
         totalTermsView.snp.makeConstraints { make in
             make.top.equalTo(termsLabel.snp.bottom).offset(233)
-            make.leading.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(21)
         }
         
