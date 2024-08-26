@@ -19,6 +19,68 @@ final class AdministrationService {
         return ["Authorization": "Bearer \(accessToken)"]
     }
     
+    // MARK: - 약관동의 (동의)
+    func postAgree(termList: [String],
+                   completion: @escaping (Error?) -> Void) {
+        
+        do {
+            let headers = try getHeaders()
+            
+            let parameters: [String: Any] = [
+                "termList": termList
+            ]
+            
+            AF.request("\(baseURL)/term-agree/agree",
+                       method: .post,
+                       parameters: parameters,
+                       encoding: JSONEncoding.default,
+                       headers: headers,
+                       interceptor: AuthInterceptor())
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - 약관동의 (비동의)
+    func postDisagree(termList: [String],
+                      completion: @escaping (Error?) -> Void) {
+        
+        do {
+            let headers = try getHeaders()
+            
+            let parameters: [String: Any] = [
+                "termList": termList
+            ]
+            
+            AF.request("\(baseURL)/term-agree/disagree",
+                       method: .post,
+                       parameters: parameters,
+                       encoding: JSONEncoding.default,
+                       headers: headers,
+                       interceptor: AuthInterceptor())
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        } catch {
+            print("Failed to get access token: \(error.localizedDescription)")
+        }
+    }
+    
     // MARK: - 신고하기
     func postReport(resourceId: Int,
                     reportTarget: String,

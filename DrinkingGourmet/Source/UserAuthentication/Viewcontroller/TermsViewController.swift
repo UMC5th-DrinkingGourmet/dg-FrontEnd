@@ -84,7 +84,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
-    private let financialLabelbutton = UIButton().then {
+    private let financialLabelButton = UIButton().then {
         $0.setTitle("전자 금융거래 이용약관 동의 (필수)", for: .normal)
         $0.setTitleColor(UIColor.base0300, for: .normal)
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
@@ -106,7 +106,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_more"), for: .normal)
     }
     
-    private let financialTermssView = UIView()
+    private let financialTermsView = UIView()
     
     // 개인정보 수집
     private let privacyTermsCheckButton = UIButton().then {
@@ -114,7 +114,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
-    private let privacyLabelbutton = UIButton().then {
+    private let privacyLabelButton = UIButton().then {
         $0.setTitle("개인정보 수집이용 동의 (필수)", for: .normal)
         $0.setTitleColor(UIColor.base0300, for: .normal)
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
@@ -136,7 +136,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_more"), for: .normal)
     }
     
-    private let privacyTermssView = UIView()
+    private let privacyTermsView = UIView()
     
     // 개인정보 제3자
     private let providePrivacyTermsCheckButton = UIButton().then {
@@ -144,7 +144,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
-    private let providePrivacyLabelbutton = UIButton().then {
+    private let providePrivacyLabelButton = UIButton().then {
         $0.setTitle("개인정보 제3자 제공 동의 (선택)", for: .normal)
         $0.setTitleColor(UIColor.base0300, for: .normal)
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
@@ -166,7 +166,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_more"), for: .normal)
     }
     
-    private let providePrivacyTermssView = UIView()
+    private let providePrivacyTermsView = UIView()
     
     // 마케팅
     private let marketingTermsCheckButton = UIButton().then {
@@ -174,7 +174,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_check"), for: .normal)
     }
     
-    private let marketingLabelbutton = UIButton().then {
+    private let marketingLabelButton = UIButton().then {
         $0.setTitle("마케팅, 정보메일, SMS 수신 동의 (선택)", for: .normal)
         $0.setTitleColor(UIColor.base0300, for: .normal)
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
@@ -196,8 +196,7 @@ final class TermsViewController: UIViewController {
         $0.setImage(UIImage(named: "ic_more"), for: .normal)
     }
     
-    private let marketingTermssView = UIView()
-    
+    private let marketingTermsView = UIView()
     
     // 확인 버튼
     private let completeButton = UIButton().then {
@@ -237,21 +236,48 @@ final class TermsViewController: UIViewController {
     }
     
     private func setupButton() {
+        useTermsCheckButton.tag = 0
+        useTermsLabelButton.tag = 0
+
+        financialTermsCheckButton.tag = 1
+        financialLabelButton.tag = 1
+        
+        privacyTermsCheckButton.tag = 2
+        privacyLabelButton.tag = 2
+        
+        providePrivacyTermsCheckButton.tag = 3
+        providePrivacyLabelButton.tag = 3
+        
+        marketingTermsCheckButton.tag = 4
+        marketingLabelButton.tag = 4
+        
+        
         [totalTermsCheckButton].forEach {
             $0.addTarget(self, action: #selector(totalTermsButtonTapped), for: .touchUpInside)
         }
         
-        [useTermsCheckButton,
-         financialTermsCheckButton,
-         privacyTermsCheckButton,
-         providePrivacyTermsCheckButton,
-         marketingTermsCheckButton].forEach {
+        [useTermsCheckButton, useTermsLabelButton,
+         financialTermsCheckButton, financialLabelButton,
+         privacyTermsCheckButton, privacyLabelButton,
+         providePrivacyTermsCheckButton, providePrivacyLabelButton,
+         marketingTermsCheckButton, marketingLabelButton].forEach {
             $0.addTarget(self, action: #selector(termsButtonTapped), for: .touchUpInside)
         }
         
-        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
-        
         useTermsMoreButton.addTarget(self, action: #selector(useTermsMoreButtonTapped), for: .touchUpInside)
+        financialTermsMoreButton.addTarget(self, action: #selector(financialTermsMoreButtonTapped), for: .touchUpInside)
+        privacyTermsMoreButton.addTarget(self, action: #selector(privacyTermsMoreButtonTapped), for: .touchUpInside)
+        providePrivacyTermsCheckButton.addTarget(self, action: #selector(providePrivacyTermsCheckButtonTapped), for: .touchUpInside)
+        marketingTermsMoreButton.addTarget(self, action: #selector(marketingTermsMoreButtonTapped), for: .touchUpInside)
+        
+        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
+    }
+    
+    private func showTermsDetail(answer: String) {
+        let VC = AnswerViewController()
+        VC.answer = answer
+        VC.isTermsAndPolicies = true
+        navigationController?.pushViewController(VC, animated: true)
     }
     
     private func updateConfirmButtonState() {
@@ -312,15 +338,21 @@ extension TermsViewController {
     
     // 각각
     @objc private func termsButtonTapped(sender: UIButton) {
-        if sender.isSelected {
-            sender.setImage(UIImage(named: "ic_check"), for: .normal)
-            sender.isSelected = false
-        } else {
-            sender.setImage(UIImage(named: "ic_check_selected"), for: .normal)
-            sender.isSelected = true
+        // 클릭한 버튼이 체크박스인지 라벨 버튼인지 확인
+        if let matchingCheckButton = [useTermsCheckButton, financialTermsCheckButton, privacyTermsCheckButton, providePrivacyTermsCheckButton, marketingTermsCheckButton].first(where: { $0.tag == sender.tag }) {
+            
+            // 체크박스 버튼의 상태를 반전
+            matchingCheckButton.isSelected.toggle()
+            
+            // 체크박스 버튼 이미지 업데이트
+            let imageName = matchingCheckButton.isSelected ? "ic_check_selected" : "ic_check"
+            matchingCheckButton.setImage(UIImage(named: imageName), for: .normal)
+            
+            // 확인 버튼 상태 업데이트
+            updateConfirmButtonState()
         }
-        updateConfirmButtonState()
     }
+
     
     // 확인
     @objc private func completeButtonTapped() {
@@ -354,25 +386,41 @@ extension TermsViewController {
         navigationController?.pushViewController(VC, animated: true)
     }
     
+    @objc private func financialTermsMoreButtonTapped() {
+        
+    }
+    
+    @objc private func privacyTermsMoreButtonTapped() {
+        
+    }
+    
+    @objc private func providePrivacyTermsCheckButtonTapped() {
+        
+    }
+    
+    @objc private func marketingTermsMoreButtonTapped() {
+        
+    }
+    
 }
 
 // MARK: - UI
 extension TermsViewController {
     private func addViews() {
-        view.addSubviews([termsLabel, totalTermsView, useTermsView, financialTermssView, privacyTermssView, providePrivacyTermssView, marketingTermssView, completeButton])
+        view.addSubviews([termsLabel, totalTermsView, useTermsView, financialTermsView, privacyTermsView, providePrivacyTermsView, marketingTermsView, completeButton])
         
         // 전체
         totalTermsView.addSubviews([totalTermsCheckButton, totalTermsLabelButton])
         // 이용약관
         useTermsView.addSubviews([useTermsCheckButton, useTermsLabelButton, useTermsMoreButton])
         // 전자금융
-        financialTermssView.addSubviews([financialTermsCheckButton, financialLabelbutton, financialTermsMoreButton])
+        financialTermsView.addSubviews([financialTermsCheckButton, financialLabelButton, financialTermsMoreButton])
         // 개인정보 수집
-        privacyTermssView.addSubviews([privacyTermsCheckButton, privacyLabelbutton, privacyTermsMoreButton])
+        privacyTermsView.addSubviews([privacyTermsCheckButton, privacyLabelButton, privacyTermsMoreButton])
         // 개인정보 제3자
-        providePrivacyTermssView.addSubviews([providePrivacyTermsCheckButton, providePrivacyLabelbutton, providePrivacyTermsMoreButton])
+        providePrivacyTermsView.addSubviews([providePrivacyTermsCheckButton, providePrivacyLabelButton, providePrivacyTermsMoreButton])
         // 마케팅
-        marketingTermssView.addSubviews([marketingTermsCheckButton, marketingLabelbutton, marketingTermsMoreButton])
+        marketingTermsView.addSubviews([marketingTermsCheckButton, marketingLabelButton, marketingTermsMoreButton])
         
         completeButton.addSubview(completeLabel)
     }
@@ -425,21 +473,21 @@ extension TermsViewController {
         
         // 전자금융
         financialTermsCheckButton.snp.makeConstraints { make in
-            make.leading.equalTo(financialTermssView)
-            make.centerY.equalTo(financialTermssView)
+            make.leading.equalTo(financialTermsView)
+            make.centerY.equalTo(financialTermsView)
         }
         
-        financialLabelbutton.snp.makeConstraints { make in
+        financialLabelButton.snp.makeConstraints { make in
             make.leading.equalTo(financialTermsCheckButton.snp.trailing).offset(14)
-            make.centerY.equalTo(financialTermssView)
+            make.centerY.equalTo(financialTermsView)
         }
         
         financialTermsMoreButton.snp.makeConstraints { make in
-            make.trailing.equalTo(financialTermssView)
-            make.centerY.equalTo(financialTermssView)
+            make.trailing.equalTo(financialTermsView)
+            make.centerY.equalTo(financialTermsView)
         }
         
-        financialTermssView.snp.makeConstraints { make in
+        financialTermsView.snp.makeConstraints { make in
             make.top.equalTo(useTermsView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(useTermsView)
             make.height.equalTo(17)
@@ -447,66 +495,66 @@ extension TermsViewController {
         
         // 개인정보 수집
         privacyTermsCheckButton.snp.makeConstraints { make in
-            make.leading.equalTo(privacyTermssView)
-            make.centerY.equalTo(privacyTermssView)
+            make.leading.equalTo(privacyTermsView)
+            make.centerY.equalTo(privacyTermsView)
         }
         
-        privacyLabelbutton.snp.makeConstraints { make in
+        privacyLabelButton.snp.makeConstraints { make in
             make.leading.equalTo(privacyTermsCheckButton.snp.trailing).offset(14)
-            make.centerY.equalTo(privacyTermssView)
+            make.centerY.equalTo(privacyTermsView)
         }
         
         privacyTermsMoreButton.snp.makeConstraints { make in
-            make.trailing.equalTo(privacyTermssView)
-            make.centerY.equalTo(privacyTermssView)
+            make.trailing.equalTo(privacyTermsView)
+            make.centerY.equalTo(privacyTermsView)
         }
         
-        privacyTermssView.snp.makeConstraints { make in
-            make.top.equalTo(financialTermssView.snp.bottom).offset(20)
+        privacyTermsView.snp.makeConstraints { make in
+            make.top.equalTo(financialTermsView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(useTermsView)
             make.height.equalTo(17)
         }
         
         // 개인정보 제3자
         providePrivacyTermsCheckButton.snp.makeConstraints { make in
-            make.leading.equalTo(providePrivacyTermssView)
-            make.centerY.equalTo(providePrivacyTermssView)
+            make.leading.equalTo(providePrivacyTermsView)
+            make.centerY.equalTo(providePrivacyTermsView)
         }
         
-        providePrivacyLabelbutton.snp.makeConstraints { make in
+        providePrivacyLabelButton.snp.makeConstraints { make in
             make.leading.equalTo(providePrivacyTermsCheckButton.snp.trailing).offset(14)
-            make.centerY.equalTo(providePrivacyTermssView)
+            make.centerY.equalTo(providePrivacyTermsView)
         }
         
         providePrivacyTermsMoreButton.snp.makeConstraints { make in
-            make.trailing.equalTo(providePrivacyTermssView)
-            make.centerY.equalTo(providePrivacyTermssView)
+            make.trailing.equalTo(providePrivacyTermsView)
+            make.centerY.equalTo(providePrivacyTermsView)
         }
         
-        providePrivacyTermssView.snp.makeConstraints { make in
-            make.top.equalTo(privacyTermssView.snp.bottom).offset(20)
+        providePrivacyTermsView.snp.makeConstraints { make in
+            make.top.equalTo(privacyTermsView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(useTermsView)
             make.height.equalTo(17)
         }
         
         // 마케팅
         marketingTermsCheckButton.snp.makeConstraints { make in
-            make.leading.equalTo(marketingTermssView)
-            make.centerY.equalTo(marketingTermssView)
+            make.leading.equalTo(marketingTermsView)
+            make.centerY.equalTo(marketingTermsView)
         }
         
-        marketingLabelbutton.snp.makeConstraints { make in
+        marketingLabelButton.snp.makeConstraints { make in
             make.leading.equalTo(marketingTermsCheckButton.snp.trailing).offset(14)
-            make.centerY.equalTo(marketingTermssView)
+            make.centerY.equalTo(marketingTermsView)
         }
         
         marketingTermsMoreButton.snp.makeConstraints { make in
-            make.trailing.equalTo(marketingTermssView)
-            make.centerY.equalTo(marketingTermssView)
+            make.trailing.equalTo(marketingTermsView)
+            make.centerY.equalTo(marketingTermsView)
         }
         
-        marketingTermssView.snp.makeConstraints { make in
-            make.top.equalTo(providePrivacyTermssView.snp.bottom).offset(20)
+        marketingTermsView.snp.makeConstraints { make in
+            make.top.equalTo(providePrivacyTermsView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(useTermsView)
             make.height.equalTo(17)
         }
