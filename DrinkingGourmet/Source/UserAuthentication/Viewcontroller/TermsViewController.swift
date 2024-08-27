@@ -356,8 +356,33 @@ extension TermsViewController {
     
     // 확인
     @objc private func completeButtonTapped() {
-        print("확인")
+        var selectedTerms: [String] = []
+
+        if useTermsCheckButton.isSelected {
+            selectedTerms.append("TERMS_OF_SERVICE")
+        }
+        if financialTermsCheckButton.isSelected {
+            selectedTerms.append("ELECTRONIC_FINANCIAL_TRANSACTION")
+        }
+        if privacyTermsCheckButton.isSelected {
+            selectedTerms.append("PERSONAL_INFORMATION_COLLECT")
+        }
+        if providePrivacyTermsCheckButton.isSelected {
+            selectedTerms.append("PERSONAL_INFORMATION_THIRD_PARTY")
+        }
+        if marketingTermsCheckButton.isSelected {
+            selectedTerms.append("MARKETING")
+        }
+
+        AdministrationService.shared.postAgree(termList: selectedTerms) { error in
+            if let error = error {
+                print("약관 동의 실패 - \(error.localizedDescription)")
+            } else {
+                print("약관 동의 성공")
+            }
+        }
     }
+
     
     @objc private func useTermsMoreButtonTapped() {
         let VC = AnswerViewController()
