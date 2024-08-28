@@ -318,46 +318,72 @@ final class TermsViewController: UIViewController {
 extension TermsViewController {
     // 전체
     @objc private func totalTermsButtonTapped() {
-        let isSelected = !totalTermsCheckButton.isSelected
-        totalTermsCheckButton.isSelected = isSelected
-        
-        [useTermsCheckButton,
-         financialTermsCheckButton,
-         privacyTermsCheckButton,
-         providePrivacyTermsCheckButton,
-         marketingTermsCheckButton].forEach { button in
-            button.isSelected = isSelected
-            button.setImage(UIImage(named: isSelected ? "ic_check_selected" : "ic_check"), for: .normal)
+        // 전체 약관 동의 버튼의 현재 상태를 반대로 변경
+        totalTermsCheckButton.isSelected.toggle()
+
+        // 전체 동의 버튼의 상태에 따라 다른 모든 약관 버튼의 상태를 설정
+        let newState = totalTermsCheckButton.isSelected
+        let allButtons = [useTermsCheckButton, financialTermsCheckButton, privacyTermsCheckButton, providePrivacyTermsCheckButton, marketingTermsCheckButton]
+
+        allButtons.forEach { button in
+            button.isSelected = newState
+            button.setImage(UIImage(named: newState ? "ic_check_selected" : "ic_check"), for: .normal)
         }
-        
-        totalTermsCheckButton.setImage(UIImage(named: isSelected ? "ic_terms_total_checked" : "ic_terms_total_unchecked"), for: .normal)
-        
+
+        // 모든 버튼 상태가 변경된 후 확인 버튼의 상태를 업데이트
         updateConfirmButtonState()
     }
 
     
     // 각각
     @objc private func termsButtonTapped(sender: UIButton) {
-        // 클릭한 버튼이 체크박스인지 라벨 버튼인지 확인
-        if let matchingCheckButton = [useTermsCheckButton, financialTermsCheckButton, privacyTermsCheckButton, providePrivacyTermsCheckButton, marketingTermsCheckButton].first(where: { $0.tag == sender.tag }) {
-            
-            // 체크박스 버튼의 상태를 반전
-            matchingCheckButton.isSelected.toggle()
-            
-            // 체크박스 버튼 이미지 업데이트
-            let imageName = matchingCheckButton.isSelected ? "ic_check_selected" : "ic_check"
-            matchingCheckButton.setImage(UIImage(named: imageName), for: .normal)
-            
-            // 확인 버튼 상태 업데이트
-            updateConfirmButtonState()
+        // 클릭된 버튼(체크박스 또는 라벨)의 태그를 가져옵니다.
+        let tag = sender.tag
+
+        // 동일한 태그를 가진 체크박스를 찾습니다.
+        let allButtons = [useTermsCheckButton, financialTermsCheckButton, privacyTermsCheckButton, providePrivacyTermsCheckButton, marketingTermsCheckButton]
+        let checkBox = allButtons.first { $0.tag == tag }
+
+        // 체크박스의 상태를 반대로 변경하고, 이미지를 업데이트합니다.
+        if let checkBox = checkBox {
+            checkBox.isSelected.toggle()
+            checkBox.setImage(UIImage(named: checkBox.isSelected ? "ic_check_selected" : "ic_check"), for: .normal)
         }
+
+        // 확인 버튼의 상태를 업데이트합니다.
+        updateConfirmButtonState()
     }
 
     
     // 확인
     @objc private func completeButtonTapped() {
-        print("확인")
+        var selectedTerms: [String] = []
+
+        if useTermsCheckButton.isSelected {
+            selectedTerms.append("TERMS_OF_SERVICE")
+        }
+        if financialTermsCheckButton.isSelected {
+            selectedTerms.append("ELECTRONIC_FINANCIAL_TRANSACTION")
+        }
+        if privacyTermsCheckButton.isSelected {
+            selectedTerms.append("PERSONAL_INFORMATION_COLLECT")
+        }
+        if providePrivacyTermsCheckButton.isSelected {
+            selectedTerms.append("PERSONAL_INFORMATION_THIRD_PARTY")
+        }
+        if marketingTermsCheckButton.isSelected {
+            selectedTerms.append("MARKETING")
+        }
+
+        AdministrationService.shared.postAgree(termList: selectedTerms) { error in
+            if let error = error {
+                print("약관 동의 실패 - \(error.localizedDescription)")
+            } else {
+                print("약관 동의 성공")
+            }
+        }
     }
+
     
     @objc private func useTermsMoreButtonTapped() {
         let VC = AnswerViewController()
