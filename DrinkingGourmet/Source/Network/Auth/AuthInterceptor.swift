@@ -35,7 +35,13 @@ class AuthInterceptor: RequestInterceptor {
                 completion(.retry)
                 print("refresh token success")
             } else {
-                // Refresh token도 만료되었을 때는 로그인 화면으로 이동
+                do {
+                    try Keychain.shared.deleteToken(kind: .accessToken)
+                    try Keychain.shared.deleteToken(kind: .refreshToken)
+                    print("Tokens successfully cleared from Keychain")
+                } catch {
+                    print("Failed to clear tokens from Keychain: \(error)")
+                }
                 NotificationCenter.default.post(name: Notification.Name("refreshTokenExpired"), object: nil)
                 completion(.doNotRetry)
                 print("refresh token failed")
