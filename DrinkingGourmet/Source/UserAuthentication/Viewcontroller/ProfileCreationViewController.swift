@@ -212,8 +212,6 @@ extension ProfileCreationViewController {
         inputBirthView.inputType = .date
         inputPhoneNumberView.inputType = .phoneNumber
         
-        inputNicknameView.textfieldText = UserDefaultManager.shared.userNickname
-        
         inputNicknameView.placeholder = "닉네임을 입력해주세요."
         
         for (button, _) in buttonDictionary {
@@ -292,7 +290,7 @@ extension ProfileCreationViewController {
     func postUserInfo() {
         let userInfo = UserInfo(
             name: inputNameView.textField.text ?? "",
-            profileImage: UserDefaultManager.shared.userProfileImg,
+            profileImage: "",
             email: UserDefaultManager.shared.email,
             nickName: inputNicknameView.textField.text ?? "",
             birthDate: inputBirthView.textField.text ?? "",
@@ -326,8 +324,6 @@ extension ProfileCreationViewController {
     
     @objc func confirmBtnClicked() {
         if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood && inputBirthView.textField.text != "" {
-            UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Guest"
-            
             if isPatch { // 내 정보 수정일 때
                 guard let name = inputNameView.textField.text,
                       let birthDate = inputBirthView.textField.text,
@@ -356,6 +352,11 @@ extension ProfileCreationViewController {
                 }
             } else { // 최초 가입일 때
                 postUserInfo()
+                UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Guest"
+                UserDefaultManager.shared.userName = inputNameView.textField.text ?? "Guest"
+                UserDefaultManager.shared.userBirth = inputBirthView.textField.text ?? "0000-00-00"
+                UserDefaultManager.shared.userPhoneNumber = inputPhoneNumberView.textField.text ?? "010-0000-0000"
+                UserDefaultManager.shared.userGender = self.determineSelectedGender()
             }
         } else {
             let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "프로필을 제대로 입력하지 않으셨습니다.", preferredStyle: .alert)
