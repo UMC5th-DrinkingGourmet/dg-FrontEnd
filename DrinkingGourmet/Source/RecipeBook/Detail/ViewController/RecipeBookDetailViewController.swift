@@ -44,6 +44,14 @@ final class RecipeBookDetailViewController: UIViewController {
                                                selector: #selector(keyboardDown),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+        
+        // 페이지 컨트롤 초기화
+        headerView?.pageControl.currentPage = 0
+        
+        // 이미지 컬렉션 뷰를 첫 번째 아이템으로 스크롤
+        headerView?.imageCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0),
+                                                     at: .centeredHorizontally,
+                                                     animated: false)
     }
     
     // 뒤로가기 할 때
@@ -95,6 +103,7 @@ final class RecipeBookDetailViewController: UIViewController {
                         self.isLastPage = data.result.isLast
                         self.arrayRecipeBookComment = data.result.commentList
                         DispatchQueue.main.async {
+                            self.headerView?.imageCollectionView.reloadData()
                             self.recipeBookDetailView.tabelView.reloadData()
                         }
                     case .failure(let error):

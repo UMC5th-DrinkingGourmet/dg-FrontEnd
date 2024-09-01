@@ -135,8 +135,6 @@ final class RecipeBookService {
         do {
             let headers = try getHeaders()
             
-            print("********\(patchModel)")
-            
             AF.request("\(baseURL)/recipes/\(recipeBookId)",
                        method: .patch,
                        parameters: patchModel,
