@@ -9,9 +9,9 @@ import Foundation
 
 struct RecipeBookUploadModel {
     struct ImageUploadRequestDTO: Codable {
-        let file: [ImageUrlDTO]
+        let imageUrls: [ImageUrl]
         
-        struct ImageUrlDTO: Codable {
+        struct ImageUrl: Codable {
             let imageUrl: String
         }
     }
@@ -19,21 +19,25 @@ struct RecipeBookUploadModel {
     struct ImageUploadResponseDTO: Codable {
         let isSuccess: Bool?
         let code, message: String?
-        let result: ResultDTO?
-    }
-
-    struct ResultDTO: Codable {
-        let imageURLList: [String]?
-
-        enum CodingKeys: String, CodingKey {
-            case imageURLList = "imageUrlList"
+        let result: ResultData?
+        
+        struct ResultData: Codable {
+            let recipeImageList: [String]?
         }
     }
+
+//    struct ResultDTO: Codable {
+//        let imageURLList: [String]?
+//
+//        enum CodingKeys: String, CodingKey {
+//            case imageURLList = "imageUrlList"
+//        }
+//    }
     
     struct RecipeRequestDTO: Codable {
         let title, cookingTime, calorie, ingredient: String
         let recipeInstruction, recommendCombination: String
-        let hashTagNameList: [String]
+        let hashTagNameList, recipeImageList: [String]
     }
     
     struct RecipeResponseDTO: Codable {

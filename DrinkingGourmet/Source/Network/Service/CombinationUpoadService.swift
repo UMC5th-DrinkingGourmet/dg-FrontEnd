@@ -58,7 +58,9 @@ final class CombinationUploadService {
     }
     
     // MARK: - 오늘의 조합 이미지 업로드
-    func uploadImages(_ images: [UIImage], completion: @escaping (CombinationUploadModel.ImageUploadResponse?, Error?) -> Void) {
+    func uploadImages(_ images: [UIImage], 
+                      completion: @escaping (CombinationUploadModel.ImageUploadResponse?, Error?) -> Void) {
+        
         let url = "\(baseURL)/combinationImages"
         
         do {

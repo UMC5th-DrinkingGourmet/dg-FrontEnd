@@ -427,62 +427,53 @@ extension RecipeBookUploadViewController {
     
     // 작성완료 버튼
     @objc private func completeButtonTapped() {
-        print("Uploading \(imageList.count) images.")
         
-        // 해시태그 문자열을 배열로 변환
-        let hashtagText = self.hashtagTextField.text ?? ""
-        let hashtags = extractHashtags(from: hashtagText)
+        self.completeButton.isEnabled = false // 두번 클릭 막기
         
-        let postModel = RecipeBookUploadModel.RecipeRequestDTO(
-            title: self.titleTextField.text!,
-            cookingTime: self.cookingTimeTextField.text!,
-            calorie: self.calorieTextField.text!,
-            ingredient: self.ingredientTextField.text!,
-            recipeInstruction: self.cookingMethodTextField.text!,
-            recommendCombination: self.cookingMethodTextField.text!,
-            hashTagNameList: hashtags
-        )
-        
-        if isModify { // 수정일 때
-            guard let recipeBookId = self.recipeBookDetailData?.result.id else { return }
-            
-            RecipeBookService.shared.patchRecipeBook(recipeBookId: recipeBookId, patchModel: postModel) { error in
-                if let error = error {
-                    print("레시피북 수정 실패 - \(error.localizedDescription)")
-                } else {
-                    RecipeBookUploadService.shared.uploadImages(self.imageList, recipeId: recipeBookId) { (response, error) in
+        RecipeBookUploadService.shared.uploadImages(self.imageList) { response, error in
+            if let error = error {
+                print("레시피북 이미지 업로드 실패 - \(error.localizedDescription)")
+            } else if let response = response {
+                guard let recipeImageList = response.result?.recipeImageList else { return }
+                
+                // 해시태그 문자열을 배열로 변환
+                let hashtagText = self.hashtagTextField.text ?? ""
+                let hashtags = self.extractHashtags(from: hashtagText)
+                
+                let postModel = RecipeBookUploadModel.RecipeRequestDTO(
+                    title: self.titleTextField.text!,
+                    cookingTime: self.cookingTimeTextField.text!,
+                    calorie: self.calorieTextField.text!,
+                    ingredient: self.ingredientTextField.text!,
+                    recipeInstruction: self.cookingMethodTextField.text!,
+                    recommendCombination: self.cookingMethodTextField.text!,
+                    hashTagNameList: hashtags,
+                    recipeImageList: recipeImageList
+                )
+                
+                if self.isModify { // 수정일 때
+                    guard let recipeBookId = self.recipeBookDetailData?.result.id else { return }
+                    
+                    RecipeBookService.shared.patchRecipeBook(recipeBookId: recipeBookId, patchModel: postModel) { error in
                         if let error = error {
-                            print("레시피북 이미지 업로드 실패 - \(error.localizedDescription)")
-                        } else if let response = response {
-                            print("레시피북 이미지 업로드 성공")
+                            print("레시피북 수정 실패 - \(error.localizedDescription)")
+                        } else {
                             print("레시피북 수정 성공")
-                            
                             if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookDetailViewController }) as? RecipeBookDetailViewController {
                                 vc.fetchData()
                                 self.navigationController?.popToViewController(vc, animated: true)
                             }
                         }
                     }
-                }
-            }
-        } else {
-            RecipeBookUploadService.shared.uploadPost(postModel) { (response, error) in
-                if let error = error {
-                    print("Post upload error: \(error)")
-                } else if let response = response, let recipeId = response.result.id {
-                    print("Post upload response: \(response)")
-                    print("recipeId: \(recipeId)")
-                    // 게시글 업로드가 성공하면 이미지 업로드
-                    RecipeBookUploadService.shared.uploadImages(self.imageList, recipeId: recipeId) { (response, error) in
+                    
+                } else { // 일반 작성
+                    RecipeBookUploadService.shared.uploadPost(postModel) { response, error in
                         if let error = error {
-                            print("Error: \(error)")
+                            print("레시피북 게시글 업로드 실패 - \(error.localizedDescription)")
                         } else if let response = response {
-                            print("Response: \(response)")
-                            
-                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookHomeViewController }) as? RecipeBookHomeViewController {
-                                vc.fetchData()
-                                vc.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
-                                self.navigationController?.popToViewController(vc, animated: true)
+                            print("레시피북 게시글 업로드 성공")
+                            DispatchQueue.main.async {
+                                self.navigationController?.popViewController(animated: true)
                             }
                         }
                     }

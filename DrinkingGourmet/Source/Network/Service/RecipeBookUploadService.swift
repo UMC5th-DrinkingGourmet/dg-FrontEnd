@@ -52,7 +52,9 @@ final class RecipeBookUploadService {
     }
     
     // MARK: - 레시피북 게시글 업로드
-    func uploadPost(_ postModel: RecipeBookUploadModel.RecipeRequestDTO, completion: @escaping (RecipeBookUploadModel.RecipeResponseDTO?, Error?) -> Void) {
+    func uploadPost(_ postModel: RecipeBookUploadModel.RecipeRequestDTO, 
+                    completion: @escaping (RecipeBookUploadModel.RecipeResponseDTO?, Error?) -> Void) {
+        
         let url = "\(baseURL)/recipes"
         
         do {
@@ -97,8 +99,10 @@ final class RecipeBookUploadService {
     }
 
     // MARK: - 레시피북 이미지 업로드
-    func uploadImages(_ images: [UIImage], recipeId: Int, completion: @escaping (RecipeBookUploadModel.ImageUploadResponseDTO?, Error?) -> Void) {
-        let url = "\(baseURL)/recipe-images?recipeId=\(recipeId)"
+    func uploadImages(_ images: [UIImage],
+                      completion: @escaping (RecipeBookUploadModel.ImageUploadResponseDTO?, Error?) -> Void) {
+        
+        let url = "\(baseURL)/recipe-images"
         
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
@@ -112,12 +116,12 @@ final class RecipeBookUploadService {
                 for (index, image) in images.enumerated() {
                     if let jpegData = image.jpegData(compressionQuality: 0.2) {
                         multipartFormData.append(jpegData,
-                                                 withName: "file",
+                                                 withName: "imageUrls",
                                                  fileName: "image\(index).jpeg",
                                                  mimeType: "image/jpeg")
                     }
                 }
-            }, to: url, method: .post, headers: headers, interceptor: AuthInterceptor())
+            },to: url, method: .post, headers: headers, interceptor: AuthInterceptor())
             .responseDecodable(of: RecipeBookUploadModel.ImageUploadResponseDTO.self) { response in
                 debugPrint(response)
                 guard let statusCode = response.response?.statusCode else { return }
