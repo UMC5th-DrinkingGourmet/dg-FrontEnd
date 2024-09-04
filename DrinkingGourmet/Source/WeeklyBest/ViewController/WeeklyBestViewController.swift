@@ -28,11 +28,18 @@ final class WeeklyBestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        updateUI()
         fetchData()
         setupRefresh()
         setupNaviBar()
         setupTableView()
         setupButton()
+    }
+    
+    private func updateUI() {
+        DispatchQueue.main.async {
+            self.weeklyBestView.uploadButton.isHidden = true
+        }
     }
     
     // MARK: - 데이터 가져오기
