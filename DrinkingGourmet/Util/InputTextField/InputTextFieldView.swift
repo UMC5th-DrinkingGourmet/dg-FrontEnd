@@ -63,8 +63,25 @@ class InputTextFieldView: UIView {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .wheels
-        picker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         picker.locale = Locale(identifier: "ko_KR")
+
+        let calendar = Calendar.current
+        let currentDate = Date()
+
+        let currentYear = calendar.component(.year, from: currentDate)
+
+        var maxDateComponents = DateComponents()
+        maxDateComponents.year = currentYear - 19
+        maxDateComponents.month = 12
+        maxDateComponents.day = 31
+        let maxDate = calendar.date(from: maxDateComponents)
+        
+        let minDate = calendar.date(byAdding: .year, value: -100, to: currentDate)
+        
+        picker.maximumDate = maxDate
+        picker.minimumDate = minDate
+        
+        picker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         return picker
     }()
     
@@ -130,6 +147,7 @@ class InputTextFieldView: UIView {
     
     @objc func xBtnClicked() {
         textField.text = ""
+        onTextChanged?("")
     }
     
     required init?(coder: NSCoder) {
