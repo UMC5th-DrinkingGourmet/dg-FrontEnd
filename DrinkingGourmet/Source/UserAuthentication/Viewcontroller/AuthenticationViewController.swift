@@ -30,14 +30,15 @@ class AuthenticationViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 12 // 줄 사이 간격 설정
+        paragraphStyle.lineSpacing = 12
 
         let attrString = NSMutableAttributedString(string: "술과 음식의\n미식 여행\n음주미식회")
+        attrString.addAttribute(.kern, value: 0.45, range: NSMakeRange(0, attrString.length))
         attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
 
         $0.attributedText = attrString
         $0.textColor = .white
-        $0.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
+        $0.font = UIFont.systemFont(ofSize: 40, weight: .bold)
         $0.textAlignment = .left
         $0.numberOfLines = 3
     }
