@@ -18,6 +18,8 @@ class MainMenuViewController: UIViewController {
     var recipes: [RecipeModel] = []
     var combinations: [CombinationModel] = []
     
+    private let refreshControl = UIRefreshControl()
+    
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
         $0.showsVerticalScrollIndicator = false
@@ -125,6 +127,7 @@ class MainMenuViewController: UIViewController {
         layout()
         configButton()
         fetchPostsData()
+        configureRefreshControl()
     }
     
     func setupNaviBar() {
@@ -149,6 +152,15 @@ class MainMenuViewController: UIViewController {
         } catch {
             print("Failed to get access token")
         }
+    }
+    
+    private func configureRefreshControl() {
+        scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
+    
+    @objc private func refreshData() {
+        fetchPostsData()
     }
     
     func configButton() {
@@ -302,15 +314,19 @@ extension MainMenuViewController {
     func fetchPostsData() {
         MainMenuService.shared.fetchRecipes { [weak self] recipeList in
             self?.recipes = recipeList
+            print("레피시북 success")
             DispatchQueue.main.async {
                 self?.recipeBookCollectionView.reloadData()
+                self?.refreshControl.endRefreshing()
             }
         }
         
         MainMenuService.shared.fetchWeeklyBestCombinations { [weak self] (combinationList: [CombinationModel]) in
             self?.combinations = combinationList
+            print("오늘의조합 success")
             DispatchQueue.main.async {
                 self?.todayCombiCollectionView.reloadData()
+                self?.refreshControl.endRefreshing()
             }
         }
     }
