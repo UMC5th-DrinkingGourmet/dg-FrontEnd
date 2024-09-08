@@ -27,10 +27,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        
         do {
             let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
-            SignService.shared.loginWithProviderInfo { [weak self] in
-                DispatchQueue.main.async {
-                    self?.window?.rootViewController = TabBarViewController() 
-                    self?.window?.makeKeyAndVisible()
+            if TokenParser.isTokenExpired(refreshToken) {
+                print("RefreshToken이 만료되었습니다. 로그인 화면을 띄웁니다.")
+                window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
+                window.makeKeyAndVisible()
+            } else {
+                print("RefreshToken이 유효합니다. 메인 화면으로 이동합니다.")
+                SignService.shared.loginWithProviderInfo { [weak self] in
+                    DispatchQueue.main.async {
+                        self?.window?.rootViewController = TabBarViewController()
+                        self?.window?.makeKeyAndVisible()
+                    }
                 }
             }
         } catch {
