@@ -24,8 +24,9 @@ final class SignService {
     
     func sendUserInfo(_ userInfo: UserInfo, completion: @escaping (UserStatus?) -> Void) {
         let parameter = UserInfoDTO(from: userInfo)
+        let provider = UserDefaultManager.shared.provider
         
-        AF.request("\(baseURL)/kakao",
+        AF.request("\(baseURL)/\(provider)",
                    method: .post,
                    parameters: parameter,
                    encoder: JSONParameterEncoder.default,
@@ -61,7 +62,7 @@ final class SignService {
         let providerId = UserDefaultManager.shared.providerId
         let loginInfo = SignInfoDTO(provider: provider, providerId: providerId)
         
-        AF.request("\(baseURL)/kakao",
+        AF.request("\(baseURL)/\(provider)",
                    method: .post,
                    parameters: loginInfo,
                    encoder: JSONParameterEncoder.default,

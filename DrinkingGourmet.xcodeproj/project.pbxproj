@@ -11,6 +11,7 @@
 		2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */; };
 		2E06A6F12C1EE16100FF5449 /* AppleAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */; };
 		2E22A47B2C47BFD900D38881 /* SignInResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E22A47A2C47BFD900D38881 /* SignInResponseDTO.swift */; };
+		2E2DE4EB2C8DEF470049ACFC /* TokenParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2DE4EA2C8DEF470049ACFC /* TokenParser.swift */; };
 		2E3E5A7D2B6C04590000E651 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */; };
 		2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */; };
 		2E5407962B84BAF100724513 /* RecipeBookUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */; };
@@ -181,6 +182,7 @@
 		2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthViewModel.swift; sourceTree = "<group>"; };
 		2E22A47A2C47BFD900D38881 /* SignInResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponseDTO.swift; sourceTree = "<group>"; };
+		2E2DE4EA2C8DEF470049ACFC /* TokenParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenParser.swift; sourceTree = "<group>"; };
 		2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedImgCollectionViewCell.swift; sourceTree = "<group>"; };
 		2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadViewController.swift; sourceTree = "<group>"; };
@@ -595,6 +597,7 @@
 		2EB001902B5E40A400B74580 /* UserAuthentication */ = {
 			isa = PBXGroup;
 			children = (
+				2E2DE4EA2C8DEF470049ACFC /* TokenParser.swift */,
 				2E56A0DC2B78861B007747ED /* KeyChain.swift */,
 				2EE2E88C2B657A52006F81E9 /* KakaoAuthViewModel.swift */,
 				2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */,
@@ -1408,6 +1411,7 @@
 				56BBF4322C381F740058B19B /* MyCombinationViewController.swift in Sources */,
 				2E85190A2B6D23F10052EB30 /* ProfileCreationViewController.swift in Sources */,
 				56BBF3F42C359F460058B19B /* RecommendService.swift in Sources */,
+				2E2DE4EB2C8DEF470049ACFC /* TokenParser.swift in Sources */,
 				2EB865F52C68AB5D00CFF348 /* UserInfo.swift in Sources */,
 				56F8A7182B8000CA000F6CA4 /* LikeView.swift in Sources */,
 				56BBF35E2C33FEE80058B19B /* AnswerView.swift in Sources */,
