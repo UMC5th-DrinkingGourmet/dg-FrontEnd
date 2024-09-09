@@ -298,14 +298,18 @@ extension TermsViewController {
         if marketingTermsCheckButton.isSelected {
             selectedTerms.append("MARKETING")
         }
+        
+        let VC = ProfileCreationViewController()
+        navigationController?.pushViewController(VC, animated: true)
+        
 
-        AdministrationService.shared.postAgree(termList: selectedTerms) { error in
-            if let error = error {
-                print("약관 동의 실패 - \(error.localizedDescription)")
-            } else {
-                print("약관 동의 성공")
-            }
-        }
+//        AdministrationService.shared.postAgree(termList: selectedTerms) { error in
+//            if let error = error {
+//                print("약관 동의 실패 - \(error.localizedDescription)")
+//            } else {
+//                print("약관 동의 성공")
+//            }
+//        }
     }
     
     @objc private func useTermsMoreButtonTapped() {
