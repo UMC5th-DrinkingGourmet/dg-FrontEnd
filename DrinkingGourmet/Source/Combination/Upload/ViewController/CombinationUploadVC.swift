@@ -45,6 +45,7 @@ final class CombinationUploadVC: UIViewController {
         $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
+        $0.tintColor = .clear
     }
     
     private let selectCombinationRoundView = UIView().then {
@@ -336,7 +337,7 @@ final class CombinationUploadVC: UIViewController {
     private func setupButton() {
         self.imageUploadButton.addTarget(self, action: #selector(imageUploadButtonTapped), for: .touchUpInside)
         
-//        self.completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
+        self.completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
     
     private func setupCollectionView() {
@@ -407,10 +408,58 @@ extension CombinationUploadVC {
     }
     
     // 작성완료 버튼
-//    @objc private func completeButtonTapped() {
-//        
-//        self.completeButton.isEnabled = false // 두번 클릭 막기
-//        
+    @objc private func completeButtonTapped() {
+        
+        self.completeButton.isEnabled = false // 두번 클릭 막기
+        
+        CombinationUploadService.shared.uploadImages(self.imageList) { response, error in
+            if let error = error {
+                print("오늘의 조합 이미지 업로드 실패 - \(error.localizedDescription)")
+            } else if let response = response {
+                guard let combinationImageList = response.result?.combinationImageList else { return }
+                
+                // 해시태그 문자열을 배열로 변환
+                let hashtagText = self.hashtagTextField.text ?? ""
+                let hashtags = self.extractHashtags(from: hashtagText)
+                
+                let postModel = CombinationUploadModel.WritingPostModel(
+                    title: self.titleTextField.text!,
+                    content: self.contentTextField.text!,
+                    recommendId: self.recommendId!,
+                    hashTagNameList: hashtags,
+                    combinationImageList: combinationImageList
+                )
+                
+                if self.isModify { // 수정일 때
+//                    guard let recipeBookId = self.recipeBookDetailData?.result.id else { return }
+//                    
+//                    RecipeBookService.shared.patchRecipeBook(recipeBookId: recipeBookId, patchModel: postModel) { error in
+//                        if let error = error {
+//                            print("레시피북 수정 실패 - \(error.localizedDescription)")
+//                        } else {
+//                            print("레시피북 수정 성공")
+//                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookDetailViewController }) as? RecipeBookDetailViewController {
+//                                vc.fetchData()
+//                                self.navigationController?.popToViewController(vc, animated: true)
+//                            }
+//                        }
+//                    }
+//                    
+                } else { // 일반 작성
+                    CombinationUploadService.shared.uploadPost(postModel) { response, error in
+                        if let error = error {
+                            print("오늘의 조합 게시글 업로드 실패 - \(error.localizedDescription)")
+                        } else if let response = response {
+                            print("오늘의 조합 게시글 업로드 성공")
+                            DispatchQueue.main.async {
+                                self.navigationController?.popViewController(animated: true)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
 //        RecipeBookUploadService.shared.uploadImages(self.imageList) { response, error in
 //            if let error = error {
 //                print("레시피북 이미지 업로드 실패 - \(error.localizedDescription)")
@@ -461,7 +510,7 @@ extension CombinationUploadVC {
 //                }
 //            }
 //        }
-//    }
+    }
     
     private func extractHashtags(from text: String) -> [String] {
         let components = text.split(separator: " ").map { $0.trimmingCharacters(in: .whitespaces) }
