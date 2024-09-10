@@ -431,6 +431,12 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
             let recipeDetailVC = RecipeBookDetailViewController()
             recipeDetailVC.recipeBookId = recipe.id
             self.navigationController?.pushViewController(recipeDetailVC, animated: true)
+        } else if collectionView.tag == 2 {
+            let combination = combinations[indexPath.item]
+            
+            let combinationVC = CombinationDetailViewController()
+            combinationVC.combinationId = combination.id
+            self.navigationController?.pushViewController(combinationVC, animated: true)
         }
     }
 }
