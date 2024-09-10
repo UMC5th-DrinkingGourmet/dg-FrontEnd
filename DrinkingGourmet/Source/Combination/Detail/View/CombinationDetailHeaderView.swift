@@ -45,6 +45,14 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
         $0.backgroundColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1)
     }
     
+    let recommendLabel = UILabel().then {
+        $0.textColor = UIColor.customOrange
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "추천받은 조합 - 골뱅이무침 & 새로", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
     let hashtagLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
@@ -109,6 +117,7 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
             nicknameLabel,
             likeButton,
             dividerView1,
+            recommendLabel,
             hashtagLabel,
             moreButton,
             titleLabel,
@@ -152,8 +161,13 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
             make.leading.trailing.equalTo(contentView)
         }
         
+        recommendLabel.snp.makeConstraints { make in
+            make.top.equalTo(dividerView1.snp.bottom).offset(20)
+            make.leading.equalTo(hashtagLabel)
+        }
+        
         hashtagLabel.snp.makeConstraints { make in
-            make.top.equalTo(dividerView1.snp.bottom).offset(24)
+            make.top.equalTo(recommendLabel.snp.bottom).offset(7)
             make.leading.trailing.equalTo(contentView).inset(21)
         }
         

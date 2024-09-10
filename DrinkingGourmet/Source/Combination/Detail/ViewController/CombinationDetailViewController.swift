@@ -410,6 +410,7 @@ extension CombinationDetailViewController: UITableViewDelegate {
             header.likeButton.setImage(UIImage(named: "ic_like_selected"), for: .normal)
         }
         
+        header.recommendLabel.text = "추천받은 조합 - \(data.result.combinationResult.recommend)"
         header.hashtagLabel.text = data.result.combinationResult.hashTagList.map { "\($0)" }.joined(separator: " ")
         header.titleLabel.text = data.result.combinationResult.title
         header.descriptionLabel.text = data.result.combinationResult.content
