@@ -194,7 +194,7 @@ final class CombinationUploadVC: UIViewController {
     
     // MARK: - Properties
     var isModify = false // 수정 여부
-    var recipeBookDetailData: RecipeBookDetailResponseDTO? // 수정일 때 이전 값
+    var combinationDetailData: CombinationDetailResponseDTO? // 수정일 때 이전 값
     
     var imageList: [UIImage] = [] // 사진 담는 배열
     var arrayRecommendList: [CombinationUploadModel.FetchRecommendListModel.RecommendResponseDTOList] = [] // 추천 받은 조합
@@ -206,14 +206,17 @@ final class CombinationUploadVC: UIViewController {
         view.backgroundColor = .white
         
         if self.isModify { // 수정일 때
-            guard let beforeData = self.recipeBookDetailData else { return }
+            guard let beforeData = self.combinationDetailData else { return }
             
             DispatchQueue.main.async {
                 self.completeLabel.text = "수정하기"
-                self.hashtagTextField.text = beforeData.result.hashTagNameList.joined(separator: " ")
-                self.titleTextField.text = beforeData.result.title
+                self.recommendId = beforeData.result.combinationResult.recommendId
+                self.selectCombinationTextField.text = beforeData.result.combinationResult.recommend
+                self.hashtagTextField.text = beforeData.result.combinationResult.hashTagList.joined(separator: " ")
+                self.titleTextField.text = beforeData.result.combinationResult.title
+                self.contentTextField.text = beforeData.result.combinationResult.content
                 
-                for imageURL in beforeData.result.recipeImageList {
+                for imageURL in beforeData.result.combinationResult.combinationImageList {
                     if let url = URL(string: imageURL) {
                         // Kingfisher를 사용해 이미지를 비동기적으로 로드하고 캐시
                         let imageView = UIImageView()
@@ -431,20 +434,19 @@ extension CombinationUploadVC {
                 )
                 
                 if self.isModify { // 수정일 때
-//                    guard let recipeBookId = self.recipeBookDetailData?.result.id else { return }
-//                    
-//                    RecipeBookService.shared.patchRecipeBook(recipeBookId: recipeBookId, patchModel: postModel) { error in
-//                        if let error = error {
-//                            print("레시피북 수정 실패 - \(error.localizedDescription)")
-//                        } else {
-//                            print("레시피북 수정 성공")
-//                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookDetailViewController }) as? RecipeBookDetailViewController {
-//                                vc.fetchData()
-//                                self.navigationController?.popToViewController(vc, animated: true)
-//                            }
-//                        }
-//                    }
-//                    
+                    guard let recipeBookId = self.combinationDetailData?.result.combinationResult.combinationId else { return }
+                    
+                    CombinationService.shared.patchCombination(combinationId: recipeBookId, fetchModel: postModel) { error in
+                        if let error = error {
+                            print("오늘의 조합 수정 실패 - \(error.localizedDescription)")
+                        } else {
+                            print("오늘의 조합 수정 성공")
+                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is CombinationDetailViewController }) as? CombinationDetailViewController {
+                                vc.fetchData()
+                                self.navigationController?.popToViewController(vc, animated: true)
+                            }
+                        }
+                    }
                 } else { // 일반 작성
                     CombinationUploadService.shared.uploadPost(postModel) { response, error in
                         if let error = error {
@@ -459,57 +461,6 @@ extension CombinationUploadVC {
                 }
             }
         }
-        
-//        RecipeBookUploadService.shared.uploadImages(self.imageList) { response, error in
-//            if let error = error {
-//                print("레시피북 이미지 업로드 실패 - \(error.localizedDescription)")
-//            } else if let response = response {
-//                guard let recipeImageList = response.result?.recipeImageList else { return }
-//                
-//                // 해시태그 문자열을 배열로 변환
-//                let hashtagText = self.hashtagTextField.text ?? ""
-//                let hashtags = self.extractHashtags(from: hashtagText)
-//                
-//                let postModel = RecipeBookUploadModel.RecipeRequestDTO(
-//                    title: self.titleTextField.text!,
-//                    cookingTime: self.cookingTimeTextField.text!,
-//                    calorie: self.calorieTextField.text!,
-//                    ingredient: self.ingredientTextField.text!,
-//                    recipeInstruction: self.cookingMethodTextField.text!,
-//                    recommendCombination: self.cookingMethodTextField.text!,
-//                    hashTagNameList: hashtags,
-//                    recipeImageList: recipeImageList
-//                )
-//                
-//                if self.isModify { // 수정일 때
-//                    guard let recipeBookId = self.recipeBookDetailData?.result.id else { return }
-//                    
-//                    RecipeBookService.shared.patchRecipeBook(recipeBookId: recipeBookId, patchModel: postModel) { error in
-//                        if let error = error {
-//                            print("레시피북 수정 실패 - \(error.localizedDescription)")
-//                        } else {
-//                            print("레시피북 수정 성공")
-//                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookDetailViewController }) as? RecipeBookDetailViewController {
-//                                vc.fetchData()
-//                                self.navigationController?.popToViewController(vc, animated: true)
-//                            }
-//                        }
-//                    }
-//                    
-//                } else { // 일반 작성
-//                    RecipeBookUploadService.shared.uploadPost(postModel) { response, error in
-//                        if let error = error {
-//                            print("레시피북 게시글 업로드 실패 - \(error.localizedDescription)")
-//                        } else if let response = response {
-//                            print("레시피북 게시글 업로드 성공")
-//                            DispatchQueue.main.async {
-//                                self.navigationController?.popViewController(animated: true)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
     
     private func extractHashtags(from text: String) -> [String] {

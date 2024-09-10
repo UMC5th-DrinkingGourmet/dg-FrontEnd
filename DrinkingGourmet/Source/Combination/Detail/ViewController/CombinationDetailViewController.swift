@@ -213,7 +213,7 @@ extension CombinationDetailViewController {
             let modifyAction = UIAlertAction(title: "수정하기", style: .default) { _ in
                 guard let combinationDetailData = self.combinationDetailData else { return }
                 let VC = CombinationUploadVC()
-//                VC.combinationDetailData = combinationDetailData
+                VC.combinationDetailData = combinationDetailData
                 VC.isModify = true
                 self.navigationController?.pushViewController(VC, animated: true)
             }
