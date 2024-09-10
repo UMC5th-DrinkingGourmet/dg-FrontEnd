@@ -1,111 +1,100 @@
-////
-////  CombinationUploadVC.swift
-////  DrinkingGourmet
-////
-////  Created by 이승민 on 2/16/24.
-////
 //
-import SnapKit
-import Then
+//  CombinationUploadVC.swift
+//  DrinkingGourmet
+//
+//  Created by 이승민 on 2/16/24.
+//
+
+import UIKit
 import Photos
 import PhotosUI
 
-class CombinationUploadVC: UIViewController {
+final class CombinationUploadVC: UIViewController {
     
-    // MARK: - Properties
-    var isModify = false // 수정 여부
-    var combinationDetailData: CombinationDetailResponseDTO? // 수정일 때 이전 값
-    
-    var imageList: [UIImage] = []
-    
-    var recommendId: Int?
-    
-    var arrayRecommendList: [CombinationUploadModel.FetchRecommendListModel.RecommendResponseDTOList] = []
-    
-    // MARK: - View
-    let scrollView = UIScrollView().then {
+    // MARK: - UI
+    private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
-        $0.keyboardDismissMode = .onDrag // 스크롤 시 키보드 숨김
+//        $0.keyboardDismissMode = .onDrag // 스크롤 시 키보드 숨김
     }
     
-    let contentView = UIView()
+    private let scrollViewContentView = UIView()
     
-    let pickerView = UIPickerView()
-   
+    private let stackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 56
+    }
+    
+    private let pickerView = UIPickerView()
     
     // 선택한 조합
-    let combinationLabel = UILabel().then {
+    private let selectCombinationView = UIView()
+    
+    private let selectCombinationLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.attributedText = NSMutableAttributedString(string: "선택한 조합", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    let roundView = UIView().then {
+    private let selectCombinationTextField = UITextField().then {
+        $0.placeholder = "조합을 선택해주세요."
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
+    }
+    
+    private let selectCombinationRoundView = UIView().then {
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.customColor.checkMarkGray.cgColor
     }
     
-    let combinationTextField = UITextField().then {
-        $0.autocorrectionType = .no
-        $0.spellCheckingType = .no
-        $0.tintColor = .clear
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.25
-
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16),
-            .paragraphStyle: paragraphStyle,
-            .kern: -0.48,
-            .foregroundColor: UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
-        ]
-
-        $0.attributedPlaceholder = NSAttributedString(string: "조합을 선택해주세요.", attributes: attributes)
-    }
-
-    
-    let combinationButtonIcon = UIImageView().then {
+    private let selectCombinationArrowIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_upload_more_false")
     }
     
     // 해시태그
-    let hashtagLabel = UILabel().then {
+    private let hashtagView = UIView()
+    
+    private let hashtagLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.attributedText = NSMutableAttributedString(string: "해시태그", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    let hashtagTextField = UITextField().then {
-//        $0.text = "#"
+    private let hashtagTextField = UITextField().then {
+        $0.placeholder = "#태그입력"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.25
-        
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16),
-            .paragraphStyle: paragraphStyle,
-            .kern: -0.48
-        ]
-        
-        $0.attributedPlaceholder = NSAttributedString(string: "#태그입력", attributes: attributes)
     }
     
-    let grayLine1 = UIView().then {
-        $0.backgroundColor = UIColor.customColor.checkMarkGray
+    private let hashtagLine = UIView().then {
+        $0.backgroundColor = .base0700
     }
     
     // 사진
+    private let imageView = UIView()
+    
     private let imageLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.attributedText = NSMutableAttributedString(string: "사진", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    private let uploadBtn = UIButton().then {
+    private let imageUploadButton = UIButton().then {
         let resizedImg = UIImage(systemName: "camera.fill")?.resizedImage(to: CGSize(width: 30, height: 20))
         var configuration = UIButton.Configuration.plain()
         configuration.baseBackgroundColor = .clear
@@ -126,11 +115,8 @@ class CombinationUploadVC: UIViewController {
         $0.layer.borderColor = UIColor.lightGray.cgColor
     }
     
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout()).then {
+    lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout()).then {
         $0.backgroundColor = .clear
-        $0.delegate = self
-        $0.dataSource = self
-        $0.register(UploadedImgCollectionViewCell.self, forCellWithReuseIdentifier: "UploadedImgCollectionViewCell")
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
@@ -143,79 +129,90 @@ class CombinationUploadVC: UIViewController {
         return layout
     }
     
-    //제목
-    let titleLabel = UILabel().then {
+    // 제목
+    private let titleView = UIView()
+    
+    private let titleLabel = UILabel().then {
+        $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.attributedText = NSMutableAttributedString(string: "제목", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    let titleTextField = UITextField().then {
+    private let titleTextField = UITextField().then {
+        $0.placeholder = "쉽게 만드는 토스트"
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.25
-        
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16),
-            .paragraphStyle: paragraphStyle,
-            .kern: -0.48
-        ]
-        
-        $0.attributedPlaceholder = NSAttributedString(string: "제목을 입력해주세요.", attributes: attributes)
     }
     
-    let grayLine2 = UIView().then {
-        $0.backgroundColor = UIColor.customColor.checkMarkGray
+    private let titleLine = UIView().then {
+        $0.backgroundColor = .base0700
     }
     
-    let titleWarningLabel = UILabel().then {
-        $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
-        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
+    // 내용
+    private let contentView = UIView()
+    
+    private let contentLabel = UILabel().then {
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
-        $0.attributedText = NSMutableAttributedString(string: "최소 5자 / 최대 80자", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        $0.attributedText = NSMutableAttributedString(string: "내용", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    lazy var contentInputView = InputTextFieldView(frame: .zero).then {
-        $0.onTextChanged = { [weak self] text in
-//            print("텍스트 길이: \(text.count)")
-            
-        }
+    private let contentTextField = UITextField().then {
+        $0.placeholder = "내용을 입력해주세요."
+        $0.textColor = .base0100
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
+        $0.spellCheckingType = .no
     }
     
-    // 작성완료
-    let completionView = UIView().then {
-        $0.backgroundColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
+    private let contentLine = UIView().then {
+        $0.backgroundColor = .base0700
     }
     
-    let completionButton = UIButton().then {
-        $0.backgroundColor = .clear
+    // 작성완료 버튼
+    private let completeButton = UIButton().then {
+        $0.backgroundColor = .base0500
         $0.isEnabled = false
     }
     
-    let completionLabel = UILabel().then {
+    private let completeLabel = UILabel().then {
         $0.text = "작성 완료"
-        $0.textColor = .white
+        $0.textColor = .base1000
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     
-    // MARK: - viewDidLoad()
+    // MARK: - Properties
+    var isModify = false // 수정 여부
+    var recipeBookDetailData: RecipeBookDetailResponseDTO? // 수정일 때 이전 값
+    
+    var imageList: [UIImage] = [] // 사진 담는 배열
+    var arrayRecommendList: [CombinationUploadModel.FetchRecommendListModel.RecommendResponseDTOList] = [] // 추천 받은 조합
+    var recommendId: Int? // 추천 받은 조합 Id
+    
+    // MARK: - ViewDidLodad
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        if isModify { // 수정일 때
-            guard let beforeData = combinationDetailData else { return }
+        if self.isModify { // 수정일 때
+            guard let beforeData = self.recipeBookDetailData else { return }
             
             DispatchQueue.main.async {
-                self.completionLabel.text = "수정하기"
-                self.hashtagTextField.text = beforeData.result.combinationResult.hashTagList.joined(separator: " ")
-                self.titleTextField.text = beforeData.result.combinationResult.title
-                self.contentInputView.textField.text = beforeData.result.combinationResult.content
-                print("MOICHI : \(beforeData.result.combinationResult.content)")
+                self.completeLabel.text = "수정하기"
+                self.hashtagTextField.text = beforeData.result.hashTagNameList.joined(separator: " ")
+                self.titleTextField.text = beforeData.result.title
                 
-                for imageURL in beforeData.result.combinationResult.combinationImageList {
+                for imageURL in beforeData.result.recipeImageList {
                     if let url = URL(string: imageURL) {
                         // Kingfisher를 사용해 이미지를 비동기적으로 로드하고 캐시
                         let imageView = UIImageView()
@@ -224,8 +221,9 @@ class CombinationUploadVC: UIViewController {
                             case .success(let value):
                                 DispatchQueue.main.async {
                                     self.imageList.append(value.image)
-                                    self.collectionView.reloadData()
-                                    self.updateUploadButtonConfiguration()
+                                    self.imageCollectionView.reloadData()
+                                    self.updateImageCountLabel()
+                                    self.updateCompleteButton()
                                 }
                             case .failure(let error):
                                 print("Error: \(error)")
@@ -236,25 +234,25 @@ class CombinationUploadVC: UIViewController {
             }
         }
         
-        setupNaviBar()
-        prepare()
+        checkPermission()
         
-        configHierarchy()
-        configLayout()
-        configView()
-        
-        setupTextField()
+        addViews()
+        configureConstraints()
         
         createPickerView()
- 
-        checkPermission()
+        
+        fetchData()
+        setupNaviBar()
+        setupTextField()
+        setupButton()
+        setupCollectionView()
         
         // 키보드 알림 등록
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc private func keyboardWillShow(notification: NSNotification) {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
 
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
@@ -262,7 +260,7 @@ class CombinationUploadVC: UIViewController {
         scrollView.scrollIndicatorInsets = contentInsets
     }
 
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc private func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
     }
@@ -273,34 +271,45 @@ class CombinationUploadVC: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+    private func createToolbar() -> UIToolbar {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
         
-        var configuration = uploadBtn.configuration
-        var titleAttr = AttributedString("\(imageList.count)/10")
-        titleAttr.foregroundColor = .lightGray
-        titleAttr.font = UIFont.systemFont(ofSize: 12)
-        configuration?.attributedTitle = titleAttr
-        uploadBtn.configuration = configuration
+        let doneButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(doneButtonTapped))
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([flexSpace, doneButton], animated: true)
+        
+        return toolbar
     }
     
-    // MARK: - 네비게이션바 설정
-    func setupNaviBar() {
-        title = "글쓰기"
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground() // 불투명
-        appearance.backgroundColor = .white
-        
-        // 백버튼 커스텀
-        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
-        navigationController?.navigationBar.backIndicatorImage = customBackImage
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    @objc private func doneButtonTapped() {
+        view.endEditing(true)
     }
     
-    // MARK: - 초기 설정
-    func prepare() {
+    // 피커뷰
+    private func createPickerView() {
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        
+        // 텍스트 필드의 입력 방식을 피커 뷰로 설정
+        selectCombinationTextField.inputView = pickerView
+        
+        // 피커 뷰 위에 툴바 추가
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(doneButtonTapped))
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        toolbar.isUserInteractionEnabled = true
+        
+        selectCombinationTextField.inputAccessoryView = toolbar
+    }
+    
+    private func fetchData() {
         let input = CombinationUploadInput.FetchRecommendListDataInput(page: 0, size: 20)
         
         CombinationUploadService.shared.fetchRecommendListData(input, self) { [weak self] model in
@@ -312,264 +321,157 @@ class CombinationUploadVC: UIViewController {
         }
     }
     
-    // MARK: - UI
-    func configHierarchy() {
-        completionView.addSubviews([completionLabel, completionButton])
-        
-        view.addSubviews([scrollView, completionView])
-        
-        scrollView.addSubview(contentView)
-        
-        contentView.addSubviews([combinationLabel, roundView, combinationTextField, combinationButtonIcon, hashtagLabel, hashtagTextField, grayLine1, imageLabel, uploadBtn, collectionView, titleLabel, titleTextField, grayLine2, titleWarningLabel, contentInputView])
+    private func setupNaviBar() {
+        title = "글쓰기"
     }
     
-    func configLayout() {
-        // 스크롤뷰
-        scrollView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(completionView.snp.top)
-        }
+    private func setupTextField() {
         
-        contentView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.contentLayoutGuide)
-            make.width.equalTo(scrollView.frameLayoutGuide)
-            make.height.equalTo(800)
-        }
-        
-        // 작성완료
-        completionView.snp.makeConstraints { make in
-            make.height.equalTo(89)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        completionButton.snp.makeConstraints { make in
-            make.edges.equalTo(completionView)
-        }
-        
-        completionLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(completionView)
-            make.top.equalTo(completionView).inset(18)
-        }
-        
-        // 선택한 조합
-        combinationLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView).offset(30)
-            make.leading.equalTo(contentView).offset(20)
-        }
-        
-        roundView.snp.makeConstraints { make in
-            make.top.equalTo(combinationLabel.snp.bottom).offset(8)
-            make.leading.equalTo(combinationLabel)
-            make.trailing.equalTo(contentView).inset(19)
-        }
-        
-        combinationTextField.snp.makeConstraints { make in
-            make.top.equalTo(roundView).inset(13)
-            make.leading.equalTo(roundView).inset(16)
-            make.trailing.equalTo(roundView).inset(16)
-            make.bottom.equalTo(roundView).inset(12)
-        }
-        
-        combinationButtonIcon.snp.makeConstraints { make in
-            make.size.equalTo(12)
-            make.top.equalTo(roundView).inset(19)
-            make.trailing.equalTo(roundView).inset(16)
-            make.bottom.equalTo(roundView).inset(18)
-        }
-        
-        // 해시태그
-        hashtagLabel.snp.makeConstraints { make in
-            make.top.equalTo(roundView.snp.bottom).offset(56)
-            make.leading.equalTo(combinationLabel)
-        }
-        
-        hashtagTextField.snp.makeConstraints { make in
-            make.height.equalTo(24)
-            make.top.equalTo(hashtagLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalTo(roundView)
-        }
-        
-        grayLine1.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.top.equalTo(hashtagTextField.snp.bottom).offset(8)
-            make.leading.trailing.equalTo(hashtagTextField)
-        }
-
-        // 사진
-        imageLabel.snp.makeConstraints { make in
-            make.top.equalTo(grayLine1.snp.bottom).offset(56)
-            make.leading.equalTo(combinationLabel)
-        }
-        
-        uploadBtn.snp.makeConstraints { make in
-            make.top.equalTo(imageLabel.snp.bottom).offset(12)
-            make.leading.equalTo(imageLabel)
-            make.size.equalTo(100)
-        }
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(uploadBtn.snp.top).offset(-15)
-            make.leading.equalTo(uploadBtn.snp.trailing).offset(16)
-            make.trailing.equalTo(contentView)
-            make.height.equalTo(115)
-        }
-        
-        // 제목
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(uploadBtn.snp.bottom).offset(56)
-            make.leading.equalTo(combinationLabel)
-        }
-        
-        titleTextField.snp.makeConstraints { make in
-            make.height.equalTo(24)
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalTo(roundView)
-        }
-        
-        grayLine2.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.top.equalTo(titleTextField.snp.bottom).offset(8)
-            make.leading.trailing.equalTo(titleTextField)
-        }
-        
-        titleWarningLabel.snp.makeConstraints { make in
-            make.top.equalTo(grayLine2.snp.bottom).offset(8)
-            make.trailing.equalTo(grayLine2.snp.trailing)
-        }
-        
-        contentInputView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(72)
-            $0.top.equalTo(titleWarningLabel.snp.bottom).offset(54)
-        }
-        
+        [self.selectCombinationTextField,
+         self.hashtagTextField,
+         self.titleTextField,
+         self.contentTextField].forEach { $0.delegate = self }
     }
     
-    func configView() {
-        uploadBtn.addTarget(self, action: #selector(uploadBtnClicked), for: .touchUpInside)
+    private func setupButton() {
+        self.imageUploadButton.addTarget(self, action: #selector(imageUploadButtonTapped), for: .touchUpInside)
         
-        contentInputView.title = "내용"
-        contentInputView.placeholder = "내용을 입력해주세요"
-        contentInputView.xBtn.isHidden = true
-        contentInputView.textfieldText = ""
-        
-        completionButton.addTarget(self, action: #selector(completionBtnClicked), for: .touchUpInside)
+//        self.completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
     
-    @objc func completionBtnClicked() {
-        if completionButton.isEnabled == true {
-            print("클릭")
-            print("Uploading \(imageList.count) images.")
-            CombinationUploadService.shared.uploadImages(imageList) { (response, error) in
-                if let error = error {
-                    print("Error: \(error)")
-                } else if let response = response {
-                    print("Response: \(response)")
-                    // 이미지 업로드가 성공하면 게시글 업로드
-                    if let recommendId = self.recommendId,
-                       let combinationImageList = response.result?.combinationImageList,
-                       let hashtagString = self.hashtagTextField.text {
-                        let hashTagNameList = hashtagString.components(separatedBy: " ")
-                        let postModel = CombinationUploadModel.WritingPostModel(
-                            title: self.titleTextField.text!,
-                            content: self.contentInputView.textField.text ?? "contentInputView",
-                            recommendId: recommendId,
-                            hashTagNameList: hashTagNameList,
-                            combinationImageList: combinationImageList)
-                        
-                        if self.isModify { // 수정일 때
-                            guard let combinationId = self.combinationDetailData?.result.combinationResult.combinationId else { return }
-                            
-                            CombinationService.shared.patchCombination(combinationId: combinationId, fetchModel: postModel) { error in
-                                if let error = error {
-                                    print("오늘의 조합 수정 실패 - \(error.localizedDescription)")
-                                } else {
-                                    print("오늘의 조합 수정 성공")
-                                }
-                            }
-                            
-                        } else {
-                            CombinationUploadService.shared.uploadPost(postModel) { (response, error) in
-                                if let error = error {
-                                    print("Post upload error: \(error)")
-                                } else if let response = response {
-                                    print("Post upload response: \(response)")
-                                    DispatchQueue.main.async {
-                                        self.navigationController?.popViewController(animated: true)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    private func setupCollectionView() {
+        self.imageCollectionView.dataSource = self
+        self.imageCollectionView.register(UploadedImgCollectionViewCell.self, forCellWithReuseIdentifier: "UploadedImgCollectionViewCell")
+    }
+    
+    private func updateImageCountLabel() {
+        var configuration = imageUploadButton.configuration
+        var titleAttr = AttributedString("\(imageList.count)/10")
+        titleAttr.foregroundColor = .lightGray
+        titleAttr.font = UIFont.systemFont(ofSize: 12)
+        configuration?.attributedTitle = titleAttr
+        imageUploadButton.configuration = configuration
+    }
+    
+    // 작성완료 버튼 상태 변경
+    private func updateCompleteButton() {
+        let textFields: [UITextField] = [
+            self.selectCombinationTextField,
+            self.hashtagTextField,
+            self.titleTextField,
+            self.contentTextField
+        ]
+        
+        // 모든 텍스트 필드가 채워져 있는지 확인
+        let allFieldsFilled = textFields.allSatisfy { !$0.text!.isEmpty }
+        
+        // 이미지 리스트에 최소 하나 이상의 이미지가 있는지 확인
+        let hasImages = !imageList.isEmpty
+        
+        // 검사 후 상태 변경
+        if allFieldsFilled && hasImages{
+            self.completeButton.backgroundColor = .base0100
+            self.completeButton.isEnabled = true
         } else {
-            print("클릭 불가")
+            self.completeButton.backgroundColor = .base0500
+            self.completeButton.isEnabled = false
         }
     }
-
-    
-    func setupTextField() {
-        combinationTextField.delegate = self
-        hashtagTextField.delegate = self
-        titleTextField.delegate = self
-        contentInputView.textField.delegate = self
-    }
-    
-    // 피커뷰
-    func createPickerView() {
-        pickerView.delegate = self
-        pickerView.dataSource = self
-
-        // 텍스트 필드의 입력 방식을 피커 뷰로 설정
-        combinationTextField.inputView = pickerView
-
-        // 피커 뷰 위에 툴바 추가
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(dismissPickerView))
-        toolbar.setItems([flexibleSpace, doneButton], animated: false)
-        toolbar.isUserInteractionEnabled = true
-
-        combinationTextField.inputAccessoryView = toolbar
-    }
-    
 }
 
+// MARK: - Actions
 extension CombinationUploadVC {
-    @objc func dismissPickerView() {
-        view.endEditing(true)
-    }
-    
-    @objc func uploadBtnClicked() {
-        if imageList.count < 10 {
+    // 이미지 업로드 버튼
+    @objc private func imageUploadButtonTapped() {
+        let availableSlots = 10 - imageList.count
+        
+        if availableSlots > 0 {
             var config = PHPickerConfiguration()
-            config.filter = .images // 라이브러리에서 보여줄 Assets을 필터를 한다. (기본값: 이미지, 비디오, 라이브포토)
-            config.selectionLimit = 10   // 한 번에 최대 10장 까지만 설정
+            config.filter = .images // 이미지만 보이게
+            config.selectionLimit = availableSlots // 사진 갯수 제한
                     
             let imagePicker = PHPickerViewController(configuration: config)
             imagePicker.delegate = self
             imagePicker.modalPresentationStyle = .fullScreen
-                
+                    
             self.present(imagePicker, animated: true)
         } else {
-            let alert = UIAlertController(title: "이미지는 최대 10장까지만 업로드 가능합니다.", message: "이미 10장의 이미지를 업로드 하셨습니다.", preferredStyle: .alert)
+            let alert = UIAlertController(title: nil, message: "이미지는 최대 10장까지만 업로드 가능합니다.", preferredStyle: .alert)
             
-            let btn1 = UIAlertAction(title: "취소", style: .cancel)
-            let btn2 = UIAlertAction(title: "확인", style: .default)
+            let btn1 = UIAlertAction(title: "확인", style: .default)
             
             alert.addAction(btn1)
-            alert.addAction(btn2)
             
-            present(alert, animated: true)
+            self.present(alert, animated: true)
         }
     }
     
-    func checkPermission() {
+    // 작성완료 버튼
+//    @objc private func completeButtonTapped() {
+//        
+//        self.completeButton.isEnabled = false // 두번 클릭 막기
+//        
+//        RecipeBookUploadService.shared.uploadImages(self.imageList) { response, error in
+//            if let error = error {
+//                print("레시피북 이미지 업로드 실패 - \(error.localizedDescription)")
+//            } else if let response = response {
+//                guard let recipeImageList = response.result?.recipeImageList else { return }
+//                
+//                // 해시태그 문자열을 배열로 변환
+//                let hashtagText = self.hashtagTextField.text ?? ""
+//                let hashtags = self.extractHashtags(from: hashtagText)
+//                
+//                let postModel = RecipeBookUploadModel.RecipeRequestDTO(
+//                    title: self.titleTextField.text!,
+//                    cookingTime: self.cookingTimeTextField.text!,
+//                    calorie: self.calorieTextField.text!,
+//                    ingredient: self.ingredientTextField.text!,
+//                    recipeInstruction: self.cookingMethodTextField.text!,
+//                    recommendCombination: self.cookingMethodTextField.text!,
+//                    hashTagNameList: hashtags,
+//                    recipeImageList: recipeImageList
+//                )
+//                
+//                if self.isModify { // 수정일 때
+//                    guard let recipeBookId = self.recipeBookDetailData?.result.id else { return }
+//                    
+//                    RecipeBookService.shared.patchRecipeBook(recipeBookId: recipeBookId, patchModel: postModel) { error in
+//                        if let error = error {
+//                            print("레시피북 수정 실패 - \(error.localizedDescription)")
+//                        } else {
+//                            print("레시피북 수정 성공")
+//                            if let vc = self.navigationController?.viewControllers.first(where: { $0 is RecipeBookDetailViewController }) as? RecipeBookDetailViewController {
+//                                vc.fetchData()
+//                                self.navigationController?.popToViewController(vc, animated: true)
+//                            }
+//                        }
+//                    }
+//                    
+//                } else { // 일반 작성
+//                    RecipeBookUploadService.shared.uploadPost(postModel) { response, error in
+//                        if let error = error {
+//                            print("레시피북 게시글 업로드 실패 - \(error.localizedDescription)")
+//                        } else if let response = response {
+//                            print("레시피북 게시글 업로드 성공")
+//                            DispatchQueue.main.async {
+//                                self.navigationController?.popViewController(animated: true)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+    private func extractHashtags(from text: String) -> [String] {
+        let components = text.split(separator: " ").map { $0.trimmingCharacters(in: .whitespaces) }
+        return components.filter { $0.hasPrefix("#") }
+    }
+}
+
+// MARK: - Setting
+extension CombinationUploadVC {
+    private func checkPermission() {
         if #available(iOS 14, *) {
             switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
             case .notDetermined:
@@ -636,7 +538,7 @@ extension CombinationUploadVC {
         }
     }
     
-    func moveToSetting() {
+    private func moveToSetting() {
         let alertController = UIAlertController(title: "권한 거부됨", message: "앨범 접근이 거부 되었습니다. 앱의 일부 기능을 사용할 수 없어요", preferredStyle: UIAlertController.Style.alert)
             
         let okAction = UIAlertAction(title: "권한 설정으로 이동하기", style: .default) { (action) in
@@ -660,6 +562,86 @@ extension CombinationUploadVC {
     }
 }
 
+// MARK: - UICollectionViewDataSource
+extension CombinationUploadVC: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
+        
+        let image = imageList[indexPath.item]
+        cell.uploadedImageView.image = image
+        cell.uploadedImageView.layer.cornerRadius = 8
+        cell.uploadedImageView.layer.masksToBounds = true
+
+        cell.deleteBtn.tag = indexPath.row
+        cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
+        
+        return cell
+    }
+    
+    @objc private func deleteImg(sender: UIButton) {
+        let index = sender.tag
+        
+        imageList.remove(at: index)
+        imageCollectionView.reloadData()
+        self.updateImageCountLabel()
+        self.updateCompleteButton()
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension CombinationUploadVC: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        switch textField {
+        case selectCombinationTextField:
+            selectCombinationRoundView.layer.borderColor = UIColor.customOrange.cgColor
+        case hashtagTextField:
+            hashtagLine.backgroundColor = .customOrange
+        case titleTextField:
+            titleLine.backgroundColor = .customOrange
+        case contentTextField:
+            contentLine.backgroundColor = .customOrange
+        default:
+            break
+        }
+        
+        if textField == hashtagTextField, textField.text?.isEmpty ?? true {
+            textField.text = "#"
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField == hashtagTextField {
+            // 띄어쓰기가 입력될 때 # 추가
+            if string == " ", let text = textField.text {
+                textField.text = text + " #"
+                return false
+            }
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        selectCombinationRoundView.layer.borderColor = UIColor.base0700.cgColor
+        hashtagLine.backgroundColor = .base0700
+        titleLine.backgroundColor = .base0700
+        contentLine.backgroundColor = .base0700
+        
+        self.updateCompleteButton() // 텍스트필드 입력이 끝날때 마다 작성완료 버튼 업데이트
+    }
+}
+
+// MARK: - PHPickerViewControllerDelegate
 extension CombinationUploadVC: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         for result in results {
@@ -670,128 +652,15 @@ extension CombinationUploadVC: PHPickerViewControllerDelegate {
 
                 DispatchQueue.main.async {
                     self?.imageList.append(image)
-                    self?.collectionView.reloadData()
+                    self?.imageCollectionView.reloadData()
+                    self?.updateImageCountLabel()
+                    self?.updateCompleteButton()
                     
                     print(self?.imageList ?? "No data available")
                 }
             }
         }
         picker.dismiss(animated: true)
-    }
-}
-
-extension CombinationUploadVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UploadedImgCollectionViewCell", for: indexPath) as! UploadedImgCollectionViewCell
-            
-            let image = imageList[indexPath.item]
-            cell.uploadedImageView.image = image
-            cell.uploadedImageView.layer.cornerRadius = 8
-            cell.uploadedImageView.layer.masksToBounds = true
-
-            cell.deleteBtn.tag = indexPath.row
-            cell.deleteBtn.addTarget(self, action: #selector(deleteImg), for: .touchUpInside)
-            
-            return cell
-        }
-    
-    @objc func deleteImg(sender: UIButton) {
-        let index = sender.tag
-        
-        imageList.remove(at: index)
-        collectionView.reloadData()
-        
-        updateUploadButtonConfiguration()
-    }
-    
-    private func updateUploadButtonConfiguration() {
-        var configuration = uploadBtn.configuration
-        var titleAttr = AttributedString("\(imageList.count)/10")
-        titleAttr.foregroundColor = .lightGray
-        titleAttr.font = UIFont.systemFont(ofSize: 12)
-        configuration?.attributedTitle = titleAttr
-        uploadBtn.configuration = configuration
-    }
-    
-}
-
-extension CombinationUploadVC: UITextFieldDelegate {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == hashtagTextField, textField.text?.isEmpty ?? true {
-            textField.text = "#"
-        }
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if textField == titleTextField {
-            // 텍스트 필드의 현재 내용을 결정
-            let currentText = textField.text ?? ""
-            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
-
-            updateGrayLine2Color(text: updatedText)
-        }
-        
-        if textField == hashtagTextField {
-            // 띄어쓰기가 입력될 때 # 추가
-            if string == " ", let text = textField.text {
-                textField.text = text + " #"
-                return false
-            }
-            
-            let currentText = textField.text ?? ""
-            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
-
-            updateGrayLine1Color(text: updatedText)
-        }
-        
-        if textField == contentInputView.textField {
-            let currentText = textField.text ?? ""
-            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
-                
-        contentInputView.borderView.backgroundColor = updatedText.isEmpty ? UIColor.customColor.checkMarkGray : UIColor.customColor.customOrange
-        }
-        
-        return true
-    }
-    
-    private func updateGrayLine1Color(text: String) {
-        grayLine1.backgroundColor = text.isEmpty ? UIColor.customColor.checkMarkGray : .customOrange
-    }
-    
-    private func updateGrayLine2Color(text: String) {
-        grayLine2.backgroundColor = text.count >= 5 ? .customOrange : UIColor.customColor.checkMarkGray
-    }
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        // 모든 필드가 적절히 채워졌는지 확인
-        let isFormComplete = isFormFilled()
-        
-        // 버튼의 활성화 상태 설정
-        completionButton.isEnabled = isFormComplete
-        
-        // completionView의 배경색 변경
-        completionView.backgroundColor = isFormComplete ? .black : UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
-    }
-    
-    // 모든 필드가 채워졌는지 확인하는 메서드
-    private func isFormFilled() -> Bool {
-        return !(combinationTextField.text?.isEmpty ?? true) &&
-        !(hashtagTextField.text?.isEmpty ?? true) &&
-        !(titleTextField.text?.isEmpty ?? true) &&
-        5 <= titleTextField.text!.count && titleTextField.text!.count <= 80 &&
-        10 <= contentInputView.textField.text!.count
-    }
-    
-    // 리턴 클릭 시 키보드 숨기기
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 }
 
@@ -812,10 +681,170 @@ extension CombinationUploadVC: UIPickerViewDelegate {
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        roundView.layer.borderColor = UIColor.customOrange.cgColor
-        combinationTextField.text = "\(arrayRecommendList[row].foodName) & \(arrayRecommendList[row].drinkName)"
+        selectCombinationTextField.text = "\(arrayRecommendList[row].foodName) & \(arrayRecommendList[row].drinkName)"
         recommendId = arrayRecommendList[row].recommendID
         print("recommendId: \(String(describing: recommendId))")
     }
 }
 
+// MARK: - UI
+extension CombinationUploadVC {
+    
+    private func addViews() {
+        view.addSubviews([
+            scrollView,
+            completeButton
+        ])
+        
+        scrollView.addSubview(scrollViewContentView)
+        
+        scrollViewContentView.addSubview(stackView)
+        
+        stackView.addArrangedSubviews([
+            selectCombinationView,
+            hashtagView,
+            imageView,
+            titleView,
+            contentView
+        ])
+        
+        selectCombinationView.addSubviews([selectCombinationLabel, selectCombinationRoundView])
+        selectCombinationRoundView.addSubviews([selectCombinationTextField, selectCombinationArrowIcon])
+        hashtagView.addSubviews([hashtagLabel, hashtagTextField, hashtagLine])
+        imageView.addSubviews([imageLabel, imageUploadButton, imageCollectionView])
+        titleView.addSubviews([titleLabel, titleTextField, titleLine])
+        contentView.addSubviews([contentLabel, contentTextField, contentLine])
+        
+        
+        completeButton.addSubview(completeLabel)
+    }
+    
+    private func configureConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(completeButton.snp.top)
+        }
+        
+        scrollViewContentView.snp.makeConstraints { make in
+            make.width.equalTo(scrollView)
+            make.edges.equalTo(scrollView)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollViewContentView).inset(20)
+        }
+        
+        [titleView, hashtagView, contentView].forEach {
+            $0.snp.makeConstraints { make in
+                make.leading.trailing.equalTo(stackView)
+                make.height.equalTo(72)
+            }
+        }
+        
+        // 선택한 조합
+        selectCombinationView.snp.makeConstraints { make in
+            make.height.equalTo(81)
+        }
+        
+        selectCombinationLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(selectCombinationView)
+        }
+        
+        selectCombinationRoundView.snp.makeConstraints { make in
+            make.height.equalTo(49)
+            make.top.equalTo(selectCombinationLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(stackView)
+        }
+        
+        selectCombinationTextField.snp.makeConstraints { make in
+            make.leading.equalTo(selectCombinationRoundView).offset(16)
+            make.trailing.equalTo(selectCombinationRoundView)
+            make.centerY.equalTo(selectCombinationRoundView)
+        }
+        
+        selectCombinationArrowIcon.snp.makeConstraints { make in
+            make.trailing.equalTo(selectCombinationRoundView).inset(16)
+            make.centerY.equalTo(selectCombinationRoundView)
+        }
+        
+        // 해시태그
+        hashtagLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(hashtagView)
+        }
+        
+        hashtagTextField.snp.makeConstraints { make in
+            make.top.equalTo(hashtagLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(hashtagView)
+        }
+        
+        hashtagLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(hashtagView)
+            make.height.equalTo(1)
+        }
+        
+        // 이미지
+        imageView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(stackView)
+            make.height.equalTo(136)
+        }
+        
+        imageLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(imageView)
+        }
+        
+        imageUploadButton.snp.makeConstraints { make in
+            make.top.equalTo(imageLabel.snp.bottom).offset(12)
+            make.leading.equalTo(imageView)
+            make.size.equalTo(100)
+        }
+        
+        imageCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(imageUploadButton.snp.top).offset(-15)
+            make.leading.equalTo(imageUploadButton.snp.trailing).offset(16)
+            make.trailing.equalTo(stackView)
+            make.height.equalTo(115)
+        }
+        
+        // 제목
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(titleView)
+        }
+        
+        titleTextField.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(titleView)
+        }
+        
+        titleLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(titleView)
+            make.height.equalTo(1)
+        }
+        
+        // 내용
+        contentLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(contentView)
+        }
+        
+        contentTextField.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(contentView)
+        }
+        
+        contentLine.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(contentView)
+            make.height.equalTo(1)
+        }
+        
+        // 작성완료 버튼
+        completeButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(89)
+        }
+        
+        completeLabel.snp.makeConstraints { make in
+            make.top.equalTo(completeButton).offset(18)
+            make.centerX.equalTo(completeButton)
+        }
+    }
+}
