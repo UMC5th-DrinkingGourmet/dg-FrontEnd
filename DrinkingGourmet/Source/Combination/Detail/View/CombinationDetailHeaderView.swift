@@ -118,9 +118,9 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
             likeButton,
             dividerView1,
             recommendLabel,
-            hashtagLabel,
             moreButton,
             titleLabel,
+            hashtagLabel,
             descriptionLabel,
             dividerView2,
             commentNumLabel
@@ -161,29 +161,29 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
             make.leading.trailing.equalTo(contentView)
         }
         
-        recommendLabel.snp.makeConstraints { make in
-            make.top.equalTo(dividerView1.snp.bottom).offset(20)
-            make.leading.equalTo(hashtagLabel)
-        }
-        
-        hashtagLabel.snp.makeConstraints { make in
-            make.top.equalTo(recommendLabel.snp.bottom).offset(7)
-            make.leading.trailing.equalTo(contentView).inset(21)
-        }
-        
         moreButton.snp.makeConstraints { make in
             make.size.equalTo(24)
             make.centerX.equalTo(likeButton)
             make.top.equalTo(dividerView1.snp.bottom).offset(21)
         }
         
+        recommendLabel.snp.makeConstraints { make in
+            make.top.equalTo(dividerView1.snp.bottom).offset(20)
+            make.leading.equalTo(hashtagLabel)
+        }
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(hashtagLabel.snp.bottom).offset(4)
+            make.top.equalTo(recommendLabel.snp.bottom).offset(7)
             make.leading.trailing.equalTo(hashtagLabel)
         }
         
+        hashtagLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(0)
+            make.leading.trailing.equalTo(contentView).inset(21)
+        }
+        
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.top.equalTo(hashtagLabel.snp.bottom).offset(15)
             make.leading.trailing.equalTo(hashtagLabel)
         }
         
