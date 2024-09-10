@@ -31,6 +31,7 @@ final class RecommendStartViewController: UIViewController {
             switch result {
             case .success(let data):
                 print("내 정보 조회 성공")
+                UserDefaultManager.shared.userNickname = data.result.nickName
                 DispatchQueue.main.async {
                     self.recommendstartView.nickNameLabel.text = "\(data.result.nickName)님을 위한 주류를\n추천해드립니다."
                 }
