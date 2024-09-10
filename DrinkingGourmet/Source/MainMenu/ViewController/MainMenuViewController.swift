@@ -131,6 +131,8 @@ class MainMenuViewController: UIViewController {
     }
     
     func setupNaviBar() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground() // 불투명
         appearance.backgroundColor = .white
