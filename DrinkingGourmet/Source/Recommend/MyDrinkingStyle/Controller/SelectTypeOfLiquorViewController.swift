@@ -8,6 +8,9 @@
 import UIKit
 
 class SelectTypeOfLiquorViewController: UIViewController {
+    
+    // MARK: - Properties
+    var isModify = false // 수정 여부
     private var isSelectedButton = false
     private let resource: SelectTypeOfLiquorResource = SelectTypeOfLiquorResource()
     private var buttonTitleArray: [String] {
@@ -39,7 +42,7 @@ class SelectTypeOfLiquorViewController: UIViewController {
          text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
-        text.text = "00님과 어울리는 주류를 추천해드릴게요."
+        text.text = "\(UserDefaultManager.shared.userNickname)님과 어울리는 주류를 추천해드릴게요."
         return text
     }()
     
@@ -56,8 +59,7 @@ class SelectTypeOfLiquorViewController: UIViewController {
         
         //navigation
         title = "주류추천"
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = backButton
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         setAddSubViews()
         makeConstraints()
@@ -77,6 +79,10 @@ class SelectTypeOfLiquorViewController: UIViewController {
             myDrinkingStyleParam.preferredAlcoholType = buttonTitleArray[index]
             
             let nextViewController = SelectAlcoholDegreeViewController()
+            
+            if self.isModify { // 수정일 때
+                nextViewController.isModify = true
+            }
             navigationController?.pushViewController(nextViewController, animated: true)
         } else {
             return
