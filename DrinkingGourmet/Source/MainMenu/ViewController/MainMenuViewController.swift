@@ -43,8 +43,20 @@ class MainMenuViewController: UIViewController {
     
     let recommendView = RecommendView()
     
+    let recipeBookLabel = UILabel().then {
+        $0.text = "레시피북"
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.textColor = .black
+        $0.textAlignment = .left
+    }
+    
+    let recipeBookIcon = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.right")
+        $0.tintColor = .base0600
+    }
+    
     let recipeBookBtn = UIButton().then {
-        $0.trailingBtnConfiguration(title: "레시피북", font: .boldSystemFont(ofSize: 20), foregroundColor: .black, padding: 8, image: UIImage(systemName: "chevron.right"), imageSize: CGSize(width: 10, height: 12))
+        $0.backgroundColor = .clear
     }
     
     lazy var recipeBookCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout2()).then {
@@ -57,8 +69,20 @@ class MainMenuViewController: UIViewController {
         $0.backgroundColor = .clear
     }
     
+    let todayCombiLabel = UILabel().then {
+        $0.text = "오늘의 조합"
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.textColor = .black
+        $0.textAlignment = .left
+    }
+    
+    let todayCombiIcon = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.right")
+        $0.tintColor = .base0600
+    }
+    
     let todayCombiBtn = UIButton().then {
-        $0.trailingBtnConfiguration(title: "오늘의 조합", font: .boldSystemFont(ofSize: 20), foregroundColor: .black, padding: 8, image: UIImage(systemName: "chevron.right"), imageSize: CGSize(width: 10, height: 12))
+        $0.backgroundColor = .clear
     }
     
     lazy var todayCombiCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout3()).then {
@@ -225,14 +249,17 @@ class MainMenuViewController: UIViewController {
         contentView.addSubviews([
             bannerCollectionView,
             recommendView,
+            recipeBookLabel,
+            recipeBookIcon,
             recipeBookBtn,
             recipeBookCollectionView,
+            todayCombiLabel,
+            todayCombiIcon,
             todayCombiBtn,
             todayCombiCollectionView,
             newAlcoholBtn,
             newAlcoholImage,
             mainAdImage
-//            logoutBtn
         ])
     }
     
@@ -259,11 +286,21 @@ class MainMenuViewController: UIViewController {
             $0.height.equalTo(120)
         }
         
+        recipeBookLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalTo(recommendView.snp.bottom).offset(28)
+        }
+        
+        recipeBookIcon.snp.makeConstraints {
+            $0.leading.equalTo(recipeBookLabel.snp.trailing).offset(12)
+            $0.height.equalTo(14)
+            $0.width.equalTo(10)
+            $0.centerY.equalTo(recipeBookLabel)
+        }
+        
         recipeBookBtn.snp.makeConstraints {
-            $0.top.equalTo(recommendView.snp.bottom).offset(36)
-            $0.leading.equalToSuperview()
-            $0.height.equalTo(30)
-            $0.width.equalTo(140)
+            $0.top.leading.bottom.equalTo(recipeBookLabel)
+            $0.trailing.equalTo(recipeBookIcon)
         }
         
         recipeBookCollectionView.snp.makeConstraints {
@@ -272,11 +309,21 @@ class MainMenuViewController: UIViewController {
             $0.height.equalTo(160)
         }
         
+        todayCombiLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalTo(recipeBookCollectionView.snp.bottom).offset(28)
+        }
+        
+        todayCombiIcon.snp.makeConstraints {
+            $0.leading.equalTo(todayCombiLabel.snp.trailing).offset(12)
+            $0.height.equalTo(14)
+            $0.width.equalTo(10)
+            $0.centerY.equalTo(todayCombiLabel)
+        }
+        
         todayCombiBtn.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(recipeBookCollectionView.snp.bottom).offset(48)
-            $0.height.equalTo(30)
-            $0.width.equalTo(140)
+            $0.top.leading.bottom.equalTo(todayCombiLabel)
+            $0.trailing.equalTo(todayCombiIcon)
         }
         
         todayCombiCollectionView.snp.makeConstraints {
