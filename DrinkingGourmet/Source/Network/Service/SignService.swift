@@ -69,7 +69,11 @@ final class SignService {
                    headers: headers)
         .validate(statusCode: 200..<601)
         .responseDecodable(of: UserStatusResponseDTO.self) { response in
-            self.handleResponse(response) { _ in
+            self.handleResponse(response) { userStatus in
+                if let memberId = userStatus?.memberId {
+                    UserDefaultManager.shared.userId = String(memberId)
+                    print("Saved memberId: \(memberId)")
+                }
                 completion()
             }
         }

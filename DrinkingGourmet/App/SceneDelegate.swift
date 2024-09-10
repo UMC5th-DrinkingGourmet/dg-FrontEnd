@@ -17,31 +17,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         self.window = window
-        
-//        do {
-//            try Keychain.shared.deleteToken(kind: .refreshToken)
-//            print("Deleted Access Token")
-//        } catch {
-//            print("Failed to delete Access Token: \(error)")
-//        }
-//        
+
         do {
             let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
+            print("Refresh Token 존재: \(refreshToken)")
+
             if TokenParser.isTokenExpired(refreshToken) {
                 print("RefreshToken이 만료되었습니다. 로그인 화면을 띄웁니다.")
                 window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
-                window.makeKeyAndVisible()
             } else {
                 print("RefreshToken이 유효합니다. 메인 화면으로 이동합니다.")
                 SignService.shared.loginWithProviderInfo { [weak self] in
                     DispatchQueue.main.async {
+                        print("자동로그인이 성공하여 MainVC로 이동합니다.")
                         self?.window?.rootViewController = TabBarViewController()
-                        self?.window?.makeKeyAndVisible()
                     }
                 }
             }
         } catch {
-            print("Refresh Token not found")
+            print("Refresh Token을 찾을 수 없음: \(error)")
             window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
         }
 
@@ -49,12 +43,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         registerForNotifications()
     }
+
     private func registerForNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleRefreshTokenExpired), name: Notification.Name("refreshTokenExpired"), object: nil)
     }
 
     @objc private func handleRefreshTokenExpired() {
         DispatchQueue.main.async {
+            print("Refresh token이 만료되었습니다. 로그인 화면으로 이동합니다.")
             let loginViewController = AuthenticationViewController()
             if let window = self.window {
                 window.rootViewController = loginViewController
