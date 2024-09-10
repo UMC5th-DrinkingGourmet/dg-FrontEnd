@@ -53,6 +53,8 @@ struct CombinationDetailDTO: Codable {
     let hashTagList: [String]
     let combinationImageList: [String]
     let isCombinationLike: Bool
+    let recommendId: Int
+    let recommend: String
 }
 
 struct CombinationMemberDTO: Codable {

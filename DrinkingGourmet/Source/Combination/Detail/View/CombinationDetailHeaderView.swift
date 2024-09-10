@@ -45,6 +45,14 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
         $0.backgroundColor = UIColor(red: 0.935, green: 0.935, blue: 0.935, alpha: 1)
     }
     
+    let recommendLabel = UILabel().then {
+        $0.textColor = UIColor.customOrange
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.25
+        $0.attributedText = NSMutableAttributedString(string: "추천받은 조합 - 골뱅이무침 & 새로", attributes: [NSAttributedString.Key.kern: -0.36, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+    }
+    
     let hashtagLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.textColor = UIColor(red: 0.62, green: 0.62, blue: 0.62, alpha: 1)
@@ -109,9 +117,10 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
             nicknameLabel,
             likeButton,
             dividerView1,
-            hashtagLabel,
+            recommendLabel,
             moreButton,
             titleLabel,
+            hashtagLabel,
             descriptionLabel,
             dividerView2,
             commentNumLabel
@@ -152,24 +161,29 @@ final class CombinationDetailHeaderView: UITableViewHeaderFooterView {
             make.leading.trailing.equalTo(contentView)
         }
         
-        hashtagLabel.snp.makeConstraints { make in
-            make.top.equalTo(dividerView1.snp.bottom).offset(24)
-            make.leading.trailing.equalTo(contentView).inset(21)
-        }
-        
         moreButton.snp.makeConstraints { make in
             make.size.equalTo(24)
             make.centerX.equalTo(likeButton)
             make.top.equalTo(dividerView1.snp.bottom).offset(21)
         }
         
+        recommendLabel.snp.makeConstraints { make in
+            make.top.equalTo(dividerView1.snp.bottom).offset(20)
+            make.leading.equalTo(hashtagLabel)
+        }
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(hashtagLabel.snp.bottom).offset(4)
+            make.top.equalTo(recommendLabel.snp.bottom).offset(7)
             make.leading.trailing.equalTo(hashtagLabel)
         }
         
+        hashtagLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(0)
+            make.leading.trailing.equalTo(contentView).inset(21)
+        }
+        
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.top.equalTo(hashtagLabel.snp.bottom).offset(15)
             make.leading.trailing.equalTo(hashtagLabel)
         }
         
