@@ -38,8 +38,13 @@ final class SettingViewController: UIViewController {
             switch result {
             case .success(let data):
                 print("내 정보 조회 성공")
+                UserDefaultManager.shared.userNickname = data.result.nickName
+                UserDefaultManager.shared.userNickname = data.result.nickName
+                UserDefaultManager.shared.userName = data.result.name
+                UserDefaultManager.shared.userBirth = data.result.birthDate
+                UserDefaultManager.shared.userPhoneNumber = data.result.phoneNumber
+                UserDefaultManager.shared.userGender = data.result.gender
                 self.myInfo = data.result
-                // 데이터가 성공적으로 불러와졌을 때 UI 업데이트
                 DispatchQueue.main.async {
                     self.updateHeaderView()
                 }
