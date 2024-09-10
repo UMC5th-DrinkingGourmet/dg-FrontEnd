@@ -289,6 +289,17 @@ final class CombinationUploadVC: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
+        let selectedRow = pickerView.selectedRow(inComponent: 0)
+            
+            if selectedRow == 0 {
+                // 선택된 항목이 없으면 첫 번째 항목을 선택
+                pickerView.selectRow(0, inComponent: 0, animated: true)
+                pickerView(pickerView, didSelectRow: 0, inComponent: 0)
+            } else {
+                // 사용자가 이미 선택한 항목이 있으면 그대로 사용
+                pickerView(pickerView, didSelectRow: selectedRow, inComponent: 0)
+            }
+        
         view.endEditing(true)
     }
     
