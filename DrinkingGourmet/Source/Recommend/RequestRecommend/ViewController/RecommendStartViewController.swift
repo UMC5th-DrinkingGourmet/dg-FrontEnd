@@ -20,9 +20,24 @@ final class RecommendStartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchData()
         prepare()
         setupNaviBar()
         setupButton()
+    }
+    
+    private func fetchData() {
+        MyPageService.shared.getMyInfo { result in
+            switch result {
+            case .success(let data):
+                print("내 정보 조회 성공")
+                DispatchQueue.main.async {
+                    self.recommendstartView.nickNameLabel.text = "\(data.result.nickName)님을 위한 주류를\n추천해드립니다."
+                }
+            case .failure:
+                print("내 정보 조회 실패")
+            }
+        }
     }
     
     private func prepare() {

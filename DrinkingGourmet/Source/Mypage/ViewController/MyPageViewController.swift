@@ -42,6 +42,11 @@ class MyPageViewController: UIViewController {
             case .success(let data):
                 print("내 정보 조회 성공")
                 self.myInfo = data.result
+                UserDefaultManager.shared.userNickname = data.result.nickName
+                UserDefaultManager.shared.userName = data.result.name
+                UserDefaultManager.shared.userBirth = data.result.birthDate
+                UserDefaultManager.shared.userPhoneNumber = data.result.phoneNumber
+                UserDefaultManager.shared.userGender = data.result.gender
                 self.updateUI()
             case .failure:
                 print("내 정보 조회 실패")
