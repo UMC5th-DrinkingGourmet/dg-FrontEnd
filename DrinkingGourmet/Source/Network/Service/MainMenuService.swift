@@ -61,17 +61,6 @@ final class MainMenuService {
                 switch response.result {
                 case .success(let combinationResponse):
                     if combinationResponse.isSuccess {
-                        // 응답 전체 출력
-                        print("CombinationResponseDTO: \(combinationResponse)")
-                        
-                        // 각 combination의 hashTagList 상태 확인
-                        for combination in combinationResponse.result.combinationList {
-                            print("Combination ID: \(combination.combinationId)")
-                            print("Title: \(combination.title)")
-                            print("Image URL: \(combination.combinationImageUrl)")
-                            print("HashTagList: \(combination.hashTagList ?? [])") // 해시태그 배열 상태 확인
-                        }
-                        
                         let models = combinationResponse.result.combinationList.map { $0.toModel() }
                         completionHandler(models)
                     } else {

@@ -271,7 +271,7 @@ extension AuthenticationViewController {
                 return
             }
             
-            if userDivision.isSignedUp { // UserDivision에서 isSignedUp 속성 사용
+            if userDivision.isSignedUp {
                 let userInfo = UserInfo(
                     name: UserDefaultManager.shared.userName,
                     profileImage: UserDefaultManager.shared.userProfileImg,
