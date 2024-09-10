@@ -61,7 +61,7 @@ class SearchResultView: UIView {
     
     // MARK: - UI
     func addViews() {
-        self.addSubviews([searchBar, cancelButton, recentLabel, deleteAllButton, tableView])
+        self.addSubviews([searchBar, cancelButton, /*recentLabel, deleteAllButton, tableView*/])
     }
     
     func configureConstraints() {
@@ -78,22 +78,22 @@ class SearchResultView: UIView {
             make.trailing.equalToSuperview().offset(-20)
         }
         
-        recentLabel.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(33)
-            make.leading.equalTo(searchBar)
-        }
-        
-        deleteAllButton.snp.makeConstraints { make in
-            make.top.equalTo(recentLabel)
-            make.trailing.equalTo(cancelButton)
-        }
-        
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(recentLabel.snp.bottom).offset(32)
-            make.leading.equalTo(searchBar)
-            make.trailing.equalTo(cancelButton)
-            make.bottom.equalToSuperview()
-        }
+//        recentLabel.snp.makeConstraints { make in
+//            make.top.equalTo(searchBar.snp.bottom).offset(33)
+//            make.leading.equalTo(searchBar)
+//        }
+//        
+//        deleteAllButton.snp.makeConstraints { make in
+//            make.top.equalTo(recentLabel)
+//            make.trailing.equalTo(cancelButton)
+//        }
+//        
+//        tableView.snp.makeConstraints { make in
+//            make.top.equalTo(recentLabel.snp.bottom).offset(32)
+//            make.leading.equalTo(searchBar)
+//            make.trailing.equalTo(cancelButton)
+//            make.bottom.equalToSuperview()
+//        }
     }
     
 }

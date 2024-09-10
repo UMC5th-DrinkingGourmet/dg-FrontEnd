@@ -93,6 +93,31 @@ class ProfileCreationViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        if isPatch { // 수정일 때
+            DispatchQueue.main.async {
+                self.inputNameView.textField.text = UserDefaultManager.shared.userName
+                self.inputBirthView.textField.text = UserDefaultManager.shared.userBirth
+                self.inputPhoneNumberView.textField.text = UserDefaultManager.shared.userPhoneNumber
+                self.inputNicknameView.textField.text = UserDefaultManager.shared.userNickname
+                
+                let gender = UserDefaultManager.shared.userGender
+                
+                if gender == "MALE" {
+                    self.maleBtn.isSelected = true
+                    self.updateButtonColor(self.maleBtn, "  남성  ")
+                } else if gender == "FEMALE" {
+                    self.femaleBtn.isSelected = true
+                    self.updateButtonColor(self.femaleBtn, "  여성  ")
+                } else {
+                    self.noneBtn.isSelected = true
+                    self.updateButtonColor(self.noneBtn, "  선택 안함  ")
+                }
+                
+                self.nickNameisgood = true
+                self.updateConfirmButtonState()
+            }
+        }
+        
         configHierarchy()
         layout()
         configView()
@@ -314,7 +339,7 @@ extension ProfileCreationViewController {
         } else if femaleBtn.isSelected {
             return "FEMALE"
         } else {
-            return "none"
+            return "NONE"
         }
     }
     

@@ -43,8 +43,7 @@ class WelcomeViewController: UIViewController {
         
         //navigation
         title = "주류추천"
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = backButton
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         setAddSubViews()
         makeConstraints()

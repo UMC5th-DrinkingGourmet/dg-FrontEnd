@@ -87,6 +87,7 @@ final class SettingViewController: UIViewController {
         settingHomeHeaderView.providerIcon.image = UIImage(named: provider)
 
         settingHomeHeaderView.myInfoButton.addTarget(self, action: #selector(myInfoButtonTapped), for: .touchUpInside)
+        settingHomeHeaderView.modifyButton.addTarget(self, action: #selector(modifyButtonTapped), for: .touchUpInside)
 
         // 테이블 뷰의 헤더 뷰 설정
         settingView.tableView.tableHeaderView = settingHomeHeaderView
@@ -96,10 +97,16 @@ final class SettingViewController: UIViewController {
 // MARK: - Actions
 extension SettingViewController {
     @objc func myInfoButtonTapped() {
-        print("기본 정보 보기 클릭")
         let VC = ProfileCreationViewController()
         VC.hidesBottomBarWhenPushed = true
         VC.isPatch = true
+        navigationController?.pushViewController(VC, animated: true);
+    }
+    
+    @objc func modifyButtonTapped() {
+        let VC = SelectTypeOfLiquorViewController()
+        VC.hidesBottomBarWhenPushed = true
+        VC.isModify = true
         navigationController?.pushViewController(VC, animated: true);
     }
 }

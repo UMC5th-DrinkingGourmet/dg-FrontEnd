@@ -27,12 +27,10 @@ class MyDrinkingStyleDataManager {
             .responseDecodable(of: MyDrinkingStyleResponse.self) { response in
                 switch response.result {
                 case .success(let myDrinkingStyleResponse):
-                    print("주류추천 PATCH 성공")
                     debugPrint(myDrinkingStyleResponse.result)
                     completion(.success(myDrinkingStyleResponse))
                     
                 case .failure(let error):
-                    print("Error: \(error)")
                     completion(.failure(error))
                 }
             }
