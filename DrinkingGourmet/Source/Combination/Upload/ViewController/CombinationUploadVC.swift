@@ -554,6 +554,8 @@ extension CombinationUploadVC {
             
         let okAction = UIAlertAction(title: "권한 설정으로 이동하기", style: .default) { (action) in
             
+            self.navigationController?.popViewController(animated: true)
+            
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
@@ -564,7 +566,9 @@ extension CombinationUploadVC {
                 })
             }
         }
-        let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "확인", style: .cancel) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
             
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
