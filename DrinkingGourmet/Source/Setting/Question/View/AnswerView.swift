@@ -47,7 +47,8 @@ final class AnswerView: UIView {
     
     private func configureConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints { make in

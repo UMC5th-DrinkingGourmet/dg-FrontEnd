@@ -222,6 +222,44 @@ extension SettingViewController: UITableViewDelegate {
                 let VC = TermsAndPoliciesViewController()
                 VC.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(VC, animated: true)
+            case "버전 정보":
+                let VC = AnswerViewController()
+                VC.isVersionInfo = true
+                VC.answer = """
+                개요
+                
+                버전 0.0.1은 [서비스 이름]의 초기 베타 버전으로, 우리는 사용자로부터의 피드백을 기반으로 지속적인 개선을 목표로 합니다. 이 버전에서는 기본적인 기능과 인터페이스를 제공하며,
+                사용자는 음식과 어울리는 주류를 추천받을 수 있습니다.
+                
+                주요 기능
+                
+                · 음식과주류매칭추천
+                사용자는 음식을 선택하면 그에 어울리는 주류를 추천받을 수 있습니다.
+                
+                · 사용자 리뷰 및 평가
+                사용자는 자신의 경험을 공유하고 다른 사용자의 리뷰를 확인할 수 있습니다.
+                
+                · 개인 맞춤 설정
+                사용자는 선호도, 알레르기 정보 등을 설정하여 개인화된 추천을 받을 수 있습니다.
+                
+                개발 중인 기능
+                
+                · 비알코올 음료 추천
+                다양한 비알코올 음료 매칭 추천 기능을 개발 중입니다.
+                                
+                · 다국어 지원
+                서비스를 더 많은 사용자에게 제공하기 위해 다양한 언어 지원을 계획하고 있습니다.
+                                
+                · 향상된 사용자 인터페이스: 사용자 경험을 개선하기 위해 인터페이스를 지속적으로 업데이트할 예정입니다.
+                
+                
+                향후 계획: 우리는 사용자의 피드백을 바탕으로 기능을 추가하고 성능을 향상시키는 것을 목표로 합니다. 다음 버전에서는 [개발 중인 기능] 등을 포함시킬 예정입니다.
+                
+                지원 및 피드백: 사용자의 피드백은 우리에게 매우 중요합니다. 문제가 발생하거나 개선 사항이 있으면 언제든지 [지원 이메일 주소 또는 연락처]로 문의해 주세요.
+                """
+                VC.isTermsAndPolicies = true
+                VC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(VC, animated: true)
             default:
                 break
             }
@@ -272,10 +310,10 @@ extension SettingViewController: UITableViewDelegate {
             } else if selectedItem == "회원탈퇴" {
                 let alertController = UIAlertController(title: "회원 탈퇴", message: "7일 내에 다시 로그인하시면 탈퇴처리가 취소됩니다.\n정말 회원 탈퇴하시겠습니까?", preferredStyle: .alert)
                
-                let cancelAction = UIAlertAction(title: "취소", style: .destructive, handler: nil)
+                let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
                 alertController.addAction(cancelAction)
                 
-                let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+                let confirmAction = UIAlertAction(title: "탈퇴하기", style: .destructive) { _ in
                     SignService.shared.postCancellations { error in
                         if let error = error {
                             print("회원 탈퇴 실패: \(error.localizedDescription)")
