@@ -272,15 +272,19 @@ extension ProfileCreationViewController {
         
         if text.count < 2 || text.count > 9 || text.isEmpty {
             stateLabel.text = "2글자 이상 10글자 미만으로 설정해주세요"
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else if specialChar.contains(where: text.contains) {
             stateLabel.text = "닉네임에 @, #, $, %는 포함할 수 없어요"
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else if text.contains(where: { $0.isNumber }) {
             stateLabel.text = "닉네임에 숫자는 포함할 수 없어요"
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else {
-            stateLabel.text = "사용할 수 있는 닉네임이에요"
+            stateLabel.text = "올바른 형식입니다"
+            stateLabel.textColor = .customOrange
             nickNameisgood = true
         }
         
@@ -376,6 +380,10 @@ extension ProfileCreationViewController {
                                                  nickName: nickName) { error in
                     if let error = error {
                         print("내 정보 수정 실패 - \(error.localizedDescription)")
+                        let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
+                        let btn1 = UIAlertAction(title: "확인", style: .default)
+                        alert.addAction(btn1)
+                        self.present(alert, animated: true)
                     } else {
                         print("내 정보 수정 성공")
                         
@@ -399,15 +407,10 @@ extension ProfileCreationViewController {
                 UserDefaultManager.shared.userGender = self.determineSelectedGender()
             }
         } else {
-            let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "닉네임은 필수 입력 항목입니다.", preferredStyle: .alert)
-            
-            let btn1 = UIAlertAction(title: "취소", style: .cancel)
-            let btn2 = UIAlertAction(title: "확인", style: .default)
-            
+            let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
+            let btn1 = UIAlertAction(title: "확인", style: .default)
             alert.addAction(btn1)
-            alert.addAction(btn2)
-            
-            present(alert, animated: true)
+            self.present(alert, animated: true)
         }
     }
     
