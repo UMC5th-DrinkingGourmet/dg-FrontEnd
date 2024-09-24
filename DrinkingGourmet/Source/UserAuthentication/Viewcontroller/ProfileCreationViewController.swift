@@ -334,7 +334,16 @@ extension ProfileCreationViewController {
             providerId: UserDefaultManager.shared.providerId
         )
                     
-        SignService.shared.sendUserInfo(userInfo) { _ in
+        SignService.shared.sendUserInfo(userInfo) { [weak self] userStatus in
+            
+            guard let self = self else { return }
+            guard userStatus != nil else {
+                let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
+                let btn1 = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(btn1)
+                self.present(alert, animated: true)
+                return
+            }
             
             AdministrationService.shared.postAgree(termList: TermsRequestDTO.shared.termList) { error in
                 if let error = error {
@@ -418,10 +427,7 @@ extension ProfileCreationViewController {
                 UserDefaultManager.shared.userGender = self.determineSelectedGender()
             }
         } else {
-            let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
-            let btn1 = UIAlertAction(title: "확인", style: .default)
-            alert.addAction(btn1)
-            self.present(alert, animated: true)
+            return
         }
     }
     
