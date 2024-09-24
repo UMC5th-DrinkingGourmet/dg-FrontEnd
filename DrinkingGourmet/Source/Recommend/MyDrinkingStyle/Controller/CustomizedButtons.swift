@@ -64,23 +64,32 @@ func customizedRecommendButton(title: String, foregroundColor: UIColor, backgrou
 
 func makeNextButton(buttonTitle: String, buttonSelectability: Bool) -> UIButton {
     let btn = UIButton()
+
+    let font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.alignment = .center
+    paragraphStyle.lineHeightMultiple = 1
     
-    btn.setTitle(buttonTitle, for: .normal)
-    btn.setTitleColor(UIColor.baseColor.base10, for: .normal)
+    let attributes: [NSAttributedString.Key: Any] = [
+        .font: font,
+        .foregroundColor: UIColor.baseColor.base10,
+        .paragraphStyle: paragraphStyle
+    ]
+    let attributedTitle = NSAttributedString(string: buttonTitle, attributes: attributes)
+    
+    btn.setAttributedTitle(attributedTitle, for: .normal)
     btn.contentVerticalAlignment = .top
     btn.titleEdgeInsets.top = 10
     
     if buttonSelectability {
         btn.backgroundColor = UIColor.baseColor.base01
-    }else {
+    } else {
         btn.backgroundColor = UIColor.baseColor.base06
     }
     
-    btn.snp.makeConstraints { make in
-        make.height.equalTo(100)
-    }
     return btn
 }
+
 
 func makeSkipButton() -> UIButton {
     let btn = UIButton()

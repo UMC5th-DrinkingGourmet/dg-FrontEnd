@@ -339,6 +339,11 @@ extension SettingViewController: UITableViewDelegate {
                                         window.makeKeyAndVisible()
                                     }
                                 }
+                                
+                                // UserDefaults 초기화
+                                for key in UserDefaults.standard.dictionaryRepresentation().keys {
+                                    UserDefaults.standard.removeObject(forKey: key.description)
+                                }
                             } else {
                                 print("로그아웃 실패: 서버와의 로그아웃 실패 또는 네트워크 문제")
                             }
@@ -381,6 +386,11 @@ extension SettingViewController: UITableViewDelegate {
                                     window.rootViewController = UINavigationController(rootViewController: authVC)
                                     window.makeKeyAndVisible()
                                 }
+                            }
+                            
+                            // UserDefaults 초기화
+                            for key in UserDefaults.standard.dictionaryRepresentation().keys {
+                                UserDefaults.standard.removeObject(forKey: key.description)
                             }
                         }
                     }

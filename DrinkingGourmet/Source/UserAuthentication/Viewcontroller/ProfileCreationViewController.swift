@@ -78,14 +78,16 @@ class ProfileCreationViewController: UIViewController {
         $0.genderBtnConfig(title: "  선택 안함  ", font: .systemFont(ofSize: 16), foregroundColor: .darkGray, borderColor: .checkmarkGray)
     }
     
-    lazy var confirmBtn = UIButton().then {
-        $0.backgroundColor = .lightGray
-        if isPatch {
-            $0.setTitle("수정하기", for: .normal)
-        } else {
-            $0.setTitle("확인", for: .normal)
-        }
-        $0.setTitleColor(.white, for: .normal)
+    // 다음 버튼
+    private let confirmBtn = UIButton().then {
+        $0.backgroundColor = .base0500
+        $0.isEnabled = false
+    }
+    
+    private let confirmBtnLabel = UILabel().then {
+        $0.text = "다음"
+        $0.textColor = .base1000
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     
     override func viewDidLoad() {
@@ -95,6 +97,7 @@ class ProfileCreationViewController: UIViewController {
         
         if isPatch { // 수정일 때
             DispatchQueue.main.async {
+                self.confirmBtnLabel.text = "수정하기"
                 self.inputNameView.textField.text = UserDefaultManager.shared.userName
                 self.inputBirthView.textField.text = UserDefaultManager.shared.userBirth
                 self.inputPhoneNumberView.textField.text = UserDefaultManager.shared.userPhoneNumber
@@ -149,6 +152,8 @@ extension ProfileCreationViewController {
             inputNicknameView,
             stateLabel
         ])
+        
+        confirmBtn.addSubview(confirmBtnLabel)
     }
     
     func layout() {
@@ -221,10 +226,14 @@ extension ProfileCreationViewController {
             $0.height.equalTo(20)
         }
         
-        confirmBtn.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(90)
+        confirmBtn.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(89)
+        }
+        
+        confirmBtnLabel.snp.makeConstraints { make in
+            make.top.equalTo(confirmBtn).offset(18)
+            make.centerX.equalTo(confirmBtn)
         }
     }
     
@@ -326,13 +335,15 @@ extension ProfileCreationViewController {
         )
                     
         SignService.shared.sendUserInfo(userInfo) { _ in
-            let tabbarVC = TabBarViewController()
-            if let navigationController = self.navigationController {
-                navigationController.setViewControllers([tabbarVC], animated: true)
-            } else {
-                let navigationController = UINavigationController(rootViewController: tabbarVC)
-                self.view.window?.rootViewController = navigationController
-                self.view.window?.makeKeyAndVisible()
+            
+            AdministrationService.shared.postAgree(termList: TermsRequestDTO.shared.termList) { error in
+                if let error = error {
+                    print("약관 동의 실패 - \(error.localizedDescription)")
+                } else {
+                    print("약관 동의 성공")
+                    let VC = GetUserInfoViewController()
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
             }
         }
     }
