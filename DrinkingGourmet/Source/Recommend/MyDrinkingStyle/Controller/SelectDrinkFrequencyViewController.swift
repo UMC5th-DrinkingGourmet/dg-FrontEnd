@@ -48,7 +48,7 @@ class SelectDrinkFrequencyViewController: UIViewController {
     
     private var selectedButtonIndex: Int?
     
-    lazy var nextButton = makeNextButton(buttonTitle: "수정완료", buttonSelectability: isSelectedButton)
+    lazy var nextButton = makeNextButton(buttonTitle: isModify ? "수정완료" : "다음", buttonSelectability: isSelectedButton)
     lazy var skipButton = makeSkipButton()
     lazy var buttonArray = makeDrinkingButtonArray(buttonArray: buttonTitleArray)
     
@@ -220,7 +220,7 @@ class SelectDrinkFrequencyViewController: UIViewController {
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.height.equalTo(100)
+            make.height.equalTo(89)
             nextButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
     }

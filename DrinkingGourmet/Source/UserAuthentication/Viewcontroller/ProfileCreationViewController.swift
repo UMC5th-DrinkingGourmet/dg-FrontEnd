@@ -78,14 +78,16 @@ class ProfileCreationViewController: UIViewController {
         $0.genderBtnConfig(title: "  선택 안함  ", font: .systemFont(ofSize: 16), foregroundColor: .darkGray, borderColor: .checkmarkGray)
     }
     
-    lazy var confirmBtn = UIButton().then {
-        $0.backgroundColor = .lightGray
-        if isPatch {
-            $0.setTitle("수정하기", for: .normal)
-        } else {
-            $0.setTitle("확인", for: .normal)
-        }
-        $0.setTitleColor(.white, for: .normal)
+    // 다음 버튼
+    private let confirmBtn = UIButton().then {
+        $0.backgroundColor = .base0500
+        $0.isEnabled = false
+    }
+    
+    private let confirmBtnLabel = UILabel().then {
+        $0.text = "다음"
+        $0.textColor = .base1000
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     
     override func viewDidLoad() {
@@ -95,6 +97,7 @@ class ProfileCreationViewController: UIViewController {
         
         if isPatch { // 수정일 때
             DispatchQueue.main.async {
+                self.confirmBtnLabel.text = "수정하기"
                 self.inputNameView.textField.text = UserDefaultManager.shared.userName
                 self.inputBirthView.textField.text = UserDefaultManager.shared.userBirth
                 self.inputPhoneNumberView.textField.text = UserDefaultManager.shared.userPhoneNumber
@@ -149,6 +152,8 @@ extension ProfileCreationViewController {
             inputNicknameView,
             stateLabel
         ])
+        
+        confirmBtn.addSubview(confirmBtnLabel)
     }
     
     func layout() {
@@ -221,10 +226,14 @@ extension ProfileCreationViewController {
             $0.height.equalTo(20)
         }
         
-        confirmBtn.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(90)
+        confirmBtn.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(89)
+        }
+        
+        confirmBtnLabel.snp.makeConstraints { make in
+            make.top.equalTo(confirmBtn).offset(18)
+            make.centerX.equalTo(confirmBtn)
         }
     }
     
@@ -272,15 +281,19 @@ extension ProfileCreationViewController {
         
         if text.count < 2 || text.count > 9 || text.isEmpty {
             stateLabel.text = "2글자 이상 10글자 미만으로 설정해주세요"
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else if specialChar.contains(where: text.contains) {
             stateLabel.text = "닉네임에 @, #, $, %는 포함할 수 없어요"
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else if text.contains(where: { $0.isNumber }) {
             stateLabel.text = "닉네임에 숫자는 포함할 수 없어요"
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else {
-            stateLabel.text = "사용할 수 있는 닉네임이에요"
+            stateLabel.text = "올바른 형식입니다"
+            stateLabel.textColor = .customOrange
             nickNameisgood = true
         }
         
@@ -322,13 +335,15 @@ extension ProfileCreationViewController {
         )
                     
         SignService.shared.sendUserInfo(userInfo) { _ in
-            let tabbarVC = TabBarViewController()
-            if let navigationController = self.navigationController {
-                navigationController.setViewControllers([tabbarVC], animated: true)
-            } else {
-                let navigationController = UINavigationController(rootViewController: tabbarVC)
-                self.view.window?.rootViewController = navigationController
-                self.view.window?.makeKeyAndVisible()
+            
+            AdministrationService.shared.postAgree(termList: TermsRequestDTO.shared.termList) { error in
+                if let error = error {
+                    print("약관 동의 실패 - \(error.localizedDescription)")
+                } else {
+                    print("약관 동의 성공")
+                    let VC = GetUserInfoViewController()
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
             }
         }
     }
@@ -376,6 +391,10 @@ extension ProfileCreationViewController {
                                                  nickName: nickName) { error in
                     if let error = error {
                         print("내 정보 수정 실패 - \(error.localizedDescription)")
+                        let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
+                        let btn1 = UIAlertAction(title: "확인", style: .default)
+                        alert.addAction(btn1)
+                        self.present(alert, animated: true)
                     } else {
                         print("내 정보 수정 성공")
                         
@@ -399,15 +418,10 @@ extension ProfileCreationViewController {
                 UserDefaultManager.shared.userGender = self.determineSelectedGender()
             }
         } else {
-            let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "닉네임은 필수 입력 항목입니다.", preferredStyle: .alert)
-            
-            let btn1 = UIAlertAction(title: "취소", style: .cancel)
-            let btn2 = UIAlertAction(title: "확인", style: .default)
-            
+            let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
+            let btn1 = UIAlertAction(title: "확인", style: .default)
             alert.addAction(btn1)
-            alert.addAction(btn2)
-            
-            present(alert, animated: true)
+            self.present(alert, animated: true)
         }
     }
     

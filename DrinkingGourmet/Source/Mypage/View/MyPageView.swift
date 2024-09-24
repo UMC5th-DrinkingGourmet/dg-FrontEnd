@@ -15,6 +15,15 @@ class MyPageView: UIView {
         $0.clipsToBounds = true
     }
     
+    private let cameraIcon = UIImageView().then {
+        $0.image = UIImage(named: "ic_camera_circle")
+    }
+    
+    let cameraButton = UIButton().then {
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+    }
+    
     let nicknameLabel = UILabel().then {
         $0.text = "이름 님"
         $0.textColor = .base0100
@@ -57,12 +66,15 @@ class MyPageView: UIView {
     // MARK: - UI
     private func addViews() {
         self.addSubviews([profileImage,
+                          cameraButton,
                           nicknameLabel,
                           providerIcon,
                           myInfoLabel,
                           arrowIcon,
                           myInfoButton,
                           tapmanView])
+        
+        cameraButton.addSubview(cameraIcon)
     }
     
     private func configureConstraints() {
@@ -70,6 +82,15 @@ class MyPageView: UIView {
             make.top.equalTo(self.safeAreaLayoutGuide).offset(33)
             make.leading.equalToSuperview().offset(20)
             make.size.equalTo(64)
+        }
+        
+        cameraButton.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(profileImage)
+            make.size.equalTo(20)
+        }
+        
+        cameraIcon.snp.makeConstraints { make in
+            make.edges.equalTo(cameraButton)
         }
         
         nicknameLabel.snp.makeConstraints { make in

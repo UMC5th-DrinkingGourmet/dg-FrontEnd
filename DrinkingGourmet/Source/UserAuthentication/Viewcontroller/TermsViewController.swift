@@ -150,7 +150,12 @@ final class TermsViewController: UIViewController {
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     
-    // MARK: - Properties
+    // MARK: - viewWillAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        TermsRequestDTO.shared.termList = []
+    }
     
     // MARK: - ViewDidLodad
     override func viewDidLoad() {
@@ -287,29 +292,21 @@ extension TermsViewController {
     
     // 확인
     @objc private func completeButtonTapped() {
-        var selectedTerms: [String] = []
+        
+        var termList = TermsRequestDTO.shared.termList
 
         if useTermsCheckButton.isSelected {
-            selectedTerms.append("TERMS_OF_SERVICE")
+            termList.append("TERMS_OF_SERVICE")
         }
         if privacyTermsCheckButton.isSelected {
-            selectedTerms.append("PERSONAL_INFORMATION_COLLECT")
+            termList.append("PERSONAL_INFORMATION_COLLECT")
         }
         if marketingTermsCheckButton.isSelected {
-            selectedTerms.append("MARKETING")
+            termList.append("MARKETING")
         }
         
         let VC = ProfileCreationViewController()
         navigationController?.pushViewController(VC, animated: true)
-        
-
-//        AdministrationService.shared.postAgree(termList: selectedTerms) { error in
-//            if let error = error {
-//                print("약관 동의 실패 - \(error.localizedDescription)")
-//            } else {
-//                print("약관 동의 성공")
-//            }
-//        }
     }
     
     @objc private func useTermsMoreButtonTapped() {
@@ -403,7 +400,7 @@ extension TermsViewController {
         }
         
         totalTermsView.snp.makeConstraints { make in
-            make.top.equalTo(termsLabel.snp.bottom).offset(300)
+            make.bottom.equalTo(useTermsView.snp.top).offset(-40)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(21)
         }
@@ -425,7 +422,7 @@ extension TermsViewController {
         }
         
         useTermsView.snp.makeConstraints { make in
-            make.top.equalTo(totalTermsView.snp.bottom).offset(40)
+            make.bottom.equalTo(privacyTermsView.snp.top).offset(-20)
             make.leading.equalToSuperview().inset(22)
             make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(17)
@@ -448,7 +445,7 @@ extension TermsViewController {
         }
         
         privacyTermsView.snp.makeConstraints { make in
-            make.top.equalTo(useTermsView.snp.bottom).offset(20)
+            make.bottom.equalTo(marketingTermsView.snp.top).offset(-20)
             make.leading.trailing.equalTo(useTermsView)
             make.height.equalTo(17)
         }
@@ -470,7 +467,7 @@ extension TermsViewController {
         }
         
         marketingTermsView.snp.makeConstraints { make in
-            make.top.equalTo(privacyTermsView.snp.bottom).offset(20)
+            make.bottom.equalTo(completeButton.snp.top).offset(-46)
             make.leading.trailing.equalTo(useTermsView)
             make.height.equalTo(17)
         }

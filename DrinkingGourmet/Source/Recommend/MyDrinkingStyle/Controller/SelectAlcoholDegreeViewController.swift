@@ -200,7 +200,7 @@ class SelectAlcoholDegreeViewController: UIViewController {
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.height.equalTo(100)
+            make.height.equalTo(89)
             nextButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
     }

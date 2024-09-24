@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import PhotosUI
 
 final class SettingViewController: UIViewController {
     // MARK: - Properties
@@ -91,7 +92,10 @@ final class SettingViewController: UIViewController {
         }
         settingHomeHeaderView.providerIcon.image = UIImage(named: provider)
 
+        settingHomeHeaderView.cameraButton.addTarget(self, action: #selector(cameraButtonTapped), for: .touchUpInside)
+        
         settingHomeHeaderView.myInfoButton.addTarget(self, action: #selector(myInfoButtonTapped), for: .touchUpInside)
+        
         settingHomeHeaderView.modifyButton.addTarget(self, action: #selector(modifyButtonTapped), for: .touchUpInside)
 
         // 테이블 뷰의 헤더 뷰 설정
@@ -101,6 +105,34 @@ final class SettingViewController: UIViewController {
 
 // MARK: - Actions
 extension SettingViewController {
+    @objc func cameraButtonTapped() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let actions: [UIAlertAction] = [
+            UIAlertAction(title: "프로필 사진 삭제", style: .destructive) { _ in
+                
+            },
+            UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
+                self.checkPermission()
+                
+                var config = PHPickerConfiguration()
+                config.filter = .images // 이미지만 보이게
+                config.selectionLimit = 1 // 사진 갯수 제한
+                        
+                let imagePicker = PHPickerViewController(configuration: config)
+                imagePicker.delegate = self
+                imagePicker.modalPresentationStyle = .fullScreen
+                        
+                self.present(imagePicker, animated: true)
+            },
+            UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        ]
+        
+        actions.forEach { actionSheet.addAction($0) }
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
     @objc func myInfoButtonTapped() {
         let VC = ProfileCreationViewController()
         VC.hidesBottomBarWhenPushed = true
@@ -222,60 +254,114 @@ extension SettingViewController: UITableViewDelegate {
                 let VC = TermsAndPoliciesViewController()
                 VC.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(VC, animated: true)
+            case "버전 정보":
+                let VC = AnswerViewController()
+                VC.isVersionInfo = true
+                VC.answer = """
+                개요
+                
+                버전 0.0.1은 [서비스 이름]의 초기 베타 버전으로, 우리는 사용자로부터의 피드백을 기반으로 지속적인 개선을 목표로 합니다. 이 버전에서는 기본적인 기능과 인터페이스를 제공하며,
+                사용자는 음식과 어울리는 주류를 추천받을 수 있습니다.
+                
+                주요 기능
+                
+                · 음식과주류매칭추천
+                사용자는 음식을 선택하면 그에 어울리는 주류를 추천받을 수 있습니다.
+                
+                · 사용자 리뷰 및 평가
+                사용자는 자신의 경험을 공유하고 다른 사용자의 리뷰를 확인할 수 있습니다.
+                
+                · 개인 맞춤 설정
+                사용자는 선호도, 알레르기 정보 등을 설정하여 개인화된 추천을 받을 수 있습니다.
+                
+                개발 중인 기능
+                
+                · 비알코올 음료 추천
+                다양한 비알코올 음료 매칭 추천 기능을 개발 중입니다.
+                                
+                · 다국어 지원
+                서비스를 더 많은 사용자에게 제공하기 위해 다양한 언어 지원을 계획하고 있습니다.
+                                
+                · 향상된 사용자 인터페이스: 사용자 경험을 개선하기 위해 인터페이스를 지속적으로 업데이트할 예정입니다.
+                
+                
+                향후 계획: 우리는 사용자의 피드백을 바탕으로 기능을 추가하고 성능을 향상시키는 것을 목표로 합니다. 다음 버전에서는 [개발 중인 기능] 등을 포함시킬 예정입니다.
+                
+                지원 및 피드백: 사용자의 피드백은 우리에게 매우 중요합니다. 문제가 발생하거나 개선 사항이 있으면 언제든지 [지원 이메일 주소 또는 연락처]로 문의해 주세요.
+                """
+                VC.isTermsAndPolicies = true
+                VC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(VC, animated: true)
             default:
                 break
             }
         case 1:
             let selectedItem = settingSections.login[indexPath.row]
             if selectedItem == "로그아웃" {
-                Task {
-                    SignService.shared.logout { success in
-                        if success {
-                            let provider = UserDefaultManager.shared.provider
+                // 로그아웃 확인 얼러트 생성
+                let alert = UIAlertController(title: "로그아웃하시겠습니까?", message: nil, preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+                let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
+                    Task {
+                        SignService.shared.logout { success in
+                            if success {
+                                let provider = UserDefaultManager.shared.provider
 
-                            switch provider {
-                            case "kakao":
-                                let kakaoAuthViewModel = KakaoAuthViewModel()
-                                kakaoAuthViewModel.kakaoLogut()
-                            case "apple":
-                                let appleAuthViewModel = AppleAuthViewModel()
-                                appleAuthViewModel.isLoggedIn = false
-                            default:
-                                print("알 수 없는 provider: \(provider)")
-                                return
-                            }
-
-                            do {
-                                try Keychain.shared.deleteToken(kind: .accessToken)
-                                try Keychain.shared.deleteToken(kind: .refreshToken)
-                            } catch {
-                                print("토큰 삭제 실패: \(error)")
-                                return
-                            }
-
-                            DispatchQueue.main.async {
-                                let authVC = AuthenticationViewController()
-                                let windowScene = UIApplication.shared.connectedScenes
-                                    .filter { $0.activationState == .foregroundActive }
-                                    .compactMap { $0 as? UIWindowScene }
-                                    .first
-                                if let window = windowScene?.windows.first {
-                                    window.rootViewController = UINavigationController(rootViewController: authVC)
-                                    window.makeKeyAndVisible()
+                                switch provider {
+                                case "kakao":
+                                    let kakaoAuthViewModel = KakaoAuthViewModel()
+                                    kakaoAuthViewModel.kakaoLogut()
+                                case "apple":
+                                    let appleAuthViewModel = AppleAuthViewModel()
+                                    appleAuthViewModel.isLoggedIn = false
+                                default:
+                                    print("알 수 없는 provider: \(provider)")
+                                    return
                                 }
+
+                                do {
+                                    try Keychain.shared.deleteToken(kind: .accessToken)
+                                    try Keychain.shared.deleteToken(kind: .refreshToken)
+                                } catch {
+                                    print("토큰 삭제 실패: \(error)")
+                                    return
+                                }
+
+                                DispatchQueue.main.async {
+                                    let authVC = AuthenticationViewController()
+                                    let windowScene = UIApplication.shared.connectedScenes
+                                        .filter { $0.activationState == .foregroundActive }
+                                        .compactMap { $0 as? UIWindowScene }
+                                        .first
+                                    if let window = windowScene?.windows.first {
+                                        window.rootViewController = UINavigationController(rootViewController: authVC)
+                                        window.makeKeyAndVisible()
+                                    }
+                                }
+                                
+                                // UserDefaults 초기화
+                                for key in UserDefaults.standard.dictionaryRepresentation().keys {
+                                    UserDefaults.standard.removeObject(forKey: key.description)
+                                }
+                            } else {
+                                print("로그아웃 실패: 서버와의 로그아웃 실패 또는 네트워크 문제")
                             }
-                        } else {
-                            print("로그아웃 실패: 서버와의 로그아웃 실패 또는 네트워크 문제")
                         }
                     }
                 }
+                
+                alert.addAction(cancelAction)
+                alert.addAction(confirmAction)
+                
+                present(alert, animated: true, completion: nil)
             } else if selectedItem == "회원탈퇴" {
                 let alertController = UIAlertController(title: "회원 탈퇴", message: "7일 내에 다시 로그인하시면 탈퇴처리가 취소됩니다.\n정말 회원 탈퇴하시겠습니까?", preferredStyle: .alert)
-               
-                let cancelAction = UIAlertAction(title: "취소", style: .destructive, handler: nil)
+                
+                let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
                 alertController.addAction(cancelAction)
                 
-                let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+                let confirmAction = UIAlertAction(title: "탈퇴하기", style: .destructive) { _ in
                     SignService.shared.postCancellations { error in
                         if let error = error {
                             print("회원 탈퇴 실패: \(error.localizedDescription)")
@@ -301,6 +387,11 @@ extension SettingViewController: UITableViewDelegate {
                                     window.makeKeyAndVisible()
                                 }
                             }
+                            
+                            // UserDefaults 초기화
+                            for key in UserDefaults.standard.dictionaryRepresentation().keys {
+                                UserDefaults.standard.removeObject(forKey: key.description)
+                            }
                         }
                     }
                 }
@@ -323,5 +414,125 @@ extension SettingViewController: UITableViewDelegate {
             $0.backgroundColor = .base0900
         }
         return separatorView
+    }
+}
+
+// MARK: - PHPickerViewControllerDelegate
+extension SettingViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard let image = image as? UIImage else {
+                    return
+                }
+
+                DispatchQueue.main.async {
+//                    self?.imageList.append(image)
+//                    self?.imageCollectionView.reloadData()
+//                    self?.updateImageCountLabel()
+//                    self?.updateCompleteButton()
+                    
+//                    print(self?.imageList ?? "No data available")
+                }
+            }
+        }
+        picker.dismiss(animated: true)
+    }
+}
+
+// MARK: - Setting
+extension SettingViewController {
+    private func checkPermission() {
+        if #available(iOS 14, *) {
+            switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+            case .notDetermined:
+                print("not determined")
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                    switch status {
+                    case .authorized, .limited:
+                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                    case .denied:
+                        DispatchQueue.main.async {
+                            self.moveToSetting()
+                        }
+                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                    default:
+                        print("그 밖의 권한이 부여 되었습니다.")
+                    }
+                }
+            case .restricted:
+                print("restricted")
+            case .denied:
+                DispatchQueue.main.async {
+                    self.moveToSetting()
+                }
+                print("denined")
+            case .authorized:
+                print("autorized")
+            case .limited:
+                print("limited")
+            @unknown default:
+                print("unKnown")
+            }
+        } else {
+            switch PHPhotoLibrary.authorizationStatus() {
+            case .notDetermined:
+                print("not determined")
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                    switch status {
+                    case .authorized, .limited:
+                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                    case .denied:
+                        DispatchQueue.main.async {
+                            self.moveToSetting()
+                        }
+                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                    default:
+                        print("그 밖의 권한이 부여 되었습니다.")
+                    }
+                }
+            case .restricted:
+                print("restricted")
+            case .denied:
+                DispatchQueue.main.async {
+                    self.moveToSetting()
+                }
+                print("denined")
+            case .authorized:
+                print("autorized")
+            case .limited:
+                print("limited")
+            @unknown default:
+                print("unKnown")
+            }
+            
+        }
+    }
+    
+    private func moveToSetting() {
+        let alertController = UIAlertController(title: "권한 거부됨", message: "앨범 접근이 거부 되었습니다. 앱의 일부 기능을 사용할 수 없어요", preferredStyle: UIAlertController.Style.alert)
+            
+        let okAction = UIAlertAction(title: "권한 설정으로 이동하기", style: .default) { (action) in
+            
+            self.navigationController?.popViewController(animated: true)
+            
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Settings opened: \(success)")
+                })
+            }
+        }
+        let cancelAction = UIAlertAction(title: "확인", style: .cancel) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+            
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+            
+        self.present(alertController, animated: false, completion: nil)
     }
 }
