@@ -8,6 +8,7 @@
 import UIKit
 import Photos
 import PhotosUI
+import IQKeyboardManagerSwift
 
 final class RecipeBookUploadViewController: UIViewController {
     
@@ -39,7 +40,7 @@ final class RecipeBookUploadViewController: UIViewController {
     private let titleTextField = UITextField().then {
         $0.placeholder = "쉽게 만드는 토스트"
         $0.textColor = .base0100
-        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
@@ -64,7 +65,7 @@ final class RecipeBookUploadViewController: UIViewController {
     private let hashtagTextField = UITextField().then {
         $0.placeholder = "#태그입력"
         $0.textColor = .base0100
-        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
@@ -136,7 +137,7 @@ final class RecipeBookUploadViewController: UIViewController {
     private let cookingTimeTextField = UITextField().then {
         $0.placeholder = "소요시간을 분 단위로 입력해주세요."
         $0.textColor = .base0100
-        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
@@ -162,7 +163,7 @@ final class RecipeBookUploadViewController: UIViewController {
     private let calorieTextField = UITextField().then {
         $0.placeholder = "칼로리를 입력해주세요."
         $0.textColor = .base0100
-        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
@@ -188,7 +189,7 @@ final class RecipeBookUploadViewController: UIViewController {
     private let ingredientTextField = UITextField().then {
         $0.placeholder = "재료를 입력해주세요."
         $0.textColor = .base0100
-        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
@@ -199,8 +200,6 @@ final class RecipeBookUploadViewController: UIViewController {
     }
     
     // 조리 방법
-    private let cookingMethodView = UIView()
-    
     private let cookingMethodLabel = UILabel().then {
         $0.text = "조리 방법"
         $0.textColor = .base0100
@@ -211,10 +210,13 @@ final class RecipeBookUploadViewController: UIViewController {
         $0.attributedText = NSMutableAttributedString(string: "조리 방법", attributes: [NSAttributedString.Key.kern: -0.48, NSAttributedString.Key.paragraphStyle: paragraphStyle])
     }
     
-    private let cookingMethodTextField = UITextField().then {
-        $0.placeholder = "조리방법을 입력해주세요."
-        $0.textColor = .base0100
-        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
+    private let cookingMethodTextView = UITextView().then {
+        $0.text = "조리방법을 입력해주세요."
+        $0.textColor = .placeholderText
+        $0.textContainer.lineFragmentPadding = 0
+//        $0.textContainerInset = .zero
+        $0.isScrollEnabled = false
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.autocapitalizationType = .none
         $0.autocorrectionType = .no
         $0.spellCheckingType = .no
@@ -242,45 +244,25 @@ final class RecipeBookUploadViewController: UIViewController {
     
     var imageList: [UIImage] = [] // 사진 담는 배열
     
+    // 키보드 설정
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        IQKeyboardManager.shared.enable = false
+    }
+    
     // MARK: - ViewDidLodad
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         if self.isModify { // 수정일 때
-            guard let beforeData = self.recipeBookDetailData else { return }
-            
-            DispatchQueue.main.async {
-                self.completeLabel.text = "수정하기"
-                self.hashtagTextField.text = beforeData.result.hashTagNameList.joined(separator: " ")
-                self.titleTextField.text = beforeData.result.title
-                self.cookingTimeTextField.text = beforeData.result.cookingTime
-                self.calorieTextField.text = beforeData.result.calorie
-                self.ingredientTextField.text = beforeData.result.ingredient
-                self.cookingMethodTextField.text = beforeData.result.recipeInstruction
-                
-                for imageURL in beforeData.result.recipeImageList {
-                    if let url = URL(string: imageURL) {
-                        // Kingfisher를 사용해 이미지를 비동기적으로 로드하고 캐시
-                        let imageView = UIImageView()
-                        imageView.kf.setImage(with: url) { result in
-                            switch result {
-                            case .success(let value):
-                                DispatchQueue.main.async {
-                                    self.imageList.append(value.image)
-                                    self.imageCollectionView.reloadData()
-                                    self.updateImageCountLabel()
-                                    self.updateCompleteButton()
-                                }
-                            case .failure(let error):
-                                print("Error: \(error)")
-                            }
-                        }
-                    }
-                }
-                
-               
-            }
+            setBeforeData()
         }
         
         checkPermission()
@@ -290,31 +272,9 @@ final class RecipeBookUploadViewController: UIViewController {
         
         setupNaviBar()
         setupTextField()
+        setupTextView()
         setupButton()
         setupCollectionView()
-        
-        // 키보드 알림 등록
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc private func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-
-    @objc private func keyboardWillHide(notification: NSNotification) {
-        scrollView.contentInset = .zero
-        scrollView.scrollIndicatorInsets = .zero
-    }
-
-    deinit {
-        // 알림 제거
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func createToolbar() -> UIToolbar {
@@ -346,8 +306,12 @@ final class RecipeBookUploadViewController: UIViewController {
          self.hashtagTextField,
          self.cookingTimeTextField,
          self.calorieTextField,
-         self.ingredientTextField,
-         self.cookingMethodTextField].forEach { $0.delegate = self }
+         self.ingredientTextField].forEach { $0.delegate = self }
+    }
+    
+    private func setupTextView() {
+        cookingMethodTextView.inputAccessoryView = createToolbar()
+        self.cookingMethodTextView.delegate = self
     }
     
     private func setupButton() {
@@ -377,23 +341,58 @@ final class RecipeBookUploadViewController: UIViewController {
             self.hashtagTextField,
             self.cookingTimeTextField,
             self.calorieTextField,
-            self.ingredientTextField,
-            self.cookingMethodTextField
+            self.ingredientTextField
         ]
         
         // 모든 텍스트 필드가 채워져 있는지 확인
-        let allFieldsFilled = textFields.allSatisfy { !$0.text!.isEmpty }
+        let allFieldsFilled = textFields.allSatisfy { !$0.text!.isEmpty } && !self.cookingMethodTextView.text!.isEmpty
         
         // 이미지 리스트에 최소 하나 이상의 이미지가 있는지 확인
         let hasImages = !imageList.isEmpty
         
         // 검사 후 상태 변경
-        if allFieldsFilled && hasImages{
+        if allFieldsFilled && hasImages && self.cookingMethodTextView.text! != "조리방법을 입력해주세요." {
             self.completeButton.backgroundColor = .base0100
             self.completeButton.isEnabled = true
         } else {
             self.completeButton.backgroundColor = .base0500
             self.completeButton.isEnabled = false
+        }
+    }
+    
+    // 수정일 때 이전 데이터 세팅
+    private func setBeforeData() {
+        guard let beforeData = self.recipeBookDetailData else { return }
+        
+        DispatchQueue.main.async {
+            self.completeLabel.text = "수정하기"
+            self.hashtagTextField.text = beforeData.result.hashTagNameList.joined(separator: " ")
+            self.titleTextField.text = beforeData.result.title
+            self.cookingTimeTextField.text = beforeData.result.cookingTime
+            self.calorieTextField.text = beforeData.result.calorie
+            self.ingredientTextField.text = beforeData.result.ingredient
+            self.cookingMethodTextView.text = beforeData.result.recipeInstruction
+            self.cookingMethodTextView.textColor = .base0100
+            
+            for imageURL in beforeData.result.recipeImageList {
+                if let url = URL(string: imageURL) {
+                    // Kingfisher를 사용해 이미지를 비동기적으로 로드하고 캐시
+                    let imageView = UIImageView()
+                    imageView.kf.setImage(with: url) { result in
+                        switch result {
+                        case .success(let value):
+                            DispatchQueue.main.async {
+                                self.imageList.append(value.image)
+                                self.imageCollectionView.reloadData()
+                                self.updateImageCountLabel()
+                                self.updateCompleteButton()
+                            }
+                        case .failure(let error):
+                            print("Error: \(error)")
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -445,8 +444,8 @@ extension RecipeBookUploadViewController {
                     cookingTime: self.cookingTimeTextField.text!,
                     calorie: self.calorieTextField.text!,
                     ingredient: self.ingredientTextField.text!,
-                    recipeInstruction: self.cookingMethodTextField.text!,
-                    recommendCombination: self.cookingMethodTextField.text!,
+                    recipeInstruction: self.cookingMethodTextView.text!,
+                    recommendCombination: self.cookingMethodTextView.text!,
                     hashTagNameList: hashtags,
                     recipeImageList: recipeImageList
                 )
@@ -470,7 +469,7 @@ extension RecipeBookUploadViewController {
                     RecipeBookUploadService.shared.uploadPost(postModel) { response, error in
                         if let error = error {
                             print("레시피북 게시글 업로드 실패 - \(error.localizedDescription)")
-                        } else if let response = response {
+                        } else if response != nil {
                             print("레시피북 게시글 업로드 성공")
                             DispatchQueue.main.async {
                                 self.navigationController?.popViewController(animated: true)
@@ -630,8 +629,6 @@ extension RecipeBookUploadViewController: UITextFieldDelegate {
             calorieLine.backgroundColor = .customOrange
         case ingredientTextField:
             ingredientLine.backgroundColor = .customOrange
-        case cookingMethodTextField:
-            cookingMethodLine.backgroundColor = .customOrange
         default:
             break
         }
@@ -667,6 +664,37 @@ extension RecipeBookUploadViewController: UITextFieldDelegate {
         cookingMethodLine.backgroundColor = .base0700
         
         self.updateCompleteButton() // 텍스트필드 입력이 끝날때 마다 작성완료 버튼 업데이트
+    }
+}
+
+// MARK: - UITextViewDelegate
+extension RecipeBookUploadViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: view.frame.width, height: .infinity)
+        let estimatedFrame = textView.sizeThatFits(size)
+        
+        textView.constraints.forEach{ (constraint) in
+            if constraint.firstAttribute == .height {
+                constraint.constant = estimatedFrame.height
+            }
+        }
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "조리방법을 입력해주세요." {
+            textView.text = nil
+            textView.textColor = .black
+        }
+        cookingMethodLine.backgroundColor = .customOrange
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.text = "조리방법을 입력해주세요."
+            textView.textColor = .placeholderText
+        }
+        cookingMethodLine.backgroundColor = .base0700
+        self.updateCompleteButton()
     }
 }
 
@@ -713,8 +741,13 @@ extension RecipeBookUploadViewController {
             cookingTimeView,
             calorieView,
             ingredientView,
-            cookingMethodView
+            cookingMethodLabel,
+            cookingMethodTextView,
+            cookingMethodLine
         ])
+        
+        stackView.setCustomSpacing(16, after: cookingMethodLabel)
+        stackView.setCustomSpacing(0, after: cookingMethodTextView)
         
         titleView.addSubviews([titleLabel, titleTextField, titleLine])
         hashtagView.addSubviews([hashtagLabel, hashtagTextField, hashtagLine])
@@ -722,7 +755,6 @@ extension RecipeBookUploadViewController {
         cookingTimeView.addSubviews([cookingTimeLabel, cookingTimeTextField, cookingTimeLine])
         calorieView.addSubviews([calorieLabel, calorieTextField, calorieLine])
         ingredientView.addSubviews([ingredientLabel, ingredientTextField, ingredientLine])
-        cookingMethodView.addSubviews([cookingMethodLabel, cookingMethodTextField, cookingMethodLine])
         
         completeButton.addSubview(completeLabel)
     }
@@ -743,7 +775,7 @@ extension RecipeBookUploadViewController {
             make.edges.equalTo(contentView).inset(20)
         }
         
-        [titleView, hashtagView, cookingTimeView, calorieView, ingredientView, cookingMethodView].forEach {
+        [titleView, hashtagView, cookingTimeView, calorieView, ingredientView].forEach {
             $0.snp.makeConstraints { make in
                 make.leading.trailing.equalTo(stackView)
                 make.height.equalTo(72)
@@ -849,17 +881,8 @@ extension RecipeBookUploadViewController {
         }
         
         // 조리 방법
-        cookingMethodLabel.snp.makeConstraints { make in
-            make.top.leading.equalTo(cookingMethodView)
-        }
-        
-        cookingMethodTextField.snp.makeConstraints { make in
-            make.top.equalTo(cookingMethodLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalTo(cookingMethodView)
-        }
-        
         cookingMethodLine.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(cookingMethodView)
+            make.leading.trailing.bottom.equalTo(stackView)
             make.height.equalTo(1)
         }
         

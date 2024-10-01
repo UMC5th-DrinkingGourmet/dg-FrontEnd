@@ -144,7 +144,7 @@ final class CombinationUploadVC: UIViewController {
     }
     
     private let titleTextField = UITextField().then {
-        $0.placeholder = "쉽게 만드는 토스트"
+        $0.placeholder = "제목을 입력해주세요."
         $0.textColor = .base0100
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.autocapitalizationType = .none
@@ -167,6 +167,8 @@ final class CombinationUploadVC: UIViewController {
     }
     
     private let contentTextView = UITextView().then {
+        $0.text = "내용을 입력해주세요."
+        $0.textColor = .placeholderText
         $0.textContainer.lineFragmentPadding = 0
 //        $0.textContainerInset = .zero
         $0.isScrollEnabled = false
@@ -334,7 +336,7 @@ final class CombinationUploadVC: UIViewController {
         let hasImages = !imageList.isEmpty
         
         // 검사 후 상태 변경
-        if allFieldsFilled && hasImages{
+        if allFieldsFilled && hasImages && self.contentTextView.text! != "내용을 입력해주세요." {
             self.completeButton.backgroundColor = .base0100
             self.completeButton.isEnabled = true
         } else {
@@ -354,6 +356,7 @@ final class CombinationUploadVC: UIViewController {
             self.hashtagTextField.text = beforeData.result.combinationResult.hashTagList.joined(separator: " ")
             self.titleTextField.text = beforeData.result.combinationResult.title
             self.contentTextView.text = beforeData.result.combinationResult.content
+            self.contentTextView.textColor = .base0100
             
             for imageURL in beforeData.result.combinationResult.combinationImageList {
                 if let url = URL(string: imageURL) {
@@ -673,10 +676,18 @@ extension CombinationUploadVC: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "내용을 입력해주세요." {
+            textView.text = nil
+            textView.textColor = .black
+        }
         contentLine.backgroundColor = .customOrange
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.text = "조리방법을 입력해주세요."
+            textView.textColor = .placeholderText
+        }
         contentLine.backgroundColor = .base0700
         self.updateCompleteButton()
     }
