@@ -66,6 +66,7 @@
 		5625E3822BBAD3F600269BBF /* SettingSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E3812BBAD3F600269BBF /* SettingSections.swift */; };
 		5625E3842BBB3A8400269BBF /* SettingSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5625E3832BBB3A8400269BBF /* SettingSectionHeaderView.swift */; };
 		5644C8F92B856E700025E44F /* NewAlcoholViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5644C8F82B856E700025E44F /* NewAlcoholViewController.swift */; };
+		5648F48F2CABA27500F26527 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5648F48E2CABA27500F26527 /* IQKeyboardManagerSwift */; };
 		56543EBD2B7E9A880099E648 /* CombinationUploadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EBC2B7E9A880099E648 /* CombinationUploadVC.swift */; };
 		56543EC72B7EF0620099E648 /* CombinationUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC62B7EF0620099E648 /* CombinationUploadModel.swift */; };
 		56543EC92B7EF1190099E648 /* CombinationUploadInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543EC82B7EF1190099E648 /* CombinationUploadInput.swift */; };
@@ -352,6 +353,7 @@
 				56D649AF2BB3B19D002ABC93 /* Then in Frameworks */,
 				56D649AA2BB3B191002ABC93 /* Alamofire in Frameworks */,
 				56D6499F2BB3B183002ABC93 /* KakaoSDK in Frameworks */,
+				5648F48F2CABA27500F26527 /* IQKeyboardManagerSwift in Frameworks */,
 				56D649B22BB3B1B7002ABC93 /* Kingfisher in Frameworks */,
 				56D649A52BB3B183002ABC93 /* KakaoSDKCertCore in Frameworks */,
 				56D649B52BB3B1FA002ABC93 /* Lottie in Frameworks */,
@@ -1247,6 +1249,7 @@
 				569C90232C29E6D3003A32AF /* Toast */,
 				56BBF3E52C359C190058B19B /* TagListView */,
 				56BBF4232C378B1B0058B19B /* Tabman */,
+				5648F48E2CABA27500F26527 /* IQKeyboardManagerSwift */,
 			);
 			productName = DrinkingGourmet;
 			productReference = 2E6C26C42B497AD200C87B4A /* DrinkingGourmet.app */;
@@ -1286,6 +1289,7 @@
 				569C90222C29E6D3003A32AF /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 				56BBF3E42C359C190058B19B /* XCRemoteSwiftPackageReference "TagListView" */,
 				56BBF4222C378B1B0058B19B /* XCRemoteSwiftPackageReference "Tabman" */,
+				5648F48D2CABA27500F26527 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = 2E6C26C52B497AD200C87B4A /* Products */;
 			projectDirPath = "";
@@ -1709,6 +1713,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5648F48D2CABA27500F26527 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.1;
+			};
+		};
 		569C90222C29E6D3003A32AF /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
@@ -1784,6 +1796,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5648F48E2CABA27500F26527 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5648F48D2CABA27500F26527 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
 		569C90232C29E6D3003A32AF /* Toast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 569C90222C29E6D3003A32AF /* XCRemoteSwiftPackageReference "Toast-Swift" */;
