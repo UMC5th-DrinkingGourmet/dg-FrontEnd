@@ -130,7 +130,16 @@ extension MyPageViewController {
         
         let actions: [UIAlertAction] = [
             UIAlertAction(title: "프로필 사진 삭제", style: .destructive) { _ in
-                
+                MyPageService.shared.patchProfileImage { error in
+                    if let error = error {
+                        print("프로필 사진 삭제 실패: \(error)")
+                    } else {
+                        print("프로필 사진 삭제 성공")
+                        DispatchQueue.main.async {
+                            self.myPageView.profileImage.image = UIImage(named: "ic_profile_mypage")
+                        }
+                    }
+                }
             },
             
             UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
@@ -260,7 +269,6 @@ extension MyPageViewController {
             }
         }
     }
-
     
     private func moveToSetting() {
         let alertController = UIAlertController(title: "권한 거부됨", message: "앨범 접근이 거부 되었습니다. 앱의 일부 기능을 사용할 수 없어요", preferredStyle: UIAlertController.Style.alert)

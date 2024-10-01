@@ -43,53 +43,72 @@ final class MyPageService {
     }
     
     // MARK: - 프로필 사진 수정
-    func patchProfileImage(image: UIImage,
+    func patchProfileImage(image: UIImage? = nil,
                            completion: @escaping (Error?) -> Void) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
             
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(accessToken)",
-                "Content-Type": "multipart/form-data"
-            ]
-            
             let url = "\(baseURL)/users/profile-image"
             
-            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-                print("JPEG 데이터로 변환 실패")
-                return
-            }
-            
-            AF.upload(
-                multipartFormData: { multipartFormData in
-                    multipartFormData.append(
-                        imageData,
-                        withName: "profileImage",
-                        fileName: "profile.jpg",
-                        mimeType: "image/jpeg"
-                    )
-                },
-                to: url,
-                method: .post,
-                headers: headers,
-                interceptor: AuthInterceptor()
-            )
-            .validate()
-            .response { response in
-                switch response.result {
-                case .success:
-                    completion(nil)
-                case .failure(let error):
-                    completion(error)
+            if let image = image {
+                
+                let headers: HTTPHeaders = [
+                    "Authorization": "Bearer \(accessToken)",
+                    "Content-Type": "multipart/form-data"
+                ]
+                
+                guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+                    print("JPEG 데이터로 변환 실패")
+                    return
+                }
+                
+                AF.upload(
+                    multipartFormData: { multipartFormData in
+                        multipartFormData.append(
+                            imageData,
+                            withName: "profileImage",
+                            fileName: "profile.jpg",
+                            mimeType: "image/jpeg"
+                        )
+                    },
+                    to: url,
+                    method: .post,
+                    headers: headers,
+                    interceptor: AuthInterceptor()
+                )
+                .validate()
+                .response { response in
+                    switch response.result {
+                    case .success:
+                        completion(nil)
+                    case .failure(let error):
+                        completion(error)
+                    }
+                }
+            } else {
+                let headers = try getHeaders()
+                
+                AF.request(
+                    url,
+                    method: .post,
+                    headers: headers,
+                    interceptor: AuthInterceptor()
+                )
+                .validate()
+                .response { response in
+                    switch response.result {
+                    case .success:
+                        completion(nil)
+                    case .failure(let error):
+                        completion(error)
+                    }
                 }
             }
-            
         } catch {
             print("Failed to get access token: \(error.localizedDescription)")
             completion(error)
         }
     }
-
     
     // MARK: - 내 정보 수정
     func patchMyInfo (name: String,

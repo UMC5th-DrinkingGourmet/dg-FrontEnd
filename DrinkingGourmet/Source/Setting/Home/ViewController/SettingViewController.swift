@@ -12,15 +12,17 @@ import PhotosUI
 final class SettingViewController: UIViewController {
     // MARK: - Properties
     var myInfo: MyInfoResultDTO?
-
     private let settingSections = SettingSections()
     private let settingView = SettingView()
-
+    
+    // MARK: - Header View
+    private var settingHomeHeaderView: SettingTopView!
+    
     // MARK: - View 설정
     override func loadView() {
         view = settingView
     }
-
+    
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -29,17 +31,15 @@ final class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupNaviBar()
         setupTableView()
     }
-
+    
     func fetchData() {
         MyPageService.shared.getMyInfo { result in
             switch result {
             case .success(let data):
                 print("내 정보 조회 성공")
-                UserDefaultManager.shared.userNickname = data.result.nickName
                 UserDefaultManager.shared.userNickname = data.result.nickName
                 UserDefaultManager.shared.userName = data.result.name
                 UserDefaultManager.shared.userBirth = data.result.birthDate
@@ -54,31 +54,33 @@ final class SettingViewController: UIViewController {
             }
         }
     }
-
+    
     private func setupNaviBar() {
         title = "설정"
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
-
+    
     private func setupTableView() {
         let tb = settingView.tableView
-
+        
         tb.register(SettingCell.self, forCellReuseIdentifier: "SettingHomeCell")
         tb.dataSource = self
         tb.delegate = self
+        
+        // 테이블 뷰의 헤더 뷰 설정
+        settingHomeHeaderView = SettingTopView(frame: CGRect(x: 0, y: 0, width: 0, height: 215))
+        tb.tableHeaderView = settingHomeHeaderView
     }
-
+    
     private func updateHeaderView() {
         guard let myInfo = self.myInfo else { return }
-
-        let settingHomeHeaderView = SettingTopView(frame: CGRect(x: 0, y: 0, width: 0, height: 215))
-
+        
         if let profileImageUrl = URL(string: myInfo.profileImageUrl) {
             settingHomeHeaderView.profileImage.kf.setImage(with: profileImageUrl)
         }
-
+        
         settingHomeHeaderView.nicknameLabel.text = ("\(myInfo.nickName) 님")
-
+        
         var provider = ""
         switch myInfo.provider {
         case "kakao":
@@ -91,15 +93,10 @@ final class SettingViewController: UIViewController {
             return
         }
         settingHomeHeaderView.providerIcon.image = UIImage(named: provider)
-
+        
         settingHomeHeaderView.cameraButton.addTarget(self, action: #selector(cameraButtonTapped), for: .touchUpInside)
-        
         settingHomeHeaderView.myInfoButton.addTarget(self, action: #selector(myInfoButtonTapped), for: .touchUpInside)
-        
         settingHomeHeaderView.modifyButton.addTarget(self, action: #selector(modifyButtonTapped), for: .touchUpInside)
-
-        // 테이블 뷰의 헤더 뷰 설정
-        settingView.tableView.tableHeaderView = settingHomeHeaderView
     }
 }
 
@@ -110,21 +107,36 @@ extension SettingViewController {
         
         let actions: [UIAlertAction] = [
             UIAlertAction(title: "프로필 사진 삭제", style: .destructive) { _ in
-                
+                MyPageService.shared.patchProfileImage { error in
+                    if let error = error {
+                        print("프로필 사진 삭제 실패: \(error)")
+                    } else {
+                        print("프로필 사진 삭제 성공")
+                        DispatchQueue.main.async {
+                            self.settingHomeHeaderView.profileImage.image = UIImage(named: "ic_profile_mypage")
+                        }
+                    }
+                }
             },
+            
             UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
-                self.checkPermission()
-                
-                var config = PHPickerConfiguration()
-                config.filter = .images // 이미지만 보이게
-                config.selectionLimit = 1 // 사진 갯수 제한
+                self.checkPermission { granted in
+                    if granted {
+                        var config = PHPickerConfiguration()
+                        config.filter = .images // 이미지만 보이게
+                        config.selectionLimit = 1 // 사진 갯수 제한
                         
-                let imagePicker = PHPickerViewController(configuration: config)
-                imagePicker.delegate = self
-                imagePicker.modalPresentationStyle = .fullScreen
+                        let imagePicker = PHPickerViewController(configuration: config)
+                        imagePicker.delegate = self
+                        imagePicker.modalPresentationStyle = .fullScreen
                         
-                self.present(imagePicker, animated: true)
+                        self.present(imagePicker, animated: true)
+                    } else {
+                        print("권한이 없어서 앨범을 열 수 없습니다.")
+                    }
+                }
             },
+            
             UIAlertAction(title: "취소", style: .cancel, handler: nil)
         ]
         
@@ -422,17 +434,19 @@ extension SettingViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         for result in results {
             result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                guard let image = image as? UIImage else {
-                    return
-                }
+                guard let self = self,
+                      let image = image as? UIImage else { return }
 
                 DispatchQueue.main.async {
-//                    self?.imageList.append(image)
-//                    self?.imageCollectionView.reloadData()
-//                    self?.updateImageCountLabel()
-//                    self?.updateCompleteButton()
-                    
-//                    print(self?.imageList ?? "No data available")
+                    // 이미지 업로드 호출
+                    MyPageService.shared.patchProfileImage(image: image) { error in
+                        if let error = error {
+                            print("프로필 사진 수정 실패: \(error.localizedDescription)")
+                        } else {
+                            print("프로필 사진 수정 성공")
+                            self.settingHomeHeaderView.profileImage.image = image
+                        }
+                    }
                 }
             }
         }
@@ -442,7 +456,7 @@ extension SettingViewController: PHPickerViewControllerDelegate {
 
 // MARK: - Setting
 extension SettingViewController {
-    private func checkPermission() {
+    private func checkPermission(completion: @escaping (Bool) -> Void) {
         if #available(iOS 14, *) {
             switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
             case .notDetermined:
@@ -451,61 +465,60 @@ extension SettingViewController {
                     switch status {
                     case .authorized, .limited:
                         print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                        completion(true) // 권한이 허용된 경우
                     case .denied:
                         DispatchQueue.main.async {
                             self.moveToSetting()
                         }
                         print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                        completion(false) // 권한이 거부된 경우
                     default:
                         print("그 밖의 권한이 부여 되었습니다.")
+                        completion(false)
                     }
                 }
-            case .restricted:
-                print("restricted")
-            case .denied:
+            case .restricted, .denied:
                 DispatchQueue.main.async {
                     self.moveToSetting()
                 }
-                print("denined")
-            case .authorized:
-                print("autorized")
-            case .limited:
-                print("limited")
+                print("권한이 거부 되었습니다.")
+                completion(false)
+            case .authorized, .limited:
+                print("권한이 이미 부여 되었습니다.")
+                completion(true) // 이미 권한이 부여된 경우
             @unknown default:
-                print("unKnown")
+                print("알 수 없는 권한 상태")
+                completion(false)
             }
         } else {
             switch PHPhotoLibrary.authorizationStatus() {
             case .notDetermined:
-                print("not determined")
                 PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
                     switch status {
                     case .authorized, .limited:
-                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                        print("권한이 부여 됐습니다.")
+                        completion(true)
                     case .denied:
                         DispatchQueue.main.async {
                             self.moveToSetting()
                         }
-                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                        print("권한이 거부 됐습니다.")
+                        completion(false)
                     default:
-                        print("그 밖의 권한이 부여 되었습니다.")
+                        print("기타 권한 상태")
+                        completion(false)
                     }
                 }
-            case .restricted:
-                print("restricted")
-            case .denied:
+            case .restricted, .denied:
                 DispatchQueue.main.async {
                     self.moveToSetting()
                 }
-                print("denined")
-            case .authorized:
-                print("autorized")
-            case .limited:
-                print("limited")
+                completion(false)
+            case .authorized, .limited:
+                completion(true)
             @unknown default:
-                print("unKnown")
+                completion(false)
             }
-            
         }
     }
     
