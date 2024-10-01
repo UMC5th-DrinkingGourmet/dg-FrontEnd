@@ -143,8 +143,9 @@ extension MyPageViewController {
             },
             
             UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
-                self.checkPermission { granted in
-                    if granted {
+                self.checkPermission { [weak self] isAuthorized in
+                    guard let self = self else { return }
+                    if isAuthorized {
                         var config = PHPickerConfiguration()
                         config.filter = .images // 이미지만 보이게
                         config.selectionLimit = 1 // 사진 갯수 제한
@@ -155,7 +156,8 @@ extension MyPageViewController {
                         
                         self.present(imagePicker, animated: true)
                     } else {
-                        print("권한이 없어서 앨범을 열 수 없습니다.")
+                        // 권한이 부여되지 않았을 때의 처리
+                        print("앨범 접근 권한이 없습니다.")
                     }
                 }
             },
@@ -210,61 +212,78 @@ extension MyPageViewController {
             case .notDetermined:
                 print("not determined")
                 PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-                    switch status {
-                    case .authorized, .limited:
-                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
-                        completion(true) // 권한이 허용된 경우
-                    case .denied:
-                        DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        switch status {
+                        case .authorized, .limited:
+                            print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                            completion(true) // 권한이 부여됨
+                        case .denied:
                             self.moveToSetting()
+                            print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                            completion(false) // 권한이 거부됨
+                        default:
+                            print("그 밖의 권한이 부여 되었습니다.")
+                            completion(false) // 기타 권한
                         }
-                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
-                        completion(false) // 권한이 거부된 경우
-                    default:
-                        print("그 밖의 권한이 부여 되었습니다.")
-                        completion(false)
                     }
                 }
-            case .restricted, .denied:
+            case .restricted:
+                print("restricted")
+                completion(false) // 권한이 제한됨
+            case .denied:
                 DispatchQueue.main.async {
                     self.moveToSetting()
                 }
-                print("권한이 거부 되었습니다.")
-                completion(false)
-            case .authorized, .limited:
-                print("권한이 이미 부여 되었습니다.")
-                completion(true) // 이미 권한이 부여된 경우
+                print("denied")
+                completion(false) // 권한이 거부됨
+            case .authorized:
+                print("authorized")
+                completion(true) // 권한이 부여됨
+            case .limited:
+                print("limited")
+                completion(true) // 제한된 접근이므로 사진 선택 가능
             @unknown default:
-                print("알 수 없는 권한 상태")
-                completion(false)
+                print("unknown")
+                completion(false) // 알 수 없는 상태
             }
         } else {
+            // iOS 14 이전 처리
             switch PHPhotoLibrary.authorizationStatus() {
             case .notDetermined:
+                print("not determined")
                 PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-                    switch status {
-                    case .authorized, .limited:
-                        print("권한이 부여 됐습니다.")
-                        completion(true)
-                    case .denied:
-                        DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        switch status {
+                        case .authorized, .limited:
+                            print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                            completion(true)
+                        case .denied:
                             self.moveToSetting()
+                            print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                            completion(false)
+                        default:
+                            print("그 밖의 권한이 부여 되었습니다.")
+                            completion(false)
                         }
-                        print("권한이 거부 됐습니다.")
-                        completion(false)
-                    default:
-                        print("기타 권한 상태")
-                        completion(false)
                     }
                 }
-            case .restricted, .denied:
+            case .restricted:
+                print("restricted")
+                completion(false)
+            case .denied:
                 DispatchQueue.main.async {
                     self.moveToSetting()
                 }
+                print("denied")
                 completion(false)
-            case .authorized, .limited:
+            case .authorized:
+                print("authorized")
+                completion(true)
+            case .limited:
+                print("limited")
                 completion(true)
             @unknown default:
+                print("unknown")
                 completion(false)
             }
         }
