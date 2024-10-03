@@ -13,6 +13,7 @@ final class SettingTopView: UITableViewHeaderFooterView {
         $0.image = UIImage(named: "ic_profile_mypage")
         $0.layer.cornerRadius = 32
         $0.clipsToBounds = true
+        $0.contentMode = .scaleAspectFill
     }
     
     private let cameraIcon = UIImageView().then {

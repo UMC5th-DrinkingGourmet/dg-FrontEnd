@@ -292,17 +292,15 @@ extension TermsViewController {
     
     // 확인
     @objc private func completeButtonTapped() {
-        
-        var termList = TermsRequestDTO.shared.termList
 
         if useTermsCheckButton.isSelected {
-            termList.append("TERMS_OF_SERVICE")
+            TermsRequestDTO.shared.termList.append("TERMS_OF_SERVICE")
         }
         if privacyTermsCheckButton.isSelected {
-            termList.append("PERSONAL_INFORMATION_COLLECT")
+            TermsRequestDTO.shared.termList.append("PERSONAL_INFORMATION_COLLECT")
         }
         if marketingTermsCheckButton.isSelected {
-            termList.append("MARKETING")
+            TermsRequestDTO.shared.termList.append("MARKETING")
         }
         
         let VC = ProfileCreationViewController()

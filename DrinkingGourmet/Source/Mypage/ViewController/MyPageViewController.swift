@@ -130,21 +130,38 @@ extension MyPageViewController {
         
         let actions: [UIAlertAction] = [
             UIAlertAction(title: "프로필 사진 삭제", style: .destructive) { _ in
-                
+                MyPageService.shared.patchProfileImage { error in
+                    if let error = error {
+                        print("프로필 사진 삭제 실패: \(error)")
+                    } else {
+                        print("프로필 사진 삭제 성공")
+                        DispatchQueue.main.async {
+                            self.myPageView.profileImage.image = UIImage(named: "ic_profile_mypage")
+                        }
+                    }
+                }
             },
+            
             UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
-                self.checkPermission()
-                
-                var config = PHPickerConfiguration()
-                config.filter = .images // 이미지만 보이게
-                config.selectionLimit = 1 // 사진 갯수 제한
+                self.checkPermission { [weak self] isAuthorized in
+                    guard let self = self else { return }
+                    if isAuthorized {
+                        var config = PHPickerConfiguration()
+                        config.filter = .images // 이미지만 보이게
+                        config.selectionLimit = 1 // 사진 갯수 제한
                         
-                let imagePicker = PHPickerViewController(configuration: config)
-                imagePicker.delegate = self
-                imagePicker.modalPresentationStyle = .fullScreen
+                        let imagePicker = PHPickerViewController(configuration: config)
+                        imagePicker.delegate = self
+                        imagePicker.modalPresentationStyle = .fullScreen
                         
-                self.present(imagePicker, animated: true)
+                        self.present(imagePicker, animated: true)
+                    } else {
+                        // 권한이 부여되지 않았을 때의 처리
+                        print("앨범 접근 권한이 없습니다.")
+                    }
+                }
             },
+            
             UIAlertAction(title: "취소", style: .cancel, handler: nil)
         ]
         
@@ -167,17 +184,19 @@ extension MyPageViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         for result in results {
             result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                guard let image = image as? UIImage else {
-                    return
-                }
+                guard let self = self,
+                      let image = image as? UIImage else { return }
 
                 DispatchQueue.main.async {
-//                    self?.imageList.append(image)
-//                    self?.imageCollectionView.reloadData()
-//                    self?.updateImageCountLabel()
-//                    self?.updateCompleteButton()
-                    
-//                    print(self?.imageList ?? "No data available")
+                    // 이미지 업로드 호출
+                    MyPageService.shared.patchProfileImage(image: image) { error in
+                        if let error = error {
+                            print("프로필 사진 수정 실패: \(error.localizedDescription)")
+                        } else {
+                            print("프로필 사진 수정 성공")
+                            self.myPageView.profileImage.image = image
+                        }
+                    }
                 }
             }
         }
@@ -187,70 +206,86 @@ extension MyPageViewController: PHPickerViewControllerDelegate {
 
 // MARK: - Setting
 extension MyPageViewController {
-    private func checkPermission() {
+    private func checkPermission(completion: @escaping (Bool) -> Void) {
         if #available(iOS 14, *) {
             switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
             case .notDetermined:
                 print("not determined")
                 PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-                    switch status {
-                    case .authorized, .limited:
-                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
-                    case .denied:
-                        DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        switch status {
+                        case .authorized, .limited:
+                            print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                            completion(true) // 권한이 부여됨
+                        case .denied:
                             self.moveToSetting()
+                            print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                            completion(false) // 권한이 거부됨
+                        default:
+                            print("그 밖의 권한이 부여 되었습니다.")
+                            completion(false) // 기타 권한
                         }
-                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
-                    default:
-                        print("그 밖의 권한이 부여 되었습니다.")
                     }
                 }
             case .restricted:
                 print("restricted")
+                completion(false) // 권한이 제한됨
             case .denied:
                 DispatchQueue.main.async {
                     self.moveToSetting()
                 }
-                print("denined")
+                print("denied")
+                completion(false) // 권한이 거부됨
             case .authorized:
-                print("autorized")
+                print("authorized")
+                completion(true) // 권한이 부여됨
             case .limited:
                 print("limited")
+                completion(true) // 제한된 접근이므로 사진 선택 가능
             @unknown default:
-                print("unKnown")
+                print("unknown")
+                completion(false) // 알 수 없는 상태
             }
         } else {
+            // iOS 14 이전 처리
             switch PHPhotoLibrary.authorizationStatus() {
             case .notDetermined:
                 print("not determined")
                 PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-                    switch status {
-                    case .authorized, .limited:
-                        print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
-                    case .denied:
-                        DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        switch status {
+                        case .authorized, .limited:
+                            print("권한이 부여 됐습니다. 앨범 사용이 가능합니다")
+                            completion(true)
+                        case .denied:
                             self.moveToSetting()
+                            print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
+                            completion(false)
+                        default:
+                            print("그 밖의 권한이 부여 되었습니다.")
+                            completion(false)
                         }
-                        print("권한이 거부 됐습니다. 앨범 사용 불가합니다.")
-                    default:
-                        print("그 밖의 권한이 부여 되었습니다.")
                     }
                 }
             case .restricted:
                 print("restricted")
+                completion(false)
             case .denied:
                 DispatchQueue.main.async {
                     self.moveToSetting()
                 }
-                print("denined")
+                print("denied")
+                completion(false)
             case .authorized:
-                print("autorized")
+                print("authorized")
+                completion(true)
             case .limited:
                 print("limited")
+                completion(true)
             @unknown default:
-                print("unKnown")
+                print("unknown")
+                completion(false)
             }
-            
         }
     }
     
