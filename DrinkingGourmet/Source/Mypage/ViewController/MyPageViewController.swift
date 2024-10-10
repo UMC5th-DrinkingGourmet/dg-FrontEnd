@@ -61,6 +61,8 @@ class MyPageViewController: UIViewController {
         DispatchQueue.main.async {
             if let profileImageUrl = URL(string: myInfo.profileImageUrl) {
                 self.myPageView.profileImage.kf.setImage(with: profileImageUrl)
+            } else {
+                self.myPageView.profileImage.image = UIImage(named: "ic_profile_mypage")
             }
             
             self.myPageView.nicknameLabel.text = ("\(myInfo.nickName) 님")
