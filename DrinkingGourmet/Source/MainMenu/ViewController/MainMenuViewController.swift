@@ -12,8 +12,8 @@ import Then
 class MainMenuViewController: UIViewController {
     private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
     
-    var topCollectionViewImgList = ["img_home_banner", "HomeBanner01", "HomeBanner03", "HomeBanner04"]
-    var topCollectionViewTitleList = ["넌 지금 어묵국물에\n소주가 땡긴다", "와인과 어울리는\n안주 페어링", "오늘 퇴근주는\n하이볼 당첨!", "위스키 하이볼 황금비율\n여기서만 공개할게요"]
+    var topCollectionViewImgList = ["img_home_banner", "HomeBanner01", "HomeBanner02"]
+    var topCollectionViewTitleList = ["넌 지금 어묵국물에\n소주가 땡긴다", "와인과 어울리는\n안주 페어링", "위스키 하이볼 황금비율\n여기서만 공개할게요"]
     
     var recipes: [RecipeModel] = []
     var combinations: [CombinationModel] = []
@@ -427,7 +427,11 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView.tag == 1 {
+        if collectionView.tag == 0 {
+            let combinationHomeVC = CombinationHomeViewController()
+            combinationHomeVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(combinationHomeVC, animated: true)
+        } else if collectionView.tag == 1 {
             let recipe = recipes[indexPath.item]
             
             let recipeDetailVC = RecipeBookDetailViewController()
