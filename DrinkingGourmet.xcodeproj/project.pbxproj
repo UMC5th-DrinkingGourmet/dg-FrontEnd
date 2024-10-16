@@ -206,6 +206,7 @@
 		2E7139582B5E7B05003D0190 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		2E8519092B6D23F10052EB30 /* ProfileCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCreationViewController.swift; sourceTree = "<group>"; };
 		2E871E6F2B6E3DCB00B4BB70 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
+		2EAC88F62CC0215C0099C7D5 /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
 		2EAD6D562C32781100B19476 /* SignService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignService.swift; sourceTree = "<group>"; };
 		2EAD6D592C3279B400B19476 /* SignInRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRequestDTO.swift; sourceTree = "<group>"; };
 		2EAD6D5B2C3279EC00B19476 /* UserRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequestDTO.swift; sourceTree = "<group>"; };
@@ -438,6 +439,7 @@
 		2E6C26BB2B497AD200C87B4A = {
 			isa = PBXGroup;
 			children = (
+				2EAC88F62CC0215C0099C7D5 /* Secret.xcconfig */,
 				2E6C26C62B497AD200C87B4A /* DrinkingGourmet */,
 				2E6C26C52B497AD200C87B4A /* Products */,
 			);
@@ -1611,6 +1613,7 @@
 		};
 		2E6C26D92B497AD400C87B4A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EAC88F62CC0215C0099C7D5 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1651,6 +1654,7 @@
 		};
 		2E6C26DA2B497AD400C87B4A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EAC88F62CC0215C0099C7D5 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
