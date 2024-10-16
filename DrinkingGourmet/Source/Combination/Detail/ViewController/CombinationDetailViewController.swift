@@ -36,8 +36,6 @@ final class CombinationDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchData()
-        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardUp),
                                                name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -46,6 +44,14 @@ final class CombinationDetailViewController: UIViewController {
                                                selector: #selector(keyboardDown),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+        
+        // 페이지 컨트롤 초기화
+        headerView?.pageControl.currentPage = 0
+        
+        // 이미지 컬렉션 뷰를 첫 번째 아이템으로 스크롤
+        headerView?.imageCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0),
+                                                     at: .centeredHorizontally,
+                                                     animated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,13 +77,16 @@ final class CombinationDetailViewController: UIViewController {
             todayCombinationViewController.combinations[selectedIndex].isLike = isLiked // 좋아요 상태 업데이트
             todayCombinationViewController.combinationHomeView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
         }
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupNaviBar()
-//        fetchData()
+        fetchData()
         addTapGesture()
         setupTableView()
         setupTextField()
@@ -108,6 +117,7 @@ final class CombinationDetailViewController: UIViewController {
                         self.isLastPage = data.result.isLast
                         self.arrayCombinationComment = data.result.combinationCommentList
                         DispatchQueue.main.async {
+                            self.headerView?.imageCollectionView.reloadData()
                             self.combinationDetailView.tabelView.reloadData()
                         }
                     case .failure(let error):

@@ -66,6 +66,9 @@ final class RecipeBookDetailViewController: UIViewController {
             RecipeBookHomeVC.recipeBooks[selectedIndex].like = isLiked // 좋아요 상태 업데이트
             RecipeBookHomeVC.recipeBookHomeView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
         }
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidLoad() {

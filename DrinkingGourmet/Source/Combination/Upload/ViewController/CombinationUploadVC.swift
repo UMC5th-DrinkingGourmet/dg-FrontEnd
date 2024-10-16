@@ -8,7 +8,6 @@
 import UIKit
 import Photos
 import PhotosUI
-import IQKeyboardManagerSwift
 
 final class CombinationUploadVC: UIViewController {
     
@@ -202,22 +201,19 @@ final class CombinationUploadVC: UIViewController {
     var arrayRecommendList: [CombinationUploadModel.FetchRecommendListModel.RecommendResponseDTOList] = [] // 추천 받은 조합
     var recommendId: Int? // 추천 받은 조합 Id
     
-    // 키보드 설정
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.enableAutoToolbar = false
-    }
     
+    // MARK: - LifeCycle
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        IQKeyboardManager.shared.enable = false
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    // MARK: - ViewDidLodad
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        setupKeyboardNotifications() // 키보드
         
         if self.isModify { // 수정일 때
             setBeforeData()
@@ -237,6 +233,28 @@ final class CombinationUploadVC: UIViewController {
         setupTextView()
         setupButton()
         setupCollectionView()
+    }
+    
+    // 키보드
+    func setupKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(noti:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(noti:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(noti: Notification) {
+        guard let userInfo = noti.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardHeight = keyboardFrame.cgRectValue.height
+        var contentInset = scrollView.contentInset
+        contentInset.bottom = keyboardHeight
+        scrollView.contentInset = contentInset
+    }
+
+    @objc func keyboardWillHide(noti: Notification) {
+        var contentInset = scrollView.contentInset
+        contentInset.bottom = 0
+        scrollView.contentInset = contentInset
     }
     
     // 피커뷰
