@@ -433,7 +433,7 @@ extension CombinationUploadVC {
                     
             let imagePicker = PHPickerViewController(configuration: config)
             imagePicker.delegate = self
-            imagePicker.modalPresentationStyle = .fullScreen
+            imagePicker.modalPresentationStyle = .automatic
                     
             self.present(imagePicker, animated: true)
         } else {
@@ -703,7 +703,7 @@ extension CombinationUploadVC: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            textView.text = "조리방법을 입력해주세요."
+            textView.text = "내용을 입력해주세요."
             textView.textColor = .placeholderText
         }
         contentLine.backgroundColor = .base0700
