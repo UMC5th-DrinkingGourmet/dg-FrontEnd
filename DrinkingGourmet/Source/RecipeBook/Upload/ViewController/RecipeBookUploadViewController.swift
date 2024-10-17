@@ -428,7 +428,7 @@ extension RecipeBookUploadViewController {
                     
             let imagePicker = PHPickerViewController(configuration: config)
             imagePicker.delegate = self
-            imagePicker.modalPresentationStyle = .fullScreen
+            imagePicker.modalPresentationStyle = .automatic
                     
             self.present(imagePicker, animated: true)
         } else {
