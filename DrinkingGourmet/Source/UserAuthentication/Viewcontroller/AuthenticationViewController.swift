@@ -227,8 +227,8 @@ extension AuthenticationViewController {
                     UserDefaultManager.shared.userProfileImg = urlString
                 }
                 
-                UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? "-1"
-                UserDefaultManager.shared.email = user?.kakaoAccount?.email ?? "-1"
+                UserDefaultManager.shared.userGender = user?.kakaoAccount?.gender?.rawValue ?? ""
+                UserDefaultManager.shared.email = user?.kakaoAccount?.email ?? ""
                 UserDefaultManager.shared.providerId = String(validUser.id ?? -1)
                 
                 print("유저 정보1: \(String(validUser.id ?? -1))")
