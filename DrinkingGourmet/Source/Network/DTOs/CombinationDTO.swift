@@ -25,7 +25,7 @@ struct CombinationHomeResultDTO: Codable {
 struct CombinationHomeDTO: Codable {
     let combinationId: Int
     let title: String
-    let combinationImageUrl: String
+    let combinationImageUrl: String?
     let likeCount: Int
     let commentCount: Int
     let hashTageList: [String]
