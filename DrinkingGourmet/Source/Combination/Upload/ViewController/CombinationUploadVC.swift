@@ -639,7 +639,23 @@ extension CombinationUploadVC: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField {
         case selectCombinationTextField:
+            
+            if self.arrayRecommendList.isEmpty {
+                let alertController = UIAlertController(
+                    title: nil,
+                    message: "추천 받은 조합이 없습니다.",
+                    preferredStyle: .alert
+                )
+                let confirmAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+                alertController.addAction(confirmAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+                
+                return
+            }
+            
             selectCombinationRoundView.layer.borderColor = UIColor.customOrange.cgColor
+            
         case hashtagTextField:
             hashtagLine.backgroundColor = .customOrange
         case titleTextField:
