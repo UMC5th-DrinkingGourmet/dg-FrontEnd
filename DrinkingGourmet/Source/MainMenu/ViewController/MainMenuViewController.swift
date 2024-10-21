@@ -155,17 +155,11 @@ class MainMenuViewController: UIViewController {
     }
     
     func setupNaviBar() {
+        // 백버튼 커스텀
+        let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
+        navigationController?.navigationBar.backIndicatorImage = customBackImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = customBackImage
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground() // 불투명
-        appearance.backgroundColor = .white
-        
-        // 네비게이션바 밑줄 삭제
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        
-        navigationItem.hidesBackButton = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -436,12 +430,14 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
             
             let recipeDetailVC = RecipeBookDetailViewController()
             recipeDetailVC.recipeBookId = recipe.id
+            recipeDetailVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(recipeDetailVC, animated: true)
         } else if collectionView.tag == 2 {
             let combination = combinations[indexPath.item]
             
             let combinationVC = CombinationDetailViewController()
             combinationVC.combinationId = combination.id
+            combinationVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(combinationVC, animated: true)
         }
     }
