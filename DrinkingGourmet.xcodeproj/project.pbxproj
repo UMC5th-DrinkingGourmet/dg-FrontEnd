@@ -39,7 +39,6 @@
 		2EAD6D622C32825E00B19476 /* CombinationUpoadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */; };
 		2EAD6D642C3286DD00B19476 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */; };
 		2EB001932B5E40BD00B74580 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */; };
-		2EB865F02C68A80200CFF348 /* User+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865EF2C68A80200CFF348 /* User+Mapping.swift */; };
 		2EB865F52C68AB5D00CFF348 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865F42C68AB5D00CFF348 /* UserInfo.swift */; };
 		2EB865F72C68B65900CFF348 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865F62C68B65900CFF348 /* UserStatus.swift */; };
 		2EB865F92C68B6DD00CFF348 /* UserDivision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB865F82C68B6DD00CFF348 /* UserDivision.swift */; };
@@ -215,7 +214,6 @@
 		2EAD6D612C32825E00B19476 /* CombinationUpoadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationUpoadService.swift; sourceTree = "<group>"; };
 		2EAD6D632C3286DD00B19476 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		2EB001922B5E40BD00B74580 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
-		2EB865EF2C68A80200CFF348 /* User+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Mapping.swift"; sourceTree = "<group>"; };
 		2EB865F42C68AB5D00CFF348 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		2EB865F62C68B65900CFF348 /* UserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
 		2EB865F82C68B6DD00CFF348 /* UserDivision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDivision.swift; sourceTree = "<group>"; };
@@ -623,14 +621,6 @@
 			path = Viewcontroller;
 			sourceTree = "<group>";
 		};
-		2EB865EE2C68A7E600CFF348 /* Mappers */ = {
-			isa = PBXGroup;
-			children = (
-				2EB865EF2C68A80200CFF348 /* User+Mapping.swift */,
-			);
-			path = Mappers;
-			sourceTree = "<group>";
-		};
 		2EB865F12C68A9D600CFF348 /* Request */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,7 +955,6 @@
 				2EAD6D582C32799600B19476 /* Service */,
 				2EB865F32C68AB4B00CFF348 /* Models */,
 				566B83372C0EE928008C0773 /* DTOs */,
-				2EB865EE2C68A7E600CFF348 /* Mappers */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1328,7 +1317,6 @@
 				56BBF4102C35B9280058B19B /* RecommendResultViewController.swift in Sources */,
 				2EB866092C68F8C400CFF348 /* CombinationModel.swift in Sources */,
 				56BBF35C2C33FEDD0058B19B /* AnswerViewController.swift in Sources */,
-				2EB865F02C68A80200CFF348 /* User+Mapping.swift in Sources */,
 				97EB4AD32B70F668009A62EB /* SelectTypeOfLiquorViewController.swift in Sources */,
 				2E6C26C82B497AD200C87B4A /* AppDelegate.swift in Sources */,
 				2EAD6D642C3286DD00B19476 /* AuthInterceptor.swift in Sources */,

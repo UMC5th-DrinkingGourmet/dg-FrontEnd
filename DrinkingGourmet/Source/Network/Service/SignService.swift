@@ -61,20 +61,34 @@ final class SignService {
         let provider = UserDefaultManager.shared.provider
         let providerId = UserDefaultManager.shared.providerId
         let loginInfo = SignInfoDTO(provider: provider, providerId: providerId)
-        
+
         AF.request("\(baseURL)/\(provider)",
                    method: .post,
                    parameters: loginInfo,
                    encoder: JSONParameterEncoder.default,
                    headers: headers)
-        .validate(statusCode: 200..<601)
+        .validate(statusCode: 200..<300)  // 성공 상태 코드만 허용
         .responseDecodable(of: UserStatusResponseDTO.self) { response in
-            self.handleResponse(response) { userStatus in
-                if let memberId = userStatus?.memberId {
-                    UserDefaultManager.shared.userId = String(memberId)
-                    print("Saved memberId: \(memberId)")
+            switch response.result {
+            case .success(let userStatusResponseDTO):
+                guard userStatusResponseDTO.isSuccess else {
+                    print("로그인 실패: \(userStatusResponseDTO.message)")
+                    return
                 }
+
+                let result = userStatusResponseDTO.result
+                print("로그인 성공: \(result.nickName)")
+                UserDefaultManager.shared.userId = String(result.memberId)
                 completion()
+
+            case .failure(let error):
+                // 오류 발생 시 자세한 디코딩 실패 정보를 출력
+                if let data = response.data, let dataString = String(data: data, encoding: .utf8) {
+                    print("서버 응답 디코딩 실패: \(dataString)")
+                } else {
+                    print("서버에서 데이터를 받지 못했습니다.")
+                }
+                print("자동 로그인 실패: \(error.localizedDescription)")
             }
         }
     }
@@ -130,12 +144,12 @@ final class SignService {
             if userStatusResponseDTO.isSuccess {
                 completion(userStatusResponseDTO.result.toDomain())
             } else {
-                print("Request Failed: \(userStatusResponseDTO.message)")
+                print("Request Failed1: \(userStatusResponseDTO.message)")
                 completion(nil)
             }
             
         case .failure(let failure):
-            print("Request Failed: \(failure)")
+            print("Request Failed2: \(failure)")
             completion(nil)
         }
     }

@@ -54,21 +54,27 @@ class AuthInterceptor: RequestInterceptor {
             let refreshToken = try keychain.getToken(kind: .refreshToken)
             let headers: HTTPHeaders = ["RefreshToken": refreshToken]
 
-            AF.request("https://drink-gourmet.kro.kr/auth/reissue-token", method: .post, headers: headers).responseJSON { response in
-                switch response.result {
-                case .success:
-                    if let headers = response.response?.allHeaderFields,
-                       let newAccessToken = headers["Authorization"] as? String {
-                        self.keychain.saveToken(kind: .accessToken, token: newAccessToken)
-                        completion(true)
-                    } else {
+            AF.request("https://drink-gourmet.kro.kr/auth/reissue-token", method: .post, headers: headers)
+                .validate(statusCode: 200..<300)  // 상태 코드 범위를 200~299로 수정
+                .responseJSON { response in
+                    switch response.result {
+                    case .success:
+                        if let headers = response.response?.allHeaderFields,
+                           let newAccessToken = headers["Authorization"] as? String {
+                            self.keychain.saveToken(kind: .accessToken, token: newAccessToken)
+                            print("새로운 액세스 토큰 저장: \(newAccessToken)")
+                            completion(true)
+                        } else {
+                            print("새로운 액세스 토큰을 찾을 수 없음")
+                            completion(false)
+                        }
+                    case .failure(let error):
+                        print("리프레시 토큰 갱신 실패: \(error.localizedDescription)")
                         completion(false)
                     }
-                case .failure:
-                    completion(false)
                 }
-            }
         } catch {
+            print("리프레시 토큰을 가져오는 중 오류 발생: \(error.localizedDescription)")
             completion(false)
         }
     }

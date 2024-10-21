@@ -17,7 +17,7 @@ struct UserStatusResponseDTO: Decodable {
 // 서버에서 오는 응답에 대한 DTO
 struct UserStatusDTO: Decodable {
     var provider: String
-    var nickName: String
+    var nickName: String?
     var memberId: Int
     var newMember: Bool
     var createdAt: String
@@ -26,7 +26,7 @@ struct UserStatusDTO: Decodable {
     func toDomain() -> UserStatus {
         return UserStatus(
             provider: self.provider,
-            nickName: self.nickName,
+            nickName: self.nickName ?? "",
             memberId: self.memberId,
             newMember: self.newMember,
             createdAt: self.createdAt

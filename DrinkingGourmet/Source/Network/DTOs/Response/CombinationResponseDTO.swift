@@ -21,7 +21,7 @@ struct CombinationListResultDTO: Decodable {
 struct CombinationDTO: Decodable {
     let combinationId: Int
     let title: String
-    let combinationImageUrl: String
+    let combinationImageUrl: String?
     let hashTagList: [String]?
 }
 
@@ -31,7 +31,7 @@ extension CombinationDTO {
         return CombinationModel(
             id: combinationId,
             title: title,
-            imageUrl: combinationImageUrl,
+            imageUrl: combinationImageUrl ?? "",
             hashTags: hashtags
         )
     }

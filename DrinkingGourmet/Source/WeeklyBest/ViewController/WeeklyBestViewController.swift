@@ -164,7 +164,7 @@ extension WeeklyBestViewController: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
-        if let url = URL(string: combination.combinationImageUrl) {
+        if let url = URL(string: combination.combinationImageUrl ?? "") {
                     cell.thumnailImage.kf.setImage(with: url)
         }
         
