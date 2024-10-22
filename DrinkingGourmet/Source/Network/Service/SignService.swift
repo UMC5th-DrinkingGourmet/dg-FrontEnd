@@ -77,12 +77,11 @@ final class SignService {
                 }
 
                 let result = userStatusResponseDTO.result
-                print("로그인 성공: \(result.nickName)")
+                print("로그인 성공")
                 UserDefaultManager.shared.userId = String(result.memberId)
                 completion()
 
             case .failure(let error):
-                // 오류 발생 시 자세한 디코딩 실패 정보를 출력
                 if let data = response.data, let dataString = String(data: data, encoding: .utf8) {
                     print("서버 응답 디코딩 실패: \(dataString)")
                 } else {
