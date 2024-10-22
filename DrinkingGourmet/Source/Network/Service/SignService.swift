@@ -77,7 +77,7 @@ final class SignService {
                 }
 
                 let result = userStatusResponseDTO.result
-                print("로그인 성공: \(result.nickName)")
+                print("로그인 성공")
                 UserDefaultManager.shared.userId = String(result.memberId)
                 completion()
 

@@ -7,6 +7,7 @@
 
 import UIKit
 import KakaoSDKAuth
+import Toast
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -18,25 +19,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
 
-        do {
-            let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
-            print("Refresh Token 존재: \(refreshToken)")
-
-            if TokenParser.isTokenExpired(refreshToken) {
-                print("RefreshToken이 만료되었습니다. 로그인 화면을 띄웁니다.")
-                window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
-            } else {
-                print("RefreshToken이 유효합니다. 메인 화면으로 이동합니다.")
-                SignService.shared.loginWithProviderInfo { [weak self] in
-                    DispatchQueue.main.async {
-                        print("자동로그인이 성공하여 MainVC로 이동합니다.")
-                        self?.window?.rootViewController = TabBarViewController()
-                    }
+        if !UserDefaultManager.shared.provider.isEmpty,
+           !UserDefaultManager.shared.providerId.isEmpty {
+            SignService.shared.loginWithProviderInfo { [weak self] in
+                DispatchQueue.main.async {
+                    print("자동로그인이 성공하여 MainVC로 이동합니다.")
+                    self?.window?.rootViewController = TabBarViewController()
                 }
             }
-        } catch {
-            print("Refresh Token을 찾을 수 없음: \(error)")
-            window.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
+        } else {
+            self.window?.rootViewController = UINavigationController(rootViewController: AuthenticationViewController())
         }
 
         window.makeKeyAndVisible()
@@ -50,11 +42,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     @objc private func handleRefreshTokenExpired() {
         DispatchQueue.main.async {
-            print("Refresh token이 만료되었습니다. 로그인 화면으로 이동합니다.")
-            let loginViewController = AuthenticationViewController()
-            if let window = self.window {
-                window.rootViewController = loginViewController
-                window.makeKeyAndVisible()
+            print("Refresh token이 만료되었습니다.")
+
+            if let rootVC = self.window?.rootViewController {
+                rootVC.view.makeToast("다시 로그인해주세요.", duration: 3.0, position: .bottom)
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                let loginViewController = AuthenticationViewController()
+                if let window = self.window {
+                    window.rootViewController = loginViewController
+                    window.makeKeyAndVisible()
+                }
             }
         }
     }
