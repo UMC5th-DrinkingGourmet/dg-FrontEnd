@@ -51,30 +51,35 @@ class AuthInterceptor: RequestInterceptor {
 
     private func refreshTokens(completion: @escaping (Bool) -> Void) {
         do {
+            let accessToken = try keychain.getToken(kind: .accessToken)
             let refreshToken = try keychain.getToken(kind: .refreshToken)
-            let headers: HTTPHeaders = ["RefreshToken": refreshToken]
+
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+                "RefreshToken": refreshToken
+            ]
 
             AF.request("https://drink-gourmet.kro.kr/auth/reissue-token", method: .post, headers: headers)
-                .validate(statusCode: 200..<300)  // 상태 코드 범위를 200~299로 수정
-                .responseJSON { response in
-                    switch response.result {
-                    case .success:
-                        if let headers = response.response?.allHeaderFields,
-                           let newAccessToken = headers["Authorization"] as? String {
-                            self.keychain.saveToken(kind: .accessToken, token: newAccessToken)
-                            print("새로운 액세스 토큰 저장: \(newAccessToken)")
-                            completion(true)
-                        } else {
-                            print("새로운 액세스 토큰을 찾을 수 없음")
-                            completion(false)
-                        }
-                    case .failure(let error):
-                        print("리프레시 토큰 갱신 실패: \(error.localizedDescription)")
+                .validate(statusCode: 200..<300)
+                .response { response in
+                    guard let httpResponse = response.response else {
+                        print("서버 응답이 없음")
+                        completion(false)
+                        return
+                    }
+                    
+                    if httpResponse.statusCode == 200,
+                       let authorization = httpResponse.allHeaderFields["Authorization"] as? String {
+                        self.keychain.saveToken(kind: .accessToken, token: authorization)
+                        print("새로운 액세스 토큰 저장: \(authorization)")
+                        completion(true)
+                    } else {
+                        print("새로운 액세스 토큰을 찾을 수 없음 또는 상태 코드가 200이 아님")
                         completion(false)
                     }
                 }
         } catch {
-            print("리프레시 토큰을 가져오는 중 오류 발생: \(error.localizedDescription)")
+            print("토큰을 가져오는 중 오류 발생: \(error.localizedDescription)")
             completion(false)
         }
     }
