@@ -411,6 +411,7 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
             
             let combination = combinations[indexPath.item]
             cell.titleLabel.text = combination.title
+            cell.setTitleLabelText(combination.title)
             cell.hashTagLabel.text = combination.hashTags
             if let url = URL(string: combination.imageUrl) {
                 cell.combiImageView.kf.setImage(with: url)
@@ -442,3 +443,33 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
         }
     }
 }
+
+extension TodayCombiCollectionViewCell {
+    func setTitleLabelText(_ text: String) {
+        let maxLineLength = 11 // 첫 줄 최대 글자 수 기준
+        
+        if text.count > maxLineLength {
+            var splitIndex = text.startIndex
+            var currentLength = 0
+            
+            // 단어 단위로 최대 글자 수 초과 시 줄바꿈 위치 탐색
+            for (index, char) in text.enumerated() {
+                currentLength += 1
+                
+                // 공백을 기준으로 마지막으로 넘었는지 확인
+                if currentLength > maxLineLength, char == " " {
+                    splitIndex = text.index(text.startIndex, offsetBy: index)
+                    break
+                }
+            }
+            
+            // 줄바꿈 삽입
+            let firstLine = text[..<splitIndex]
+            let secondLine = text[splitIndex...].trimmingCharacters(in: .whitespaces)
+            titleLabel.text = "\(firstLine)\n\(secondLine)"
+        } else {
+            titleLabel.text = text
+        }
+    }
+}
+
