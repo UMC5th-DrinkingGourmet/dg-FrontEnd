@@ -21,6 +21,11 @@ final class RecommendLodingView: UIView {
     
     let animationView: LottieAnimationView = .init(name: "Animation - 1707200937141")
     
+    let timeRequiredLabel = UILabel().then {
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 18)
+        $0.text = "완벽한 조합을 찾고있어요..."
+    }
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,8 +41,11 @@ final class RecommendLodingView: UIView {
     
     // MARK: - UI
     private func addViews() {
-        self.addSubviews([nickNameLabel,
-                          animationView])
+        self.addSubviews([
+            nickNameLabel,
+            animationView,
+            timeRequiredLabel
+        ])
     }
     
     private func configureConstraints() {
@@ -48,7 +56,13 @@ final class RecommendLodingView: UIView {
         
         animationView.snp.makeConstraints { make in
             make.size.equalTo(90)
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.top.equalTo(nickNameLabel.snp.bottom).offset(200)
+        }
+        
+        timeRequiredLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(animationView.snp.bottom).offset(50)
         }
     }
 }

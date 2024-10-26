@@ -244,41 +244,53 @@ extension CombinationDetailViewController {
             
             let blockingAction = UIAlertAction(title: "차단하기", style: .default) { [weak self] _ in
                 guard let self = self else { return }
-                guard let blockedMemberId = self.combinationDetailData?.result.memberResult.memberId else { return }
                 
-                DispatchQueue.main.async {
-                    self.combinationDetailView.commentInputView.isHidden = true
-                }
+                // 차단 확인을 위한 Alert 생성
+                let confirmationAlert = UIAlertController(title: nil, message: "이 작성자의 게시물과 댓글이\n더 이상 노출되지 않습니다.", preferredStyle: .alert)
                 
-                AdministrationService.shared.postBlock(blockedMemberId: blockedMemberId) { error in
-                    if let error = error {
-                        print("\(blockedMemberId)번 멤버 차단 실패 - \(error.localizedDescription)")
-                    } else {
-                        print("\(blockedMemberId)번 멤버 차단 성공")
-                        // 차단 성공 토스트 메시지
-                        let popUpView = ReportCompletePopUpView()
-                        popUpView.label.text = "차단되었습니다"
-                        ToastManager.shared.style.fadeDuration = 0.7
-                        self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { didTap in
-                            if let viewControllers = self.navigationController?.viewControllers {
-                                for vc in viewControllers {
-                                    if let combinationHomeVC = vc as? CombinationHomeViewController {
-                                        combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
-                                        combinationHomeVC.fetchData()
-                                        self.navigationController?.popViewController(animated: true)
-                                        break
-                                    }
-                                    if let likeTapmanVC = vc as? LikeTapmanViewController {
-                                        likeTapmanVC.likeCombinationViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
-                                        likeTapmanVC.likeCombinationViewController.fetchData()
-                                        self.navigationController?.popViewController(animated: true)
-                                        break
+                let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+                let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
+                    guard let blockedMemberId = self.combinationDetailData?.result.memberResult.memberId else { return }
+                    
+                    // 댓글 창 숨기기
+                    DispatchQueue.main.async {
+                        self.combinationDetailView.commentInputView.isHidden = true
+                    }
+                    
+                    AdministrationService.shared.postBlock(blockedMemberId: blockedMemberId) { error in
+                        if let error = error {
+                            print("\(blockedMemberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                        } else {
+                            print("\(blockedMemberId)번 멤버 차단 성공")
+                            // 차단 성공 토스트 메시지
+                            let popUpView = ReportCompletePopUpView()
+                            popUpView.label.text = "차단되었습니다"
+                            ToastManager.shared.style.fadeDuration = 0.7
+                            self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { didTap in
+                                if let viewControllers = self.navigationController?.viewControllers {
+                                    for vc in viewControllers {
+                                        if let combinationHomeVC = vc as? CombinationHomeViewController {
+                                            combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
+                                            combinationHomeVC.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
+                                        if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                            likeTapmanVC.likeCombinationViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                            likeTapmanVC.likeCombinationViewController.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
                                     }
                                 }
-                            }
-                        })
+                            })
+                        }
                     }
                 }
+                confirmationAlert.addAction(cancelAction)
+                confirmationAlert.addAction(confirmAction)
+                
+                self.present(confirmationAlert, animated: true, completion: nil)
             }
             
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -504,7 +516,6 @@ extension CombinationDetailViewController: UICollectionViewDelegateFlowLayout {
 extension CombinationDetailViewController: ComponentProductCellDelegate {
     func selectedInfoBtn(data: CombinationCommentDTO) {
         
-        // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
         let isCurrentUser = data.memberId == Int(UserDefaultManager.shared.userId)
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -548,39 +559,51 @@ extension CombinationDetailViewController: ComponentProductCellDelegate {
             let blockingAction = UIAlertAction(title: "차단하기", style: .default) { [weak self] _ in
                 guard let self = self else { return }
                 
-                DispatchQueue.main.async {
-                    self.combinationDetailView.commentInputView.isHidden = true
-                }
+                // 차단 확인을 위한 Alert 생성
+                let confirmationAlert = UIAlertController(title: nil, message: "이 작성자의 게시물과 댓글이\n더 이상 노출되지 않습니다.", preferredStyle: .alert)
                 
-                AdministrationService.shared.postBlock(blockedMemberId: data.memberId) { error in
-                    if let error = error {
-                        print("\(data.memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
-                    } else {
-                        print("\(data.memberId)번 멤버 차단 성공")
-                        // 차단 성공 토스트 메시지
-                        let popUpView = ReportCompletePopUpView()
-                        popUpView.label.text = "차단되었습니다"
-                        ToastManager.shared.style.fadeDuration = 0.7
-                        self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { didTap in
-                            if let viewControllers = self.navigationController?.viewControllers {
-                                for vc in viewControllers {
-                                    if let combinationHomeVC = vc as? CombinationHomeViewController {
-                                        combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
-                                        combinationHomeVC.fetchData()
-                                        self.navigationController?.popViewController(animated: true)
-                                        break
-                                    }
-                                    if let likeTapmanVC = vc as? LikeTapmanViewController {
-                                        likeTapmanVC.likeCombinationViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
-                                        likeTapmanVC.likeCombinationViewController.fetchData()
-                                        self.navigationController?.popViewController(animated: true)
-                                        break
+                let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+                let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
+                    
+                    // 댓글 창 숨기기
+                    DispatchQueue.main.async {
+                        self.combinationDetailView.commentInputView.isHidden = true
+                    }
+                    
+                    AdministrationService.shared.postBlock(blockedMemberId: data.memberId) { error in
+                        if let error = error {
+                            print("\(data.memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                        } else {
+                            print("\(data.memberId)번 멤버 차단 성공")
+                            // 차단 성공 토스트 메시지
+                            let popUpView = ReportCompletePopUpView()
+                            popUpView.label.text = "차단되었습니다"
+                            ToastManager.shared.style.fadeDuration = 0.7
+                            self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { didTap in
+                                if let viewControllers = self.navigationController?.viewControllers {
+                                    for vc in viewControllers {
+                                        if let combinationHomeVC = vc as? CombinationHomeViewController {
+                                            combinationHomeVC.combinationHomeView.tableView.setContentOffset(.zero, animated: true)
+                                            combinationHomeVC.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
+                                        if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                            likeTapmanVC.likeCombinationViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                            likeTapmanVC.likeCombinationViewController.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
                                     }
                                 }
-                            }
-                        })
+                            })
+                        }
                     }
                 }
+                confirmationAlert.addAction(cancelAction)
+                confirmationAlert.addAction(confirmAction)
+                
+                self.present(confirmationAlert, animated: true, completion: nil)
             }
             
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)

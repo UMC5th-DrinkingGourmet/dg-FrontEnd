@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class InputIntoxicationview: UIView {
+final class InputIntoxicationView: UIView {
     // MARK: - View
     private let progressBar = UIProgressView().then {
         $0.progress = 0.2
@@ -45,6 +45,20 @@ final class InputIntoxicationview: UIView {
         $0.tintColor = .customOrange
     }
     
+    private let numbersStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.distribution = .equalSpacing
+        $0.alignment = .center
+    }
+    
+    private let numberLabels: [UILabel] = (1...5).map { number in
+        let label = UILabel()
+        label.text = "\(number)"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
+        label.textColor = .base0600
+        return label
+    }
+    
     let nextButton = NextButtonView()
     
     // MARK: - Init
@@ -63,12 +77,15 @@ final class InputIntoxicationview: UIView {
     // MARK: - UI
     private func addViews() {
         self.addSubviews([stackView,
+                          numbersStackView,
                           nextButton])
         
         stackView.addArrangedSubviews([progressBar,
                                        titleLabel,
                                        descriptionLabel,
                                        slider])
+        
+        numberLabels.forEach { numbersStackView.addArrangedSubview($0) }
     }
     
     private func configureConstraints() {
@@ -83,6 +100,11 @@ final class InputIntoxicationview: UIView {
         
         stackView.setCustomSpacing(4, after: titleLabel)
         stackView.setCustomSpacing(70, after: descriptionLabel)
+        
+        numbersStackView.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom).offset(11)
+            make.leading.trailing.equalToSuperview().inset(31)
+        }
         
         nextButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
