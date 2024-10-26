@@ -106,10 +106,6 @@ class MainMenuViewController: UIViewController {
         $0.image = UIImage(named: "img_main_new_alcohol")
     }
     
-    let mainAdImage = UIImageView().then {
-        $0.image = UIImage(named: "img_main_ad")
-    }
-    
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
@@ -187,7 +183,7 @@ class MainMenuViewController: UIViewController {
         recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
         recommendView.goBtn.addTarget(self, action: #selector(recommendViewTapped), for: .touchUpInside)
         todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
-        newAlcoholBtn.addTarget(self, action: #selector(newAlcoholBtnTapped), for: .touchUpInside)
+//        newAlcoholBtn.addTarget(self, action: #selector(newAlcoholBtnTapped), for: .touchUpInside)
         
         
     }
@@ -218,11 +214,11 @@ class MainMenuViewController: UIViewController {
     }
     
     /* 모이치 */
-    @objc func newAlcoholBtnTapped() {
-        let newAlcoholViewController = NewAlcoholViewController()
-        newAlcoholViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(newAlcoholViewController, animated: true)
-    }
+//    @objc func newAlcoholBtnTapped() {
+//        let newAlcoholViewController = NewAlcoholViewController()
+//        newAlcoholViewController.hidesBottomBarWhenPushed = true
+//        navigationController?.pushViewController(newAlcoholViewController, animated: true)
+//    }
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -252,8 +248,7 @@ class MainMenuViewController: UIViewController {
             todayCombiBtn,
             todayCombiCollectionView,
             newAlcoholBtn,
-            newAlcoholImage,
-            mainAdImage
+            newAlcoholImage
         ])
     }
     
@@ -266,7 +261,6 @@ class MainMenuViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView)
             $0.edges.equalTo(scrollView)
-            $0.height.equalTo(1132)
         }
         
         bannerCollectionView.snp.makeConstraints {
@@ -324,28 +318,22 @@ class MainMenuViewController: UIViewController {
             $0.top.equalTo(todayCombiBtn.snp.bottom).offset(8)
             $0.leading.equalTo(contentView)
             $0.trailing.equalTo(contentView)
+            $0.bottom.equalTo(contentView).inset(60)
             $0.height.equalTo(160)
         }
         
         /* 모이치 */
-        newAlcoholBtn.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(48)
-            $0.height.equalTo(30)
-        }
-        
-        newAlcoholImage.snp.makeConstraints { make in
-            make.top.equalTo(newAlcoholBtn.snp.bottom).offset(18)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-        }
-        
-        mainAdImage.snp.makeConstraints { make in
-            make.bottom.equalTo(contentView)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(200)
-        }
-        
+//        newAlcoholBtn.snp.makeConstraints {
+//            $0.leading.equalToSuperview()
+//            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(48)
+//            $0.height.equalTo(30)
+//        }
+//        
+//        newAlcoholImage.snp.makeConstraints { make in
+//            make.top.equalTo(newAlcoholBtn.snp.bottom).offset(18)
+//            make.leading.equalToSuperview().offset(20)
+//            make.trailing.equalToSuperview().inset(20)
+//        }
     }
     
     @objc func backToPrevious() {

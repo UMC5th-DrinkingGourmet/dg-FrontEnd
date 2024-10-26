@@ -95,6 +95,9 @@ final class CombinationDetailViewController: UIViewController {
     
     private func setupNaviBar() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage() // 그림자 제거
     }
     
     func fetchData() {

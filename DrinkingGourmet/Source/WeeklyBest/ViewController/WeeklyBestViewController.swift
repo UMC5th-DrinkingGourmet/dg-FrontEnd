@@ -27,6 +27,7 @@ final class WeeklyBestViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        weeklyBestView.customSearchBar.placeholderLabel.text = "주간 베스트 조합 검색"
         
         updateUI()
         fetchData()
