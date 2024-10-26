@@ -84,12 +84,11 @@ class AuthenticationViewController: UIViewController {
     }
     
     @objc func kakaoBtnClicked() {
-        do {
-             // 리프레시 토큰의 유효성 검사
-            let _ = try Keychain.shared.getToken(kind: .refreshToken)
-            navigateToMainMenu()
-        } catch KeyChainError.noData {
-            // 리프레시 토큰이 없는 경우
+        if !UserDefaultManager.shared.provider.isEmpty, !UserDefaultManager.shared.providerId.isEmpty {
+            SignService.shared.loginWithProviderInfo { [weak self] in
+                self?.navigateToMainMenu()
+            }
+        } else {
             let alert = UIAlertController(title: "카카오톡 로그인", message: "카카오톡으로 로그인하시겠습니까?", preferredStyle: .alert)
             
             let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
@@ -102,18 +101,15 @@ class AuthenticationViewController: UIViewController {
             alert.addAction(cancelAction)
             
             self.present(alert, animated: true, completion: nil)
-        } catch {
-            print("unexpected error")
         }
     }
-    
+
     @objc func appleBtnClicked() {
-        do {
-            // 리프레시 토큰의 유효성 검사
-            let _ = try Keychain.shared.getToken(kind: .refreshToken)
-            navigateToMainMenu()
-        } catch KeyChainError.noData {
-            // 리프레시 토큰이 없는 경우
+        if !UserDefaultManager.shared.provider.isEmpty, !UserDefaultManager.shared.providerId.isEmpty {
+            SignService.shared.loginWithProviderInfo { [weak self] in
+                self?.navigateToMainMenu()
+            }
+        } else {
             let alert = UIAlertController(title: "애플 로그인", message: "애플 계정으로 로그인하시겠습니까?", preferredStyle: .alert)
             
             let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
@@ -126,8 +122,6 @@ class AuthenticationViewController: UIViewController {
             alert.addAction(cancelAction)
             
             self.present(alert, animated: true, completion: nil)
-        } catch {
-            print("unexpected error")
         }
     }
 
