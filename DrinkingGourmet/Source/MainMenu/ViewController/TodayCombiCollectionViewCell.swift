@@ -71,18 +71,20 @@ class TodayCombiCollectionViewCell: UICollectionViewCell {
             $0.edges.equalToSuperview()
         }
         
-        titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(22)
-            $0.top.equalTo(contentView.snp.centerY).offset(20)
-        }
-        
         gradientView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(22)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalTo(hashTagLabel.snp.top).offset(-12)
+        }
+        
         hashTagLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-20)
         }
     }
     
