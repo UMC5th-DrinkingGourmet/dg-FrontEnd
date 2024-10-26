@@ -78,6 +78,8 @@ final class SignService {
 
                 let result = userStatusResponseDTO.result
                 print("로그인 성공")
+                UserDefaultManager.shared.provider = provider
+                UserDefaultManager.shared.providerId = providerId
                 UserDefaultManager.shared.userId = String(result.memberId)
                 completion()
 
