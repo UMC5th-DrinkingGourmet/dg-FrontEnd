@@ -77,6 +77,7 @@ class RecipeBookCollectionViewCell: UICollectionViewCell {
         
         recipeBookTitleLabel.snp.makeConstraints {
             $0.leading.equalTo(recipeBookImageView.snp.trailing).offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
             $0.top.equalToSuperview().offset(20)
         }
         
