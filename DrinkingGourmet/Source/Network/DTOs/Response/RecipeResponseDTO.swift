@@ -23,7 +23,7 @@ struct RecipeDTO: Decodable {
     let recipeName: String
     let cookingTime: String
     let ingredient: String
-    let recipeImageUrl: String
+    let recipeImageUrl: String?
 }
 
 

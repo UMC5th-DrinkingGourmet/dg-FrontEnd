@@ -401,7 +401,7 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
             cell.recipeBookTitleLabel.text = "|  \(recipe.name)"
             cell.timeLabel.text = recipe.cookingTime
             cell.ingredientLabel.text = recipe.ingredient
-            if let url = URL(string: recipe.imageUrl) {
+            if let url = URL(string: recipe.imageUrl ?? "") {
                 cell.recipeBookImageView.kf.setImage(with: url)
             }
             

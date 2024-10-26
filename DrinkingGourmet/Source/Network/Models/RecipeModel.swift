@@ -12,7 +12,7 @@ struct RecipeModel {
     let name: String
     let cookingTime: String
     let ingredient: String
-    let imageUrl: String
+    let imageUrl: String?
 }
 
 extension RecipeDTO {
