@@ -38,13 +38,31 @@ class ProfileCreationViewController: UIViewController {
         $0.numberOfLines = 2
     }
     
-    lazy var inputNameView = InputTextFieldView(frame: .zero)
-    
-    lazy var inputBirthView = InputTextFieldView(frame: .zero)
-    
-    lazy var inputPhoneNumberView = InputTextFieldView(frame: .zero)
-    
-    lazy var inputNicknameView = InputTextFieldView(frame: .zero)
+    lazy var inputNameView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.placeholder = "이름"
+        return view
+    }()
+
+    lazy var inputBirthView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.inputType = .date
+        view.placeholder = "1990-12-01"
+        return view
+    }()
+
+    lazy var inputPhoneNumberView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.inputType = .phoneNumber
+        view.placeholder = "휴대폰 번호 (-제외)"
+        return view
+    }()
+
+    lazy var inputNicknameView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.placeholder = "10자 이내 한글 혹은 영문"
+        return view
+    }()
     
     private let stateLabel = UILabel().then {
         $0.text = ""

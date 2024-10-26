@@ -141,6 +141,7 @@
 		56BBF4322C381F740058B19B /* MyCombinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4312C381F740058B19B /* MyCombinationViewController.swift */; };
 		56BBF4342C381F7D0058B19B /* MyRecipeBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBF4332C381F7D0058B19B /* MyRecipeBookViewController.swift */; };
 		56C9B29C2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */; };
+		56CDC85B2CCD22BE002204F5 /* Loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 56CDC85A2CCD22BE002204F5 /* Loader.json */; };
 		56D649972BB2BD1E002ABC93 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649962BB2BD1E002ABC93 /* ReportViewController.swift */; };
 		56D649992BB2BD24002ABC93 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D649982BB2BD24002ABC93 /* ReportView.swift */; };
 		56D6499C2BB3B14E002ABC93 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 56D6499B2BB3B14E002ABC93 /* SnapKit */; };
@@ -174,7 +175,6 @@
 		97EB4AED2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4AEC2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift */; };
 		97EB4AEF2B714100009A62EB /* SelectDrinkCapacityResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4AEE2B714100009A62EB /* SelectDrinkCapacityResource.swift */; };
 		97EB4AF12B714123009A62EB /* SelectDrinkFrequencyResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB4AF02B714123009A62EB /* SelectDrinkFrequencyResource.swift */; };
-		97EB4AF82B720CDB009A62EB /* Animation - 1707200937141.json in Resources */ = {isa = PBXBuildFile; fileRef = 97EB4AF72B720CDB009A62EB /* Animation - 1707200937141.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -312,6 +312,7 @@
 		56BBF4312C381F740058B19B /* MyCombinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCombinationViewController.swift; sourceTree = "<group>"; };
 		56BBF4332C381F7D0058B19B /* MyRecipeBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecipeBookViewController.swift; sourceTree = "<group>"; };
 		56C9B29B2B7CE76600C59D60 /* WeeklyBestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyBestSearchViewController.swift; sourceTree = "<group>"; };
+		56CDC85A2CCD22BE002204F5 /* Loader.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loader.json; sourceTree = "<group>"; };
 		56D649962BB2BD1E002ABC93 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		56D649982BB2BD24002ABC93 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		56EAD5892B6C6C1A005C3A80 /* CombinationHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationHomeView.swift; sourceTree = "<group>"; };
@@ -335,7 +336,6 @@
 		97EB4AEC2B7140E5009A62EB /* SelectAlcoholDegreeResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAlcoholDegreeResource.swift; sourceTree = "<group>"; };
 		97EB4AEE2B714100009A62EB /* SelectDrinkCapacityResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDrinkCapacityResource.swift; sourceTree = "<group>"; };
 		97EB4AF02B714123009A62EB /* SelectDrinkFrequencyResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDrinkFrequencyResource.swift; sourceTree = "<group>"; };
-		97EB4AF72B720CDB009A62EB /* Animation - 1707200937141.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Animation - 1707200937141.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1037,7 +1037,7 @@
 			children = (
 				56BBF3E82C359C5E0058B19B /* View */,
 				56BBF3E72C359C580058B19B /* ViewController */,
-				97EB4AF72B720CDB009A62EB /* Animation - 1707200937141.json */,
+				56CDC85A2CCD22BE002204F5 /* Loader.json */,
 				56BBF3E92C359CB80058B19B /* NextButtonView.swift */,
 			);
 			path = RequestRecommend;
@@ -1294,9 +1294,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
-				97EB4AF82B720CDB009A62EB /* Animation - 1707200937141.json in Resources */,
 				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
 				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
+				56CDC85B2CCD22BE002204F5 /* Loader.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -56,12 +56,12 @@ final class RecommendLodingViewController: UIViewController {
         guard let startTime = startTime else { return }
         let elapsedTime = Date().timeIntervalSince(startTime)
         
-        if elapsedTime <= 10 {
+        if elapsedTime <= 12 {
             // 0 ~ 10초
-            recommendLodingView.timeRequiredLabel.text = isSearchingText ? "맛있는 조합을 연구중입니다..." : "완벽한 조합을 찾고있어요..."
+            recommendLodingView.timeRequiredLabel.text = isSearchingText ? "맛있는 조합을 연구 중입니다" : "완벽한 조합을 찾고 있어요"
         } else {
             // 10초 이후
-            recommendLodingView.timeRequiredLabel.text = isSearchingText ? "거의 다 됐어요! 마지막 시음 중..." : "좋은 조합이 떠올랐어요! 잠시만요..."
+            recommendLodingView.timeRequiredLabel.text = isSearchingText ? "좋은 조합이 떠올랐어요!" : "거의 다 됐어요!"
         }
         
         isSearchingText.toggle()

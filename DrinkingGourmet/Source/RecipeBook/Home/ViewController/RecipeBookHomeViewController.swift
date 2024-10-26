@@ -27,6 +27,7 @@ final class RecipeBookHomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        recipeBookHomeView.customSearchBar.placeholderLabel.text = "레시피북 검색"
         
         fetchData()
         setupRefresh()

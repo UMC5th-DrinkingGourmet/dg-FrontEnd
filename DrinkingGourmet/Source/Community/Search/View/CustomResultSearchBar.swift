@@ -36,7 +36,7 @@ class CustomResultSearchBar: UIView {
             .paragraphStyle: paragraphStyle
         ]
         
-        $0.attributedPlaceholder = NSAttributedString(string: "~~를 입력하세요.", attributes: attributes)
+        $0.attributedPlaceholder = NSAttributedString(string: "검색어를 입력해주세요", attributes: attributes)
     }
     
     let magnifyingImage = UIImageView().then {
