@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 class ProfileCreationViewController: UIViewController {
-    
+    var isPatch = false // 내 정보 수정 여부
     var nickNameisgood = false  // 닉네임 제대로 입력 했는지
     
     private let scrollView = UIScrollView().then {
@@ -38,13 +38,31 @@ class ProfileCreationViewController: UIViewController {
         $0.numberOfLines = 2
     }
     
-    lazy var inputNameView = InputTextFieldView(frame: .zero)
-    
-    lazy var inputBirthView = InputTextFieldView(frame: .zero)
-    
-    lazy var inputPhoneNumberView = InputTextFieldView(frame: .zero)
-    
-    lazy var inputNicknameView = InputTextFieldView(frame: .zero)
+    lazy var inputNameView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.placeholder = "이름"
+        return view
+    }()
+
+    lazy var inputBirthView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.inputType = .date
+        view.placeholder = "1990-12-01"
+        return view
+    }()
+
+    lazy var inputPhoneNumberView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.inputType = .phoneNumber
+        view.placeholder = "휴대폰 번호 (-제외)"
+        return view
+    }()
+
+    lazy var inputNicknameView: InputTextFieldView = {
+        let view = InputTextFieldView(frame: .zero)
+        view.placeholder = "10자 이내 한글 혹은 영문"
+        return view
+    }()
     
     private let stateLabel = UILabel().then {
         $0.text = ""
@@ -78,16 +96,48 @@ class ProfileCreationViewController: UIViewController {
         $0.genderBtnConfig(title: "  선택 안함  ", font: .systemFont(ofSize: 16), foregroundColor: .darkGray, borderColor: .checkmarkGray)
     }
     
-    lazy var confirmBtn = UIButton().then {
-        $0.backgroundColor = .black
-        $0.setTitle("확인", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
+    // 다음 버튼
+    private let confirmBtn = UIButton().then {
+        $0.backgroundColor = .base0500
+        $0.isEnabled = false
+    }
+    
+    private let confirmBtnLabel = UILabel().then {
+        $0.text = "다음"
+        $0.textColor = .base1000
+        $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        
+        if isPatch { // 수정일 때
+            DispatchQueue.main.async {
+                self.confirmBtnLabel.text = "수정하기"
+                self.inputNameView.textField.text = UserDefaultManager.shared.userName
+                self.inputBirthView.textField.text = UserDefaultManager.shared.userBirth
+                self.inputPhoneNumberView.textField.text = UserDefaultManager.shared.userPhoneNumber
+                self.inputNicknameView.textField.text = UserDefaultManager.shared.userNickname
+                
+                let gender = UserDefaultManager.shared.userGender
+                
+                if gender == "MALE" {
+                    self.maleBtn.isSelected = true
+                    self.updateButtonColor(self.maleBtn, "  남성  ")
+                } else if gender == "FEMALE" {
+                    self.femaleBtn.isSelected = true
+                    self.updateButtonColor(self.femaleBtn, "  여성  ")
+                } else {
+                    self.noneBtn.isSelected = true
+                    self.updateButtonColor(self.noneBtn, "  선택 안함  ")
+                }
+                
+                self.nickNameisgood = true
+                self.updateConfirmButtonState()
+            }
+        }
         
         configHierarchy()
         layout()
@@ -120,6 +170,8 @@ extension ProfileCreationViewController {
             inputNicknameView,
             stateLabel
         ])
+        
+        confirmBtn.addSubview(confirmBtnLabel)
     }
     
     func layout() {
@@ -192,23 +244,25 @@ extension ProfileCreationViewController {
             $0.height.equalTo(20)
         }
         
-        confirmBtn.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(90)
+        confirmBtn.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(89)
+        }
+        
+        confirmBtnLabel.snp.makeConstraints { make in
+            make.top.equalTo(confirmBtn).offset(18)
+            make.centerX.equalTo(confirmBtn)
         }
     }
     
     func configView() {
-        inputNameView.title = "이름"
+        inputNameView.title = "이름(선택)"
         inputBirthView.title = "생년월일"
-        inputPhoneNumberView.title = "전화번호"
+        inputPhoneNumberView.title = "전화번호(선택)"
         inputNicknameView.title = "닉네임"
         
-        inputNameView.textfieldText = UserDefaultManager.shared.userName
-        inputBirthView.textfieldText = UserDefaultManager.shared.userBirth
-        inputPhoneNumberView.textfieldText = UserDefaultManager.shared.userPhoneNumber
-        inputNicknameView.textfieldText = UserDefaultManager.shared.userNickname
+        inputBirthView.inputType = .date
+        inputPhoneNumberView.inputType = .phoneNumber
         
         inputNicknameView.placeholder = "닉네임을 입력해주세요."
         
@@ -218,10 +272,10 @@ extension ProfileCreationViewController {
         
         let gender = UserDefaultManager.shared.userGender
         
-        if gender == "male" {
+        if gender == "MALE" {
             maleBtn.isSelected = true
             updateButtonColor(maleBtn, "  남성  ")
-        } else if gender == "female" {
+        } else if gender == "FEMALE" {
             femaleBtn.isSelected = true
             updateButtonColor(femaleBtn, "  여성  ")
         } else {
@@ -234,31 +288,34 @@ extension ProfileCreationViewController {
         inputNicknameView.onTextChanged = { [weak self] text in
             self?.handleNicknameTextChanged(text)
         }
+        
+        inputBirthView.onTextChanged = { [weak self] _ in
+            self?.updateConfirmButtonState()
+        }
     }
     
     func handleNicknameTextChanged(_ text: String) {
         let specialChar = ["@", "#", "$", "%"]
+        
         if text.count < 2 || text.count > 9 || text.isEmpty {
             stateLabel.text = "2글자 이상 10글자 미만으로 설정해주세요"
-            confirmBtn.isEnabled = false
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else if specialChar.contains(where: text.contains) {
             stateLabel.text = "닉네임에 @, #, $, %는 포함할 수 없어요"
-            confirmBtn.isEnabled = false
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else if text.contains(where: { $0.isNumber }) {
             stateLabel.text = "닉네임에 숫자는 포함할 수 없어요"
-            confirmBtn.isEnabled = false
-            nickNameisgood = false
-        } else if text == "" {
-            stateLabel.text = "닉네임을 반드시 입력해야 합니다"
-            confirmBtn.isEnabled = false
+            stateLabel.textColor = .red
             nickNameisgood = false
         } else {
-            stateLabel.text = "사용할 수 있는 닉네임이에요"
-            confirmBtn.isEnabled = true
+            stateLabel.text = "올바른 형식입니다"
+            stateLabel.textColor = .customOrange
             nickNameisgood = true
         }
+        
+        updateConfirmButtonState()
     }
     
     func updateButtonColor(_ button: UIButton, _ title: String) {
@@ -278,12 +335,14 @@ extension ProfileCreationViewController {
         if let title = sender.titleLabel?.text {
             updateButtonColor(sender, title)
         }
+        
+        updateConfirmButtonState()
     }
     
     func postUserInfo() {
-        let userInfo = UserInfoModel(
+        let userInfo = UserInfo(
             name: inputNameView.textField.text ?? "",
-            profileImage: UserDefaultManager.shared.userProfileImg,
+            profileImage: "",
             email: UserDefaultManager.shared.email,
             nickName: inputNicknameView.textField.text ?? "",
             birthDate: inputBirthView.textField.text ?? "",
@@ -292,38 +351,101 @@ extension ProfileCreationViewController {
             provider: UserDefaultManager.shared.provider,
             providerId: UserDefaultManager.shared.providerId
         )
-                
-        UserInfoDataManager.shared.sendUserInfo(userInfo) {
-            let tabbarVC = TabBarViewController()
-            self.navigationController?.pushViewController(tabbarVC, animated: true)
+                    
+        SignService.shared.sendUserInfo(userInfo) { [weak self] userStatus in
+            
+            guard let self = self else { return }
+            guard userStatus != nil else {
+                let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
+                let btn1 = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(btn1)
+                self.present(alert, animated: true)
+                return
+            }
+            
+            AdministrationService.shared.postAgree(termList: TermsRequestDTO.shared.termList) { error in
+                if let error = error {
+                    print("약관 동의 실패 - \(error.localizedDescription)")
+                } else {
+                    print("약관 동의 성공")
+                    let VC = GetUserInfoViewController()
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
+            }
         }
     }
     
     func determineSelectedGender() -> String {
         if maleBtn.isSelected {
-            return "male"
+            return "MALE"
         } else if femaleBtn.isSelected {
-            return "female"
+            return "FEMALE"
         } else {
-            return "none"
+            return "NONE"
+        }
+    }
+    
+    func updateConfirmButtonState() {
+        let isNicknameValid = !inputNicknameView.textField.text!.isEmpty && nickNameisgood
+        
+        // 생년월일 필드가 비어있지 않은지 확인 (필수 항목)
+        let isBirthDateValid = !(inputBirthView.textField.text?.isEmpty ?? true)
+        
+        let isGenderSelected = maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected
+
+        if isNicknameValid && isBirthDateValid && isGenderSelected {
+            confirmBtn.isEnabled = true
+            confirmBtn.backgroundColor = .black
+        } else {
+            confirmBtn.isEnabled = false
+            confirmBtn.backgroundColor = .lightGray
         }
     }
     
     @objc func confirmBtnClicked() {
+        // 닉네임은 필수, 생년월일과 이메일은 선택 항목으로 처리
         if (maleBtn.isSelected || femaleBtn.isSelected || noneBtn.isSelected) && confirmBtn.isEnabled == true && nickNameisgood {
-            UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Guest"
-            
-            postUserInfo()
+            if isPatch { // 내 정보 수정일 때
+                guard let name = inputNameView.textField.text,
+                      let birthDate = inputBirthView.textField.text,
+                      let phoneNumber = inputPhoneNumberView.textField.text,
+                      let nickName = inputNicknameView.textField.text else { return }
+                
+                MyPageService.shared.patchMyInfo(name: name,
+                                                 birthDate: birthDate,
+                                                 phoneNumber: phoneNumber,
+                                                 gender: determineSelectedGender(),
+                                                 nickName: nickName) { error in
+                    if let error = error {
+                        print("내 정보 수정 실패 - \(error.localizedDescription)")
+                        let alert = UIAlertController(title: nil, message: "중복된 닉네임입니다", preferredStyle: .alert)
+                        let btn1 = UIAlertAction(title: "확인", style: .default)
+                        alert.addAction(btn1)
+                        self.present(alert, animated: true)
+                    } else {
+                        print("내 정보 수정 성공")
+                        
+                        // 성공 시 UserDefaults 업데이트
+                        UserDefaultManager.shared.userName = name
+                        UserDefaultManager.shared.userBirth = birthDate
+                        UserDefaultManager.shared.userPhoneNumber = phoneNumber
+                        UserDefaultManager.shared.userNickname = nickName
+                        UserDefaultManager.shared.userGender = self.determineSelectedGender()
+                        
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            } else { // 최초 가입일 때
+                postUserInfo()  // 회원 가입 진행
+                // 필수 항목이 아닌 데이터도 UserDefaults에 저장, 비어있을 수 있음
+                UserDefaultManager.shared.userNickname = inputNicknameView.textField.text ?? "Guest"
+                UserDefaultManager.shared.userName = inputNameView.textField.text ?? ""
+                UserDefaultManager.shared.userBirth = inputBirthView.textField.text ?? ""
+                UserDefaultManager.shared.userPhoneNumber = inputPhoneNumberView.textField.text ?? ""
+                UserDefaultManager.shared.userGender = self.determineSelectedGender()
+            }
         } else {
-            let alert = UIAlertController(title: "프로필을 제대로 입력해주세요!", message: "프로필을 제대로 입력하지 않으셨습니다.", preferredStyle: .alert)
-            
-            let btn1 = UIAlertAction(title: "취소", style: .cancel)
-            let btn2 = UIAlertAction(title: "확인", style: .default)
-            
-            alert.addAction(btn1)
-            alert.addAction(btn2)
-            
-            present(alert, animated: true)
+            return
         }
     }
     

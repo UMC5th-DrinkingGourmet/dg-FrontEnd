@@ -9,6 +9,8 @@ import UIKit
 
 class SelectDrinkFrequencyViewController: UIViewController {
     
+    // MARK: - Properties
+    var isModify = false // 수정 여부
     private var isSelectedButton =  false
     private let resource: SelectDrinkFrequencyResource = SelectDrinkFrequencyResource()
     var buttonTitleArray: [String] {
@@ -40,13 +42,13 @@ class SelectDrinkFrequencyViewController: UIViewController {
         text.textColor = UIColor.baseColor.base05
         text.numberOfLines = 0
         text.font = UIFont.boldSystemFont(ofSize: 14)
-        text.text = "00님과 어울리는 주류를 추천해드릴게요."
+        text.text = "\(UserDefaultManager.shared.userNickname)님과 어울리는 주류를 추천해드릴게요."
         return text
     }()
     
     private var selectedButtonIndex: Int?
     
-    lazy var nextButton = makeNextButton(buttonTitle: "다음", buttonSelectability: isSelectedButton)
+    lazy var nextButton = makeNextButton(buttonTitle: isModify ? "수정완료" : "다음", buttonSelectability: isSelectedButton)
     lazy var skipButton = makeSkipButton()
     lazy var buttonArray = makeDrinkingButtonArray(buttonArray: buttonTitleArray)
     
@@ -57,8 +59,7 @@ class SelectDrinkFrequencyViewController: UIViewController {
         
         //navigation
         title = "주류추천"
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = backButton
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         setAddSubViews()
         makeConstraints()
@@ -69,6 +70,7 @@ class SelectDrinkFrequencyViewController: UIViewController {
         // Handle the back button press (e.g., pop view controller)
         navigationController?.popViewController(animated: true)
     }
+    
     @objc func nextButtonTapped(_ sender: UIButton) {
         if isSelectedButton {
             let nextViewController = WelcomeViewController()
@@ -82,10 +84,21 @@ class SelectDrinkFrequencyViewController: UIViewController {
             MyDrinkingStyleDataManager().patchMyDrinkingStyleData(myDrinkingStyleParam) { result in
                 switch result {
                 case .success:
-                    print("API 요청 성공")
-                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    print("주류추천 기본정보 수정 성공")
+                    if self.isModify { // 수정일 때
+                        if let viewControllers = self.navigationController?.viewControllers {
+                            for viewController in viewControllers {
+                                if viewController is SettingViewController {
+                                    self.navigationController?.popToViewController(viewController, animated: true)
+                                    break
+                                }
+                            }
+                        }
+                    } else { // 최초 회원가입일 때
+                        self.navigationController?.pushViewController(nextViewController, animated: true)
+                    }
                 case .failure(let error):
-                    print("API 요청 실패: \(error)")
+                    print("주류추천 기본정보 수정 실패 - \(error.localizedDescription)")
                     // 실패에 대한 적절한 오류 처리
                 }
             }
@@ -207,7 +220,7 @@ class SelectDrinkFrequencyViewController: UIViewController {
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.height.equalTo(100)
+            make.height.equalTo(89)
             nextButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
     }

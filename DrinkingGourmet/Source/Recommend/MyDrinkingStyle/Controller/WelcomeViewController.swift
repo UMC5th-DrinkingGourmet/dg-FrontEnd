@@ -43,8 +43,7 @@ class WelcomeViewController: UIViewController {
         
         //navigation
         title = "주류추천"
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = backButton
+        navigationItem.hidesBackButton = true
         
         setAddSubViews()
         makeConstraints()
@@ -55,9 +54,11 @@ class WelcomeViewController: UIViewController {
         // Handle the back button press (e.g., pop view controller)
         navigationController?.popViewController(animated: true)
     }
+    
     @objc func nextButtonTapped(_ sender: UIButton) {
-        let nextViewController = GetUserInfoViewController()
-        navigationController?.pushViewController(nextViewController, animated: true)
+        let tabbarVC = TabBarViewController()
+        self.view.window?.rootViewController = tabbarVC
+        self.view.window?.makeKeyAndVisible()
     }
     
     
@@ -89,7 +90,7 @@ class WelcomeViewController: UIViewController {
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.height.equalTo(100)
+            make.height.equalTo(89)
             nextButton.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         }
     }

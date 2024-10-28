@@ -27,6 +27,7 @@ final class CombinationHomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        combinationHomeView.customSearchBar.placeholderLabel.text = "오늘의 조합 검색"
         
         fetchData()
         setupRefresh()
@@ -166,7 +167,7 @@ extension CombinationHomeViewController: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
-        if let url = URL(string: combination.combinationImageUrl) {
+        if let url = URL(string: combination.combinationImageUrl ?? "") {
             cell.thumnailImage.kf.setImage(with: url)
         }
         

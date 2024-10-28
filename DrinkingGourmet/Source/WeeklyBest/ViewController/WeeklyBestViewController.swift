@@ -27,12 +27,20 @@ final class WeeklyBestViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        weeklyBestView.customSearchBar.placeholderLabel.text = "주간 베스트 조합 검색"
         
+        updateUI()
         fetchData()
         setupRefresh()
         setupNaviBar()
         setupTableView()
         setupButton()
+    }
+    
+    private func updateUI() {
+        DispatchQueue.main.async {
+            self.weeklyBestView.uploadButton.isHidden = true
+        }
     }
     
     // MARK: - 데이터 가져오기
@@ -157,7 +165,7 @@ extension WeeklyBestViewController: UITableViewDataSource {
         
         cell.likeSelectedIcon.isHidden = !combination.isLike
         
-        if let url = URL(string: combination.combinationImageUrl) {
+        if let url = URL(string: combination.combinationImageUrl ?? "") {
                     cell.thumnailImage.kf.setImage(with: url)
         }
         

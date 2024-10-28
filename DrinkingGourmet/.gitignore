@@ -104,7 +104,7 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 *.xcconfig
-
-Secret.Swift
+*.xcuserdatad/
+xcschememanagement.plist
 
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift

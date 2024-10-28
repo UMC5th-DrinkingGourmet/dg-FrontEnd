@@ -12,22 +12,13 @@ import Then
 class MainMenuViewController: UIViewController {
     private let kakaoAuthVM: KakaoAuthViewModel = { KakaoAuthViewModel() } ()
     
-    // dummy
-    var topCollectionViewImgList = ["img_home_banner", "HomeBanner01", "HomeBanner03", "HomeBanner04"]
-    var topCollectionViewTitleList = ["넌 지금 어묵국물에\n소주가 땡긴다", "와인과 어울리는\n안주 페어링", "오늘 퇴근주는\n하이볼 당첨!", "위스키 하이볼 황금비율\n여기서만 공개할게요"]
+    var topCollectionViewImgList = ["img_home_banner", "HomeBanner01", "HomeBanner02"]
+    var topCollectionViewTitleList = ["넌 지금 어묵국물에\n소주가 땡긴다", "와인과 어울리는\n안주 페어링", "위스키 하이볼 황금비율\n여기서만 공개할게요"]
     
-    var imageList = ["img_home_recipebook", "img_community_weekly_detail", "img_home_review_02"]
+    var recipes: [RecipeModel] = []
+    var combinations: [CombinationModel] = []
     
-    var imageList2 = ["img_mypage_thumbnail_01", "img_mypage_thumbnail_02", "img_mypage_thumbnail_03"]
-    
-    var recipetitleList = ["| 골뱅이무침", "| 피자", "| 육전"]
-    var recipeIngrList = ["골뱅이 1캔 양파 1/2개\n당근1개 오이1개 깻잎 1묶음\n대파 1/2대 청양고추 2개\n양배추 1줌 소면","강력분 밀가루\n치즈 500g 올리브 1캔\n양파 1개 토마토소스 피망 1개\n옥수수콘 1캔","밀가루 계란\n소고기 대파 1대 소금\n초고추장 참기름"]
-    
-    var todayCombiTitleList = ["메론 하몽과\n버번 위스키 언더락", "육전과\n서울의 밤", "숯불치킨과\n맥주"]
-    
-    var hashtagList = ["#홈파티 #언더락 #버번위스키", "#한식주 #미식가 #커플 #저녁식사", "#야식 #불금"]
-    
-    // 여기까지 dummy
+    private let refreshControl = UIRefreshControl()
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -52,8 +43,20 @@ class MainMenuViewController: UIViewController {
     
     let recommendView = RecommendView()
     
+    let recipeBookLabel = UILabel().then {
+        $0.text = "레시피북"
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.textColor = .black
+        $0.textAlignment = .left
+    }
+    
+    let recipeBookIcon = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.right")
+        $0.tintColor = .base0600
+    }
+    
     let recipeBookBtn = UIButton().then {
-        $0.trailingBtnConfiguration(title: "레시피북", font: .boldSystemFont(ofSize: 20), foregroundColor: .black, padding: 8, image: UIImage(systemName: "chevron.right"), imageSize: CGSize(width: 10, height: 12))
+        $0.backgroundColor = .clear
     }
     
     lazy var recipeBookCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout2()).then {
@@ -66,30 +69,41 @@ class MainMenuViewController: UIViewController {
         $0.backgroundColor = .clear
     }
     
+    let todayCombiLabel = UILabel().then {
+        $0.text = "오늘의 조합"
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.textColor = .black
+        $0.textAlignment = .left
+    }
+    
+    let todayCombiIcon = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.right")
+        $0.tintColor = .base0600
+    }
+    
     let todayCombiBtn = UIButton().then {
-        $0.trailingBtnConfiguration(title: "오늘의 조합", font: .boldSystemFont(ofSize: 20), foregroundColor: .black, padding: 8, image: UIImage(systemName: "chevron.right"), imageSize: CGSize(width: 10, height: 12))
+        $0.backgroundColor = .clear
     }
     
     lazy var todayCombiCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout3()).then {
-        $0.isPagingEnabled = true
+        $0.isPagingEnabled = false
         $0.showsHorizontalScrollIndicator = false
         $0.delegate = self
         $0.dataSource = self
         $0.register(TodayCombiCollectionViewCell.self, forCellWithReuseIdentifier: "TodayCombiCollectionViewCell")
         $0.tag = 2
         $0.backgroundColor = .clear
+        $0.contentInsetAdjustmentBehavior = .never
     }
     
     let newAlcoholBtn = UIButton().then {
+        $0.isHidden = true
         $0.trailingBtnConfiguration(title: "새로 출시된 주류", font: .boldSystemFont(ofSize: 20), foregroundColor: .black, padding: 8, image: UIImage(systemName: "chevron.right"), imageSize: CGSize(width: 10, height: 12))
     }
     
     let newAlcoholImage = UIImageView().then {
+        $0.isHidden = true
         $0.image = UIImage(named: "img_main_new_alcohol")
-    }
-    
-    let mainAdImage = UIImageView().then {
-        $0.image = UIImage(named: "img_main_ad")
     }
     
     
@@ -116,16 +130,13 @@ class MainMenuViewController: UIViewController {
     func configureCollectionViewLayout3() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 220, height: 160)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width * 0.55, height: 160)
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 0
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return layout
     }
     
-    private let logoutBtn = UIButton().then {
-        $0.logoutBtnConfig(title: "로그아웃", font: .systemFont(ofSize: 12), backgroundColor: .clear)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -135,17 +146,11 @@ class MainMenuViewController: UIViewController {
         configHierarchy()
         layout()
         configButton()
+        fetchPostsData()
+        configureRefreshControl()
     }
     
     func setupNaviBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground() // 불투명
-        appearance.backgroundColor = .white
-        
-        // 네비게이션바 밑줄 삭제
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        
         // 백버튼 커스텀
         let customBackImage = UIImage(named: "ic_back")?.withRenderingMode(.alwaysOriginal)
         navigationController?.navigationBar.backIndicatorImage = customBackImage
@@ -156,20 +161,31 @@ class MainMenuViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         do {
             let accessToken = try Keychain.shared.getToken(kind: .accessToken)
+            let refreshToken = try Keychain.shared.getToken(kind: .refreshToken)
             print("액세스 토큰: \(accessToken)")
+            print("리프레시 토큰: \(refreshToken)")
             print("main menu providerid: \(UserDefaultManager.shared.providerId)")
         } catch {
             print("Failed to get access token")
         }
     }
     
+    private func configureRefreshControl() {
+        scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
+    
+    @objc private func refreshData() {
+        fetchPostsData()
+    }
+    
     func configButton() {
         recipeBookBtn.addTarget(self, action: #selector(recipeBookBtnTapped), for: .touchUpInside)
         recommendView.goBtn.addTarget(self, action: #selector(recommendViewTapped), for: .touchUpInside)
         todayCombiBtn.addTarget(self, action: #selector(todayCombiBtnTapped), for: .touchUpInside)
-        newAlcoholBtn.addTarget(self, action: #selector(newAlcoholBtnTapped), for: .touchUpInside)
+//        newAlcoholBtn.addTarget(self, action: #selector(newAlcoholBtnTapped), for: .touchUpInside)
         
-        logoutBtn.addTarget(self, action: #selector(logoutBtnClicked), for: .touchUpInside)
+        
     }
 
     @objc func recipeBookBtnTapped() {
@@ -198,45 +214,11 @@ class MainMenuViewController: UIViewController {
     }
     
     /* 모이치 */
-    @objc func newAlcoholBtnTapped() {
-        let newAlcoholViewController = NewAlcoholViewController()
-        newAlcoholViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(newAlcoholViewController, animated: true)
-    }
-    
-    @objc func logoutBtnClicked() {
-        let alert = UIAlertController(title: "로그아웃 하시겠습니까?", message: nil, preferredStyle: .alert)
-
-        let btn1 = UIAlertAction(title: "취소", style: .cancel)
-        let btn2 = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-//            do {
-//                try Keychain.shared.deleteToken(kind: .accessToken)
-//                print("Deleted Access Token")
-//            } catch {
-//                print("Failed to delete Access Token: \(error)")
-//            }
-//            
-//            do {
-//                try Keychain.shared.deleteToken(kind: .refreshToken)
-//                print("Deleted refreshToken")
-//            } catch {
-//                print("Failed to delete refreshToken: \(error)")
-//            }
-
-            self?.kakaoAuthVM.kakaoLogut()
-            
-            let authVC = AuthenticationViewController()
-            let navigationController = UINavigationController(rootViewController: authVC)
-            navigationController.modalPresentationStyle = .fullScreen
-            self?.present(navigationController, animated: true)
-        }
-
-        alert.addAction(btn1)
-        alert.addAction(btn2)
-
-        present(alert, animated: true)
-    }
-
+//    @objc func newAlcoholBtnTapped() {
+//        let newAlcoholViewController = NewAlcoholViewController()
+//        newAlcoholViewController.hidesBottomBarWhenPushed = true
+//        navigationController?.pushViewController(newAlcoholViewController, animated: true)
+//    }
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -257,14 +239,16 @@ class MainMenuViewController: UIViewController {
         contentView.addSubviews([
             bannerCollectionView,
             recommendView,
+            recipeBookLabel,
+            recipeBookIcon,
             recipeBookBtn,
             recipeBookCollectionView,
+            todayCombiLabel,
+            todayCombiIcon,
             todayCombiBtn,
             todayCombiCollectionView,
             newAlcoholBtn,
-            newAlcoholImage,
-            mainAdImage
-//            logoutBtn
+            newAlcoholImage
         ])
     }
     
@@ -277,7 +261,6 @@ class MainMenuViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView)
             $0.edges.equalTo(scrollView)
-            $0.height.equalTo(1650)
         }
         
         bannerCollectionView.snp.makeConstraints {
@@ -291,11 +274,21 @@ class MainMenuViewController: UIViewController {
             $0.height.equalTo(120)
         }
         
+        recipeBookLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalTo(recommendView.snp.bottom).offset(28)
+        }
+        
+        recipeBookIcon.snp.makeConstraints {
+            $0.leading.equalTo(recipeBookLabel.snp.trailing).offset(12)
+            $0.height.equalTo(14)
+            $0.width.equalTo(10)
+            $0.centerY.equalTo(recipeBookLabel)
+        }
+        
         recipeBookBtn.snp.makeConstraints {
-            $0.top.equalTo(recommendView.snp.bottom).offset(36)
-            $0.leading.equalToSuperview()
-            $0.height.equalTo(30)
-            $0.width.equalTo(140)
+            $0.top.leading.bottom.equalTo(recipeBookLabel)
+            $0.trailing.equalTo(recipeBookIcon)
         }
         
         recipeBookCollectionView.snp.makeConstraints {
@@ -304,44 +297,43 @@ class MainMenuViewController: UIViewController {
             $0.height.equalTo(160)
         }
         
+        todayCombiLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalTo(recipeBookCollectionView.snp.bottom).offset(28)
+        }
+        
+        todayCombiIcon.snp.makeConstraints {
+            $0.leading.equalTo(todayCombiLabel.snp.trailing).offset(12)
+            $0.height.equalTo(14)
+            $0.width.equalTo(10)
+            $0.centerY.equalTo(todayCombiLabel)
+        }
+        
         todayCombiBtn.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(recipeBookCollectionView.snp.bottom).offset(48)
-            $0.height.equalTo(30)
-            $0.width.equalTo(140)
+            $0.top.leading.bottom.equalTo(todayCombiLabel)
+            $0.trailing.equalTo(todayCombiIcon)
         }
         
         todayCombiCollectionView.snp.makeConstraints {
             $0.top.equalTo(todayCombiBtn.snp.bottom).offset(8)
-            $0.leading.equalTo(contentView).inset(20)
+            $0.leading.equalTo(contentView)
             $0.trailing.equalTo(contentView)
+            $0.bottom.equalTo(contentView).inset(60)
             $0.height.equalTo(160)
         }
         
         /* 모이치 */
-        newAlcoholBtn.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(48)
-            $0.height.equalTo(30)
-        }
-        
-        newAlcoholImage.snp.makeConstraints { make in
-            make.top.equalTo(newAlcoholBtn.snp.bottom).offset(18)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-        }
-        
-        mainAdImage.snp.makeConstraints { make in
-            make.top.equalTo(newAlcoholImage.snp.bottom).offset(48)
-            make.leading.trailing.equalToSuperview()
-        }
-        
-//        logoutBtn.snp.makeConstraints {
-//            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(12)
-//            $0.trailing.equalToSuperview().offset(-12)
-//            $0.height.equalTo(20)
+//        newAlcoholBtn.snp.makeConstraints {
+//            $0.leading.equalToSuperview()
+//            $0.top.equalTo(todayCombiCollectionView.snp.bottom).offset(48)
+//            $0.height.equalTo(30)
 //        }
-        
+//        
+//        newAlcoholImage.snp.makeConstraints { make in
+//            make.top.equalTo(newAlcoholBtn.snp.bottom).offset(18)
+//            make.leading.equalToSuperview().offset(20)
+//            make.trailing.equalToSuperview().inset(20)
+//        }
     }
     
     @objc func backToPrevious() {
@@ -349,17 +341,40 @@ class MainMenuViewController: UIViewController {
     }
 }
 
+extension MainMenuViewController {
+    func fetchPostsData() {
+        MainMenuService.shared.fetchRecipes { [weak self] recipeList in
+            self?.recipes = recipeList
+            print("레피시북 success")
+            DispatchQueue.main.async {
+                self?.recipeBookCollectionView.reloadData()
+                self?.refreshControl.endRefreshing()
+            }
+        }
+        
+        MainMenuService.shared.fetchWeeklyBestCombinations { [weak self] (combinationList: [CombinationModel]) in
+            self?.combinations = combinationList
+            print("오늘의조합 success")
+            DispatchQueue.main.async {
+                self?.todayCombiCollectionView.reloadData()
+                self?.refreshControl.endRefreshing()
+            }
+        }
+    }
+}
+
 extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
-            return 4
+            return topCollectionViewImgList.count
+        } else if collectionView.tag == 1 {
+            return recipes.count
         } else {
-            return 3
+            return combinations.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         if collectionView.tag == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainMenuBannerCollectionViewCell", for: indexPath) as! MainMenuBannerCollectionViewCell
             
@@ -370,20 +385,79 @@ extension MainMenuViewController: UICollectionViewDelegate, UICollectionViewData
         } else if collectionView.tag == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeBookCollectionViewCell", for: indexPath) as! RecipeBookCollectionViewCell
             
-            cell.recipeBookImageView.image = UIImage(named: imageList[indexPath.item])
-            cell.recipeBookTitleLabel.text = recipetitleList[indexPath.item]
-            cell.ingredientLabel.text = recipeIngrList[indexPath.item]
+            let recipe = recipes[indexPath.item]
+            cell.recipeBookTitleLabel.text = "|  \(recipe.name)"
+            cell.timeLabel.text = "\(recipe.cookingTime)분"
+            cell.ingredientLabel.text = recipe.ingredient
+            if let url = URL(string: recipe.imageUrl ?? "") {
+                cell.recipeBookImageView.kf.setImage(with: url)
+            }
             
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TodayCombiCollectionViewCell", for: indexPath) as! TodayCombiCollectionViewCell
             
-            cell.combiImageView.image = UIImage(named: imageList2[indexPath.item])
-            cell.titleLabel.text = todayCombiTitleList[indexPath.item]
-            cell.hashTagLabel.text = hashtagList[indexPath.item]
-            
+            let combination = combinations[indexPath.item]
+            cell.titleLabel.text = combination.title
+            cell.setTitleLabelText(combination.title)
+            cell.hashTagLabel.text = combination.hashTags
+            if let url = URL(string: combination.imageUrl) {
+                cell.combiImageView.kf.setImage(with: url)
+            }
             
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView.tag == 0 {
+            let combinationHomeVC = CombinationHomeViewController()
+            combinationHomeVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(combinationHomeVC, animated: true)
+        } else if collectionView.tag == 1 {
+            let recipe = recipes[indexPath.item]
+            
+            let recipeDetailVC = RecipeBookDetailViewController()
+            recipeDetailVC.recipeBookId = recipe.id
+            recipeDetailVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(recipeDetailVC, animated: true)
+        } else if collectionView.tag == 2 {
+            let combination = combinations[indexPath.item]
+            
+            let combinationVC = CombinationDetailViewController()
+            combinationVC.combinationId = combination.id
+            combinationVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(combinationVC, animated: true)
+        }
+    }
 }
+
+extension TodayCombiCollectionViewCell {
+    func setTitleLabelText(_ text: String) {
+        let maxLineLength = 11 // 첫 줄 최대 글자 수 기준
+        
+        if text.count > maxLineLength {
+            var splitIndex = text.startIndex
+            var currentLength = 0
+            
+            // 단어 단위로 최대 글자 수 초과 시 줄바꿈 위치 탐색
+            for (index, char) in text.enumerated() {
+                currentLength += 1
+                
+                // 공백을 기준으로 마지막으로 넘었는지 확인
+                if currentLength > maxLineLength, char == " " {
+                    splitIndex = text.index(text.startIndex, offsetBy: index)
+                    break
+                }
+            }
+            
+            // 줄바꿈 삽입
+            let firstLine = text[..<splitIndex]
+            let secondLine = text[splitIndex...].trimmingCharacters(in: .whitespaces)
+            titleLabel.text = "\(firstLine)\n\(secondLine)"
+        } else {
+            titleLabel.text = text
+        }
+    }
+}
+

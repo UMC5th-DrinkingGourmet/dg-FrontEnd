@@ -31,7 +31,7 @@ final class RemovedAlertView: UIView {
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.25
         $0.attributedText = NSMutableAttributedString(
-            string: "삭제된 게시물입니다.",
+            string: "게시물을 불러올 수 없습니다.",
             attributes: [
                 NSAttributedString.Key.kern: -0.6,
                 NSAttributedString.Key.paragraphStyle: paragraphStyle]
@@ -43,6 +43,7 @@ final class RemovedAlertView: UIView {
     }
     
     private let aleartLabel_2 = UILabel().then {
+        $0.textAlignment = .center
         $0.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
         $0.numberOfLines = 0
@@ -51,7 +52,7 @@ final class RemovedAlertView: UIView {
         paragraphStyle.lineHeightMultiple = 1.25
         paragraphStyle.alignment = .center // 여기에 텍스트 정렬 설정
         $0.attributedText = NSMutableAttributedString(
-            string: "사용자가 직접 삭제했거나 정책 위반으로 삭제된 게시물 입니다.",
+            string: "사용자가 직접 삭제했거나\n차단 또는 정책 위반으로 삭제된 게시물 입니다.",
             attributes: [
                 NSAttributedString.Key.kern: -0.42,
                 NSAttributedString.Key.paragraphStyle: paragraphStyle
@@ -128,11 +129,6 @@ final class RemovedAlertView: UIView {
         dividerLine.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.width.equalTo(stackView    )
-        }
-        
-        aleartLabel_2.snp.makeConstraints { make in
-            make.height.equalTo(42)
-            make.width.equalTo(200)
         }
         
         stackView.snp.makeConstraints { make in

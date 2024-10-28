@@ -9,16 +9,18 @@ import UIKit
 
 final class InputIntoxicationViewController: UIViewController {
     // MARK: - Properties
-    private let inputIntoxicationview = InputIntoxicationview()
+    private let inputIntoxicationView = InputIntoxicationView()
     
     // MARK: - View 설정
     override func loadView() {
-        view = inputIntoxicationview
+        view = inputIntoxicationView
     }
     
     // MARK: - ViewDidLodad
     override func viewDidLoad() {
         super.viewDidLoad()
+        inputIntoxicationView.nextButton.button.isEnabled = true
+        inputIntoxicationView.nextButton.backgroundColor = .base0100
         
         setupNaviBar()
         setupButton()
@@ -30,23 +32,19 @@ final class InputIntoxicationViewController: UIViewController {
     }
     
     private func setupButton() {
-        inputIntoxicationview.slider.addTarget(self, action: #selector(changeSlider), for: .valueChanged)
-        inputIntoxicationview.nextButton.button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        inputIntoxicationView.slider.addTarget(self, action: #selector(changeSlider), for: .valueChanged)
+        inputIntoxicationView.nextButton.button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
 }
 
 // MARK: - Actions
 extension InputIntoxicationViewController {
     @objc private func changeSlider() {
-        inputIntoxicationview.slider.value = roundf(inputIntoxicationview.slider.value)
-        print(inputIntoxicationview.slider.value)
-        
-        inputIntoxicationview.nextButton.button.isEnabled = true
-        inputIntoxicationview.nextButton.backgroundColor = .base0100
+        inputIntoxicationView.slider.value = roundf(inputIntoxicationView.slider.value)
     }
     
     @objc private func nextButtonTapped() {
-        RecommendRequestDTO.shared.desireLevel = Int(inputIntoxicationview.slider.value)
+        RecommendRequestDTO.shared.desireLevel = Int(inputIntoxicationView.slider.value)
         let VC = InputFoodViewController()
         navigationController?.pushViewController(VC, animated: true)
     }

@@ -50,6 +50,13 @@ class TodayCombiCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        hashTagLabel.text = nil
+        combiImageView.image = nil
+    }
+    
     func configureHierarchy() {
         contentView.addSubviews([
             combiImageView,
@@ -64,18 +71,20 @@ class TodayCombiCollectionViewCell: UICollectionViewCell {
             $0.edges.equalToSuperview()
         }
         
-        titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(22)
-            $0.top.equalToSuperview().offset(62)
-        }
-        
         gradientView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(22)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalTo(hashTagLabel.snp.top).offset(-12)
+        }
+        
         hashTagLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-20)
         }
     }
     

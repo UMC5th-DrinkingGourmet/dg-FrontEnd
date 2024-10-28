@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Toast
 
 final class RecipeBookDetailViewController: UIViewController {
     // MARK: - Properties
@@ -43,6 +44,14 @@ final class RecipeBookDetailViewController: UIViewController {
                                                selector: #selector(keyboardDown),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+        
+        // 페이지 컨트롤 초기화
+        headerView?.pageControl.currentPage = 0
+        
+        // 이미지 컬렉션 뷰를 첫 번째 아이템으로 스크롤
+        headerView?.imageCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0),
+                                                     at: .centeredHorizontally,
+                                                     animated: false)
     }
     
     // 뒤로가기 할 때
@@ -57,6 +66,9 @@ final class RecipeBookDetailViewController: UIViewController {
             RecipeBookHomeVC.recipeBooks[selectedIndex].like = isLiked // 좋아요 상태 업데이트
             RecipeBookHomeVC.recipeBookHomeView.tableView.reloadRows(at: [IndexPath(row: selectedIndex, section: 0)], with: .none) // 해당 셀만 리로드
         }
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidLoad() {
@@ -72,6 +84,9 @@ final class RecipeBookDetailViewController: UIViewController {
     
     private func setupNaviBar() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage() // 그림자 제거
     }
     
     func fetchData() {
@@ -94,6 +109,7 @@ final class RecipeBookDetailViewController: UIViewController {
                         self.isLastPage = data.result.isLast
                         self.arrayRecipeBookComment = data.result.commentList
                         DispatchQueue.main.async {
+                            self.headerView?.imageCollectionView.reloadData()
                             self.recipeBookDetailView.tabelView.reloadData()
                         }
                     case .failure(let error):
@@ -174,7 +190,7 @@ extension RecipeBookDetailViewController {
     
     @objc func moreButtonTapped() {
         // 내가 작성한 글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = recipeBookDetailData?.result.member.nickName == UserDefaultManager.shared.userNickname
+        let isCurrentUser = recipeBookDetailData?.result.member.memberId == Int(UserDefaultManager.shared.userId)
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -197,7 +213,14 @@ extension RecipeBookDetailViewController {
                 }
             }
             
-            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
+            let modifyAction = UIAlertAction(title: "수정하기", style: .default) { _ in
+                guard let recipeBookDetailData = self.recipeBookDetailData else { return }
+                let VC = RecipeBookUploadViewController()
+                VC.recipeBookDetailData = recipeBookDetailData
+                VC.isModify = true
+                self.navigationController?.pushViewController(VC, animated: true)
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
@@ -208,10 +231,60 @@ extension RecipeBookDetailViewController {
                 VC.resourceId = recipeBookDetailData?.result.id
                 VC.reportTarget = "RECIPE"
                 VC.reportContent = recipeBookDetailData?.result.recipeInstruction
+                VC.reportedMemberId = recipeBookDetailData?.result.member.memberId
                 navigationController?.pushViewController(VC, animated: true)
             }
             
-            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default) { _ in
+                // 차단 확인을 위한 Alert 생성
+                let confirmationAlert = UIAlertController(title: nil, message: "이 작성자의 게시물과 댓글이\n더 이상 노출되지 않습니다.", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+                let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
+                    guard let blockedMemberId = self.recipeBookDetailData?.result.member.memberId else { return }
+                    
+                    // 댓글 창 숨기기
+                    DispatchQueue.main.async {
+                        self.recipeBookDetailView.commentInputView.isHidden = true
+                    }
+                    
+                    AdministrationService.shared.postBlock(blockedMemberId: blockedMemberId) { error in
+                        if let error = error {
+                            print("\(blockedMemberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                        } else {
+                            print("\(blockedMemberId)번 멤버 차단 성공")
+                            
+                            let popUpView = ReportCompletePopUpView()
+                            popUpView.label.text = "차단되었습니다"
+                            ToastManager.shared.style.fadeDuration = 0.7
+                            self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { _ in
+                                if let viewControllers = self.navigationController?.viewControllers {
+                                    for vc in viewControllers {
+                                        if let recipeBookHomeVC = vc as? RecipeBookHomeViewController {
+                                            recipeBookHomeVC.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
+                                            recipeBookHomeVC.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
+                                        if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                            likeTapmanVC.likeRecipeBookViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                            likeTapmanVC.likeRecipeBookViewController.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    }
+                }
+                
+                confirmationAlert.addAction(cancelAction)
+                confirmationAlert.addAction(confirmAction)
+                
+                self.present(confirmationAlert, animated: true, completion: nil)
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }
@@ -301,6 +374,8 @@ extension RecipeBookDetailViewController: UITableViewDataSource {
         if let imageUrlString = data.member.profileImageUrl {
             if let imageUrl = URL(string: imageUrlString) {
                 cell.profileImage.kf.setImage(with: imageUrl)
+            } else {
+                cell.profileImage.image = UIImage(named: "ic_default_profile")
             }
         }
         
@@ -360,7 +435,7 @@ extension RecipeBookDetailViewController: UITableViewDelegate {
         
         header.hashtagLabel.text = data.result.hashTagNameList.map { "\($0)" }.joined(separator: " ")
         header.titleLabel.text = data.result.title
-        header.recipeBookDetailInfoView.timeNumLabel.text = "\(data.result.cookingTime)"
+        header.recipeBookDetailInfoView.timeNumLabel.text = "\(data.result.cookingTime)분"
         header.recipeBookDetailInfoView.kcalNumLabel.text = "\(data.result.calorie)"
         header.recipeBookDetailInfoView.likeNumLabel.text = "\(data.result.likeCount)"
         header.ingredientListLabel.text = data.result.ingredient
@@ -445,8 +520,7 @@ extension RecipeBookDetailViewController: UICollectionViewDelegateFlowLayout {
 extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓글
     func selectedInfoBtn(data: RecipeBookCommentDTO) {
         
-        // 내가 작성한 댓글인지 확인 ** memberId로 수정 필요 **
-        let isCurrentUser = data.member.nickName != UserDefaultManager.shared.userNickname
+        let isCurrentUser = data.member.memberId == Int(UserDefaultManager.shared.userId)
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -470,10 +544,9 @@ extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓
                 }
             }
             
-            let modifyAction = UIAlertAction(title: "수정하기", style: .default, handler: nil)
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
-            [deleteAction, modifyAction, cancelAction].forEach { alert.addAction($0) }
+            [deleteAction, cancelAction].forEach { alert.addAction($0) }
             
         } else { // 내가 작성한 댓글 아닐 때
             let reportAction = UIAlertAction(title: "신고하기", style: .destructive) { [self] _ in
@@ -481,10 +554,63 @@ extension RecipeBookDetailViewController: RecipeBookCommentCellDelegate { // 댓
                 VC.resourceId = data.id
                 VC.reportTarget = "RECIPE_COMMENT"
                 VC.reportContent = data.content
+                VC.reportedMemberId = data.id
                 navigationController?.pushViewController(VC, animated: true)
             }
             
-            let blockingAction = UIAlertAction(title: "차단하기", style: .default, handler: nil)
+            let blockingAction = UIAlertAction(title: "차단하기", style: .default) { _ in
+                
+                // 차단 확인을 위한 Alert 생성
+                let confirmationAlert = UIAlertController(title: nil, message: "이 작성자의 게시물과 댓글이\n더 이상 노출되지 않습니다.", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+                let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
+                    
+                    // 댓글 창 숨기기
+                    DispatchQueue.main.async {
+                        self.recipeBookDetailView.commentInputView.isHidden = true
+                    }
+                    
+                    
+                    AdministrationService.shared.postBlock(blockedMemberId: data.member.memberId) { error in
+                        if let error = error {
+                            print("\(data.member.memberId)번 멤버 차단 실패 - \(error.localizedDescription)")
+                            
+                            
+                        } else {
+                            print("\(data.member.memberId)번 멤버 차단 성공")
+                            
+                            // 차단 성공 토스트 메시지
+                            let popUpView = ReportCompletePopUpView()
+                            popUpView.label.text = "차단되었습니다"
+                            ToastManager.shared.style.fadeDuration = 0.7
+                            self.view.showToast(popUpView, duration: 0.7, position: .bottom, completion: { _ in
+                                if let viewControllers = self.navigationController?.viewControllers {
+                                    for vc in viewControllers {
+                                        if let recipeBookHomeVC = vc as? RecipeBookHomeViewController {
+                                            recipeBookHomeVC.recipeBookHomeView.tableView.setContentOffset(.zero, animated: true)
+                                            recipeBookHomeVC.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
+                                        if let likeTapmanVC = vc as? LikeTapmanViewController {
+                                            likeTapmanVC.likeRecipeBookViewController.likeView.collectionView.setContentOffset(.zero, animated: true)
+                                            likeTapmanVC.likeRecipeBookViewController.fetchData()
+                                            self.navigationController?.popViewController(animated: true)
+                                            break
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    }
+                }
+                confirmationAlert.addAction(cancelAction)
+                confirmationAlert.addAction(confirmAction)
+                
+                self.present(confirmationAlert, animated: true, completion: nil)
+            }
+            
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
             [reportAction, blockingAction, cancelAction].forEach { alert.addAction($0) }

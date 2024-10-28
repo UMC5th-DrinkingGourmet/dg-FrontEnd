@@ -13,7 +13,7 @@ final class ReportCompletePopUpView: UIView {
         $0.image = UIImage(named: "ic_check_report_complete")
     }
     
-    private let label = UILabel().then {
+    let label = UILabel().then {
         $0.textColor = .white
         $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         $0.text = "신고가 접수되었습니다."

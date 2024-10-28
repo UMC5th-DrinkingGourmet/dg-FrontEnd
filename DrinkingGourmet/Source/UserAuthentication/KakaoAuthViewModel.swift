@@ -28,11 +28,11 @@ class KakaoAuthViewModel: ObservableObject {
         await withCheckedContinuation { continuation in
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {  // 로그인 실패
-                    print(error)
+                    print("카카오 로그인 실패: \(error.localizedDescription)")
                     continuation.resume(returning: false)
                 }
                 else {
-                    print("loginWithKakaoTalk() success.")
+                    print("카카오 로그인 성공, 토큰: \(oauthToken?.accessToken ?? "")")
 
                     _ = oauthToken
                     
