@@ -11,6 +11,7 @@
 		2E0274E62B6FEF3E00F92177 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */; };
 		2E06A6F12C1EE16100FF5449 /* AppleAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */; };
 		2E22A47B2C47BFD900D38881 /* SignInResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E22A47A2C47BFD900D38881 /* SignInResponseDTO.swift */; };
+		2E3CE1B22CCFB3D000566B4F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2E3CE1B12CCFB3D000566B4F /* PrivacyInfo.xcprivacy */; };
 		2E3E5A7D2B6C04590000E651 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */; };
 		2E3E5A7F2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */; };
 		2E5407962B84BAF100724513 /* RecipeBookUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */; };
@@ -182,6 +183,7 @@
 		2E0274E52B6FEF3E00F92177 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		2E06A6F02C1EE16100FF5449 /* AppleAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthViewModel.swift; sourceTree = "<group>"; };
 		2E22A47A2C47BFD900D38881 /* SignInResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponseDTO.swift; sourceTree = "<group>"; };
+		2E3CE1B12CCFB3D000566B4F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2E3E5A7C2B6C04590000E651 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		2E3E5A7E2B6C0CA10000E651 /* UploadedImgCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedImgCollectionViewCell.swift; sourceTree = "<group>"; };
 		2E5407952B84BAF100724513 /* RecipeBookUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookUploadViewController.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				2E6C26E42B497EFB00C87B4A /* Util */,
 				2E6C26D52B497AD400C87B4A /* Info.plist */,
 				2E7139582B5E7B05003D0190 /* .gitignore */,
+				2E3CE1B12CCFB3D000566B4F /* PrivacyInfo.xcprivacy */,
 			);
 			path = DrinkingGourmet;
 			sourceTree = "<group>";
@@ -1296,6 +1299,7 @@
 				2E6C26D42B497AD400C87B4A /* LaunchScreen.storyboard in Resources */,
 				2E7139592B5E7B05003D0190 /* .gitignore in Resources */,
 				2E6C26D12B497AD400C87B4A /* Assets.xcassets in Resources */,
+				2E3CE1B22CCFB3D000566B4F /* PrivacyInfo.xcprivacy in Resources */,
 				56CDC85B2CCD22BE002204F5 /* Loader.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1604,7 +1608,7 @@
 				CODE_SIGN_ENTITLEMENTS = DrinkingGourmet/DrinkingGourmet.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 25HUNR4S37;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
@@ -1645,7 +1649,7 @@
 				CODE_SIGN_ENTITLEMENTS = DrinkingGourmet/DrinkingGourmet.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 25HUNR4S37;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DrinkingGourmet/Info.plist;
