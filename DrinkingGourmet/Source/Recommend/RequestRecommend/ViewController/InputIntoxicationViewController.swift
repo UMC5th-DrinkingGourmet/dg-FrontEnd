@@ -19,6 +19,8 @@ final class InputIntoxicationViewController: UIViewController {
     // MARK: - ViewDidLodad
     override func viewDidLoad() {
         super.viewDidLoad()
+        inputIntoxicationView.nextButton.button.isEnabled = true
+        inputIntoxicationView.nextButton.backgroundColor = .base0100
         
         setupNaviBar()
         setupButton()
@@ -39,8 +41,6 @@ final class InputIntoxicationViewController: UIViewController {
 extension InputIntoxicationViewController {
     @objc private func changeSlider() {
         inputIntoxicationView.slider.value = roundf(inputIntoxicationView.slider.value)
-        inputIntoxicationView.nextButton.button.isEnabled = true
-        inputIntoxicationView.nextButton.backgroundColor = .base0100
     }
     
     @objc private func nextButtonTapped() {
